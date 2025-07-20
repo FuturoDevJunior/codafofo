@@ -1,5 +1,4 @@
 # Escopo Técnico — **Catálogo & Pedido WhatsApp** – Vytalle Estética (Versão 1.0)
-
 > **Data:** 19 jul 2025
 > **Contexto:** Vytalle Estética & Viscosuplementação oferece tratamentos faciais e corporais de alta performance com as principais marcas de toxina botulínica (Botox®, Dysport®, Xeomin®) e aplicações de visco-supletação para alívio de dores articulares. Perfil Instagram: *@vytalle.estetica*.
 
