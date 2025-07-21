@@ -131,10 +131,14 @@ if (typeof window !== 'undefined') {
     disconnect = vi.fn();
   }
   window.ResizeObserver = MockResizeObserver;
-  class MockIntersectionObserver {
-    observe = vi.fn();
-    unobserve = vi.fn();
+  class MockIntersectionObserver implements IntersectionObserver {
+    readonly root: Element | null = null;
+    readonly rootMargin: string = '';
+    readonly thresholds: ReadonlyArray<number> = [];
     disconnect = vi.fn();
+    observe = vi.fn();
+    takeRecords = vi.fn(() => []);
+    unobserve = vi.fn();
   }
-  window.IntersectionObserver = MockIntersectionObserver;
+  window.IntersectionObserver = MockIntersectionObserver as any;
 } 
