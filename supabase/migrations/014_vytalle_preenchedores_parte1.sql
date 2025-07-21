@@ -1,0 +1,157 @@
+-- Migração para PREENCHEDORES da Vytalle Estética (Parte 1)
+
+-- Inserir preenchedores
+INSERT INTO PRODUCTS (
+    NAME,
+    SLUG,
+    PRICE,
+    DESCRIPTION,
+    IMAGES,
+    CATEGORY,
+    STOCK,
+    DISCOUNT_PERCENT,
+    CURRENCY
+) VALUES (
+    'DL BELOTERO BALANCE LIDO',
+    'dl-belotero-balance-lido',
+    265.00,
+    'Preenchedor com lidocaína para rugas finas. Benefícios: preenchimento suave, aplicação confortável, resultado natural. Duração: 6-8 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    45,
+    0,
+    'BRL'
+),
+(
+    'DL BELOTERO INTENSE LIDO',
+    'dl-belotero-intense-lido',
+    275.00,
+    'Preenchedor com lidocaína para rugas moderadas. Benefícios: preenchimento intensivo, aplicação confortável, resultado natural. Duração: 8-10 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    35,
+    0,
+    'BRL'
+),
+(
+    'DL BELOTERO VOLUME LIDO',
+    'dl-belotero-volume-lido',
+    525.00,
+    'Preenchedor com lidocaína para volume. Benefícios: preenchimento volumétrico, aplicação confortável, resultado natural. Duração: 10-12 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    25,
+    0,
+    'BRL'
+),
+(
+    'DL BIO LIFT 24MG',
+    'dl-bio-lift-24mg',
+    179.00,
+    'Preenchedor bioestimulador. Benefícios: preenchimento e estimulação de colágeno, efeito duradouro. Duração: 8-10 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    50,
+    0,
+    'BRL'
+),
+(
+    'DL BIOGELIS FINE LINES 2ML',
+    'dl-biogelis-fine-lines-2ml',
+    460.00,
+    'Preenchedor para rugas finas. Benefícios: preenchimento suave, melhora textura, resultado natural. Duração: 6-8 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    30,
+    0,
+    'BRL'
+),
+(
+    'DL BIOGELIS GLOBAL 2ML',
+    'dl-biogelis-global-2ml',
+    499.00,
+    'Preenchedor para uso global. Benefícios: preenchimento versátil, melhora contorno facial, resultado natural. Duração: 8-10 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    25,
+    0,
+    'BRL'
+),
+(
+    'DL BIOGELIS VOLUME 2ML',
+    'dl-biogelis-volume-2ml',
+    499.00,
+    'Preenchedor para volume. Benefícios: preenchimento volumétrico, melhora contorno facial, resultado natural. Duração: 10-12 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    20,
+    0,
+    'BRL'
+),
+(
+    'DL BIOGELIS VOLUMAX 2ML',
+    'dl-biogelis-volumax-2ml',
+    699.00,
+    'Preenchedor para volume máximo. Benefícios: preenchimento volumétrico intensivo, melhora contorno facial, resultado natural. Duração: 12-15 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    15,
+    0,
+    'BRL'
+),
+(
+    'DL NEURAMIS DEEP',
+    'dl-neuramis-deep',
+    199.00,
+    'Preenchedor para rugas profundas. Benefícios: preenchimento profundo, melhora contorno facial, resultado natural. Duração: 8-10 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    40,
+    0,
+    'BRL'
+),
+(
+    'DL NEURAMIS LIDOCAINE',
+    'dl-neuramis-lidocaine',
+    199.00,
+    'Preenchedor com lidocaína. Benefícios: preenchimento confortável, aplicação sem dor, resultado natural. Duração: 8-10 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    40,
+    0,
+    'BRL'
+),
+(
+    'DL NEURAMIS VOLUME',
+    'dl-neuramis-volume',
+    199.00,
+    'Preenchedor para volume. Benefícios: preenchimento volumétrico, melhora contorno facial, resultado natural. Duração: 10-12 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    35,
+    0,
+    'BRL'
+),
+(
+    'DL PERFECTHA SUBSKIN',
+    'dl-perfectha-subskin',
+    765.00,
+    'Preenchedor para subpele. Benefícios: preenchimento profundo, melhora contorno facial, resultado natural. Duração: 12-15 meses.',
+    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
+    'Preenchedor',
+    20,
+    0,
+    'BRL'
+);

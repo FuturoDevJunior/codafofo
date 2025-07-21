@@ -1,7 +1,34 @@
-# Vytalle Catalog
+# 🏥 Vytalle Estética - Catálogo B2B Médico Premium
 
-Catálogo & Pedido WhatsApp para Vytalle Estética  
-**Stack:** Next.js 14, Supabase, Shadcn, Zustand, PWA, CI/CD Vercel
+<div align="center">
+
+![Vytalle Logo](./public/icons/icon-192.png)
+
+**Plataforma B2B profissional para produtos médicos estéticos**  
+*Checkout via WhatsApp Business • Validações CRM • Interface Premium*
+
+[![Next.js](https://img.shields.io/badge/Next.js-14.2.5-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
+[![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com)
+
+[🚀 **DEMO LIVE**](https://vytalle-estetica.vercel.app) • [📋 **CHANGELOG**](./CHANGELOG.md) • [📖 **DOCS**](./docs/)
+
+</div>
+
+---
+
+## 🎯 **VISÃO GERAL**
+
+Sistema B2B médico completo para comercialização de produtos estéticos premium. Focado em **profissionais da saúde** com validação CRM, checkout profissional e integração WhatsApp Business para fechamento de vendas.
+
+### 🏆 **PRINCIPAIS DIFERENCIAIS**
+
+- **💳 Checkout Profissional 5 Etapas**: Dados pessoais → Profissionais → Endereço → Pagamento → Confirmação
+- **📱 WhatsApp Business**: Mensagem ultra-profissional com todos os dados preenchidos
+- **⚕️ Validações Médicas**: CRM obrigatório, CNPJ clínicas, certificações ANVISA
+- **🛒 Carrinho Premium**: Interface moderna com imagens, controles visuais e feedback
+- **📊 Analytics Avançado**: Tracking completo de conversões e jornadas
 
 ---
 

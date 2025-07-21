@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffeacd;
+  color: #5b4322;
+}
+
+
+
+@layer base {
+  :root {
+    /* Vytalle Estética Brand Colors - PALETA OFICIAL PDF */
+    --background: 39 100% 91%;            /* #ffeacd - Background pastel oficial */
+    --foreground: 32 50% 25%;             /* #5b4322 - Texto principal */
+    --card: 260 100% 98%;                 /* #fbfafc - Cards brancos */
+    --card-foreground: 32 50% 25%;        /* #5b4322 - Texto em cards */
+    --popover: 260 100% 98%;              /* #fbfafc - Popovers */
+    --popover-foreground: 32 50% 25%;     /* #5b4322 - Texto em popovers */
+    --primary: 39 61% 60%;                /* #d8a75b - Brand pastel principal */
+    --primary-foreground: 260 100% 98%;   /* #fbfafc - Texto sobre primário */
+    --secondary: 35 76% 55%;              /* #e79632 - Brand base */
+    --secondary-foreground: 260 100% 98%; /* #fbfafc - Texto sobre secundário */
+    --muted: 39 100% 95%;                 /* #fff9f1 - Backgrounds sutis */
+    --muted-foreground: 35 76% 55%;       /* #e79632 - Texto secundário */
+    --accent: 18 100% 50%;                /* #ff5a00 - Brand accent */
+    --accent-foreground: 260 100% 98%;    /* #fbfafc - Texto sobre accent */
+    --destructive: 0 84% 60%;             /* #dc2626 - Vermelho erro */
+    --destructive-foreground: 260 100% 98%; /* #fbfafc - Texto sobre erro */
+    --border: 39 100% 88%;                /* Bordas baseadas em bg pastel */
+    --input: 39 100% 88%;                 /* Inputs baseados em bg pastel */
+    --ring: 39 61% 60%;                   /* #d8a75b - Ring focus */
+    --chart-1: 39 61% 60%;                /* #d8a75b - Gráfico 1 */
+    --chart-2: 35 76% 55%;                /* #e79632 - Gráfico 2 */
+    --chart-3: 18 100% 50%;               /* #ff5a00 - Gráfico 3 */
+    --chart-4: 32 50% 25%;                /* #5b4322 - Gráfico 4 */
+    --chart-5: 260 100% 98%;              /* #fbfafc - Gráfico 5 */
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
