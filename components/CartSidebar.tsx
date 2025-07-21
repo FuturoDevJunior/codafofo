@@ -1,8 +1,19 @@
 "use client";
 
 import { useState } from 'react';
-import { ShoppingCart, X, Plus, Minus, Trash2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+
+import {
+  AnimatePresence,
+  motion,
+} from 'framer-motion';
+import {
+  Minus,
+  Plus,
+  ShoppingCart,
+  Trash2,
+  X,
+} from 'lucide-react';
+import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/lib/store';
@@ -131,9 +142,11 @@ export default function CartSidebar() {
                           {/* Product Image */}
                           <div className="flex-shrink-0 w-16 h-16 bg-neutral-100 rounded-lg overflow-hidden">
                             {item.images && item.images[0] && (
-                              <img
+                              <Image
                                 src={item.images[0]}
                                 alt={item.name}
+                                width={64}
+                                height={64}
                                 className="w-full h-full object-cover"
                               />
                             )}

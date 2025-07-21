@@ -1,12 +1,13 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
+import Image from 'next/image';
 
+import AnalyticsProvider from '@/components/AnalyticsProvider';
+import CartSidebar from '@/components/CartSidebar';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { Toaster } from '@/components/ui/toaster';
 import WhatsAppButton from '@/components/WhatsAppButton';
-import CartSidebar from '@/components/CartSidebar';
-import AnalyticsProvider from '@/components/AnalyticsProvider';
-import ErrorBoundary from '@/components/ErrorBoundary';
 
 export const metadata: Metadata = {
   title: 'Vytalle Estética - Catálogo Premium | Botox, Preenchimento, Bioestimuladores',
@@ -34,11 +35,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {/* Logo e Nome - Mobile-First Design */}
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="relative group">
-                  <img 
+                  <Image 
                     src="/icons/icon-192.png" 
                     alt="Logo Vytalle Estética" 
+                    width={48}
+                    height={48}
                     className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl shadow-md ring-2 ring-vitale-primary/20 transition-all duration-200 group-hover:ring-vitale-primary/40 group-hover:scale-105 interactive" 
-                    loading="eager"
+                    priority
                   />
                   <div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-success-500 rounded-full flex items-center justify-center shadow-sm">
                     <span className="text-xs text-white font-bold" aria-hidden="true">✓</span>
@@ -104,11 +107,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-6">
               {/* Informações da Empresa */}
               <div className="flex items-center gap-3">
-                <img 
+                <Image 
                   src="/icons/icon-192.png" 
-                  alt="" 
+                  alt="Logo Vytalle no rodapé" 
+                  width={32}
+                  height={32}
                   className="h-8 w-8 rounded-lg shadow-sm" 
-                  loading="lazy"
                 />
                 <div className="flex flex-col">
                   <span className="text-sm font-semibold text-vitale-primary">

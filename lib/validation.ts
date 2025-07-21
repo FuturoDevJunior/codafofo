@@ -133,7 +133,7 @@ export function validateProductData(data: any): {
   let images: string[] = [];
   if (Array.isArray(data.images)) {
     images = data.images
-      .filter(url => typeof url === 'string' && SECURITY_PATTERNS.validUrl.test(url))
+      .filter((url: string) => typeof url === 'string' && SECURITY_PATTERNS.validUrl.test(url))
       .slice(0, 10); // Máximo 10 imagens
   }
   
