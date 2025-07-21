@@ -27,7 +27,6 @@ const mockProducts = [
     images: ['/images/botox-50u.png'],
     category: 'Botox',
     discount_percent: 0,
-    stock: 10,
     currency: 'BRL',
   },
   {
@@ -38,7 +37,6 @@ const mockProducts = [
     images: ['/images/botox-100u.png'],
     category: 'Botox',
     discount_percent: 0,
-    stock: 10,
     currency: 'BRL',
   },
   {
@@ -49,7 +47,6 @@ const mockProducts = [
     images: ['/images/dysport-300u.png'],
     category: 'Dysport',
     discount_percent: 0,
-    stock: 10,
     currency: 'BRL',
   },
   {
@@ -60,7 +57,6 @@ const mockProducts = [
     images: ['/images/xeomin-50u.png'],
     category: 'Xeomin',
     discount_percent: 0,
-    stock: 10,
     currency: 'BRL',
   },
   {
@@ -71,7 +67,6 @@ const mockProducts = [
     images: ['/images/xeomin-100u.png'],
     category: 'Xeomin',
     discount_percent: 0,
-    stock: 10,
     currency: 'BRL',
   },
   {
@@ -82,7 +77,6 @@ const mockProducts = [
     images: ['/images/visco-supl.png'],
     category: 'Visco-supl.',
     discount_percent: 0,
-    stock: 10,
     currency: 'BRL',
   },
 ];

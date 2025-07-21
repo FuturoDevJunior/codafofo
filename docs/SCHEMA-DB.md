@@ -12,7 +12,6 @@
 | category         | TEXT         | Categoria (Botox, Dysport, etc.) |
 | active           | BOOLEAN      | Produto ativo?                   |
 | created_at       | TIMESTAMP    | Data de criação                  |
-| stock            | INTEGER      | Estoque atual                    |
 | discount_percent | DECIMAL      | % de desconto                    |
 | supplier_id      | UUID         | FK suppliers(id)                 |
 | views_count      | INTEGER      | Analytics/views                  |
@@ -55,14 +54,12 @@
 | timestamp        | TIMESTAMP    | Data/hora                        |
 
 ## Views
-- **popular_products**: name, category, views_count, stock
+- **popular_products**: name, category, views_count
 - **order_summary**: status, count, revenue
 
 ## Triggers & Functions
 - **generate_slug**: auto-slug em products
-- **check_stock**: impede estoque negativo
 - **calc_order_discount**: calcula desconto aplicado
-- **update_stock_on_order**: decrementa estoque após pedido
 - **audit_changes**: loga inserts/updates/deletes
 - **increment_views**: analytics de views_count
 
@@ -74,8 +71,8 @@
 
 ## Exemplo de Query
 ```sql
--- Produtos ativos com estoque
-SELECT * FROM products WHERE active AND stock > 0;
+-- Produtos ativos (sempre disponíveis sob consulta)
+SELECT * FROM products WHERE active = true;
 
 -- Pedidos confirmados do mês
 SELECT * FROM orders WHERE status = 'confirmed' AND created_at >= date_trunc('month', now());

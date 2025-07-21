@@ -6,7 +6,6 @@ export interface Product {
   slug: string;
   category: string;
   discount_percent: number;
-  stock: number;
   currency: string;
   active?: boolean;
   description?: string;

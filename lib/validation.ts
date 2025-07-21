@@ -14,7 +14,6 @@ export interface ProductFormData {
   description: string;
   images: string[];
   category: string;
-  stock: number;
   discount_percent: number;
 }
 
@@ -117,11 +116,6 @@ export function validateProductData(data: any): {
     errors.push('Categoria inválida');
   }
   
-  // Validação de estoque
-  const stock = parseInt(data.stock);
-  if (isNaN(stock) || stock < 0 || stock > 999999) {
-    errors.push('Estoque deve ser um número não negativo');
-  }
   
   // Validação de desconto
   const discount = parseFloat(data.discount_percent || 0);
@@ -150,7 +144,6 @@ export function validateProductData(data: any): {
       description: sanitizeString(data.description),
       images: images,
       category: data.category,
-      stock: stock,
       discount_percent: discount
     }
   };

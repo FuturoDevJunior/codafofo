@@ -64,7 +64,6 @@ export default function AdminForm({ product }: { product?: any }) {
           <SelectItem value="Visco-supl.">Visco-supl.</SelectItem>
         </SelectContent>
       </Select>
-      <Label htmlFor="stock">Estoque</Label><Input id="stock" type="number" {...register('stock')} />
       <Label htmlFor="discount_percent">Desconto (%)</Label><Input id="discount_percent" type="number" step="0.01" {...register('discount_percent')} />
       <Label htmlFor="currency">Moeda</Label><Input id="currency" {...register('currency')} placeholder="BRL" />
       <Label htmlFor="supplier_id">Fornecedor</Label>

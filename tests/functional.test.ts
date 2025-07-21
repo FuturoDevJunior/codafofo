@@ -54,12 +54,13 @@ describe('Testes Funcionais', () => {
     });
   });
 
-  it('valida estoque dos produtos', () => {
+  it('valida disponibilidade dos produtos', () => {
     const products = getMockProducts();
     
     products.forEach(product => {
-      expect(product.stock).toBeGreaterThanOrEqual(0);
-      expect(typeof product.stock).toBe('number');
+      // Modelo representante: produtos sempre disponíveis sob consulta
+      expect(product.active).toBeDefined();
+      expect(typeof product.active).toBe('boolean');
     });
   });
 });

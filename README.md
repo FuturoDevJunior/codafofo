@@ -31,7 +31,6 @@ const produto: Product = {
   slug: 'botox-50u',
   category: 'Botox',
   discount_percent: 10,
-  stock: 5,
   currency: 'BRL',
 };
 
@@ -54,7 +53,7 @@ const produto: Product = {
 Sistema completo para representantes comerciais de estética: catálogo de produtos, carrinho persistente, checkout via WhatsApp, geração de PDF, admin avançado, relatórios, auditoria, responsividade máxima e PWA instalável.
 
 **Diferenciais:**
-- Multi-moeda, multi-fornecedor, descontos dinâmicos, estoque, auditoria, analytics.
+- Multi-moeda, multi-fornecedor, descontos dinâmicos, auditoria, analytics.
 - UX mobile-first, psicologia das cores para beleza/luxo, micro-refinamentos.
 - Segurança: RLS, backup, rollback, CI/CD, logs, rate limit, headers.
 
@@ -161,7 +160,7 @@ No Vercel, configure as mesmas variáveis no painel: Settings > Environment Vari
 
 ### Admin/Representante
 1. Login (Supabase Auth).
-2. CRUD de produtos, fornecedores, descontos, estoque.
+2. CRUD de produtos, fornecedores, descontos.
 3. Exporta CSV, visualiza relatórios, auditoria.
 4. Gera relatórios de vendas/views.
 

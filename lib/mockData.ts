@@ -11,7 +11,6 @@ export interface MockProduct {
   description: string;
   images: string[];
   category: string;
-  stock: number;
   discount_percent: number;
   currency: string;
   active: boolean;
@@ -197,7 +196,6 @@ export const mockProducts = [
     description: 'Toxina botulínica tipo A premium para tratamentos estéticos de alta qualidade. Indicada para rugas de expressão e linhas finas.',
     images: [productImages['botox-50ui']],
     category: 'Toxina Botulínica',
-    stock: 50,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -210,7 +208,6 @@ export const mockProducts = [
     description: 'Toxina botulínica tipo A premium 100UI para tratamentos estéticos avançados. Ideal para áreas extensas e múltiplas aplicações.',
     images: [productImages['botox-100ui']],
     category: 'Toxina Botulínica',
-    stock: 30,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -223,7 +220,6 @@ export const mockProducts = [
     description: 'Toxina botulínica tipo A premium 200UI para tratamentos estéticos profissionais. Máxima potência para resultados excepcionais.',
     images: [productImages['botox-200ui']],
     category: 'Toxina Botulínica',
-    stock: 20,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -238,7 +234,6 @@ export const mockProducts = [
     description: 'Toxina botulínica especializada para lifting facial. Tecnologia avançada para rejuvenescimento e lifting natural.',
     images: [productImages['botulift-100ui']],
     category: 'Toxina Botulínica',
-    stock: 25,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -251,7 +246,6 @@ export const mockProducts = [
     description: 'Toxina botulínica para lifting facial 150UI. Concentração ideal para tratamentos de rejuvenescimento extensivos.',
     images: [productImages['botulift-150ui']],
     category: 'Toxina Botulínica',
-    stock: 20,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -264,7 +258,6 @@ export const mockProducts = [
     description: 'Toxina botulínica para lifting facial 200UI. Máxima concentração para tratamentos de rejuvenescimento profissionais.',
     images: [productImages['botulift-200ui']],
     category: 'Toxina Botulínica',
-    stock: 15,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -279,7 +272,6 @@ export const mockProducts = [
     description: 'Toxina botulínica tipo A com excelente custo-benefício. Eficácia comprovada para tratamentos estéticos básicos.',
     images: [productImages['botulim-50ui']],
     category: 'Toxina Botulínica',
-    stock: 40,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -292,7 +284,6 @@ export const mockProducts = [
     description: 'Toxina botulínica tipo A 100UI com ótimo custo-benefício. Ideal para clínicas que buscam qualidade e economia.',
     images: [productImages['botulim-100ui']],
     category: 'Toxina Botulínica',
-    stock: 35,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -305,7 +296,6 @@ export const mockProducts = [
     description: 'Toxina botulínica tipo A 200UI econômica. Concentração elevada com excelente relação custo-benefício.',
     images: [productImages['botulim-200ui']],
     category: 'Toxina Botulínica',
-    stock: 25,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -320,7 +310,6 @@ export const mockProducts = [
     description: 'Toxina botulínica Dysport 300UI. Tecnologia europeia com difusão otimizada para resultados naturais.',
     images: [productImages['dysport-300ui']],
     category: 'Toxina Botulínica',
-    stock: 20,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -333,7 +322,6 @@ export const mockProducts = [
     description: 'Toxina botulínica Dysport 500UI. Alta concentração com tecnologia avançada para tratamentos profissionais.',
     images: [productImages['dysport-500ui']],
     category: 'Toxina Botulínica',
-    stock: 15,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -348,7 +336,6 @@ export const mockProducts = [
     description: 'Toxina botulínica coreana Nabota 100UI. Tecnologia asiática com alta pureza e eficácia comprovada.',
     images: [productImages['nabota-100ui']],
     category: 'Toxina Botulínica',
-    stock: 30,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -363,7 +350,6 @@ export const mockProducts = [
     description: 'Toxina botulínica alemã Xeomin 100UI. Proteína pura sem complexantes para resultados precisos.',
     images: [productImages['xeomin-100ui']],
     category: 'Toxina Botulínica',
-    stock: 25,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -380,7 +366,6 @@ export const mockProducts = [
     description: 'Bioestimulador de colágeno Ellanse M com duração média. Estimula a produção natural de colágeno para rejuvenescimento facial.',
     images: [productImages['ellanse-m']],
     category: 'Bioestimulador',
-    stock: 15,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -393,7 +378,6 @@ export const mockProducts = [
     description: 'Bioestimulador de colágeno Ellanse S com duração curta. Ideal para quem busca resultados naturais e graduais.',
     images: [productImages['ellanse-s']],
     category: 'Bioestimulador',
-    stock: 20,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -406,7 +390,6 @@ export const mockProducts = [
     description: 'Bioestimulador híbrido Harmonyca 2ML. Combina ácido hialurônico com microesferas de hidroxiapatita de cálcio.',
     images: [productImages['harmonyca-2ml']],
     category: 'Bioestimulador',
-    stock: 10,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -419,7 +402,6 @@ export const mockProducts = [
     description: 'Bioestimulador Sculptra kit com 2 frascos. Poli-L-láctico premium para rejuvenescimento facial profundo.',
     images: [productImages['sculptra-2']],
     category: 'Bioestimulador',
-    stock: 8,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -436,7 +418,6 @@ export const mockProducts = [
     description: 'Preenchedor Belotero Balance com lidocaína para rugas finas. Tecnologia Cohesive Polydensified Matrix.',
     images: [productImages['belotero-balance']],
     category: 'Preenchedor',
-    stock: 40,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -449,7 +430,6 @@ export const mockProducts = [
     description: 'Preenchedor Restylane Kysse 1ML para lábios. Tecnologia OBT para resultados naturais e duradouros.',
     images: [productImages['restylane-kysse']],
     category: 'Preenchedor',
-    stock: 30,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -466,7 +446,6 @@ export const mockProducts = [
     description: 'Fios April Bride 18G espiculados pack 4 unidades. Bioestimulação intensiva com espículas para máximo estímulo de colágeno.',
     images: [productImages.fio],
     category: 'Fio Bioestimulação',
-    stock: 20,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -483,7 +462,6 @@ export const mockProducts = [
     description: 'Microcânula Pro Deep 22G x 50mm. Aplicação profunda com máxima precisão e mínimo trauma tecidual.',
     images: [productImages.microcanula],
     category: 'Microcânula',
-    stock: 100,
     discount_percent: 0,
     currency: 'BRL',
     active: true
@@ -500,7 +478,6 @@ export const mockProducts = [
     description: 'Hialuronidase 3 vials 2.000 UTR. Enzima para dissolução de ácido hialurônico em procedimentos de correção e emergência.',
     images: [productImages.enzima],
     category: 'Enzima',
-    stock: 25,
     discount_percent: 0,
     currency: 'BRL',
     active: true

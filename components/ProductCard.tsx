@@ -53,12 +53,9 @@ export default function ProductCard({ product }: { product: Product }) {
     ? product.price * (1 - product.discount_percent / 100)
     : product.price;
   const addItem = useCartStore((s) => s.addItem);
-  const isOutOfStock = product.stock < 1;
   const { trackCartAdd } = useAnalytics();
 
   const handleAddToCart = async () => {
-    if (isOutOfStock) return;
-    
     // Debug log em desenvolvimento
     if (process.env.NODE_ENV === 'development') {
       console.log('🛒 Adicionando produto ao carrinho:', { 
@@ -167,11 +164,6 @@ export default function ProductCard({ product }: { product: Product }) {
                 -{product.discount_percent}%
               </motion.span>
             )}
-            {product.stock <= 5 && product.stock > 0 && (
-              <span className="bg-warning-600 text-white text-xs font-medium px-2 py-1 rounded-lg border-2 border-white/30">
-                Últimas unidades
-              </span>
-            )}
           </div>
 
           {/* Ações Rápidas */}
@@ -187,14 +179,6 @@ export default function ProductCard({ product }: { product: Product }) {
             </Tooltip>
           </div>
 
-          {/* Status de Estoque */}
-          {isOutOfStock && (
-            <div className="absolute inset-0 bg-neutral-900/50 flex items-center justify-center">
-              <span className="bg-neutral-800 text-white px-4 py-2 rounded-lg font-medium">
-                Esgotado
-              </span>
-            </div>
-          )}
         </CardHeader>
 
         {/* Conteúdo do Card */}
@@ -224,29 +208,21 @@ export default function ProductCard({ product }: { product: Product }) {
             </span>
           </div>
 
-          {/* Informações de Estoque */}
+          {/* Disponibilidade Sempre Garantida */}
           <div className="flex items-center gap-2 text-xs">
-            <Package className="w-3 h-3 text-neutral-400" />
-            <span className={`font-medium ${
-              isOutOfStock ? 'text-error-500' : 
-              product.stock <= 5 ? 'text-warning-600' : 
-              'text-success-600'
-            }`}>
-              {isOutOfStock ? 'Esgotado' : `${product.stock} em estoque`}
+            <Package className="w-3 h-3 text-success-600" />
+            <span className="font-medium text-success-600">
+              Disponível sob consulta
             </span>
           </div>
 
           {/* Ações */}
           <div className="mt-auto flex gap-2 pt-2">
             <Button
-              className={`flex-1 font-semibold rounded-xl py-2.5 transition-all duration-200 ${
-                isOutOfStock 
-                  ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed' 
-                  : 'bg-vitale-primary text-white hover:bg-vitale-secondary shadow-md hover:shadow-lg interactive'
-              }`}
+              className="flex-1 font-semibold rounded-xl py-2.5 transition-all duration-200 bg-vitale-primary text-white hover:bg-vitale-secondary shadow-md hover:shadow-lg interactive"
               onClick={handleAddToCart}
-              disabled={isOutOfStock || isLoading}
-              aria-label={`${isOutOfStock ? 'Produto esgotado' : 'Adicionar'} ${product.name} ao carrinho`}
+              disabled={isLoading}
+              aria-label={`Adicionar ${product.name} ao carrinho`}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2 justify-center w-full">
@@ -256,7 +232,7 @@ export default function ProductCard({ product }: { product: Product }) {
               ) : (
                 <div className="flex items-center gap-2 justify-center w-full">
                   <ShoppingCart className="w-4 h-4" />
-                  <span>{isOutOfStock ? 'Esgotado' : 'Adicionar'}</span>
+                  <span>Solicitar</span>
                 </div>
               )}
             </Button>

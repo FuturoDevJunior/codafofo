@@ -48,7 +48,7 @@ export default function AdminDashboard() {
     totalProducts: products.length,
     activeProducts: products.filter(p => p.active).length,
     averagePrice: products.reduce((sum, p) => sum + p.price, 0) / products.length,
-    totalValue: products.reduce((sum, p) => sum + (p.price * p.stock), 0)
+    totalValue: products.reduce((sum, p) => sum + p.price, 0)
   };
 
   const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
@@ -483,7 +483,7 @@ export default function AdminDashboard() {
                         {product.name}
                       </h4>
                       <p className="text-xs text-neutral-500">
-                        {product.category} • Estoque: {product.stock}
+                        {product.category} • Disponível sob consulta
                       </p>
                     </div>
 

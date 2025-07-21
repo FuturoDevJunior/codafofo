@@ -42,7 +42,7 @@ Refatoração completa do sistema transformando-o em uma plataforma B2B profissi
 ### ✅ PÁGINAS DE PRODUTO ENRIQUECIDAS
 **IMPACTO**: Redução de 60-80% na perda de conversões
 - **products/[slug]/page.tsx**: Informações médicas completas
-- Categoria e estoque com indicadores visuais
+- Categoria com indicadores visuais
 - Preços com desconto e ofertas destacadas
 - Seção de uso profissional com ícones médicos
 - Garantias e certificações em destaque

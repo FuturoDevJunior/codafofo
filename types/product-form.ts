@@ -6,7 +6,6 @@ export interface ProductForm {
   images: string;
   category: string;
   active: boolean;
-  stock: number;
   discount_percent: number;
   supplier_id: string;
   currency: string;

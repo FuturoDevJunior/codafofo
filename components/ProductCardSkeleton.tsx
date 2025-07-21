@@ -29,7 +29,7 @@ export default function ProductCardSkeleton() {
           <Skeleton className="h-4 w-16" />
         </div>
 
-        {/* Stock Info */}
+        {/* Availability Info */}
         <div className="flex items-center gap-2">
           <Skeleton className="w-3 h-3 rounded-full" />
           <Skeleton className="h-3 w-24" />
