@@ -19,7 +19,14 @@ vi.mock('@/lib/store');
 
 describe('Checkout Page', () => {
   it('valida campos e envia pedido', async () => {
-    const mockItems = [{ id: '1', name: 'Botox', price: 1200, quantity: 1, images: ['/images/botox-50u.png'] }];
+    const mockItems = [
+      { id: '1', name: 'Botox® 50U', price: 1200, quantity: 1, images: ['/images/botox-50u.png'] },
+      { id: '2', name: 'Botox® 100U', price: 1950, quantity: 1, images: ['/images/botox-100u.png'] },
+      { id: '3', name: 'Dysport® 300U', price: 1400, quantity: 1, images: ['/images/dysport-300u.png'] },
+      { id: '4', name: 'Xeomin® 50U', price: 900, quantity: 1, images: ['/images/xeomin-50u.png'] },
+      { id: '5', name: 'Xeomin® 100U', price: 1600, quantity: 1, images: ['/images/xeomin-100u.png'] },
+      { id: '6', name: 'Viscosuplementação Articular', price: 2500, quantity: 1, images: ['/images/visco-supl.png'] },
+    ];
     vi.mocked(useCartStore).mockReturnValue({ items: mockItems, clearCart: vi.fn(), removeItem: vi.fn(), updateQuantity: vi.fn() });
     global.fetch = vi.fn().mockResolvedValue({ ok: true, json: () => ({}) });
 
