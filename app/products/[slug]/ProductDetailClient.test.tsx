@@ -26,9 +26,16 @@ describe('ProductDetailClient', () => {
     expect(screen.getByText('Adicionar ao Carrinho')).toBeInTheDocument();
   });
   it('altera quantidade e chama addItem', () => {
-    render(<ProductDetailClient product={{ id: '1', name: 'Produto', price: 10 }} />);
+    render(<ProductDetailClient product={{ id: '1', name: 'Produto', price: 10, images: [], category: 'Test' }} />);
     fireEvent.change(screen.getByRole('spinbutton'), { target: { value: '3' } });
     fireEvent.click(screen.getByText('Adicionar ao Carrinho'));
-    expect(addItemMock).toHaveBeenCalledWith({ id: '1', name: 'Produto', price: 10, quantity: 3 });
+    expect(addItemMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: '1',
+        name: 'Produto',
+        price: 10,
+        quantity: 3,
+      })
+    );
   });
 }); 

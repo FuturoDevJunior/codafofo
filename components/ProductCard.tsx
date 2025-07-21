@@ -1,11 +1,17 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import { Heart, ShoppingCart, Eye, Package } from 'lucide-react';
-import SmartImage from '@/components/SmartImage';
-import Link from 'next/link';
 import { useState } from 'react';
 
+import { motion } from 'framer-motion';
+import {
+  Eye,
+  Heart,
+  Package,
+  ShoppingCart,
+} from 'lucide-react';
+import Link from 'next/link';
+
+import SmartImage from '@/components/SmartImage';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -14,9 +20,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
+import { useAnalytics } from '@/lib/analytics';
 import { useCartStore } from '@/lib/store';
 import { formatCurrency } from '@/lib/utils';
-import { useAnalytics } from '@/lib/analytics';
 import type { Product } from '@/types/product';
 
 const cardVariants = {
@@ -116,7 +122,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <CardHeader className="p-0 relative h-48 sm:h-52 lg:h-56 bg-gradient-to-br from-neutral-50 to-neutral-100 overflow-hidden">
           <motion.div variants={imageVariants} className="w-full h-full">
             <SmartImage
-              src={product.images?.[0] || '/icons/icon-192.png'}
+              src={product.images?.[0]}
               alt={`Imagem do produto ${product.name}`}
               fallback="/icons/icon-192.png"
               fill

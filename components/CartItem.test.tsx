@@ -14,7 +14,7 @@ import {
 
 import CartItem from './CartItem';
 
-const mockItem = { id: '1', name: 'Botox', price: 1200, quantity: 2 };
+const mockItem = { id: '1', name: 'Botox', price: 1200, quantity: 2, images: [] };
 const onRemove = vi.fn();
 const onUpdateQty = vi.fn();
 
@@ -23,7 +23,8 @@ describe('CartItem', () => {
 
   it('renderiza item com subtotal correto', () => {
     render(<CartItem item={mockItem} onRemove={onRemove} onUpdateQty={onUpdateQty} />);
-    expect(screen.getByText('Botox x 2')).toBeInTheDocument();
+    expect(screen.getByText('Botox')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('2')).toBeInTheDocument();
     expect(screen.getByText('R$ 2.400,00')).toBeInTheDocument();
   });
 

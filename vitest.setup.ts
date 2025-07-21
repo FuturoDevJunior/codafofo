@@ -5,6 +5,51 @@ import React from 'react';
 
 import { vi } from 'vitest';
 
+// Mock de IntersectionObserver para bibliotecas como embla-carousel
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root: Element | null = null;
+  readonly rootMargin: string = '';
+  readonly thresholds: ReadonlyArray<number> = [];
+  disconnect = () => null;
+  observe = () => null;
+  takeRecords = (): IntersectionObserverEntry[] => [];
+  unobserve = () => null;
+}
+
+Object.defineProperty(window, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: MockIntersectionObserver,
+});
+
+// Mock de ResizeObserver para bibliotecas como embla-carousel
+class MockResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+Object.defineProperty(window, 'ResizeObserver', {
+  writable: true,
+  configurable: true,
+  value: MockResizeObserver,
+});
+
+// Mock de window.matchMedia para embla-carousel
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
+
 // Definir variáveis de ambiente para testes
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'http://test-url';
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-key';

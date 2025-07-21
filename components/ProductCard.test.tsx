@@ -13,12 +13,17 @@ import {
 
 import ProductCard from './ProductCard';
 
+// Mock do SmartImage para retornar uma tag <img> simples para este teste
+vi.mock('./SmartImage', () => ({
+  default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} />,
+}));
+
 const mockProduct = {
   id: '1',
   name: 'Botox® 50U',
   slug: 'botox-50u',
   price: 1200,
-  images: ['/test.jpg'],
+  images: ['/test.jpg'], // Garantir que o array de imagens existe
   category: 'Botox',
   discount_percent: 0,
   stock: 10,
@@ -39,9 +44,11 @@ describe('ProductCard', () => {
     expect(link).toHaveAttribute('href', '/products/botox-50u');
   });
 
-  it('renderiza imagem com alt text', () => {
+  it('renderiza imagem com alt text', async () => {
     render(<ProductCard product={mockProduct} />);
-    expect(screen.getByAltText('Botox® 50U')).toBeInTheDocument();
+    const image = await screen.findByAltText('Imagem do produto Botox® 50U');
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute('src', '/test.jpg');
   });
 });
 

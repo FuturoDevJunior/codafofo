@@ -1,15 +1,26 @@
 "use client";
 
 import { useState } from 'react';
-import { MessageCircle, ShoppingCart, X, User, Phone, MapPin } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+
+import {
+  AnimatePresence,
+  motion,
+} from 'framer-motion';
+import {
+  MapPin,
+  MessageCircle,
+  Phone,
+  ShoppingCart,
+  User,
+  X,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useCartStore } from '@/lib/store';
 import { useToast } from '@/components/ui/use-toast';
 import { useAnalytics } from '@/lib/analytics';
+import { useCartStore } from '@/lib/store';
 
 interface ContactForm {
   name: string;
@@ -284,20 +295,27 @@ export default function WhatsAppButton() {
           <div className="absolute inset-0 bg-success-500 rounded-full animate-ping opacity-75"></div>
           
           {/* Main button */}
-          <Button 
-            onClick={itemCount > 0 ? () => setShowForm(true) : handleQuickContact}
-            className="relative bg-success-500 hover:bg-success-600 text-white rounded-full p-4 shadow-xl hover:shadow-2xl transition-all duration-300 border-4 border-white interactive"
-            aria-label={itemCount > 0 ? 
-              `Finalizar pedido com ${itemCount} ${itemCount === 1 ? 'item' : 'itens'}` : 
-              'Entrar em contato via WhatsApp'
-            }
+          <a
+            href={itemCount > 0 ? undefined : `https://wa.me/5562999404495?text=${generateWhatsAppMessage()}`}
+            target={itemCount > 0 ? undefined : "_blank"}
+            rel="noopener noreferrer"
+            data-testid="whatsapp-link"
           >
-            {itemCount > 0 ? (
-              <ShoppingCart className="h-6 w-6" />
-            ) : (
-              <MessageCircle className="h-6 w-6" />
-            )}
-          </Button>
+            <Button 
+              onClick={itemCount > 0 ? () => setShowForm(true) : handleQuickContact}
+              className="relative bg-success-500 hover:bg-success-600 text-white rounded-full p-4 shadow-xl hover:shadow-2xl transition-all duration-300 border-4 border-white interactive"
+              aria-label={itemCount > 0 ? 
+                `Finalizar pedido com ${itemCount} ${itemCount === 1 ? 'item' : 'itens'}` : 
+                'Entrar em contato via WhatsApp'
+              }
+            >
+              {itemCount > 0 ? (
+                <ShoppingCart className="h-6 w-6" />
+              ) : (
+                <MessageCircle className="h-6 w-6" />
+              )}
+            </Button>
+          </a>
 
           {/* Cart counter badge */}
           {itemCount > 0 && (
