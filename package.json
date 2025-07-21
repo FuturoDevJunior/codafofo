@@ -5,8 +5,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "preview": "next start -p 4000",
     "lint": "next lint",
     "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --noEmit",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {

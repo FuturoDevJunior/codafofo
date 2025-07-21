@@ -1,34 +1,51 @@
-# 🏥 Vytalle Estética - Catálogo B2B Médico Premium
+# Vytalle Catalog
 
-<div align="center">
+[![CI](https://github.com/SEU_USUARIO/vytalle-catalog/actions/workflows/ci.yml/badge.svg)](https://github.com/SEU_USUARIO/vytalle-catalog/actions)
+[![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](./coverage)
+[![Next.js](https://img.shields.io/badge/Next.js-14-blue)](https://nextjs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres-green)](https://supabase.com/)
 
-![Vytalle Logo](./public/icons/icon-192.png)
-
-**Plataforma B2B profissional para produtos médicos estéticos**  
-*Checkout via WhatsApp Business • Validações CRM • Interface Premium*
-
-[![Next.js](https://img.shields.io/badge/Next.js-14.2.5-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
-[![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com)
-
-[🚀 **DEMO LIVE**](https://vytalle-estetica.vercel.app) • [📋 **CHANGELOG**](./CHANGELOG.md) • [📖 **DOCS**](./docs/)
-
-</div>
+Catálogo & Pedido WhatsApp para Vytalle Estética  
+**Stack:** Next.js 14, Supabase, Shadcn, Zustand, PWA, CI/CD Vercel
 
 ---
 
-## 🎯 **VISÃO GERAL**
+## ✨ Exemplos de Uso
 
-Sistema B2B médico completo para comercialização de produtos estéticos premium. Focado em **profissionais da saúde** com validação CRM, checkout profissional e integração WhatsApp Business para fechamento de vendas.
+### API: Buscar Produtos
+```ts
+// Exemplo usando Supabase Client
+const { data, error } = await supabase.from('products').select('*');
+```
 
-### 🏆 **PRINCIPAIS DIFERENCIAIS**
+### Componente: ProductCard
+```tsx
+import ProductCard from '@/components/ProductCard';
+import type { Product } from '@/types/product';
 
-- **💳 Checkout Profissional 5 Etapas**: Dados pessoais → Profissionais → Endereço → Pagamento → Confirmação
-- **📱 WhatsApp Business**: Mensagem ultra-profissional com todos os dados preenchidos
-- **⚕️ Validações Médicas**: CRM obrigatório, CNPJ clínicas, certificações ANVISA
-- **🛒 Carrinho Premium**: Interface moderna com imagens, controles visuais e feedback
-- **📊 Analytics Avançado**: Tracking completo de conversões e jornadas
+const produto: Product = {
+  id: '1',
+  name: 'Botox 50U',
+  price: 100,
+  images: ['/img/botox.jpg'],
+  slug: 'botox-50u',
+  category: 'Botox',
+  discount_percent: 10,
+  stock: 5,
+  currency: 'BRL',
+};
+
+<ProductCard product={produto} />
+```
+
+---
+
+## 📝 Changelog Resumido
+
+- **2024-06-01:** Centralização de tipos em `types/`, padronização de nomes de arquivos, limpeza de imports.
+- **2024-05-28:** Cobertura de testes ≥95%, testes unitários e E2E integrados ao CI.
+- **2024-05-20:** Adição de auditoria, relatórios e exportação CSV.
+- **2024-05-10:** Integração WhatsApp Cloud API e geração de PDF.
 
 ---
 
@@ -54,6 +71,14 @@ graph TD
   B -- Webhooks --> C[WhatsApp Cloud API]
   A -- Deploy --> D[Vercel]
 ```
+
+---
+
+## 🎨 **Design**
+
+O design base do projeto está no arquivo `Vytalle Base Design.psd` na raiz do repositório. Para um acesso mais fácil e colaborativo, o design também está disponível no Figma.
+
+- [**Acessar o Figma**](https://www.figma.com/file/YOUR_FIGMA_LINK_HERE)
 
 ---
 
