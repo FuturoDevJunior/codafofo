@@ -52,7 +52,8 @@ export default function AdminForm({ product }: { product?: any }) {
       <Label htmlFor="slug">Slug</Label><Input id="slug" {...register('slug')} />
       <Label htmlFor="price">Preço</Label><Input id="price" type="number" {...register('price')} />
       <Label htmlFor="description">Descrição</Label><Input id="description" {...register('description')} />
-      <Label htmlFor="images">Imagens (separadas por vírgula)</Label><Input id="images" {...register('images')} />
+      <Label htmlFor="images">Imagens (separadas por vírgula)</Label><Input id="images" {...register('images')} placeholder="/images/botox-50u.png, /images/botox-100u.png" />
+      <span className="text-xs text-neutral-500">Use sempre imagens reais do diretório <code>public/images/</code> (ex: <code>/images/botox-50u.png</code>).</span>
       <Label htmlFor="category">Categoria</Label>
       <Select defaultValue={product?.category} {...register('category')}>
         <SelectTrigger><SelectValue /></SelectTrigger>

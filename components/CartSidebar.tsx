@@ -13,9 +13,10 @@ import {
   Trash2,
   X,
 } from 'lucide-react';
-import Image from 'next/image';
 
+import SmartImage from '@/components/SmartImage';
 import { Button } from '@/components/ui/button';
+import { Tooltip } from '@/components/ui/tooltip';
 import { useCartStore } from '@/lib/store';
 import { formatCurrency } from '@/lib/utils';
 
@@ -142,12 +143,15 @@ export default function CartSidebar() {
                           {/* Product Image */}
                           <div className="flex-shrink-0 w-16 h-16 bg-neutral-100 rounded-lg overflow-hidden">
                             {item.images && item.images[0] && (
-                              <Image
+                              <SmartImage
                                 src={item.images[0]}
                                 alt={item.name}
                                 width={64}
                                 height={64}
                                 className="w-full h-full object-cover"
+                                borderRadius="rounded-lg"
+                                objectFit="cover"
+                                productName={item.name}
                               />
                             )}
                           </div>
@@ -164,37 +168,43 @@ export default function CartSidebar() {
                             {/* Quantity Controls */}
                             <div className="flex items-center justify-between mt-3">
                               <div className="flex items-center gap-2">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                                  className="h-8 w-8 p-0 border-neutral-300 hover:border-vitale-primary"
-                                >
-                                  <Minus className="h-3 w-3" />
-                                </Button>
+                                <Tooltip content="Diminuir quantidade" side="top">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
+                                    className="h-8 w-8 p-0 border-neutral-300 hover:border-vitale-primary"
+                                  >
+                                    <Minus className="h-3 w-3" />
+                                  </Button>
+                                </Tooltip>
                                 
                                 <span className="font-semibold text-sm min-w-[2rem] text-center">
                                   {item.quantity}
                                 </span>
                                 
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                                  className="h-8 w-8 p-0 border-neutral-300 hover:border-vitale-primary"
-                                >
-                                  <Plus className="h-3 w-3" />
-                                </Button>
+                                <Tooltip content="Aumentar quantidade" side="top">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                                    className="h-8 w-8 p-0 border-neutral-300 hover:border-vitale-primary"
+                                  >
+                                    <Plus className="h-3 w-3" />
+                                  </Button>
+                                </Tooltip>
                               </div>
 
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => removeItem(item.id)}
-                                className="text-error-500 hover:text-error-600 hover:bg-error-50 h-8 w-8 p-0"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
+                              <Tooltip content="Remover item" side="top">
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => removeItem(item.id)}
+                                  className="text-error-500 hover:text-error-600 hover:bg-error-50 h-8 w-8 p-0"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </Tooltip>
                             </div>
 
                             {/* Subtotal */}
@@ -211,15 +221,17 @@ export default function CartSidebar() {
 
                     {/* Clear Cart Button */}
                     {items.length > 0 && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={clearCart}
-                        className="text-error-500 hover:text-error-600 hover:bg-error-50 w-full"
-                      >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Limpar Carrinho
-                      </Button>
+                      <Tooltip content="Limpar carrinho" side="top">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={clearCart}
+                          className="text-error-500 hover:text-error-600 hover:bg-error-50 w-full"
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Limpar Carrinho
+                        </Button>
+                      </Tooltip>
                     )}
                   </div>
                 )}

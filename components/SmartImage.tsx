@@ -1,8 +1,12 @@
 "use client";
 
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
+
 import { Package } from 'lucide-react';
+import Image from 'next/image';
 
 interface SmartImageProps {
   src: string;
@@ -15,6 +19,9 @@ interface SmartImageProps {
   priority?: boolean;
   loading?: 'lazy' | 'eager';
   sizes?: string;
+  borderRadius?: string; // Novo: customização de borda
+  objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'; // Novo: customização de object-fit
+  productName?: string; // Novo: para fallback
 }
 
 /**
@@ -37,7 +44,10 @@ export default function SmartImage({
   height,
   priority = false,
   loading = 'lazy',
-  sizes
+  sizes,
+  borderRadius = 'rounded-xl',
+  objectFit = 'cover',
+  productName
 }: SmartImageProps) {
   const [currentSrc, setCurrentSrc] = useState(src);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,11 +87,13 @@ export default function SmartImage({
       className={`
         animate-pulse bg-gradient-to-r from-vitale-neutral via-vitale-light to-vitale-neutral
         flex items-center justify-center
-        ${className}
+        ${borderRadius} ${className}
+        relative overflow-hidden
       `}
       style={!fill ? { width, height } : undefined}
     >
-      <Package className="w-8 h-8 text-vitale-primary/30" />
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-vitale-primary/10 to-transparent animate-shimmer" />
+      <Package className="w-8 h-8 text-vitale-primary/30 z-10" />
     </div>
   );
 
@@ -92,13 +104,13 @@ export default function SmartImage({
         bg-gradient-to-br from-vitale-neutral to-vitale-light
         border-2 border-dashed border-vitale-primary/20
         flex flex-col items-center justify-center p-4
-        ${className}
+        ${borderRadius} ${className}
       `}
       style={!fill ? { width, height } : undefined}
     >
       <Package className="w-6 h-6 text-vitale-primary/40 mb-1" />
       <span className="text-xs text-vitale-dark/60 text-center">
-        Produto
+        {productName || alt || 'Produto'}
       </span>
     </div>
   );
@@ -114,11 +126,11 @@ export default function SmartImage({
   return (
     <Image
       src={currentSrc}
-      alt={alt}
+      alt={alt || productName || 'Imagem do produto'}
       fill={fill}
       width={!fill ? width : undefined}
       height={!fill ? height : undefined}
-      className={`transition-opacity duration-300 ${className}`}
+      className={`transition-opacity duration-300 ${borderRadius} object-${objectFit} ${className}`}
       onError={handleError}
       onLoad={handleLoad}
       priority={priority}
