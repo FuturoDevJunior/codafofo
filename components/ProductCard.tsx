@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Tooltip } from '@/components/ui/tooltip';
 import { toast } from '@/components/ui/use-toast';
 import { useAnalytics } from '@/lib/analytics';
 import { useCartStore } from '@/lib/store';
@@ -119,8 +120,8 @@ export default function ProductCard({ product }: { product: Product }) {
             aria-labelledby={`product-${product.id}-name`}>
         
         {/* Header com Imagem */}
-        <CardHeader className="p-0 relative h-48 sm:h-52 lg:h-56 bg-gradient-to-br from-neutral-50 to-neutral-100 overflow-hidden">
-          <motion.div variants={imageVariants} className="w-full h-full">
+        <CardHeader className="p-0 relative h-48 sm:h-52 lg:h-56 bg-gradient-to-br from-neutral-50 to-neutral-100 overflow-hidden group">
+          <motion.div variants={imageVariants} className="w-full h-full group-hover:scale-105 group-hover:shadow-[0_4px_32px_0_rgba(216,167,91,0.15)] transition-transform duration-300">
             <SmartImage
               src={product.images?.[0]}
               alt={`Imagem do produto ${product.name}`}
@@ -129,14 +130,35 @@ export default function ProductCard({ product }: { product: Product }) {
               className="object-cover transition-transform duration-300"
               loading="lazy"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              borderRadius="rounded-2xl"
+              objectFit="cover"
+              productName={product.name}
             />
           </motion.div>
+          {/* Miniaturas de imagens secundárias */}
+          {product.images && product.images.length > 1 && (
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+              {product.images.slice(0, 4).map((img, idx) => (
+                <SmartImage
+                  key={img}
+                  src={img}
+                  alt={`Miniatura ${idx + 1} de ${product.name}`}
+                  width={32}
+                  height={32}
+                  className={`border-2 ${idx === 0 ? 'border-vitale-primary' : 'border-white'} bg-white object-cover rounded-full shadow-sm transition-all duration-200`}
+                  borderRadius="rounded-full"
+                  objectFit="cover"
+                  productName={product.name}
+                />
+              ))}
+            </div>
+          )}
           
           {/* Badges e Indicadores */}
           <div className="absolute top-3 left-3 flex flex-col gap-2">
             {hasDiscount && (
               <motion.span 
-                className="bg-error-500 text-white text-xs font-bold px-2 py-1 rounded-lg shadow-md"
+                className="bg-error-600 text-white text-xs font-bold px-2 py-1 rounded-lg shadow-md border-2 border-white/30"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2 }}
@@ -146,7 +168,7 @@ export default function ProductCard({ product }: { product: Product }) {
               </motion.span>
             )}
             {product.stock <= 5 && product.stock > 0 && (
-              <span className="bg-warning-500 text-white text-xs font-medium px-2 py-1 rounded-lg">
+              <span className="bg-warning-600 text-white text-xs font-medium px-2 py-1 rounded-lg border-2 border-white/30">
                 Últimas unidades
               </span>
             )}
@@ -154,12 +176,15 @@ export default function ProductCard({ product }: { product: Product }) {
 
           {/* Ações Rápidas */}
           <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <button
-              className="w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 focus-ring"
-              aria-label="Adicionar aos favoritos"
-            >
-              <Heart className="w-4 h-4 text-neutral-600 hover:text-error-500" />
-            </button>
+            <Tooltip content="Favoritar produto" side="left">
+              <button
+                className="w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 focus-ring"
+                aria-label="Adicionar aos favoritos"
+                tabIndex={0}
+              >
+                <Heart className="w-4 h-4 text-neutral-600 hover:text-error-500" />
+              </button>
+            </Tooltip>
           </div>
 
           {/* Status de Estoque */}
@@ -224,25 +249,27 @@ export default function ProductCard({ product }: { product: Product }) {
               aria-label={`${isOutOfStock ? 'Produto esgotado' : 'Adicionar'} ${product.name} ao carrinho`}
             >
               {isLoading ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 justify-center w-full">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   <span>Adicionando...</span>
                 </div>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 justify-center w-full">
                   <ShoppingCart className="w-4 h-4" />
                   <span>{isOutOfStock ? 'Esgotado' : 'Adicionar'}</span>
                 </div>
               )}
             </Button>
-            
-            <Link
-              href={`/products/${product.slug}`}
-              className="inline-flex items-center justify-center px-3 py-2.5 text-sm font-medium text-vitale-primary hover:text-vitale-secondary border border-vitale-primary/30 hover:border-vitale-secondary/50 rounded-xl bg-vitale-primary/5 hover:bg-vitale-secondary/10 transition-all duration-200 focus-ring"
-              aria-label={`Ver detalhes de ${product.name}`}
-            >
-              <Eye className="w-4 h-4" />
-            </Link>
+            <Tooltip content={`Ver detalhes de ${product.name}`} side="top">
+              <Link
+                href={`/products/${product.slug}`}
+                className="inline-flex items-center justify-center px-3 py-2.5 text-sm font-medium text-vitale-primary hover:text-vitale-secondary border border-vitale-primary/30 hover:border-vitale-secondary/50 rounded-xl bg-vitale-primary/5 hover:bg-vitale-secondary/10 transition-all duration-200 focus-ring"
+                aria-label={`Ver detalhes de ${product.name}`}
+                tabIndex={0}
+              >
+                <Eye className="w-4 h-4" />
+              </Link>
+            </Tooltip>
           </div>
         </CardContent>
       </Card>

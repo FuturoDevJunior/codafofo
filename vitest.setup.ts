@@ -123,3 +123,18 @@ vi.mock('react-hook-form', () => ({
     setValue: vi.fn(),
   })),
 })); 
+
+if (typeof window !== 'undefined') {
+  class MockResizeObserver {
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
+  }
+  window.ResizeObserver = MockResizeObserver;
+  class MockIntersectionObserver {
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
+  }
+  window.IntersectionObserver = MockIntersectionObserver;
+} 
