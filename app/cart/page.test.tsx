@@ -23,25 +23,19 @@ describe('Cart Page', () => {
     expect(await screen.findByText(/Seu carrinho está vazio/i)).toBeInTheDocument();
   });
 
-  // TODO: Corrigir este teste. A renderização assíncrona do CartSidebar está dificultando a busca por elementos.
-  it.skip('mostra itens e total', async () => {
-    const mockItems = [{ id: '1', name: 'Botox', price: 1200, quantity: 1, images: ['/test.jpg'] }];
+  it('mostra itens e total', async () => {
+    const mockItems = [{ id: '1', name: 'Botox', price: 1200, quantity: 1, images: ['/images/botox-50u.png'] }];
     vi.mocked(useCartStore).mockReturnValue({ items: mockItems, clearCart: vi.fn(), removeItem: vi.fn(), updateQuantity: vi.fn() });
 
     render(<Cart />);
-    expect(await screen.findByText('Botox')).toBeInTheDocument();
-    expect(await screen.findByDisplayValue('1')).toBeInTheDocument();
+    // Encontra o card do item 'Botox'
+    const card = await screen.findByTestId('card');
+    expect(within(card).getByText('Botox')).toBeInTheDocument();
+    expect(within(card).getByDisplayValue('1')).toBeInTheDocument();
+    expect(within(card).getByText('R$ 1.200,00')).toBeInTheDocument(); // preço unitário
 
-    // Encontra o elemento "Subtotal" e verifica o preço no mesmo container
-    const subtotalLabel = await screen.findByText('Subtotal');
-    const subtotalContainer = subtotalLabel.parentElement;
-    expect(subtotalContainer).not.toBeNull();
-    if (subtotalContainer) {
-      expect(within(subtotalContainer).getByText('R$ 1.200,00')).toBeInTheDocument();
-    }
-
-    // Encontra o elemento "Total" e verifica o preço no mesmo container
-    const totalLabel = await screen.findByText('Total');
+    // Encontra o elemento 'Total:' no rodapé (matcher flexível)
+    const totalLabel = await screen.findByText((content) => content.replace(/\s|:/g, '').toLowerCase() === 'total');
     const totalContainer = totalLabel.parentElement;
     expect(totalContainer).not.toBeNull();
     if (totalContainer) {

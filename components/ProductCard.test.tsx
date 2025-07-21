@@ -23,7 +23,7 @@ const mockProduct = {
   name: 'Botox® 50U',
   slug: 'botox-50u',
   price: 1200,
-  images: ['/test.jpg'], // Garantir que o array de imagens existe
+  images: ['/images/botox-50u.png'], // Imagem real
   category: 'Botox',
   discount_percent: 0,
   stock: 10,
@@ -48,7 +48,7 @@ describe('ProductCard', () => {
     render(<ProductCard product={mockProduct} />);
     const image = await screen.findByAltText('Imagem do produto Botox® 50U');
     expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute('src', '/test.jpg');
+    expect(image).toHaveAttribute('src', '/images/botox-50u.png');
   });
 });
 
