@@ -282,8 +282,8 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="px-8 py-4 text-lg font-semibold border-2 border-vitale-primary text-vitale-primary hover:bg-vitale-primary hover:text-white rounded-xl transition-all duration-300 focus-ring flex items-center gap-2">
-                <MessageCircle className="w-5 h-5 text-success-600" />
+              <Button className="px-8 py-4 text-lg font-semibold bg-success-600 text-white hover:bg-success-700 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2">
+                <MessageCircle className="w-5 h-5" />
                 <span>Falar com Consultor</span>
               </Button>
             </a>
