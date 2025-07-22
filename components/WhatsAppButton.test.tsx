@@ -31,7 +31,13 @@ describe('WhatsAppButton', () => {
     
     // Mock da função selector que retorna apenas o array de items
     mockUseCartStore.mockImplementation((selector) => 
-      selector({ items: [] })
+      selector({
+        items: [],
+        addItem: () => {},
+        removeItem: () => {},
+        updateQuantity: () => {},
+        clearCart: () => {}
+      })
     );
   });
 

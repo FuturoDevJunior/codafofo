@@ -1,7 +1,21 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import CartSidebar from './CartSidebar';
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
+
 import type { CartItem } from '@/types/cart';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
+
+import CartSidebar from './CartSidebar';
 
 // Mock do framer-motion
 vi.mock('framer-motion', () => ({
@@ -57,7 +71,7 @@ describe('CartSidebar', () => {
       quantity: 2,
       images: ['https://example.com/botox.jpg'],
       category: 'Toxina Botulínica',
-      description: 'Botox original para uso profissional'
+      // description: 'Botox original para uso profissional'
     },
     {
       id: '2',
@@ -66,7 +80,7 @@ describe('CartSidebar', () => {
       quantity: 1,
       images: ['https://example.com/acido.jpg'],
       category: 'Preenchedor',
-      description: 'Preenchedor facial premium'
+      // description: 'Preenchedor facial premium'
     }
   ];
 
