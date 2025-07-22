@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 import {
   afterEach,
   describe,

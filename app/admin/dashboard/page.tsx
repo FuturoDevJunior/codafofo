@@ -1,17 +1,42 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Settings, DollarSign, Package, Phone, MapPin, Save, Eye, EyeOff, BarChart3, TrendingUp, Users, ShoppingCart, Activity, Globe, Clock, Target } from 'lucide-react';
+import {
+  useEffect,
+  useState,
+} from 'react';
+
 import { motion } from 'framer-motion';
+import {
+  Activity,
+  BarChart3,
+  Clock,
+  DollarSign,
+  Eye,
+  EyeOff,
+  Globe,
+  MapPin,
+  Package,
+  Phone,
+  Save,
+  Settings,
+  ShoppingCart,
+  Target,
+  TrendingUp,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
-import { formatCurrency } from '@/lib/utils';
-import { getProducts } from '@/lib/mockData';
 import analyticsManager from '@/lib/analytics';
+import { getProducts } from '@/lib/mockData';
+import { formatCurrency } from '@/lib/utils';
 
 interface AdminSettings {
   whatsappNumber: string;
@@ -459,6 +484,7 @@ export default function AdminDashboard() {
                   />
                 </div>
                 <select
+                  title="Filtrar por categoria"
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
                   className="px-3 py-2 border rounded-lg bg-white min-w-[200px]"
@@ -546,7 +572,7 @@ export default function AdminDashboard() {
 
               {filteredProducts.length === 0 && (
                 <div className="text-center py-8 text-neutral-500">
-                  Nenhum produto encontrado com os filtros aplicados.
+                  Nenhum produto encontrado.
                 </div>
               )}
             </CardContent>
@@ -561,14 +587,12 @@ export default function AdminDashboard() {
             </div>
             <div>
               <h3 className="font-semibold text-vitale-primary mb-2">
-                💡 Painel &quot;No-Code&quot; - Fácil de Usar
+                Painel fácil de usar
               </h3>
               <div className="text-sm text-neutral-600 space-y-1">
-                <p>• <strong>Preços:</strong> Clique em &quot;Editar&quot; ao lado de qualquer produto para alterar o preço</p>
-                <p>• <strong>Ações Rápidas:</strong> Use os botões para aumentar ou diminuir todos os preços de uma vez</p>
-                <p>• <strong>WhatsApp:</strong> Configure o número para onde os pedidos serão enviados</p>
-                <p>• <strong>Busca:</strong> Use a barra de pesquisa para encontrar produtos rapidamente</p>
-                <p>• <strong>Categorias:</strong> Filtre por categoria para gerenciar grupos específicos</p>
+                <p>• Edite preços rapidamente usando os botões ao lado de cada produto.</p>
+                <p>• Configure o WhatsApp para receber pedidos.</p>
+                <p>• Busque e filtre produtos facilmente.</p>
               </div>
             </div>
           </div>

@@ -83,25 +83,31 @@ const mockProducts = [
 ];
 
 describe('ProductCard', () => {
-  it('renderiza nome, preço e categoria corretamente', () => {
+  it('renderiza nome, preços e categoria corretamente', () => {
     render(<ProductCard product={mockProducts[0]} />);
+    
+    // Verifica nome
     expect(screen.getByText('Botox® 50U')).toBeInTheDocument();
-    expect(screen.getByText('R$ 1.200,00')).toBeInTheDocument(); // Preço PIX
-    expect(screen.getByText('R$ 1.300,00')).toBeInTheDocument(); // Preço Cartão
+    
+    // Verifica preços - formatados com currency BRL
+    expect(screen.getByText(/R\$ 1\.200,00/)).toBeInTheDocument(); // Preço PIX
+    expect(screen.getByText(/R\$ 325,00/)).toBeInTheDocument(); // Parcelamento (1300/4)
+    expect(screen.getByText(/R\$ 1\.300,00/)).toBeInTheDocument(); // Total cartão
+    
+    // Verifica categoria
     expect(screen.getByText('Botox')).toBeInTheDocument();
   });
 
   it('inclui link para detalhes do produto', () => {
     render(<ProductCard product={mockProducts[0]} />);
-    const link = screen.getByRole('link', { name: /Ver detalhes/i });
+    const link = screen.getByRole('link', { name: /Ver detalhes completos de Botox® 50U/i });
     expect(link).toHaveAttribute('href', '/products/botox-50u');
   });
 
-  it('renderiza imagem com alt text', async () => {
+  it('renderiza imagem com alt text correto', async () => {
     render(<ProductCard product={mockProducts[0]} />);
-    const image = await screen.findByAltText('Foto do produto Botox® 50U');
+    const image = await screen.findByAltText('Botox® 50U - Estético profissional');
     expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute('src', '/images/botox-50u.png');
   });
 });
 

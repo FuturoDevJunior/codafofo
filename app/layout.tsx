@@ -1,14 +1,14 @@
 import './globals.css';
 
+import { Instagram } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import AnalyticsProvider from '@/components/AnalyticsProvider';
 import CartSidebar from '@/components/CartSidebar';
-import ErrorBoundary from '@/components/ErrorBoundary';
-import { Toaster } from '@/components/ui/toaster';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'Vytalle Estética - Catálogo Premium | Botox, Preenchimento, Bioestimuladores',
@@ -25,8 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-secondary/5 text-neutral-800 font-sans antialiased">
-        <ErrorBoundary>
-          <AnalyticsProvider>
+        <AnalyticsProvider>
         {/* Header Elegante e Responsivo */}
         <header className="sticky top-0 z-fixed w-full bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-medical focus-ring"
                 role="banner" 
@@ -189,7 +188,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     className="flex items-center gap-3 text-muted-foreground hover:text-vitale-primary transition-colors focus-ring rounded-lg p-2 -m-2"
                   >
                     <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-1.5 rounded-lg">
-                      <span className="text-white text-xs">📸</span>
+                      <Instagram className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <div className="font-medium">Instagram</div>
@@ -250,7 +249,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <WhatsAppButton />
         <Toaster />
           </AnalyticsProvider>
-        </ErrorBoundary>
       </body>
     </html>
   );

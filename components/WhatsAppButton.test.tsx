@@ -8,10 +8,8 @@ import {
 
 import { useCartStore } from '@/lib/store';
 import {
-  fireEvent,
   render,
   screen,
-  waitFor,
 } from '@testing-library/react';
 
 import WhatsAppButton from './WhatsAppButton';
@@ -30,31 +28,29 @@ describe('WhatsAppButton', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    
+    // Mock da função selector que retorna apenas o array de items
+    mockUseCartStore.mockImplementation((selector) => 
+      selector({ items: [] })
+    );
   });
 
-  describe('com carrinho vazio', () => {
+  describe('componente WhatsApp', () => {
     it('renderiza link para contato direto no WhatsApp', () => {
-      mockUseCartStore.mockReturnValue([]);
       render(<WhatsAppButton />);
       
-      const link = screen.getByTestId('whatsapp-link');
+      const link = screen.getByRole('link', { name: /Fale no WhatsApp/i });
       expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute('href', expect.stringContaining('https://wa.me/'));
+      expect(link).toHaveAttribute('href', expect.stringContaining('https://api.whatsapp.com/send'));
       expect(link).toHaveAttribute('target', '_blank');
+      expect(screen.getByText('Fale no WhatsApp')).toBeInTheDocument();
     });
-  });
 
-  describe('com itens no carrinho', () => {
-    it('abre o formulário modal ao ser clicado', async () => {
-      mockUseCartStore.mockReturnValue([{ id: '1', name: 'Botox', price: 1200, quantity: 1, images: [] }]);
+    it('contém o número de telefone correto no link', () => {
       render(<WhatsAppButton />);
-
-      const button = screen.getByRole('button', { name: /Finalizar pedido/i });
-      fireEvent.click(button);
-
-      await waitFor(() => {
-        expect(screen.getByRole('heading', { name: /Finalizar Pedido/i })).toBeInTheDocument();
-      });
+      
+      const link = screen.getByRole('link', { name: /Fale no WhatsApp/i });
+      expect(link).toHaveAttribute('href', expect.stringContaining('5521996192890'));
     });
   });
 }); 

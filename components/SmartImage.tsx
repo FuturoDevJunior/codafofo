@@ -88,11 +88,11 @@ export default function SmartImage({
     setHasError(false);
   };
 
-  // Skeleton loading component
+  // Skeleton loading component - Enhanced with better animation
   const LoadingSkeleton = () => (
     <div 
       className={`
-        animate-pulse bg-gradient-to-r from-vitale-neutral via-vitale-light to-vitale-neutral
+        bg-gradient-to-r from-vitale-neutral/60 via-vitale-light to-vitale-neutral/60
         flex items-center justify-center
         ${borderRadius} ${className}
         relative overflow-hidden
@@ -100,27 +100,55 @@ export default function SmartImage({
       `}
       style={!fill ? { width, height } : undefined}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-vitale-primary/10 to-transparent animate-shimmer" />
-      <Package className="w-6 h-6 sm:w-8 sm:h-8 text-vitale-primary/30 z-10 flex-shrink-0" />
+      {/* Shimmer effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-vitale-primary/15 to-transparent animate-shimmer" />
+      
+      {/* Pulsing icon */}
+      <div className="bg-vitale-primary/10 p-2 sm:p-3 rounded-full animate-pulse-soft relative z-10">
+        <Package className="w-4 h-4 sm:w-6 sm:h-6 text-vitale-primary/40 flex-shrink-0" />
+      </div>
+      
+      {/* Loading indicator */}
+      <div className="absolute bottom-1 right-1 flex space-x-1">
+        <div className="w-1 h-1 bg-vitale-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+        <div className="w-1 h-1 bg-vitale-primary/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+        <div className="w-1 h-1 bg-vitale-primary/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+      </div>
     </div>
   );
 
-  // Error state component
+  // Error state component - Enhanced for better visual appeal
   const ErrorState = () => (
     <div 
       className={`
-        bg-gradient-to-br from-vitale-neutral to-vitale-light
-        border-2 border-dashed border-vitale-primary/20
+        bg-gradient-to-br from-vitale-primary/10 via-vitale-neutral/80 to-vitale-secondary/10
+        border-2 border-vitale-primary/30
         flex flex-col items-center justify-center p-2 sm:p-4
         ${borderRadius} ${className}
         ${fill ? 'absolute inset-0' : ''}
+        relative overflow-hidden
       `}
       style={!fill ? { width, height } : undefined}
     >
-      <Package className="w-4 h-4 sm:w-6 sm:h-6 text-vitale-primary/40 mb-1 flex-shrink-0" />
-      <span className="text-xs text-vitale-dark/60 text-center line-clamp-2">
-        {productName || alt || 'Produto'}
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 bg-gradient-to-r from-vitale-primary/20 via-transparent to-vitale-secondary/20 transform rotate-45 scale-150" />
+      </div>
+      
+      {/* Icon with enhanced styling */}
+      <div className="bg-vitale-primary/15 p-2 sm:p-3 rounded-full mb-2 relative z-10">
+        <Package className="w-4 h-4 sm:w-6 sm:h-6 text-vitale-primary/70 flex-shrink-0" />
+      </div>
+      
+      {/* Product name with better typography */}
+      <span className="text-xs sm:text-sm font-medium text-vitale-primary/80 text-center line-clamp-2 relative z-10 max-w-full">
+        {productName || alt || 'Produto Vytalle'}
       </span>
+      
+      {/* Subtle badge */}
+      <div className="absolute top-1 right-1 bg-vitale-primary/20 text-vitale-primary text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+        IMG
+      </div>
     </div>
   );
 

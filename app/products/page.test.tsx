@@ -34,7 +34,7 @@ describe('Products Page', () => {
   it('renderiza lista de produtos do mockData', async () => {
     const Page = await Products();
     render(Page);
-    expect(screen.getByText('Catálogo Vytalle Estética')).toBeInTheDocument();
+    expect(screen.getByText('Catálogo Vytalle Estética & Viscosuplementação')).toBeInTheDocument();
     // Verifica se há produtos sendo exibidos (busca por textos relacionados)
     expect(screen.getAllByText(/DL BOTOX|Toxina Botulínica/i).length).toBeGreaterThan(0);
   });
@@ -55,14 +55,14 @@ describe('Products Page', () => {
 
   it('renderiza todas as descrições de categoria', async () => {
     const categorias = [
-      { category: 'Toxina Botulínica', desc: 'Toxinas botulínicas para redução de rugas e rejuvenescimento facial' },
-      { category: 'Bioestimulador', desc: 'Bioestimuladores para regeneração celular e estímulo de colágeno' },
-      { category: 'Preenchedor', desc: 'Preenchedores com ácido hialurônico para contorno e volume facial' },
-      { category: 'Fio Bioestimulação', desc: 'Fios de bioestimulação para lifting e regeneração de colágeno' },
-      { category: 'Microcânula', desc: 'Microcânulas profissionais para aplicação precisa e segura' },
-      { category: 'Enzima', desc: 'Enzimas para dissolução e correção de tratamentos estéticos' },
-      { category: 'Skinbooster', desc: 'Skinboosters para hidratação profunda e melhora da qualidade da pele' },
-      { category: 'Bioremodelador', desc: 'Bioremodeladores para regeneração tecidual e rejuvenescimento' },
+      { category: 'Toxina Botulínica', desc: 'Produtos originais de toxina botulínica das principais marcas mundiais' },
+      { category: 'Bioestimulador', desc: 'Bioestimuladores certificados para regeneração celular e estímulo de colágeno' },
+      { category: 'Preenchedor', desc: 'Preenchedores com ácido hialurônico de marcas renomadas e certificadas' },
+      { category: 'Fio Bioestimulação', desc: 'Fios de bioestimulação profissionais para procedimentos estéticos' },
+      { category: 'Microcânula', desc: 'Microcânulas profissionais de alta qualidade para aplicações precisas' },
+      { category: 'Enzima', desc: 'Enzimas especializadas para dissolução e correção de procedimentos' },
+      { category: 'Skinbooster', desc: 'Skinboosters premium para hidratação e melhora da qualidade da pele' },
+      { category: 'Bioremodelador', desc: 'Bioremodeladores avançados para regeneração e rejuvenescimento tecidual' },
     ];
     for (const { category, desc } of categorias) {
       vi.mocked(getProducts).mockReturnValueOnce([

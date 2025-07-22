@@ -364,6 +364,10 @@ jobs:
 - [x] **TypeScript strict mode sem warnings**
 - [x] **Build otimizado para produção**
 - [x] **Integração Instagram com design elegante**
+- [x] **ngrok configurado com header fixes**
+- [x] **Modal/Carrinho com backdrop sólido**
+- [x] **Imagens melhoradas para produtos sem foto**
+- [x] **UI/UX polimento final realizado**
 - [ ] Dashboard analytics avançado
 - [ ] Sistema de notificações push
 - [ ] Integração com ERP médico

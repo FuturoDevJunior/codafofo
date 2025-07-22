@@ -123,17 +123,24 @@ export default function ProductCard({ product }: { product: Product }) {
       transition={{ duration: 0.4, ease: 'easeOut' }}
       className="group h-full"
     >
-      <Card className="overflow-hidden bg-gradient-to-br from-white to-vitale-primary/5 rounded-2xl border border-vitale-primary/20 hover:border-vitale-primary/40 transition-all duration-300 hover:shadow-vitale flex flex-col h-full focus-ring"
-            role="article"
-            aria-labelledby={`product-${product.id}-name`}>
+      <Card
+        className="overflow-hidden bg-white rounded-2xl border border-vitale-primary/20 hover:border-vitale-primary/40 transition-all duration-300 hover:shadow-vitale flex flex-col h-full focus-ring"
+        role="article"
+        aria-labelledby={`product-${product.id}-name`}>
         
         {/* Header com Imagem */}
-        <CardHeader className="p-0 relative h-48 sm:h-52 md:h-56 bg-gradient-to-br from-vitale-neutral/30 to-vitale-light/50 overflow-hidden rounded-t-2xl">
+        <CardHeader className="p-0 relative h-48 sm:h-52 md:h-56 bg-vitale-primary/5 overflow-hidden rounded-t-2xl">
           <motion.div variants={imageVariants} className="w-full h-full">
             <SmartImage
               src={product.images?.[0]}
-              alt={`${product.name} - Tratamento estético profissional`}
-              fallback="/icons/icon-192.png"
+              alt={`${product.name} - Estético profissional`}
+              fallback={
+                product.category === 'Botox' || product.category === 'Dysport' || product.category === 'Xeomin'
+                  ? '/icons/medicine-bottle.png'
+                  : product.category === 'Visco-supl.'
+                  ? '/icons/syringe.png'
+                  : '/icons/pill-bottle.png'
+              }
               fill
               className="object-cover transition-all duration-500 group-hover:scale-105"
               loading="lazy"
@@ -145,19 +152,6 @@ export default function ProductCard({ product }: { product: Product }) {
           </motion.div>
           
           {/* Status Badge */}
-          <div className="absolute top-3 left-3 z-10">
-            <motion.div 
-              className="bg-warning-500/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg border border-white/20"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, type: "spring" }}
-            >
-              <span className="flex items-center gap-1">
-                <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse-soft"></div>
-                Disponível
-              </span>
-            </motion.div>
-          </div>
 
           {/* Quick Actions */}
           <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10">
@@ -203,7 +197,7 @@ export default function ProductCard({ product }: { product: Product }) {
               <div className="flex-1 min-w-0">
                 <CardTitle 
                   id={`product-${product.id}-name`}
-                  className="text-lg sm:text-xl font-bold text-vitale-primary line-clamp-2 leading-tight group-hover:text-vitale-secondary transition-colors duration-200"
+                  className="truncate text-lg font-semibold text-vitale-primary"
                 >
                   {product.name}
                 </CardTitle>
@@ -261,10 +255,10 @@ export default function ProductCard({ product }: { product: Product }) {
             </div>
             <div className="flex-1">
               <div className="text-sm font-semibold text-success-700">
-                Produto Disponível
+                Disponível para envio imediato.
               </div>
               <div className="text-xs text-success-600">
-                Pronto para envio • Consulte condições
+                Consulte condições especiais.
               </div>
             </div>
           </div>

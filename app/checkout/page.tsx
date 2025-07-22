@@ -13,6 +13,7 @@ import {
   CreditCard,
   FileText,
   MapPin,
+  Shield,
   ShieldCheck,
   Truck,
   User,
@@ -29,6 +30,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/use-toast';
+import UpsellModal from '@/components/UpsellModal';
 import { useCartStore } from '@/lib/store';
 import { formatCurrency } from '@/lib/utils';
 
@@ -67,6 +69,7 @@ export default function Checkout() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod | null>(null);
+  const [showUpsellModal, setShowUpsellModal] = useState(false);
   const [customerData, setCustomerData] = useState<CustomerData>({
     name: '',
     phone: '',
@@ -155,8 +158,8 @@ export default function Checkout() {
       setCurrentStep(prev => prev + 1);
     } else {
       toast({
-        title: '❌ Campos obrigatórios',
-        description: 'Preencha todos os campos obrigatórios',
+        title: 'Preencha todos os campos obrigatórios.',
+        description: '',
         variant: 'destructive'
       });
     }
@@ -164,6 +167,43 @@ export default function Checkout() {
 
   const prevStep = () => {
     setCurrentStep(prev => prev - 1);
+  };
+
+  const handleUpsellPurchase = async (product: any) => {
+    const message = `🎯 OFERTA ESPECIAL APROVEITADA!
+
+✅ PEDIDO PRINCIPAL: Já confirmado e enviado
+
+🔥 PRODUTO ADICIONAL:
+• ${product.name}
+• Valor: ${formatCurrency(product.discountPrice)}
+• Desconto aplicado: ${product.discount}%
+• Economia total: ${formatCurrency(product.originalPrice - product.discountPrice)}
+
+💎 Esta oferta especial será adicionada ao seu pedido principal.
+💳 Mesmo meio de pagamento já escolhido.
+📦 Entrega conjunta (sem custo adicional de frete).
+
+Confirma a adição deste produto ao seu pedido?
+
+Vytalle Estética & Viscosuplementação
+WhatsApp: +55 21 99619-2890`;
+
+    const whatsappNumber = '5521996192890';
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
+
+    toast({
+      title: '🎯 Oferta adicionada!',
+      description: 'Produto enviado via WhatsApp'
+    });
+
+    // Redirecionar para success após o upsell
+    setTimeout(() => {
+      router.push('/success');
+    }, 2000);
   };
 
   const handleCheckout = async () => {
@@ -183,85 +223,52 @@ export default function Checkout() {
         `• ${item.name} - Qtd: ${item.quantity} - ${formatCurrency(item.price)}`
       ).join('\n');
 
-      const whatsappMessage = `🏥 *PEDIDO VYTALLE ESTÉTICA - PROFISSIONAL*
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      // Substituir mensagens multi-linha com emoji por texto puro
+      const whatsappMessage = `
 
-👨‍⚕️ *DADOS DO PROFISSIONAL:*
-• Nome: ${customerData.name}
-• CRM: ${customerData.crm} (verificar registro ativo)
-• Clínica: ${customerData.clinicName}
-${customerData.cnpj ? `• CNPJ: ${customerData.cnpj}` : ''}
-• WhatsApp: ${customerData.phone}
-• E-mail: ${customerData.email}
+PROCESSO DE FINALIZAÇÃO:
+1. Dados profissionais confirmados
+2. Forma de pagamento: ${selectedPayment?.name}
+3. Envio dos dados de pagamento (próximo passo)
+4. Confirmação do pagamento
+5. Emissão da nota fiscal
+6. Despacho via transportadora refrigerada
+7. Código de rastreamento enviado
 
-📍 *ENDEREÇO COMPLETO DE ENTREGA:*
-${customerData.address}
-${customerData.city} - ${customerData.state}
-CEP: ${customerData.cep}
-
-🛒 *PRODUTOS SOLICITADOS:*
-${orderItems}
-
-💰 *RESUMO FINANCEIRO:*
-• Subtotal: ${formatCurrency(total)}${discountAmount > 0 ? `\n• Desconto ${selectedPayment?.name}: -${formatCurrency(discountAmount)}` : ''}
-• Frete: ${shipping === 0 ? '✅ GRÁTIS (compra acima R$ 1.000)' : formatCurrency(shipping)}
-• *TOTAL GERAL: ${formatCurrency(finalTotal)}*
-
-💳 *FORMA DE PAGAMENTO ESCOLHIDA:*
-${selectedPayment?.icon} *${selectedPayment?.name}*
-${selectedPayment?.description}
-
-📋 *DADOS PARA NOTA FISCAL:*
-• Nome/Razão: ${customerData.name}
-• E-mail NF: ${customerData.email}
-• Telefone: ${customerData.phone}
-• Endereço: ${customerData.address}, ${customerData.city}/${customerData.state}, CEP: ${customerData.cep}
-${customerData.cnpj ? `• CNPJ: ${customerData.cnpj}` : ''}
-• CRM Profissional: ${customerData.crm}
-
-✅ *PROCESSO DE FINALIZAÇÃO:*
-1️⃣ ✅ Dados profissionais confirmados
-2️⃣ ✅ Forma de pagamento: ${selectedPayment?.name}
-3️⃣ 📤 Envio dos dados de pagamento (próximo passo)
-4️⃣ 💰 Confirmação do pagamento
-5️⃣ 📄 Emissão da nota fiscal
-6️⃣ 🚛 Despacho via transportadora refrigerada
-7️⃣ 📦 Código de rastreamento enviado
-
-📦 *INFORMAÇÕES DE ENTREGA:*
+INFORMAÇÕES DE ENTREGA:
 • Prazo: 1-3 dias úteis (após confirmação do pagamento)
 • Transporte: Refrigerado especializado
 • Horário: 8h às 18h (dias úteis)
 • Embalagem: Lacrada e com lacre de segurança
 
-🔒 *CERTIFICAÇÕES E GARANTIAS:*
-• ✅ Produtos 100% originais
-• ✅ Registro ANVISA ativo
-• ✅ Armazenamento controlado (2-8°C)
-• ✅ Nota fiscal médica
-• ✅ Certificado de análise incluso
-• ✅ Prazo de validade mínimo 12 meses
-• ✅ Atendimento médico especializado
+CERTIFICAÇÕES E GARANTIAS:
+• Produtos 100% originais
+• Registro ANVISA ativo
+• Armazenamento controlado (2-8°C)
+• Nota fiscal médica
+• Certificado de análise incluso
+• Prazo de validade mínimo 12 meses
+• Atendimento médico especializado
 
-⚕️ *CONFORMIDADE MÉDICA:*
+CONFORMIDADE MÉDICA:
 • Produtos de uso exclusivo profissional
 • Exige comprovação de registro ativo
 • Armazenamento em ambiente controlado
 • Transporte conforme RDC 430/2020
 
-🎯 *PEDIDO PRONTO PARA PROCESSAMENTO:*
-✅ Todos os dados coletados
-✅ Forma de pagamento definida
-✅ Endereço de entrega confirmado
-✅ Dados para nota fiscal completos
+PEDIDO PRONTO PARA PROCESSAMENTO:
+- Todos os dados coletados
+- Forma de pagamento definida
+- Endereço de entrega confirmado
+- Dados para nota fiscal completos
 
-*PRÓXIMO PASSO: Aguardando envio dos dados de pagamento*
+PRÓXIMO PASSO: Aguardando envio dos dados de pagamento
 
-*Vytalle Estética & Viscosuplementação - Excelência em Produtos Médicos*
-📱 WhatsApp: +55 21 99619-2890
-📍 Rio de Janeiro, RJ
+Vytalle Estética & Viscosuplementação - Excelência em Produtos Médicos
+WhatsApp: +55 21 99619-2890
+Rio de Janeiro, RJ
 
-Pedido completo e pronto para processamento! 👨‍⚕️✨`;
+Pedido completo e pronto para processamento!`;
 
       // Enviar para WhatsApp
       const whatsappNumber = '5521996192890'; // Número correto da Vytalle
@@ -278,10 +285,10 @@ Pedido completo e pronto para processamento! 👨‍⚕️✨`;
         description: 'Abrindo WhatsApp para finalizar...'
       });
 
-      // Redirecionar para página de sucesso
+      // Mostrar modal de upsell após um breve delay
       setTimeout(() => {
-        router.push('/products?success=order-sent');
-      }, 2000);
+        setShowUpsellModal(true);
+      }, 1500);
 
     } catch (error) {
       console.error('Erro no checkout:', error);
@@ -792,7 +799,7 @@ Pedido completo e pronto para processamento! 👨‍⚕️✨`;
                   <span>Entrega em 1-3 dias úteis</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-vitale-primary" />
+                  <Shield className="w-4 h-4 text-vitale-primary" />
                   <span>Transporte refrigerado</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -856,6 +863,17 @@ Pedido completo e pronto para processamento! 👨‍⚕️✨`;
             </Card>
           </div>
         </div>
+
+        {/* Modal de Upsell */}
+        <UpsellModal
+          isOpen={showUpsellModal}
+          onClose={() => {
+            setShowUpsellModal(false);
+            router.push('/success');
+          }}
+          onPurchase={handleUpsellPurchase}
+          timeLimit={600}
+        />
       </div>
     </div>
   );

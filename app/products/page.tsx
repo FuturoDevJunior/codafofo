@@ -1,6 +1,11 @@
 import {
   ArrowLeft,
   Home,
+  MessageCircle,
+  Package,
+  Phone,
+  Shield,
+  Truck,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -40,8 +45,26 @@ export default async function Products() {
 
   return (
     <div className="min-h-screen">
+      {/* Linha de benefícios enxuta */}
+      <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm mt-4 mb-6 px-2 sm:px-0">
+        <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-success-600" /> Compra Segura</span>
+        <span className="flex items-center gap-2"><Package className="w-4 h-4 text-vitale-primary" /> Produtos Originais</span>
+        <span className="flex items-center gap-2"><Truck className="w-4 h-4 text-vitale-secondary" /> Entrega Rápida</span>
+      </div>
+
+      {/* Bloco de autoridade e prova social */}
+      <div className="max-w-2xl mx-auto mb-8 text-center space-y-2 px-2 sm:px-0">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center text-base font-medium text-vitale-primary">
+          <span className="flex items-center gap-2 border border-success-200 bg-success-50 rounded-xl px-3 py-1"><Shield className="w-4 h-4 text-success-600" /> Distribuidor Oficial</span>
+          <span className="flex items-center gap-2 border border-info-200 bg-info-50 rounded-xl px-3 py-1"><Package className="w-4 h-4 text-info-600" /> Registro ANVISA</span>
+          <span className="flex items-center gap-2 border border-vitale-primary/20 bg-vitale-primary/5 rounded-xl px-3 py-1"><Phone className="w-4 h-4 text-vitale-primary" /> Atendimento Personalizado</span>
+        </div>
+        <div className="text-sm text-neutral-600 mt-2 px-1 sm:px-0">
+          Exclusivo para clínicas e profissionais. Produtos certificados, suporte consultivo e entrega rápida.
+        </div>
+      </div>
       {/* Container principal com espaçamento otimizado */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 space-y-6 sm:space-y-8">
         
         {/* Breadcrumb e Navegação - Compacto */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2">
@@ -153,10 +176,10 @@ export default async function Products() {
             <div className="max-w-3xl mx-auto space-y-6">
               <div className="space-y-3">
                 <h3 className="text-2xl sm:text-3xl font-bold text-vitale-primary">
-                  Pronto para adquirir nossos produtos?
+                  Fale com nosso time e garanta condições especiais para sua clínica.
                 </h3>
                 <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
-                  Entre em contato conosco para conhecer nossos produtos, condições especiais e prazos de entrega. Nossa equipe está pronta para te atender.
+                  Atendimento consultivo, entrega rápida e produtos certificados.
                 </p>
               </div>
               
@@ -167,14 +190,14 @@ export default async function Products() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 px-8 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-all duration-200 shadow-lg hover:shadow-xl focus-ring min-w-[200px] interactive"
                 >
-                  <span className="text-xl">💬</span>
+                  <MessageCircle className="text-xl" />
                   <span>Falar no WhatsApp</span>
                 </a>
                 <a
                   href="tel:+5521996192890"
                   className="inline-flex items-center gap-3 px-8 py-4 bg-vitale-primary text-white font-semibold rounded-xl hover:bg-vitale-secondary transition-all duration-200 shadow-lg hover:shadow-xl focus-ring min-w-[200px] interactive"
                 >
-                  <span className="text-xl">📞</span>
+                  <Phone className="text-xl" />
                   <span>Ligar Agora</span>
                 </a>
               </div>

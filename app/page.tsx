@@ -1,8 +1,10 @@
 import {
   ArrowRight,
-  Phone,
+  Instagram,
+  MessageCircle,
+  Package,
   Shield,
-  Star,
+  Truck,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -21,13 +23,12 @@ export default function Home() {
       {/* Hero Section Moderno */}
       <section className="relative text-center space-y-8 py-12 sm:py-16 lg:py-20">
         {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-vitale-primary/5 via-transparent to-vitale-secondary/5 rounded-3xl -z-10"></div>
+        <div className="absolute inset-0 bg-vitale-primary/5 rounded-3xl -z-10"></div>
         
         <div className="space-y-8 lg:space-y-10">
           {/* Logo Principal */}
           <div className="flex justify-center">
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-vitale-primary to-vitale-secondary rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
               <SmartImage 
                 src="/Vytalle_Logo_Gold.webp" 
                 alt="Vytalle Estética" 
@@ -36,50 +37,22 @@ export default function Home() {
                 className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 rounded-2xl shadow-2xl ring-4 ring-vitale-primary/20 group-hover:ring-vitale-primary/40 transition-all duration-300 interactive" 
                 priority={true}
               />
-              <div className="absolute -top-2 -right-2 w-6 h-6 sm:w-7 sm:h-7 bg-success-500 rounded-full flex items-center justify-center shadow-lg animate-pulse-soft">
-                <span className="text-sm text-white font-bold">✓</span>
-              </div>
             </div>
           </div>
           
           {/* Título e Descrição */}
-          <div className="space-y-6 lg:space-y-8">
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-vitale-primary tracking-tight leading-tight">
-                Vytalle Estética &<br className="hidden sm:block"/>
-                <span className="text-vitale-secondary">Viscosuplementação</span>
-              </h1>
-              <div className="flex items-center justify-center gap-2">
-                <Star className="w-5 h-5 text-warning-500 fill-current" />
-                <Star className="w-5 h-5 text-warning-500 fill-current" />
-                <Star className="w-5 h-5 text-warning-500 fill-current" />
-                <Star className="w-5 h-5 text-warning-500 fill-current" />
-                <Star className="w-5 h-5 text-warning-500 fill-current" />
-                <span className="text-sm text-neutral-800 font-medium ml-2">5.0 / 5.0 • Excelência comprovada</span>
-              </div>
-            </div>
-            
-            <p className="text-lg sm:text-xl lg:text-2xl text-neutral-600 max-w-4xl mx-auto leading-relaxed">
-              Distribuidor de produtos estéticos e viscosuplementação premium. Produtos originais certificados para profissionais da área da saúde.
-            </p>
-            
-            {/* Status Indicators */}
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-success-500 rounded-full animate-pulse-soft"></div>
-                <span className="text-neutral-800 font-semibold">Catálogo Digital Ativo</span>
-              </div>
-              <span className="text-neutral-500" aria-hidden="true">•</span>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-vitale-primary" />
-                <span className="text-neutral-600 font-medium">Pedidos via WhatsApp</span>
-              </div>
-              <span className="text-neutral-500" aria-hidden="true">•</span>
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-success-500" />
-                <span className="text-neutral-600 font-medium">Produtos Originais</span>
-              </div>
-            </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-vitale-primary leading-tight mb-2">
+            Produtos Premium para Estética Profissional
+          </h2>
+          <p className="text-lg sm:text-xl text-neutral-700 max-w-2xl mx-auto mb-6">
+            Produtos originais, entrega rápida e suporte consultivo para clínicas e profissionais.
+          </p>
+
+          {/* Linha de benefícios enxuta */}
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm mt-4">
+            <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-success-600" /> Compra Segura</span>
+            <span className="flex items-center gap-2"><Package className="w-4 h-4 text-vitale-primary" /> Produtos Originais</span>
+            <span className="flex items-center gap-2"><Truck className="w-4 h-4 text-vitale-secondary" /> Entrega Rápida</span>
           </div>
         </div>
 
@@ -88,7 +61,7 @@ export default function Home() {
           <Link href="/products">
             <Button className="group px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-vitale-primary text-white hover:bg-vitale-secondary rounded-2xl interactive">
               <span className="flex items-center gap-2">
-                Ver Catálogo
+                Explorar Catálogo Completo
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </Button>
@@ -102,25 +75,10 @@ export default function Home() {
             className="group"
           >
             <Button className="flex items-center gap-3 px-6 py-4 text-lg font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl interactive">
-              <div className="w-6 h-6 bg-white rounded-lg flex items-center justify-center">
-                <span className="text-purple-500 text-sm font-bold">📸</span>
-              </div>
+              <Instagram className="w-6 h-6 text-purple-100 bg-white rounded-lg p-1" />
               <span className="group-hover:scale-105 transition-transform">
-                Instagram
+                Siga no Instagram
               </span>
-            </Button>
-          </a>
-
-          <a
-            href="https://wa.me/5521996192890?text=Olá! Gostaria de conhecer os produtos da Vytalle Estética & Viscosuplementação."
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button className="px-8 py-4 text-lg font-semibold border-2 border-vitale-primary text-vitale-primary hover:bg-vitale-primary hover:text-white rounded-2xl transition-all duration-300 focus-ring opacity-90 hover:opacity-100">
-              <div className="text-center">
-                Falar com Consultor
-                <span className="block text-xs opacity-75 mt-1">Disponível em horário comercial</span>
-              </div>
             </Button>
           </a>
         </div>
@@ -138,6 +96,7 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="text-2xl font-semibold text-vitale-primary">Nossa Missão</h3>
               <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-vitale-primary">Seu diferencial começa com o produto certo.</strong> 
                 Distribuir produtos estéticos e viscosuplementação de alta qualidade, garantindo procedência, 
                 autenticidade e excelência para profissionais da área da saúde em todo o Brasil.
               </p>
@@ -159,7 +118,7 @@ export default function Home() {
         <div className="text-center space-y-4">
           <h2 className="text-4xl font-bold text-vitale-primary">Nossas Categorias de Produtos</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Distribuímos uma ampla linha de produtos médicos estéticos certificados
+            <strong className="text-vitale-primary">As melhores marcas, sempre originais e certificadas para sua clínica.</strong>
           </p>
         </div>
 
@@ -167,13 +126,13 @@ export default function Home() {
           <Card className="text-center hover:shadow-xl transition-all border-vitale-primary/20 hover:border-vitale-primary/40">
             <CardHeader>
               <div className="w-16 h-16 bg-vitale-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">💉</span>
+                <Package className="text-3xl text-vitale-primary" />
               </div>
               <CardTitle className="text-vitale-primary">Toxina Botulínica</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground text-sm">
-                Botox, Dysport e Xeomin originais para aplicação profissional
+                Toxinas originais das principais marcas para uso profissional.
               </p>
             </CardContent>
           </Card>
@@ -181,13 +140,13 @@ export default function Home() {
           <Card className="text-center hover:shadow-xl transition-all border-vitale-primary/20 hover:border-vitale-primary/40">
             <CardHeader>
               <div className="w-16 h-16 bg-vitale-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">💎</span>
+                <Shield className="text-3xl text-vitale-primary" />
               </div>
               <CardTitle className="text-vitale-primary">Preenchedores</CardTitle>
           </CardHeader>
           <CardContent>
               <p className="text-muted-foreground text-sm">
-                Ácido hialurônico e outros preenchedores de marcas renomadas
+                Preenchedores de ácido hialurônico das marcas líderes.
             </p>
           </CardContent>
         </Card>
@@ -195,7 +154,7 @@ export default function Home() {
           <Card className="text-center hover:shadow-xl transition-all border-vitale-primary/20 hover:border-vitale-primary/40">
           <CardHeader>
               <div className="w-16 h-16 bg-vitale-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">✨</span>
+                <Package className="text-3xl text-vitale-primary" />
             </div>
               <CardTitle className="text-vitale-primary">Bioestimuladores</CardTitle>
           </CardHeader>
@@ -209,7 +168,7 @@ export default function Home() {
           <Card className="text-center hover:shadow-xl transition-all border-vitale-primary/20 hover:border-vitale-primary/40">
           <CardHeader>
               <div className="w-16 h-16 bg-vitale-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🎯</span>
+                <Package className="text-3xl text-vitale-primary" />
             </div>
               <CardTitle className="text-vitale-primary">Acessórios</CardTitle>
           </CardHeader>
@@ -235,7 +194,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center space-y-4">
               <div className="w-20 h-20 bg-vitale-primary/10 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-4xl">🔒</span>
+                <Shield className="text-4xl text-vitale-primary" />
               </div>
               <h3 className="text-xl font-semibold text-vitale-primary">Qualidade Garantida</h3>
               <p className="text-muted-foreground">
@@ -245,7 +204,7 @@ export default function Home() {
 
             <div className="text-center space-y-4">
               <div className="w-20 h-20 bg-vitale-primary/10 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-4xl">🚚</span>
+                <Truck className="text-4xl text-vitale-secondary" />
               </div>
               <h3 className="text-xl font-semibold text-vitale-primary">Entrega Rápida</h3>
               <p className="text-muted-foreground">
@@ -255,7 +214,7 @@ export default function Home() {
 
             <div className="text-center space-y-4">
               <div className="w-20 h-20 bg-vitale-primary/10 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-4xl">📱</span>
+                <MessageCircle className="text-4xl text-success-600" />
               </div>
               <h3 className="text-xl font-semibold text-vitale-primary">Vendas Digital</h3>
               <p className="text-muted-foreground">
@@ -297,7 +256,7 @@ export default function Home() {
             Pronto para conhecer nossos produtos?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Explore nosso catálogo completo e encontre os melhores produtos estéticos para sua clínica
+            Catálogo completo, entrega rápida e suporte especializado para sua clínica.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/products">
@@ -313,9 +272,7 @@ export default function Home() {
               className="group"
             >
               <Button className="flex items-center gap-3 px-6 py-4 text-lg font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl interactive">
-                <div className="w-5 h-5 bg-white rounded-md flex items-center justify-center">
-                  <span className="text-purple-500 text-xs font-bold">📸</span>
-                </div>
+                <Instagram className="w-5 h-5 text-purple-100 bg-white rounded-md p-1" />
                 <span>Siga no Instagram</span>
               </Button>
             </a>
@@ -325,11 +282,9 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="px-8 py-4 text-lg font-semibold border-2 border-vitale-primary text-vitale-primary hover:bg-vitale-primary hover:text-white rounded-xl transition-all duration-300 focus-ring">
-                <div className="text-center">
-                  Falar com Consultor
-                  <span className="block text-xs opacity-75 mt-1">Disponível em horário comercial</span>
-                </div>
+              <Button className="px-8 py-4 text-lg font-semibold border-2 border-vitale-primary text-vitale-primary hover:bg-vitale-primary hover:text-white rounded-xl transition-all duration-300 focus-ring flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-success-600" />
+                <span>Falar com Consultor</span>
               </Button>
             </a>
           </div>

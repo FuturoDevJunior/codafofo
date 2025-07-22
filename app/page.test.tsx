@@ -7,28 +7,28 @@ describe('Home Page', () => {
     render(<Home />);
     
     // Verifica o título principal
-    expect(screen.getByText('Vytalle Estética')).toBeInTheDocument();
+    expect(screen.getByText('Produtos Premium para Estética Profissional')).toBeInTheDocument();
     
     // Verifica a descrição
-    expect(screen.getByText(/Excelência em tratamentos estéticos avançados/)).toBeInTheDocument();
+    expect(screen.getByText(/Produtos originais, entrega rápida e suporte consultivo para clínicas e profissionais/)).toBeInTheDocument();
     
     // Verifica seção "Sobre Nós"
     expect(screen.getByText('Sobre a Vytalle Estética')).toBeInTheDocument();
     expect(screen.getByText('Nossa Missão')).toBeInTheDocument();
     expect(screen.getByText('Nossa Visão')).toBeInTheDocument();
     
-    // Verifica seção de serviços
-    expect(screen.getByText('Nossos Serviços Especializados')).toBeInTheDocument();
+    // Verifica categorias de produtos
+    expect(screen.getByText('Nossas Categorias de Produtos')).toBeInTheDocument();
     expect(screen.getByText('Toxina Botulínica')).toBeInTheDocument();
-    expect(screen.getByText('Viscosuplementação')).toBeInTheDocument();
-    expect(screen.getByText('Tratamentos Faciais')).toBeInTheDocument();
-    expect(screen.getByText('Consultoria Especializada')).toBeInTheDocument();
+    expect(screen.getByText('Preenchedores')).toBeInTheDocument();
+    expect(screen.getByText('Bioestimuladores')).toBeInTheDocument();
+    expect(screen.getByText('Acessórios')).toBeInTheDocument();
     
     // Verifica seção de diferenciais
     expect(screen.getByText('Por que escolher a Vytalle?')).toBeInTheDocument();
     expect(screen.getByText('Qualidade Garantida')).toBeInTheDocument();
-    expect(screen.getByText('Profissionais Qualificados')).toBeInTheDocument();
-    expect(screen.getByText('Atendimento Digital')).toBeInTheDocument();
+    expect(screen.getAllByText('Entrega Rápida')).toHaveLength(2); // Aparece em benefícios e diferenciais
+    expect(screen.getByText('Vendas Digital')).toBeInTheDocument();
     
     // Verifica estatísticas
     expect(screen.getByText('+500')).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe('Home Page', () => {
     expect(screen.getByText('100%')).toBeInTheDocument();
     
     // Verifica botões de ação
-    expect(screen.getByText('Ver Catálogo')).toBeInTheDocument();
-    expect(screen.getByText('Explorar Catálogo')).toBeInTheDocument();
+    expect(screen.getAllByText('Explorar Catálogo Completo')).toHaveLength(2);
+    expect(screen.getAllByText('Siga no Instagram')).toHaveLength(2);
   });
 }); 

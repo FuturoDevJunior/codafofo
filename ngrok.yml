@@ -12,6 +12,9 @@ tunnels:
     subdomain: vytalle-dev  # Requer conta paga do ngrok
     host_header: "localhost:5174"
     inspect: true
+    request_header:
+      add:
+        - "ngrok-skip-browser-warning: true"
     
   # Servidor de produção local (build)
   vytalle-prod:
@@ -20,6 +23,9 @@ tunnels:
     subdomain: vytalle-prod  # Requer conta paga do ngrok  
     host_header: "localhost:3001"
     inspect: true
+    request_header:
+      add:
+        - "ngrok-skip-browser-warning: true"
 
   # HTTPS seguro para testes em dispositivos móveis
   vytalle-https:
@@ -28,6 +34,9 @@ tunnels:
     schemes: ["https"]
     host_header: "localhost:5174"
     inspect: true
+    request_header:
+      add:
+        - "ngrok-skip-browser-warning: true"
     
 # Configurações globais
 web_addr: localhost:4040  # Interface web do ngrok

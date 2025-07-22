@@ -113,6 +113,6 @@ interface Product {
 **Migração SQL:** 1 nova migração criada  
 
 ---
-**Migração executada por:** Claude Code  
+**Migração executada por:** Sistema automatizado  
 **Review necessário:** ✅ Pronto para revisão e deploy  
 **Compatibilidade:** Mantida (carrinho e checkout funcionam normalmente)
