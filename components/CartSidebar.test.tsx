@@ -68,6 +68,8 @@ describe('CartSidebar', () => {
       id: '1',
       name: 'Botox Allergan 100U',
       price: 850.00,
+      price_pix: 807.50, // 5% desconto PIX
+      price_card: 850.00, // igual ao price
       quantity: 2,
       images: ['https://example.com/botox.jpg'],
       category: 'Toxina Botulínica',
@@ -77,6 +79,8 @@ describe('CartSidebar', () => {
       id: '2',
       name: 'Ácido Hialurônico 1ml',
       price: 320.50,
+      price_pix: 304.48, // 5% desconto PIX
+      price_card: 320.50, // igual ao price
       quantity: 1,
       images: ['https://example.com/acido.jpg'],
       category: 'Preenchedor',
