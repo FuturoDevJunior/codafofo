@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import {
   afterEach,
   describe,
@@ -16,13 +17,13 @@ import userEvent from '@testing-library/user-event';
 
 import CartItem from './CartItem';
 
-const mockItem = { id: '1', name: 'Botox', price: 1200, quantity: 2, images: [] };
+const mockItem = { id: '1', name: 'Botox', price: 1200, price_pix: 1200, price_card: 1300, quantity: 2, images: [] };
 const onRemove = vi.fn();
 const onUpdateQty = vi.fn();
 
 // Mock do SmartImage para garantir <img> nos testes
 vi.mock('./SmartImage', () => ({
-  default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} />,
+  default: ({ src, alt }: { src: string; alt: string }) => <Image src={src} alt={alt} width={100} height={100} />,
 }));
 
 // ATENÇÃO: Testes de SmartImage (busca por <img>) e Tooltip (busca por texto do tooltip) podem falhar em ambiente de teste (JSDOM)
@@ -56,7 +57,7 @@ describe('CartItem', () => {
     render(<CartItem item={itemWithImage} onRemove={onRemove} onUpdateQty={onUpdateQty} />);
     const img = await screen.findByRole('img', { name: /Botox/i });
     expect(img).toHaveAttribute('src', expect.stringContaining('botox-50u.png'));
-    expect(img).toHaveAttribute('alt', 'Botox');
+    expect(img).toHaveAttribute('alt', 'Foto do produto Botox');
   });
 
   it('exibe tooltips nos botões de ação', async () => {

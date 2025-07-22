@@ -1,8 +1,14 @@
 'use client';
 
-import { ShoppingCart, ArrowLeft, Package, CreditCard, Truck } from 'lucide-react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
+import {
+  ArrowLeft,
+  CreditCard,
+  Package,
+  ShoppingCart,
+  Truck,
+} from 'lucide-react';
+import Link from 'next/link';
 
 import CartItem from '@/components/CartItem';
 import { Button } from '@/components/ui/button';
@@ -47,7 +53,7 @@ export default function Cart() {
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="bg-white rounded-2xl p-12 shadow-sm border border-neutral-100">
-              <ShoppingCart className="h-24 w-24 text-neutral-300 mx-auto mb-6" />
+              <ShoppingCart className="h-24 w-24 text-neutral-400 mx-auto mb-6" />
               <h2 className="text-2xl font-bold text-neutral-600 mb-4">
                 Seu carrinho está vazio
               </h2>
@@ -160,9 +166,12 @@ export default function Cart() {
                       className="w-full bg-vitale-primary hover:bg-vitale-secondary text-white font-semibold py-3 text-base"
                       disabled={items.length === 0}
                     >
-                      Finalizar Pedido via WhatsApp
+                      Avançar para Checkout
                     </Button>
                   </Link>
+                  <div className="text-xs text-neutral-500 text-center mt-2">
+                    Você revisará seus dados e finalizará o pedido na próxima etapa.
+                  </div>
                   
                   <div className="text-center">
                     <p className="text-xs text-neutral-500 mb-2">

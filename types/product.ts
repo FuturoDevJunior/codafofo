@@ -1,11 +1,12 @@
+// Interface única para produtos - sistema simplificado
 export interface Product {
   id: string;
   name: string;
-  price: number;
+  price_pix: number; // Preço para PIX
+  price_card: number; // Preço para Cartão
   images: string[];
   slug: string;
   category: string;
-  discount_percent: number;
   currency: string;
   active?: boolean;
   description?: string;

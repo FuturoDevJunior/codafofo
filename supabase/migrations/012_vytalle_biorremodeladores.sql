@@ -1,10 +1,77 @@
--- Migração para BIORREMODELADORES da Vytalle Estética
+-- Migração/seed padronizada para BIOREMODELADORES (Vytalle)
+DELETE FROM PRODUCTS
+WHERE
+    CATEGORY = 'Bioremodelador';
 
--- Inserir biorremodeladores
+INSERT INTO PRODUCTS (
+    NAME,
+    SLUG,
+    CATEGORY,
+    PRICE,
+    PIX_PRICE,
+    CARD_PRICE,
+    COMMISSION_PERCENT,
+    COMMISSION_VALUE,
+    ACTIVE,
+    CREATED_AT
+) VALUES (
+    'DL BIO EXO PLUS (EXOSSOMOS PDRN HIALURONICO) 7ML',
+    'dl-bio-exo-plus-7ml',
+    'Bioremodelador',
+    330,
+    330,
+    359,
+    5,
+    16.50,
+    TRUE,
+    NOW()
+),
+(
+    'DL EVO PDRN TRIPLE 1 VIAL 3ML',
+    'dl-evo-pdrn-triple-3ml',
+    'Bioremodelador',
+    229,
+    229,
+    245,
+    5,
+    11.45,
+    TRUE,
+    NOW()
+),
+(
+    'DL PROPHILO 2ML',
+    'dl-prophilo-2ml',
+    'Bioremodelador',
+    889,
+    889,
+    916,
+    5,
+    44.45,
+    TRUE,
+    NOW()
+),
+(
+    'DL REJUVITAL PDRN 5 VIALS 3ML',
+    'dl-rejuvital-pdrn-5-vials',
+    'Bioremodelador',
+    749,
+    749,
+    799,
+    5,
+    37.45,
+    TRUE,
+    NOW()
+);
+
+-- Seeds para Biorremodeladores
 INSERT INTO PRODUCTS (
     NAME,
     SLUG,
     PRICE,
+    PIX_PRICE,
+    CARD_PRICE,
+    COMMISSION_PERCENT,
+    COMMISSION_VALUE,
     DESCRIPTION,
     IMAGES,
     CATEGORY,
@@ -12,62 +79,32 @@ INSERT INTO PRODUCTS (
     DISCOUNT_PERCENT,
     CURRENCY
 ) VALUES (
-    'DL BIO EXO PLUS (EXOSSOMOS PDRN HIALURONICO) 7ML',
-    'dl-bio-exo-plus-7ml',
-    359.00,
-    'Biorremodelador com exossomos e PDRN. Benefícios: regeneração celular, melhora textura, efeito antienvelhecimento. Duração: 6-8 meses.',
-    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
-    'Biorremodelador',
-    30,
+    'Biorremodelador Profhilo 2ml',
+    'biorremodelador-profhilo-2ml',
+    2100.00,
+    2100.00,
+    0,
+    0,
+    0,
+    'Biorremodelador Profhilo para rejuvenescimento global. Indicado para face, pescoço e mãos. Duração: 6-12 meses.',
+    ARRAY['https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?w=800&h=600&fit=crop'],
+    'Bioremodelador',
+    10,
     0,
     'BRL'
 ),
 (
-    'DL EVO PDRN TRIPLE 1 VIAL 3ML',
-    'dl-evo-pdrn-triple-1-vial-3ml',
-    229.00,
-    'Biorremodelador com PDRN triplo. Benefícios: regeneração intensiva, melhora textura, efeito lifting. Duração: 4-6 meses.',
-    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
-    'Biorremodelador',
-    40,
+    'Biorremodelador NucleoFill 2ml',
+    'biorremodelador-nucleofill-2ml',
+    1900.00,
+    1900.00,
     0,
-    'BRL'
-),
-(
-    'DL EVO PDRN TRIPLE 5 VIALS 3ML',
-    'dl-evo-pdrn-triple-5-vials-3ml',
-    970.00,
-    'Biorremodelador com PDRN triplo - pacote 5 vials. Benefícios: tratamento completo, regeneração intensiva, efeito duradouro. Duração: 6-8 meses.',
-    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
-    'Biorremodelador',
-    15,
     0,
-    'BRL'
-),
-(
-    'DL PROPHILO 2ML',
-    'dl-prophilo-2ml',
-    889.00,
-    'Biorremodelador com ácido hialurônico e aminoácidos. Benefícios: hidratação profunda, melhora textura, efeito natural. Duração: 6-8 meses.',
-    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
-    'Biorremodelador',
-    20,
     0,
-    'BRL'
-),
-(
-    'DL REJUVITAL PDRN 5 VIALS 3ML',
-    'dl-rejuvital-pdrn-5-vials-3ml',
-    749.00,
-    'Biorremodelador com PDRN - pacote 5 vials. Benefícios: regeneração celular, melhora textura, efeito antienvelhecimento. Duração: 6-8 meses.',
-    ARRAY[ 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop' ],
-    'Biorremodelador',
-    18,
+    'Biorremodelador NucleoFill para bioestimulação e hidratação profunda. Duração: 6-12 meses.',
+    ARRAY['https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=800&h=600&fit=crop'],
+    'Bioremodelador',
+    8,
     0,
     'BRL'
 );

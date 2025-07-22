@@ -1,31 +1,36 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { 
-  ShieldCheck, 
-  CreditCard, 
-  Truck, 
-  Clock, 
-  MapPin, 
-  Phone, 
-  User, 
-  Building, 
-  FileText,
+import {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  AlertTriangle,
   ArrowLeft,
   CheckCircle,
-  AlertTriangle
+  Clock,
+  CreditCard,
+  FileText,
+  MapPin,
+  ShieldCheck,
+  Truck,
+  User,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { useCartStore } from '@/lib/store';
 import { formatCurrency } from '@/lib/utils';
-import { validateContactForm } from '@/lib/validation';
 
 interface CustomerData {
   name: string;
@@ -252,15 +257,14 @@ ${customerData.cnpj ? `• CNPJ: ${customerData.cnpj}` : ''}
 
 *PRÓXIMO PASSO: Aguardando envio dos dados de pagamento*
 
-*Vytalle Estética - Excelência em Produtos Médicos*
-🔗 Site: vytalle.com.br
-📧 E-mail: contato@vytalle.com.br
-📱 WhatsApp: +55 62 1234-5678
+*Vytalle Estética & Viscosuplementação - Excelência em Produtos Médicos*
+📱 WhatsApp: +55 21 99619-2890
+📍 Rio de Janeiro, RJ
 
 Pedido completo e pronto para processamento! 👨‍⚕️✨`;
 
       // Enviar para WhatsApp
-      const whatsappNumber = '556212345678'; // Número real da empresa
+      const whatsappNumber = '5521996192890'; // Número correto da Vytalle
       const encodedMessage = encodeURIComponent(whatsappMessage);
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
       
@@ -646,9 +650,9 @@ Pedido completo e pronto para processamento! 👨‍⚕️✨`;
           <h1 className="text-3xl font-bold text-vitale-primary">Finalizar Pedido</h1>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-2">
           {/* Formulário Principal */}
-          <div className="lg:col-span-2">
+          <div className="md:col-span-1 lg:col-span-2">
             {/* Progress Steps */}
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
@@ -717,7 +721,7 @@ Pedido completo e pronto para processamento! 👨‍⚕️✨`;
           </div>
 
           {/* Resumo do Pedido */}
-          <div className="space-y-6">
+          <div className="md:col-span-1 lg:col-span-1 space-y-6">
             {/* Resumo de Produtos */}
             <Card className="sticky top-4">
               <CardHeader>

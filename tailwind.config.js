@@ -8,7 +8,7 @@ module.exports = withUt({
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-    './node_modules/@uploadthing/react/dist/**',
+    './node_modules/@uploadthing/react/dist**',
   ],
   theme: {
     // Design System - Vytalle Estética Brand Colors (OFICIAL PDF)
@@ -282,6 +282,10 @@ module.exports = withUt({
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        'shimmer': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
         // Loading states
@@ -299,6 +303,7 @@ module.exports = withUt({
         // Shadcn/UI compatibility
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'shimmer': 'shimmer 2s ease-in-out infinite',
       },
       
       // Transition System

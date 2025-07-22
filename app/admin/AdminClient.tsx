@@ -1,13 +1,27 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+
 import AdminForm from '@/components/AdminForm';
-import { formatCurrency } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { supabase } from '@/lib/supabase';
+import { formatCurrency } from '@/lib/utils';
 
 export default function AdminClient({ products, suppliers }: { products: any[]; suppliers: any[] }) {
   const [filterSupplier, setFilterSupplier] = useState('');
@@ -39,14 +53,24 @@ export default function AdminClient({ products, suppliers }: { products: any[]; 
               <TableCell>{p.name}</TableCell>
               <TableCell>{formatCurrency(p.price)}</TableCell>
               <TableCell>
-                <Dialog>
-                  <DialogTrigger><Button className="border">Editar</Button></DialogTrigger>
-                  <DialogContent><AdminForm product={p} /></DialogContent>
-                </Dialog>
-                <Button className="bg-red-600 text-white" onClick={async () => {
-                  await supabase.from('products').delete().eq('id', p.id);
-                  // Refresh ou use realtime se precisar
-                }}>Excluir</Button>
+                <div className="flex gap-2">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button className="border">Editar</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogTitle>Editar Produto - {p.name}</DialogTitle>
+                      <DialogDescription>
+                        Modifique as informações do produto abaixo. Todos os campos são obrigatórios.
+                      </DialogDescription>
+                      <AdminForm product={p} />
+                    </DialogContent>
+                  </Dialog>
+                  <Button className="bg-destructive text-destructive-foreground" onClick={async () => {
+                    await supabase.from('products').delete().eq('id', p.id);
+                    // Refresh ou use realtime se precisar
+                  }}>Excluir</Button>
+                </div>
               </TableCell>
             </TableRow>
           ))}

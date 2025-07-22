@@ -9,15 +9,7 @@ CREATE VIEW POPULAR_PRODUCTS AS
     ORDER BY
         VIEWS_COUNT DESC LIMIT 10;
 
-CREATE VIEW ORDER_SUMMARY AS
-    SELECT
-        STATUS,
-        COUNT(*)   AS COUNT,
-        SUM(TOTAL) AS REVENUE
-    FROM
-        ORDERS
-    GROUP BY
-        STATUS;
+-- A view ORDER_SUMMARY foi movida para uma migração posterior para garantir que a coluna STATUS já exista.
 
 CREATE OR REPLACE FUNCTION INCREMENT_VIEWS(
     PROD_ID UUID

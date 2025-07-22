@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { act } from 'react-dom/test-utils';
 import {
   afterEach,
@@ -17,7 +18,7 @@ import ProductCarousel from './Carousel';
 
 // Mock do SmartImage para retornar uma tag <img> simples
 vi.mock('./SmartImage', () => ({
-  default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} />,
+  default: ({ src, alt }: { src: string; alt: string }) => <Image src={src} alt={alt} width={100} height={100} />,
 }));
 
 const mockImages = ['/img1.jpg', '/img2.jpg'];

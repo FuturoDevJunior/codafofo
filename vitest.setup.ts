@@ -102,7 +102,7 @@ vi.mock('@/lib/supabaseServer', () => ({
 // Mock Next/Image com priority como string
 vi.mock('next/image', () => ({
   default: function MockedImage(props: any) { 
-    const { priority, ...restProps } = props;
+    const { priority = false, ...restProps } = props || {};
     return React.createElement('img', { 
       ...restProps, 
       priority: priority ? 'true' : undefined 
@@ -114,6 +114,17 @@ vi.mock('next/image', () => ({
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn() }),
   redirect: vi.fn(),
+}));
+
+// Mock Supabase server
+vi.mock('@/lib/supabaseServer', () => ({
+  createServerSupabaseClient: () => ({
+    from: () => ({
+      select: () => ({
+        eq: () => Promise.resolve({ data: null, error: 'Mock error' })
+      })
+    })
+  })
 }));
 
 vi.mock('react-hook-form', () => ({

@@ -1,512 +1,1180 @@
-// Dados mock para produtos da Vytalle Estética
-// Usado quando Supabase não está disponível
+import { Product } from '@/types/product';
+import { getProductImages } from '@/lib/productImages';
 
-import { smartCache } from '@/lib/smartCache';
+/**
+ * CATÁLOGO VYTALLE ESTÉTICA - SISTEMA SIMPLIFICADO
+ * ================================================
+ * 
+ * Catálogo completo com preços PIX/Cartão diretos
+ * Allan gerencia os preços diretamente no admin
+ */
 
-export interface MockProduct {
-  id: string;
-  name: string;
-  slug: string;
-  price: number;
-  description: string;
-  images: string[];
-  category: string;
-  discount_percent: number;
-  currency: string;
-  active: boolean;
-}
-
-// URLs de imagens reais e específicas dos produtos médicos estéticos
-const productImages = {
-  // TOXINAS BOTULÍNICAS - Imagens dos produtos reais
-  
-  // BOTOX (Allergan/AbbVie) - Imagens reais de farmácia
-  'botox-50ui': 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&h=400&fit=crop&crop=center',
-  'botox-100ui': 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&h=400&fit=crop&crop=center', 
-  'botox-200ui': 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&h=400&fit=crop&crop=center',
-  
-  // BOTULIFT (Linha específica) - Produtos médicos
-  'botulift-100ui': 'https://images.unsplash.com/photo-1585435557343-3b092031cddf?w=400&h=400&fit=crop&crop=center',
-  'botulift-150ui': 'https://images.unsplash.com/photo-1585435557343-3b092031cddf?w=400&h=400&fit=crop&crop=center',
-  'botulift-200ui': 'https://images.unsplash.com/photo-1585435557343-3b092031cddf?w=400&h=400&fit=crop&crop=center',
-  
-  // BOTULIM (Linha econômica) - Produtos estéticos
-  'botulim-50ui': 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=400&h=400&fit=crop&crop=center',
-  'botulim-100ui': 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=400&h=400&fit=crop&crop=center',
-  'botulim-200ui': 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=400&h=400&fit=crop&crop=center',
-  
-  // DYSPORT (Ipsen) - Toxina botulínica
-  'dysport-300ui': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center',
-  'dysport-500ui': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center',
-  
-  // NABOTA (Daewoong) - Toxina coreana
-  'nabota-100ui': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=400&fit=crop&crop=center',
-  
-  // XEOMIN (Merz) - Toxina alemã
-  'xeomin-100ui': 'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=400&h=400&fit=crop&crop=center',
-  
-  
-  // BIOESTIMULADORES - Produtos para rejuvenescimento
-  
-  // ELLANSE (Aqtis Medical) - Bioestimulador premium
-  'ellanse-m': 'https://images.unsplash.com/photo-1563213126-a4273aed2016?w=400&h=400&fit=crop&crop=center',
-  'ellanse-s': 'https://images.unsplash.com/photo-1563213126-a4273aed2016?w=400&h=400&fit=crop&crop=center',
-  
-  // HARMONYCA (Allergan) - Bioestimulador híbrido
-  'harmonyca-2ml': 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=400&h=400&fit=crop&crop=center',
-  
-  // HIALUROX BIO - Ácido hialurônico bioestimulador
-  'hialurox-bio': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center',
-  
-  // NUTRIEX - Bioestimulador nacional
-  'nutriex': 'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=400&h=400&fit=crop&crop=center',
-  
-  // RADIESSE (Merz) - Hidroxiapatita de cálcio
-  'radiesse-duo-15': 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=400&h=400&fit=crop&crop=center',
-  'radiesse-duo-30': 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=400&h=400&fit=crop&crop=center',
-  'radiesse-plus': 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=400&h=400&fit=crop&crop=center',
-  
-  // RENNOVA (Nacional) - Bioestimuladores brasileiros
-  'rennova-diamond': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-elleva-150': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-elleva-210': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-elleva-x': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  
-  // SCULPTRA (Galderma) - Ácido poli-L-láctico
-  'sculptra-2': 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&h=400&fit=crop&crop=center',
-  
-  
-  // BIOREMODELADORES - Hidratação profunda da pele
-  'bio-exo-plus': 'https://images.unsplash.com/photo-1570831739435-6601aa3fa4fb?w=400&h=400&fit=crop&crop=center',
-  'evo-pdrn-1': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center',
-  'evo-pdrn-5': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center',
-  'prophilo': 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=400&fit=crop&crop=center',
-  'rejuvital': 'https://images.unsplash.com/photo-1585435557343-3b092031cddf?w=400&h=400&fit=crop&crop=center',
-  
-  // SKINBOOSTERS - Hidratação e qualidade da pele
-  'hialurox-skin': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop&crop=center',
-  'restylane-vital': 'https://images.unsplash.com/photo-1570831739435-6601aa3fa4fb?w=400&h=400&fit=crop&crop=center',
-  'saypha-rich': 'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=400&h=400&fit=crop&crop=center',
-  
-  
-  // PREENCHEDORES - Ácido Hialurônico para preenchimento
-  
-  // BELOTERO (Merz) - Preenchedor alemão premium
-  'belotero-balance': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop&crop=center',
-  'belotero-intense': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop&crop=center',
-  'belotero-volume': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop&crop=center',
-  
-  // BIO LIFT - Preenchedor nacional
-  'bio-lift': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  
-  // BIOGELIS - Linha brasileira de preenchedores
-  'biogelis-fine': 'https://images.unsplash.com/photo-1570831739435-6601aa3fa4fb?w=400&h=400&fit=crop&crop=center',
-  'biogelis-global': 'https://images.unsplash.com/photo-1570831739435-6601aa3fa4fb?w=400&h=400&fit=crop&crop=center',
-  'biogelis-volume': 'https://images.unsplash.com/photo-1570831739435-6601aa3fa4fb?w=400&h=400&fit=crop&crop=center',
-  'biogelis-volumax': 'https://images.unsplash.com/photo-1570831739435-6601aa3fa4fb?w=400&h=400&fit=crop&crop=center',
-  
-  // NEURAMIS (Medytox) - Preenchedor coreano
-  'neuramis-deep': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center',
-  'neuramis-lido': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center',
-  'neuramis-volume': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center',
-  
-  // PERFECTHA (Laboratoires Vivacy) - Preenchedor francês
-  'perfectha': 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=400&fit=crop&crop=center',
-  
-  // RENNOVA PREENCHEDORES - Linha nacional premium
-  'rennova-body': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-deep': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-fill': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-fill-lido': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-lift': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-lift-lido': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-lift-plus': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-shape': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-ultra-1ml': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  'rennova-ultra-2ml': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=400&h=400&fit=crop&crop=center',
-  
-  // RESTYLANE (Galderma) - Preenchedor sueco premium
-  'restylane-defyne': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=400&fit=crop&crop=center',
-  'restylane-gel': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=400&fit=crop&crop=center',
-  'restylane-kysse': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=400&fit=crop&crop=center',
-  'restylane-lyft': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=400&fit=crop&crop=center',
-  'restylane-refyne': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=400&fit=crop&crop=center',
-  'restylane-volyme': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=400&fit=crop&crop=center',
-  
-  // SAYPHA (Croma)
-  'saypha-filler': 'https://via.placeholder.com/400x400/6366f1/ffffff?text=SAYPHA+FILLER',
-  'saypha-filler-lido': 'https://via.placeholder.com/400x400/6366f1/ffffff?text=SAYPHA+FILLER+LIDO',
-  'saypha-volume': 'https://via.placeholder.com/400x400/6366f1/ffffff?text=SAYPHA+VOLUME+PLUS',
-  
-  // SINGDERM (Singclean Medical)
-  'singderm-10ml': 'https://via.placeholder.com/400x400/ef4444/ffffff?text=SINGDERM+10ML',
-  'singderm-2ml': 'https://via.placeholder.com/400x400/ef4444/ffffff?text=SINGDERM+2ML',
-  
-  // YVOIRE (LG Chem)
-  'yvoire-classic': 'https://via.placeholder.com/400x400/f97316/ffffff?text=YVOIRE+CLASSIC+PLUS',
-  'yvoire-contour': 'https://via.placeholder.com/400x400/f97316/ffffff?text=YVOIRE+CONTOUR',
-  'yvoire-volume': 'https://via.placeholder.com/400x400/f97316/ffffff?text=YVOIRE+VOLUME+PLUS',
-  
-  // FIOS DE BIOESTIMULAÇÃO - Tratamentos com fios
-  'fio': 'https://images.unsplash.com/photo-1559841644-08ad874ccfaa?w=400&h=400&fit=crop&crop=center',
-  'microcanula': 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=400&fit=crop&crop=center',
-  'enzima': 'https://images.unsplash.com/photo-1585435557343-3b092031cddf?w=400&h=400&fit=crop&crop=center',
-  'april-bride-18g': 'https://images.unsplash.com/photo-1559841644-08ad874ccfaa?w=400&h=400&fit=crop&crop=center',
-  'april-bride-19g': 'https://via.placeholder.com/400x400/374151/ffffff?text=APRIL+BRIDE+19G+ESPICULADO',
-  'april-bride-29g': 'https://via.placeholder.com/400x400/374151/ffffff?text=APRIL+BRIDE+29G+PACK+10',
-  'april-bride-filler-21g-38': 'https://via.placeholder.com/400x400/374151/ffffff?text=APRIL+BRIDE+FILLER+21G+38MM',
-  'april-bride-filler-21g-60': 'https://via.placeholder.com/400x400/374151/ffffff?text=APRIL+BRIDE+FILLER+21G+60MM',
-  
-  'biofils-liso': 'https://via.placeholder.com/400x400/525252/ffffff?text=BIOFILS+LISO+30G',
-  'biofils-espiculado': 'https://via.placeholder.com/400x400/525252/ffffff?text=BIOFILS+19G+ESPICULADO',
-  'biofils-filler': 'https://via.placeholder.com/400x400/525252/ffffff?text=BIOFILS+FILLER+23G',
-  
-  'ithread-filler-38': 'https://via.placeholder.com/400x400/71717a/ffffff?text=ITHREAD+FILLER+21G+38MM',
-  'ithread-filler-60': 'https://via.placeholder.com/400x400/71717a/ffffff?text=ITHREAD+FILLER+21G+60MM',
-  'ithread-29g': 'https://via.placeholder.com/400x400/71717a/ffffff?text=ITHREAD+29G+AGULHADO',
-  'ithread-30g': 'https://via.placeholder.com/400x400/71717a/ffffff?text=ITHREAD+30G+AGULHADO',
-  'ithread-espiculado': 'https://via.placeholder.com/400x400/71717a/ffffff?text=ITHREAD+19G+ESPICULADO',
-  
-  // MICROCÂNULAS
-  'microcanula-22g-50': 'https://via.placeholder.com/400x400/1f2937/ffffff?text=MICROCÂNULA+22G+50MM',
-  'microcanula-25g-50': 'https://via.placeholder.com/400x400/1f2937/ffffff?text=MICROCÂNULA+25G+50MM',
-  'microcanula-22g-70': 'https://via.placeholder.com/400x400/1f2937/ffffff?text=MICROCÂNULA+22G+70MM',
-  'microcanula-18g-100': 'https://via.placeholder.com/400x400/1f2937/ffffff?text=MICROCÂNULA+18G+100MM',
-  'microcanula-18g-70': 'https://via.placeholder.com/400x400/1f2937/ffffff?text=MICROCÂNULA+18G+70MM',
-  'microcanula-25g-38': 'https://via.placeholder.com/400x400/1f2937/ffffff?text=MICROCÂNULA+25G+38MM',
-  
-  // ENZIMAS
-  'hialuronidase': 'https://via.placeholder.com/400x400/dc2626/ffffff?text=HIALURONIDASE+3+VIALS+2000+UTR',
-  
-  // Fallback genérico
-  default: 'https://via.placeholder.com/400x400/6b7280/ffffff?text=PRODUTO+MÉDICO'
-};
-
-export const mockProducts = [
-  // =============================================
-  // TOXINAS BOTULÍNICAS (Preços PIX)
-  // =============================================
-  
-  // DL BOTOX
+// DADOS DOS PRODUTOS (preços diretos PIX/Cartão)
+export const mockProducts: Product[] = [
+  // TOXINAS BOTULÍNICAS
   {
     id: '1',
-    name: 'DL BOTOX 50UI',
-    slug: 'dl-botox-50ui',
-    price: 530.00,
-    description: 'Toxina botulínica tipo A premium para tratamentos estéticos de alta qualidade. Indicada para rugas de expressão e linhas finas.',
-    images: [productImages['botox-50ui']],
+    name: 'DL BOTOX 100UI',
+    price_pix: 745,
+    price_card: 789,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-botox-100ui',
+    images: getProductImages('dl-botox-100ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica tipo A para tratamentos estéticos de rugas dinâmicas e hiperidrose.'
   },
   {
     id: '2',
-    name: 'DL BOTOX 100UI',
-    slug: 'dl-botox-100ui',
-    price: 799.00,
-    description: 'Toxina botulínica tipo A premium 100UI para tratamentos estéticos avançados. Ideal para áreas extensas e múltiplas aplicações.',
-    images: [productImages['botox-100ui']],
+    name: 'DL BOTOX 200UI',
+    price_pix: 1365,
+    price_card: 1399,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-botox-200ui',
+    images: getProductImages('dl-botox-200ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica tipo A concentração dupla para casos que exigem maior volume de aplicação.'
   },
   {
     id: '3',
-    name: 'DL BOTOX 200UI',
-    slug: 'dl-botox-200ui',
-    price: 1400.00,
-    description: 'Toxina botulínica tipo A premium 200UI para tratamentos estéticos profissionais. Máxima potência para resultados excepcionais.',
-    images: [productImages['botox-200ui']],
+    name: 'DL BOTOX 50UI',
+    price_pix: 489,
+    price_card: 525,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-botox-50ui',
+    images: getProductImages('dl-botox-50ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica tipo A concentração menor, ideal para retoques e primeiras aplicações.'
   },
-  
-  // DL BOTULIFT
   {
     id: '4',
     name: 'DL BOTULIFT 100UI',
-    slug: 'dl-botulift-100ui',
-    price: 775.00,
-    description: 'Toxina botulínica especializada para lifting facial. Tecnologia avançada para rejuvenescimento e lifting natural.',
-    images: [productImages['botulift-100ui']],
+    price_pix: 775,
+    price_card: 791,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-botulift-100ui',
+    images: getProductImages('dl-botulift-100ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica premium com tecnologia avançada para lifting facial não-cirúrgico.'
   },
   {
     id: '5',
     name: 'DL BOTULIFT 150UI',
-    slug: 'dl-botulift-150ui',
-    price: 940.00,
-    description: 'Toxina botulínica para lifting facial 150UI. Concentração ideal para tratamentos de rejuvenescimento extensivos.',
-    images: [productImages['botulift-150ui']],
+    price_pix: 940,
+    price_card: 973,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-botulift-150ui',
+    images: getProductImages('dl-botulift-150ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica concentração intermediária para tratamentos abrangentes de rejuvenescimento.'
   },
   {
     id: '6',
     name: 'DL BOTULIFT 200UI',
-    slug: 'dl-botulift-200ui',
-    price: 1245.00,
-    description: 'Toxina botulínica para lifting facial 200UI. Máxima concentração para tratamentos de rejuvenescimento profissionais.',
-    images: [productImages['botulift-200ui']],
+    price_pix: 1245,
+    price_card: 1273,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-botulift-200ui',
+    images: getProductImages('dl-botulift-200ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica alta concentração para tratamentos extensos e complexos.'
   },
-  
-  // DL BOTULIM
   {
     id: '7',
-    name: 'DL BOTULIM 50UI',
-    slug: 'dl-botulim-50ui',
-    price: 499.00,
-    description: 'Toxina botulínica tipo A com excelente custo-benefício. Eficácia comprovada para tratamentos estéticos básicos.',
-    images: [productImages['botulim-50ui']],
+    name: 'DL BOTULIM 100UI',
+    price_pix: 649,
+    price_card: 689,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-botulim-100ui',
+    images: getProductImages('dl-botulim-100ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica nacional de alta qualidade com excelente custo-benefício.'
   },
   {
     id: '8',
-    name: 'DL BOTULIM 100UI',
-    slug: 'dl-botulim-100ui',
-    price: 649.00,
-    description: 'Toxina botulínica tipo A 100UI com ótimo custo-benefício. Ideal para clínicas que buscam qualidade e economia.',
-    images: [productImages['botulim-100ui']],
+    name: 'DL BOTULIM 200UI',
+    price_pix: 1065,
+    price_card: 1099,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-botulim-200ui',
+    images: getProductImages('dl-botulim-200ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica nacional concentração dupla para grandes áreas de tratamento.'
   },
   {
     id: '9',
-    name: 'DL BOTULIM 200UI',
-    slug: 'dl-botulim-200ui',
-    price: 1065.00,
-    description: 'Toxina botulínica tipo A 200UI econômica. Concentração elevada com excelente relação custo-benefício.',
-    images: [productImages['botulim-200ui']],
+    name: 'DL BOTULIM 50UI',
+    price_pix: 499,
+    price_card: 525,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-botulim-50ui',
+    images: getProductImages('dl-botulim-50ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica nacional concentração mínima, perfeita para iniciantes.'
   },
-  
-  // DL DYSPORT
   {
     id: '10',
     name: 'DL DYSPORT 300UI',
-    slug: 'dl-dysport-300ui',
-    price: 959.00,
-    description: 'Toxina botulínica Dysport 300UI. Tecnologia europeia com difusão otimizada para resultados naturais.',
-    images: [productImages['dysport-300ui']],
+    price_pix: 990,
+    price_card: 1090,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-dysport-300ui',
+    images: getProductImages('dl-dysport-300ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica francesa com difusão otimizada para áreas extensas.'
   },
   {
     id: '11',
     name: 'DL DYSPORT 500UI',
-    slug: 'dl-dysport-500ui',
-    price: 1349.00,
-    description: 'Toxina botulínica Dysport 500UI. Alta concentração com tecnologia avançada para tratamentos profissionais.',
-    images: [productImages['dysport-500ui']],
+    price_pix: 1359,
+    price_card: 1459,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-dysport-500ui',
+    images: getProductImages('dl-dysport-500ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica francesa alta concentração para profissionais experientes.'
   },
-  
-  // DL NABOTA
   {
     id: '12',
     name: 'DL NABOTA 100UI',
-    slug: 'dl-nabota-100ui',
-    price: 620.00,
-    description: 'Toxina botulínica coreana Nabota 100UI. Tecnologia asiática com alta pureza e eficácia comprovada.',
-    images: [productImages['nabota-100ui']],
+    price_pix: 620,
+    price_card: 649,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-nabota-100ui',
+    images: getProductImages('dl-nabota-100ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica coreana com tecnologia avançada e pureza elevada.'
   },
-  
-  // DL XEOMIN
   {
     id: '13',
     name: 'DL XEOMIN 100UI',
-    slug: 'dl-xeomin-100ui',
-    price: 620.00,
-    description: 'Toxina botulínica alemã Xeomin 100UI. Proteína pura sem complexantes para resultados precisos.',
-    images: [productImages['xeomin-100ui']],
+    price_pix: 620,
+    price_card: 645,
     category: 'Toxina Botulínica',
-    discount_percent: 0,
     currency: 'BRL',
-    active: true
+    slug: 'dl-xeomin-100ui',
+    images: getProductImages('dl-xeomin-100ui', 'Toxina Botulínica'),
+    active: true,
+    description: 'Toxina botulínica alemã purificada, sem proteínas complexantes.'
   },
-
-  // =============================================
-  // BIOESTIMULADORES (Preços PIX)
-  // =============================================
+  
+  // BIOESTIMULADORES
   {
     id: '14',
     name: 'DL ELLANSE M',
-    slug: 'dl-ellanse-m',
-    price: 1199.00,
-    description: 'Bioestimulador de colágeno Ellanse M com duração média. Estimula a produção natural de colágeno para rejuvenescimento facial.',
-    images: [productImages['ellanse-m']],
-    category: 'Bioestimulador',
-    discount_percent: 0,
+    price_pix: 1149,
+    price_card: 1199,
+    category: 'Bioestimuladores',
     currency: 'BRL',
-    active: true
+    slug: 'dl-ellanse-m',
+    images: getProductImages('dl-ellanse-m', 'Bioestimuladores'),
+    active: true,
+    description: 'Bioestimulador de colágeno com duração média, ideal para lifting natural.'
   },
   {
     id: '15',
     name: 'DL ELLANSE S',
-    slug: 'dl-ellanse-s',
-    price: 1020.00,
-    description: 'Bioestimulador de colágeno Ellanse S com duração curta. Ideal para quem busca resultados naturais e graduais.',
-    images: [productImages['ellanse-s']],
-    category: 'Bioestimulador',
-    discount_percent: 0,
+    price_pix: 965,
+    price_card: 999,
+    category: 'Bioestimuladores',
     currency: 'BRL',
-    active: true
+    slug: 'dl-ellanse-s',
+    images: getProductImages('dl-ellanse-s', 'Bioestimuladores'),
+    active: true,
+    description: 'Bioestimulador de colágeno com duração menor, ótimo para primeiras sessões.'
   },
   {
     id: '16',
-    name: 'DL HARMONYCA 2ML',
-    slug: 'dl-harmonyca-2ml',
-    price: 1850.00,
-    description: 'Bioestimulador híbrido Harmonyca 2ML. Combina ácido hialurônico com microesferas de hidroxiapatita de cálcio.',
-    images: [productImages['harmonyca-2ml']],
-    category: 'Bioestimulador',
-    discount_percent: 0,
+    name: 'DL HIALUROX BIO 1ML',
+    price_pix: 350,
+    price_card: 399,
+    category: 'Bioestimuladores',
     currency: 'BRL',
-    active: true
+    slug: 'dl-hialurox-bio-1ml',
+    images: getProductImages('dl-hialurox-bio-1ml', 'Bioestimuladores'),
+    active: true,
+    description: 'Ácido hialurônico bioestimulador para hidratação profunda e estímulo de colágeno.'
   },
   {
     id: '17',
-    name: 'DL SCULPTRA 2 FRASCOS',
-    slug: 'dl-sculptra-2-frascos',
-    price: 2149.00,
-    description: 'Bioestimulador Sculptra kit com 2 frascos. Poli-L-láctico premium para rejuvenescimento facial profundo.',
-    images: [productImages['sculptra-2']],
-    category: 'Bioestimulador',
-    discount_percent: 0,
+    name: 'DL NUTRIEX CIENTIFIC',
+    price_pix: 310,
+    price_card: 335,
+    category: 'Bioestimuladores',
     currency: 'BRL',
-    active: true
+    slug: 'dl-nutriex-cientific',
+    images: getProductImages('dl-nutriex-cientific', 'Bioestimuladores'),
+    active: true,
+    description: 'Complexo nutricional para bioestimulação celular e rejuvenescimento.'
   },
-
-  // =============================================
-  // PREENCHEDORES (Preços PIX) - Amostra
-  // =============================================
   {
     id: '18',
-    name: 'DL BELOTERO BALANCE LIDO',
-    slug: 'dl-belotero-balance-lido',
-    price: 265.00,
-    description: 'Preenchedor Belotero Balance com lidocaína para rugas finas. Tecnologia Cohesive Polydensified Matrix.',
-    images: [productImages['belotero-balance']],
-    category: 'Preenchedor',
-    discount_percent: 0,
+    name: 'DL RADIESSE DUO 1.5CC',
+    price_pix: 770,
+    price_card: 799,
+    category: 'Bioestimuladores',
     currency: 'BRL',
-    active: true
+    slug: 'dl-radiesse-duo-1-5cc',
+    images: getProductImages('dl-radiesse-duo-1-5cc', 'Bioestimuladores'),
+    active: true,
+    description: 'Bioestimulador de cálcio premium com dupla ação: preenchimento e estímulo.'
   },
   {
     id: '19',
-    name: 'DL RESTYLANE KYSSE 1ML',
-    slug: 'dl-restylane-kysse-1ml',
-    price: 420.00,
-    description: 'Preenchedor Restylane Kysse 1ML para lábios. Tecnologia OBT para resultados naturais e duradouros.',
-    images: [productImages['restylane-kysse']],
-    category: 'Preenchedor',
-    discount_percent: 0,
+    name: 'DL RADIESSE DUO 3.0 CC',
+    price_pix: 1320,
+    price_card: 1362,
+    category: 'Bioestimuladores',
     currency: 'BRL',
-    active: true
+    slug: 'dl-radiesse-duo-3-0cc',
+    images: getProductImages('dl-radiesse-duo-3-0cc', 'Bioestimuladores'),
+    active: true,
+    description: 'Bioestimulador de cálcio volume maior para tratamentos corporais e faciais extensos.'
   },
-
-  // =============================================
-  // FIOS DE BIOESTIMULAÇÃO (Preços PIX) - Amostra
-  // =============================================
   {
     id: '20',
-    name: 'DL APRIL BRIDE 18GX100MMX160MM ESPICULADO PACK 4 FIOS',
-    slug: 'dl-april-bride-18gx100mmx160mm-espiculado-pack-4-fios',
-    price: 380.00,
-    description: 'Fios April Bride 18G espiculados pack 4 unidades. Bioestimulação intensiva com espículas para máximo estímulo de colágeno.',
-    images: [productImages.fio],
-    category: 'Fio Bioestimulação',
-    discount_percent: 0,
+    name: 'DL RADIESSE PLUS LIDO',
+    price_pix: 770,
+    price_card: 779,
+    category: 'Bioestimuladores',
     currency: 'BRL',
-    active: true
+    slug: 'dl-radiesse-plus-lido',
+    images: getProductImages('dl-radiesse-plus-lido', 'Bioestimuladores'),
+    active: true,
+    description: 'Bioestimulador de cálcio com lidocaína para maior conforto na aplicação.'
   },
-
-  // =============================================
-  // MICROCÂNULAS (Preços PIX) - Amostra
-  // =============================================
   {
     id: '21',
-    name: 'DL MICROCÂNULA PRO DEEP (22GX50MM)',
-    slug: 'dl-microcanula-pro-deep-22gx50mm',
-    price: 15.00,
-    description: 'Microcânula Pro Deep 22G x 50mm. Aplicação profunda com máxima precisão e mínimo trauma tecidual.',
-    images: [productImages.microcanula],
-    category: 'Microcânula',
-    discount_percent: 0,
+    name: 'DL RENNOVA DIAMOND INTENSE',
+    price_pix: 499,
+    price_card: 519,
+    category: 'Bioestimuladores',
     currency: 'BRL',
-    active: true
+    slug: 'dl-rennova-diamond-intense',
+    images: getProductImages('dl-rennova-diamond-intense', 'Bioestimuladores'),
+    active: true,
+    description: 'Bioestimulador intenso com tecnologia diamond para máxima eficácia.'
   },
-
-  // =============================================
-  // ENZIMAS (Preços PIX)
-  // =============================================
   {
     id: '22',
-    name: 'DL HIALURONIDASE 3 VIALS 2.000 UTR',
-    slug: 'dl-hialuronidase-3-vials-2000-utr',
-    price: 170.00,
-    description: 'Hialuronidase 3 vials 2.000 UTR. Enzima para dissolução de ácido hialurônico em procedimentos de correção e emergência.',
-    images: [productImages.enzima],
-    category: 'Enzima',
-    discount_percent: 0,
+    name: 'DL RENNOVA ELLEVA 150MG',
+    price_pix: 569,
+    price_card: 599,
+    category: 'Bioestimuladores',
     currency: 'BRL',
-    active: true
+    slug: 'dl-rennova-elleva-150mg',
+    images: getProductImages('dl-rennova-elleva-150mg', 'Bioestimuladores'),
+    active: true,
+    description: 'Bioestimulador Elleva concentração intermediária para rejuvenescimento.'
+  },
+  {
+    id: '23',
+    name: 'DL RENNOVA ELLEVA 210MG',
+    price_pix: 799,
+    price_card: 835,
+    category: 'Bioestimuladores',
+    currency: 'BRL',
+    slug: 'dl-rennova-elleva-210mg',
+    images: getProductImages('dl-rennova-elleva-210mg', 'Bioestimuladores'),
+    active: true,
+    description: 'Bioestimulador Elleva alta concentração para tratamentos avançados.'
+  },
+  {
+    id: '24',
+    name: 'DL RENNOVA ELLEVA X 630MG',
+    price_pix: 2270,
+    price_card: 2349,
+    category: 'Bioestimuladores',
+    currency: 'BRL',
+    slug: 'dl-rennova-elleva-x-630mg',
+    images: getProductImages('dl-rennova-elleva-x-630mg', 'Bioestimuladores'),
+    active: true,
+    description: 'Bioestimulador Elleva X ultra concentrado para casos complexos.'
+  },
+  {
+    id: '25',
+    name: 'DL SCULPTRA 2 FRASCOS',
+    price_pix: 2149,
+    price_card: 2289,
+    category: 'Bioestimuladores',
+    currency: 'BRL',
+    slug: 'dl-sculptra-2-frascos',
+    images: getProductImages('dl-sculptra-2-frascos', 'Bioestimuladores'),
+    active: true,
+    description: 'Kit Sculptra 2 frascos para estimulação prolongada de colágeno.'
+  },
+  
+  // BIOREMODELADORES
+  {
+    id: '26',
+    name: 'DL BIO EXO PLUS (EXOSSOMOS PDRN HIALURONICO) 7ML',
+    price_pix: 330,
+    price_card: 359,
+    category: 'Bioremodeladores',
+    currency: 'BRL',
+    slug: 'dl-bio-exo-plus-7ml',
+    images: getProductImages('dl-bio-exo-plus-7ml', 'Bioremodeladores'),
+    active: true,
+    description: 'Bioremodelador com exossomos, PDRN e ácido hialurônico para regeneração celular avançada.'
+  },
+  {
+    id: '27',
+    name: 'DL EVO PDRN TRIPLE 1 VIAL 3ML',
+    price_pix: 229,
+    price_card: 245,
+    category: 'Bioremodeladores',
+    currency: 'BRL',
+    slug: 'dl-evo-pdrn-triple-3ml',
+    images: getProductImages('dl-evo-pdrn-triple-3ml', 'Bioremodeladores'),
+    active: true,
+    description: 'PDRN concentrado para reparação tecidual e rejuvenescimento natural.'
+  },
+  {
+    id: '28',
+    name: 'DL PROPHILO 2ML',
+    price_pix: 889,
+    price_card: 916,
+    category: 'Bioremodeladores',
+    currency: 'BRL',
+    slug: 'dl-prophilo-2ml',
+    images: getProductImages('dl-prophilo-2ml', 'Bioremodeladores'),
+    active: true,
+    description: 'Ácido hialurônico híbrido para remodelação cutânea e hidratação profunda.'
+  },
+  {
+    id: '29',
+    name: 'DL REJUVITAL PDRN 5 VIALS 3ML',
+    price_pix: 749,
+    price_card: 799,
+    category: 'Bioremodeladores',
+    currency: 'BRL',
+    slug: 'dl-rejuvital-pdrn-5-vials',
+    images: getProductImages('dl-rejuvital-pdrn-5-vials', 'Bioremodeladores'),
+    active: true,
+    description: 'Kit completo de PDRN para protocolos de rejuvenescimento intensivo.'
+  },
+  
+  // SKINBOOSTERS
+  {
+    id: '30',
+    name: 'DL HIALUROX SKIN PLUS 3 VIALS 4ML',
+    price_pix: 299,
+    price_card: 339,
+    category: 'Skinboosters',
+    currency: 'BRL',
+    slug: 'dl-hialurox-skin-plus-3-vials',
+    images: getProductImages('dl-hialurox-skin-plus-3-vials', 'Skinboosters'),
+    active: true,
+    description: 'Kit skinbooster para hidratação cutânea e melhora da textura da pele.'
+  },
+  {
+    id: '31',
+    name: 'DL SAYPHA RICH',
+    price_pix: 199,
+    price_card: 210,
+    category: 'Skinboosters',
+    currency: 'BRL',
+    slug: 'dl-saypha-rich',
+    images: getProductImages('dl-saypha-rich', 'Skinboosters'),
+    active: true,
+    description: 'Skinbooster enriquecido com vitaminas para revitalização da pele.'
+  },
+  
+  // PREENCHEDORES
+  {
+    id: '32',
+    name: 'DL BELOTERO BALANCE LIDO',
+    price_pix: 255,
+    price_card: 265,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-belotero-balance-lido',
+    images: getProductImages('dl-belotero-balance-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor balanceado com lidocaína para rugas finas e médias.'
+  },
+  {
+    id: '33',
+    name: 'DL BELOTERO INTENSE LIDO',
+    price_pix: 265,
+    price_card: 275,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-belotero-intense-lido',
+    images: getProductImages('dl-belotero-intense-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor intenso com lidocaína para rugas profundas e sulcos.'
+  },
+  {
+    id: '34',
+    name: 'DL BELOTERO VOLUME LIDO',
+    price_pix: 525,
+    price_card: 535,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-belotero-volume-lido',
+    images: getProductImages('dl-belotero-volume-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor volumizador com lidocaína para perda de volume facial.'
+  },
+  {
+    id: '35',
+    name: 'DL BIO LIFT 24MG',
+    price_pix: 159,
+    price_card: 179,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-bio-lift-24mg',
+    images: getProductImages('dl-bio-lift-24mg', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Bio Lift concentração leve para sutileza natural.'
+  },
+  {
+    id: '36',
+    name: 'DL BIOGELIS FINE LINES 2ML',
+    price_pix: 460,
+    price_card: 490,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-biogelis-fine-lines-2ml',
+    images: getProductImages('dl-biogelis-fine-lines-2ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor específico para linhas finas e rugas superficiais.'
+  },
+  {
+    id: '37',
+    name: 'DL BIOGELIS GLOBAL 2ML',
+    price_pix: 499,
+    price_card: 530,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-biogelis-global-2ml',
+    images: getProductImages('dl-biogelis-global-2ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor global para tratamento completo facial.'
+  },
+  {
+    id: '38',
+    name: 'DL BIOGELIS VOLUME 2ML',
+    price_pix: 499,
+    price_card: 530,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-biogelis-volume-2ml',
+    images: getProductImages('dl-biogelis-volume-2ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor volumizador para restauração de contornos.'
+  },
+  {
+    id: '39',
+    name: 'DL BIOGELIS VOLUMAX 2ML',
+    price_pix: 699,
+    price_card: 729,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-biogelis-volumax-2ml',
+    images: getProductImages('dl-biogelis-volumax-2ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor máximo volume para casos que exigem alta projeção.'
+  },
+  {
+    id: '40',
+    name: 'DL BIOGELIS GLOBAL 2X 1,25ML',
+    price_pix: 550,
+    price_card: 569,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-biogelis-global-2x-1-25ml',
+    images: getProductImages('dl-biogelis-global-2x-1-25ml', 'Preenchedores'),
+    active: true,
+    description: 'Kit duplo BioGelis Global para tratamentos sequenciais.'
+  },
+  {
+    id: '41',
+    name: 'DL BIOGELIS VOLUME 2X 1,25ML',
+    price_pix: 550,
+    price_card: 569,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-biogelis-volume-2x-1-25ml',
+    images: getProductImages('dl-biogelis-volume-2x-1-25ml', 'Preenchedores'),
+    active: true,
+    description: 'Kit duplo BioGelis Volume para procedimentos extensos.'
+  },
+  {
+    id: '42',
+    name: 'EPTQ S300',
+    price_pix: 285,
+    price_card: 299,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'eptq-s300',
+    images: getProductImages('eptq-s300', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor EPTQ S300 para tratamentos de média densidade.'
+  },
+  {
+    id: '43',
+    name: 'EPTQ S500',
+    price_pix: 285,
+    price_card: 299,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'eptq-s500',
+    images: getProductImages('eptq-s500', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor EPTQ S500 para volumes mais pronunciados.'
+  },
+  {
+    id: '44',
+    name: 'DL EVO DERM 1ML',
+    price_pix: 227,
+    price_card: 238,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-evo-derm-1ml',
+    images: getProductImages('dl-evo-derm-1ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor dérmico Evo para hidratação e rejuvenescimento.'
+  },
+  {
+    id: '45',
+    name: 'DL EVO ULTRA DEEP 1ML',
+    price_pix: 227,
+    price_card: 238,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-evo-ultra-deep-1ml',
+    images: getProductImages('dl-evo-ultra-deep-1ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor ultra profundo para modelagem e contorno.'
+  },
+  {
+    id: '46',
+    name: 'DL NEURAMIS DEEP',
+    price_pix: 199,
+    price_card: 219,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-neuramis-deep',
+    images: getProductImages('dl-neuramis-deep', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Neuramis para sulcos e rugas profundas.'
+  },
+  {
+    id: '47',
+    name: 'DL NEURAMIS LIDOCAINE VOLUME',
+    price_pix: 199,
+    price_card: 219,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-neuramis-lidocaine-volume',
+    images: getProductImages('dl-neuramis-lidocaine-volume', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Neuramis volume com lidocaína para maior conforto.'
+  },
+  {
+    id: '48',
+    name: 'DL NEURAMIS LIDOCAINE',
+    price_pix: 199,
+    price_card: 219,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-neuramis-lidocaine',
+    images: getProductImages('dl-neuramis-lidocaine', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Neuramis com anestésico para aplicação confortável.'
+  },
+  {
+    id: '49',
+    name: 'DL PERFECTHA SUBSKIN',
+    price_pix: 730,
+    price_card: 749,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-perfectha-subskin',
+    images: getProductImages('dl-perfectha-subskin', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor subcutâneo para contornos e volumes significativos.'
+  },
+  {
+    id: '50',
+    name: 'DL RENNOVA HYALURONIC 30 3ML (RBS)',
+    price_pix: 345,
+    price_card: 369,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-hyaluronic-30-3ml',
+    images: getProductImages('dl-rennova-hyaluronic-30-3ml', 'Preenchedores'),
+    active: true,
+    description: 'Ácido hialurônico Rennova 30mg/ml para hidratação intensa.'
+  },
+  {
+    id: '51',
+    name: 'DL RENNOVA DEEP LINE LIDO',
+    price_pix: 275,
+    price_card: 295,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-deep-line-lido',
+    images: getProductImages('dl-rennova-deep-line-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor para linhas profundas com anestésico.'
+  },
+  {
+    id: '52',
+    name: 'DL RENNOVA FILL',
+    price_pix: 199,
+    price_card: 215,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-fill',
+    images: getProductImages('dl-rennova-fill', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor básico Rennova para correções sutis.'
+  },
+  {
+    id: '53',
+    name: 'DL RENNOVA FILL LIDO',
+    price_pix: 217,
+    price_card: 227,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-fill-lido',
+    images: getProductImages('dl-rennova-fill-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Rennova Fill com lidocaína para maior conforto.'
+  },
+  {
+    id: '54',
+    name: 'DL RENNOVA LIFT',
+    price_pix: 225,
+    price_card: 237,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-lift',
+    images: getProductImages('dl-rennova-lift', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor lifting para sustentação e definição facial.'
+  },
+  {
+    id: '55',
+    name: 'DL RENNOVA LIFT LIDO',
+    price_pix: 247,
+    price_card: 257,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-lift-lido',
+    images: getProductImages('dl-rennova-lift-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor lifting com anestésico para procedimentos confortáveis.'
+  },
+  {
+    id: '56',
+    name: 'DL RENNOVA LIFT PLUS LIDO',
+    price_pix: 285,
+    price_card: 299,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-lift-plus-lido',
+    images: getProductImages('dl-rennova-lift-plus-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor lifting plus com lidocaína para máximo conforto.'
+  },
+  {
+    id: '57',
+    name: 'DL RENNOVA LIFT SHAPE 2ML',
+    price_pix: 349,
+    price_card: 375,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-lift-shape-2ml',
+    images: getProductImages('dl-rennova-lift-shape-2ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor modelador para contornos definidos e harmonização.'
+  },
+  {
+    id: '58',
+    name: 'DL RENNOVA ULTRA VOLUME LIDO 1ML',
+    price_pix: 285,
+    price_card: 299,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-ultra-volume-lido-1ml',
+    images: getProductImages('dl-rennova-ultra-volume-lido-1ml', 'Preenchedores'),
+    active: true,
+    description: 'Ultra volume 1ml com lidocaína para volumização controlada.'
+  },
+  {
+    id: '59',
+    name: 'DL RENNOVA ULTRA VOLUME LIDO 2ML',
+    price_pix: 460,
+    price_card: 488,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-rennova-ultra-volume-lido-2ml',
+    images: getProductImages('dl-rennova-ultra-volume-lido-2ml', 'Preenchedores'),
+    active: true,
+    description: 'Ultra volume 2ml para volumização significativa com conforto.'
+  },
+  {
+    id: '60',
+    name: 'DL RESTYLANE DEFYNE 1ML',
+    price_pix: 420,
+    price_card: 449,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-restylane-defyne-1ml',
+    images: getProductImages('dl-restylane-defyne-1ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor flexível para rugas profundas mantendo movimento natural.'
+  },
+  {
+    id: '61',
+    name: 'DL RESTYLANE GEL',
+    price_pix: 285,
+    price_card: 308,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-restylane-gel',
+    images: getProductImages('dl-restylane-gel', 'Preenchedores'),
+    active: true,
+    description: 'Gel Restylane para hidratação e correção de linhas finas.'
+  },
+  {
+    id: '62',
+    name: 'DL RESTYLANE LYFT LIDO',
+    price_pix: 399,
+    price_card: 419,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-restylane-lyft-lido',
+    images: getProductImages('dl-restylane-lyft-lido', 'Preenchedores'),
+    active: true,
+    description: 'Restylane Lyft com lidocaína para lifting não-cirúrgico.'
+  },
+  {
+    id: '63',
+    name: 'DL RESTYLANE LYFT SEM LIDO',
+    price_pix: 389,
+    price_card: 409,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-restylane-lyft-sem-lido',
+    images: getProductImages('dl-restylane-lyft-sem-lido', 'Preenchedores'),
+    active: true,
+    description: 'Restylane Lyft sem anestésico para lifting e volumização.'
+  },
+  {
+    id: '64',
+    name: 'DL RESTYLANE REFYNE 1ML',
+    price_pix: 299,
+    price_card: 320,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-restylane-refyne-1ml',
+    images: getProductImages('dl-restylane-refyne-1ml', 'Preenchedores'),
+    active: true,
+    description: 'Restylane Refyne para naturalidade e flexibilidade nas expressões.'
+  },
+  {
+    id: '65',
+    name: 'DL RESTYLANE VOLYME 1ML',
+    price_pix: 400,
+    price_card: 439,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-restylane-volyme-1ml',
+    images: getProductImages('dl-restylane-volyme-1ml', 'Preenchedores'),
+    active: true,
+    description: 'Restylane Volyme para criação de volumes e contornos faciais.'
+  },
+  {
+    id: '66',
+    name: 'DL SAYPHA FILLER LIDO',
+    price_pix: 220,
+    price_card: 231,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-saypha-filler-lido',
+    images: getProductImages('dl-saypha-filler-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Saypha com lidocaína para conforto na aplicação.'
+  },
+  {
+    id: '67',
+    name: 'DL SAYPHA FILLER SEM LIDO',
+    price_pix: 225,
+    price_card: 235,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-saypha-filler-sem-lido',
+    images: getProductImages('dl-saypha-filler-sem-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Saypha sem anestésico para aplicações específicas.'
+  },
+  {
+    id: '68',
+    name: 'DL SAYPHA VOLUME PLUS LIDO',
+    price_pix: 264,
+    price_card: 274,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-saypha-volume-plus-lido',
+    images: getProductImages('dl-saypha-volume-plus-lido', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor volumizador Saypha com lidocaína para maior volume.'
+  },
+  {
+    id: '69',
+    name: 'DL SINGDERM 10ML',
+    price_pix: 1100,
+    price_card: 1190,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-singderm-10ml',
+    images: getProductImages('dl-singderm-10ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Singderm volume extra 10ml para grandes áreas.'
+  },
+  {
+    id: '70',
+    name: 'DL SINGDERM 2ML',
+    price_pix: 350,
+    price_card: 369,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-singderm-2ml',
+    images: getProductImages('dl-singderm-2ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Singderm 2ml para correções e volumização moderada.'
+  },
+  {
+    id: '71',
+    name: 'DL SOFIDERM SUB SKIN 10ML',
+    price_pix: 1790,
+    price_card: 1880,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-sofiderm-sub-skin-10ml',
+    images: getProductImages('dl-sofiderm-sub-skin-10ml', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor subcutâneo Sofiderm 10ml para volumes corporais.'
+  },
+  {
+    id: '72',
+    name: 'DL YVOIRE CLASSIC PLUS',
+    price_pix: 299,
+    price_card: 309,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-yvoire-classic-plus',
+    images: getProductImages('dl-yvoire-classic-plus', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Yvoire clássico plus para resultados naturais.'
+  },
+  {
+    id: '73',
+    name: 'DL YVOIRE CONTOUR',
+    price_pix: 325,
+    price_card: 335,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-yvoire-contour',
+    images: getProductImages('dl-yvoire-contour', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Yvoire para definição e contornos faciais.'
+  },
+  {
+    id: '74',
+    name: 'DL YVOIRE VOLUME PLUS',
+    price_pix: 309,
+    price_card: 329,
+    category: 'Preenchedores',
+    currency: 'BRL',
+    slug: 'dl-yvoire-volume-plus',
+    images: getProductImages('dl-yvoire-volume-plus', 'Preenchedores'),
+    active: true,
+    description: 'Preenchedor Yvoire volume plus para restauração facial.'
+  },
+  
+  // FIOS BIOESTIMULAÇÃO
+  {
+    id: '75',
+    name: 'DL APRIL BRIDE 18GX100MMX160MM ESPICULADO PACK 4 FIOS',
+    price_pix: 396,
+    price_card: 380,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-april-bride-18g-espiculado-pack-4',
+    images: getProductImages('dl-april-bride-18g-espiculado-pack-4', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios April Bride 18G espiculados para lifting intenso, pack com 4 unidades.'
+  },
+  {
+    id: '76',
+    name: 'DL APRIL BRIDE 19GX100MMX160MM ESPICULADO PACK 4 FIOS',
+    price_pix: 396,
+    price_card: 380,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-april-bride-19g-espiculado-pack-4',
+    images: getProductImages('dl-april-bride-19g-espiculado-pack-4', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios April Bride 19G espiculados para sustentação moderada, pack com 4 unidades.'
+  },
+  {
+    id: '77',
+    name: 'DL APRIL BRIDE 29GX40MMX50MM PACK 10 UN',
+    price_pix: 180,
+    price_card: 165,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-april-bride-29g-pack-10',
+    images: getProductImages('dl-april-bride-29g-pack-10', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios April Bride 29G para bioestimulação sutil, pack com 10 unidades.'
+  },
+  {
+    id: '78',
+    name: 'DL APRIL BRIDE FILLER 21GX38MMX50MM PACK 4 FIOS',
+    price_pix: 375,
+    price_card: 360,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-april-bride-filler-21g-38mm-pack-4',
+    images: getProductImages('dl-april-bride-filler-21g-38mm-pack-4', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios April Bride Filler 21G 38mm para preenchimento, pack com 4 unidades.'
+  },
+  {
+    id: '79',
+    name: 'DL APRIL BRIDE FILLER 21GX60MMX80MM PACK 4 FIOS',
+    price_pix: 375,
+    price_card: 360,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-april-bride-filler-21g-60mm-pack-4',
+    images: getProductImages('dl-april-bride-filler-21g-60mm-pack-4', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios April Bride Filler 21G 60mm para áreas maiores, pack com 4 unidades.'
+  },
+  {
+    id: '80',
+    name: 'DL BIOFILS LISO AGULHADO 30GX25MMX30MM PACK 10 UN',
+    price_pix: 260,
+    price_card: 240,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-biofils-liso-30g-pack-10',
+    images: getProductImages('dl-biofils-liso-30g-pack-10', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios BioFils lisos 30G para bioestimulação suave, pack com 10 unidades.'
+  },
+  {
+    id: '81',
+    name: 'DL BIOFILS 19GX100MMX170MM ESPICULADO PACK 4UN',
+    price_pix: 375,
+    price_card: 349,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-biofils-19g-espiculado-pack-4',
+    images: getProductImages('dl-biofils-19g-espiculado-pack-4', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios BioFils 19G espiculados para lifting eficaz, pack com 4 unidades.'
+  },
+  {
+    id: '82',
+    name: 'DL BIOFILS 23GX38MMX50MM FILLER PACK 4UN',
+    price_pix: 375,
+    price_card: 349,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-biofils-23g-filler-pack-4',
+    images: getProductImages('dl-biofils-23g-filler-pack-4', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios BioFils 23G filler para preenchimento e sustentação, pack com 4 unidades.'
+  },
+  {
+    id: '83',
+    name: 'DL ITHREAD 21GX38MMX50MM FILLER PACK 20UN',
+    price_pix: 1969,
+    price_card: 1838,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-ithread-21g-38mm-pack-20',
+    images: getProductImages('dl-ithread-21g-38mm-pack-20', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios IThread 21G 38mm profissionais, pack econômico com 20 unidades.'
+  },
+  {
+    id: '84',
+    name: 'DL ITHREAD 21GX60MMX90MM FILLER PACK 20UN',
+    price_pix: 1969,
+    price_card: 1838,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-ithread-21g-60mm-pack-20',
+    images: getProductImages('dl-ithread-21g-60mm-pack-20', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios IThread 21G 60mm para áreas extensas, pack com 20 unidades.'
+  },
+  {
+    id: '85',
+    name: 'DL ITHREAD 29GX38MM AGULHADO PACK 20UN',
+    price_pix: 499,
+    price_card: 460,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-ithread-29g-38mm-pack-20',
+    images: getProductImages('dl-ithread-29g-38mm-pack-20', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios IThread 29G agulhados para bioestimulação, pack com 20 unidades.'
+  },
+  {
+    id: '86',
+    name: 'DL ITHREAD 30GX25MM AGULHADO PACK 20UN',
+    price_pix: 499,
+    price_card: 460,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-ithread-30g-25mm-pack-20',
+    images: getProductImages('dl-ithread-30g-25mm-pack-20', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios IThread 30G 25mm para aplicações delicadas, pack com 20 unidades.'
+  },
+  {
+    id: '87',
+    name: 'DL ITHREAD ESPICULADO 19GX100X160MM PACK 20UN',
+    price_pix: 1899,
+    price_card: 1820,
+    category: 'Fios Bioestimulação',
+    currency: 'BRL',
+    slug: 'dl-ithread-espiculado-19g-pack-20',
+    images: getProductImages('dl-ithread-espiculado-19g-pack-20', 'Fios Bioestimulação'),
+    active: true,
+    description: 'Fios IThread espiculados 19G para lifting intenso, pack profissional com 20 unidades.'
+  },
+  
+  // MICROCÂNULAS
+  {
+    id: '88',
+    name: 'DL MICROCÂNULA PRO DEEP (22GX50MM)',
+    price_pix: 15,
+    price_card: 17,
+    category: 'Microcânulas',
+    currency: 'BRL',
+    slug: 'dl-microcanula-22g-50mm',
+    images: getProductImages('dl-microcanula-22g-50mm', 'Microcânulas'),
+    active: true,
+    description: 'Microcânula Pro Deep 22G 50mm para aplicações precisas e seguras.'
+  },
+  {
+    id: '89',
+    name: 'DL MICROCÂNULA PRO DEEP (25GX50MM)',
+    price_pix: 15,
+    price_card: 17,
+    category: 'Microcânulas',
+    currency: 'BRL',
+    slug: 'dl-microcanula-25g-50mm',
+    images: getProductImages('dl-microcanula-25g-50mm', 'Microcânulas'),
+    active: true,
+    description: 'Microcânula Pro Deep 25G 50mm para procedimentos delicados.'
+  },
+  {
+    id: '90',
+    name: 'DL MICROCÂNULA PRO DEEP (22GX70MM)',
+    price_pix: 15,
+    price_card: 17,
+    category: 'Microcânulas',
+    currency: 'BRL',
+    slug: 'dl-microcanula-22g-70mm',
+    images: getProductImages('dl-microcanula-22g-70mm', 'Microcânulas'),
+    active: true,
+    description: 'Microcânula Pro Deep 22G 70mm para áreas maiores.'
+  },
+  {
+    id: '91',
+    name: 'DL MICROCÂNULA PRO DEEP (18GX100MM)',
+    price_pix: 18,
+    price_card: 20,
+    category: 'Microcânulas',
+    currency: 'BRL',
+    slug: 'dl-microcanula-18g-100mm',
+    images: getProductImages('dl-microcanula-18g-100mm', 'Microcânulas'),
+    active: true,
+    description: 'Microcânula Pro Deep 18G 100mm para volumes maiores.'
+  },
+  {
+    id: '92',
+    name: 'DL MICROCÂNULA PRO DEEP (18GX70MM)',
+    price_pix: 18,
+    price_card: 20,
+    category: 'Microcânulas',
+    currency: 'BRL',
+    slug: 'dl-microcanula-18g-70mm',
+    images: getProductImages('dl-microcanula-18g-70mm', 'Microcânulas'),
+    active: true,
+    description: 'Microcânula Pro Deep 18G 70mm para aplicações versáteis.'
+  },
+  
+  // ENZIMAS
+  {
+    id: '93',
+    name: 'DL HIALURONIDASE 3 VIALS 2.000 UTR',
+    price_pix: 170,
+    price_card: 180,
+    category: 'Enzimas',
+    currency: 'BRL',
+    slug: 'dl-hialuronidase-3-vials',
+    images: getProductImages('dl-hialuronidase-3-vials', 'Enzimas'),
+    active: true,
+    description: 'Hialuronidase para dissolução de ácido hialurônico, kit com 3 vials de 2.000 UTR.'
   }
 ];
 
-// Função para obter produtos mock (síncrona - compatibilidade)
-export function getMockProducts(): MockProduct[] {
-  return mockProducts.filter(product => product.active);
+// Dados administrativos com informações sensíveis
+export const mockProductsAdmin = mockProducts.map(product => ({
+  ...product,
+  price_pix_original: product.price_pix,
+  price_card_original: product.price_card, 
+  commission_percent: 15, // 15% de comissão padrão
+  cost_price: Math.round(product.price_pix * 0.6), // 60% do preço PIX como custo
+  profit_margin: Math.round(product.price_pix * 0.4), // 40% de margem
+}));
+
+// Funções para usuários anônimos (dados públicos)
+export function getProducts(): Product[] {
+  return mockProducts.filter(p => p.active !== false);
 }
 
-// Função para obter produto por slug (síncrona - compatibilidade)
-export function getMockProductBySlug(slug: string): MockProduct | undefined {
-  return mockProducts.find(product => product.slug === slug && product.active);
+export function getProductBySlug(slug: string): Product | null {
+  return getProducts().find(p => p.slug === slug) || null;
 }
 
-// Versões com cache inteligente (assíncronas - performance)
-export async function getMockProductsCached(): Promise<MockProduct[]> {
-  return smartCache.getOrSet(
-    'products:all:active',
-    () => Promise.resolve(getMockProducts()),
-    10 * 60 * 1000 // 10 minutos de cache
-  );
+// Funções administrativas (dados sensíveis)
+export function getProductsAdmin() {
+  return mockProductsAdmin.filter(p => p.active !== false);
 }
 
-export async function getMockProductBySlugCached(slug: string): Promise<MockProduct | undefined> {
-  return smartCache.getOrSet(
-    `product:slug:${slug}`,
-    () => Promise.resolve(getMockProductBySlug(slug)),
-    15 * 60 * 1000 // 15 minutos de cache (produtos individuais duram mais)
-  );
-} 
+export function getProductsVendor() {
+  return mockProductsAdmin.filter(p => p.active !== false).map(product => {
+    const { price_pix_original, price_card_original, cost_price, profit_margin, ...safeProduct } = product;
+    return {
+      ...safeProduct,
+      your_commission: Math.round(product.price_pix * (product.commission_percent / 100)),
+      price_pix_commission: product.price_pix + Math.round(product.price_pix * (product.commission_percent / 100))
+    };
+  });
+}

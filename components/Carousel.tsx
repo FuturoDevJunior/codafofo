@@ -1,3 +1,5 @@
+"use client";
+
 import {
   useEffect,
   useState,
@@ -13,7 +15,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 
-export default function ProductCarousel({ images }: { images: string[] }) {
+export default function ProductCarousel({ images = [], productName }: { images?: string[]; productName?: string }) {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIdx, setSelectedIdx] = useState(0);
 
@@ -28,16 +30,18 @@ export default function ProductCarousel({ images }: { images: string[] }) {
   return (
     <Carousel className="w-full max-w-xs mx-auto">
       <CarouselContent>
-        {images.map((img, idx) => (
+        {(images || []).map((img, idx) => (
           <CarouselItem key={img}>
             <SmartImage 
               src={img} 
-              alt={`Imagem ${idx + 1}`} 
-              fallback="/icons/icon-192.png"
-              width={400}
+              alt={`Imagem ${idx + 1}${productName ? ` do produto ${productName}` : ''}`}
+              width={320}
               height={256}
-              className="w-full h-64 object-cover rounded-xl"
-              priority={idx === 0}
+              className="rounded-xl object-cover w-full h-64"
+              fallback="/icons/icon-192.png"
+              borderRadius="rounded-xl"
+              objectFit="cover"
+              productName={productName}
             />
           </CarouselItem>
         ))}

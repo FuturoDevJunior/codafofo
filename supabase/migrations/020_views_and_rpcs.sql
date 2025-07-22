@@ -1,0 +1,9 @@
+CREATE VIEW ORDER_SUMMARY AS
+    SELECT
+        STATUS,
+        COUNT(*)   AS COUNT,
+        SUM(TOTAL) AS REVENUE
+    FROM
+        ORDERS
+    GROUP BY
+        STATUS;

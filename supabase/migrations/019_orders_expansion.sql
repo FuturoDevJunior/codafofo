@@ -1,0 +1,13 @@
+ALTER TABLE ORDERS
+    ADD COLUMN STATUS TEXT DEFAULT 'pending' CHECK (
+        STATUS IN ('pending', 'confirmed', 'shipped', 'cancelled')
+    );
+
+ALTER TABLE ORDERS
+    ADD COLUMN DISCOUNT_APPLIED DECIMAL(
+        10,
+        2
+    ) DEFAULT 0;
+
+ALTER TABLE ORDERS
+    ADD COLUMN NOTES TEXT;

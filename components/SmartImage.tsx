@@ -60,9 +60,13 @@ export default function SmartImage({
     setCurrentSrc(src);
     setHasError(false);
     setRetryCount(0);
+    setIsLoading(true); // Mostrar skeleton até carregar
   }, [src]);
 
   const handleError = () => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('SmartImage error loading:', src, 'retryCount:', retryCount);
+    }
     if (retryCount < maxRetries && currentSrc !== fallback) {
       // Retry com delay
       setTimeout(() => {
@@ -77,6 +81,9 @@ export default function SmartImage({
   };
 
   const handleLoad = () => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('SmartImage loaded successfully:', currentSrc);
+    }
     setIsLoading(false);
     setHasError(false);
   };
@@ -89,11 +96,12 @@ export default function SmartImage({
         flex items-center justify-center
         ${borderRadius} ${className}
         relative overflow-hidden
+        ${fill ? 'absolute inset-0' : ''}
       `}
       style={!fill ? { width, height } : undefined}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-vitale-primary/10 to-transparent animate-shimmer" />
-      <Package className="w-8 h-8 text-vitale-primary/30 z-10" />
+      <Package className="w-6 h-6 sm:w-8 sm:h-8 text-vitale-primary/30 z-10 flex-shrink-0" />
     </div>
   );
 
@@ -103,42 +111,42 @@ export default function SmartImage({
       className={`
         bg-gradient-to-br from-vitale-neutral to-vitale-light
         border-2 border-dashed border-vitale-primary/20
-        flex flex-col items-center justify-center p-4
+        flex flex-col items-center justify-center p-2 sm:p-4
         ${borderRadius} ${className}
+        ${fill ? 'absolute inset-0' : ''}
       `}
       style={!fill ? { width, height } : undefined}
     >
-      <Package className="w-6 h-6 text-vitale-primary/40 mb-1" />
-      <span className="text-xs text-vitale-dark/60 text-center">
+      <Package className="w-4 h-4 sm:w-6 sm:h-6 text-vitale-primary/40 mb-1 flex-shrink-0" />
+      <span className="text-xs text-vitale-dark/60 text-center line-clamp-2">
         {productName || alt || 'Produto'}
       </span>
     </div>
   );
 
-  if (isLoading) {
-    return <LoadingSkeleton />;
-  }
-
+  // Renderização condicional mais robusta
   if (hasError && currentSrc === fallback) {
     return <ErrorState />;
   }
 
   return (
-    <Image
-      src={currentSrc}
-      alt={alt || productName || 'Imagem do produto'}
-      fill={fill}
-      width={!fill ? width : undefined}
-      height={!fill ? height : undefined}
-      className={`transition-opacity duration-300 ${borderRadius} object-${objectFit} ${className}`}
-      onError={handleError}
-      onLoad={handleLoad}
-      priority={priority}
-      loading={loading}
-      sizes={sizes}
-      quality={85}
-      placeholder="blur"
-      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyEnyLWT83GzN2zPZ7N2bsaTKKJWjkjkhj0eK9p9n9g8lMqeegJ1lYjA6T6F6aJaRfzV/rh7/q3KVnIyZGiJKXoNK6nQb9uXAUmhqJxKHRwP/Z"
-    />
+    <div className={fill ? 'relative w-full h-full' : 'relative'} style={!fill ? { width, height } : undefined}>
+      {isLoading && <LoadingSkeleton />}
+      <Image
+        src={currentSrc || fallback}
+        alt={alt || productName || 'Imagem do produto'}
+        fill={fill || undefined} // ✅ CORRIGIDO: Evita warning de prop booleana
+        width={!fill ? width : undefined}
+        height={!fill ? height : undefined}
+        className={`transition-all duration-300 ${borderRadius} object-${objectFit} ${className} ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        onError={handleError}
+        onLoad={handleLoad}
+        priority={priority || undefined} // ✅ CORRIGIDO: Evita warning de prop booleana
+        loading={priority ? undefined : loading} // ✅ CORRIGIDO: Não usar loading quando priority=true
+        sizes={sizes}
+        quality={85}
+        unoptimized={currentSrc?.includes('.svg') || undefined} // ✅ CORRIGIDO: Evita warning de prop booleana
+      />
+    </div>
   );
 }

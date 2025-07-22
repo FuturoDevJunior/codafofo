@@ -32,6 +32,7 @@ export default function WhatsAppButton() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<ContactForm>({ name: '', whatsapp: '', cep: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'pix' | 'prazo'>('pix');
   
   const items = useCartStore((state) => state.items);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -39,9 +40,9 @@ export default function WhatsAppButton() {
   const { trackWhatsAppRedirect, trackLead } = useAnalytics();
 
   const generateWhatsAppMessage = (contact?: ContactForm) => {
-    const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const total = items.reduce((sum, item) => sum + ((paymentMethod === 'pix' ? item.price_pix : item.price_card) * item.quantity), 0);
     
-    let message = "🛒 *PEDIDO VYTALLE ESTÉTICA*\n\n";
+    let message = "🛒 *PEDIDO VYTALLE ESTÉTICA & VISCOSUPLEMENTAÇÃO*\n\n";
     
     // Dados do cliente
     if (contact) {
@@ -53,16 +54,17 @@ export default function WhatsAppButton() {
     
     if (items.length > 0) {
       message += "🛍️ *PRODUTOS SOLICITADOS:*\n";
-      message += "━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+      message += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
       
       items.forEach((item, index) => {
+        const price = paymentMethod === 'pix' ? item.price_pix : item.price_card;
         message += `${index + 1}. *${item.name}*\n`;
         message += `   • Quantidade: ${item.quantity}x\n`;
-        message += `   • Valor unit.: R$ ${item.price.toFixed(2).replace('.', ',')}\n`;
-        message += `   • Subtotal: R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n\n`;
+        message += `   • Valor unit.: R$ ${price.toFixed(2).replace('.', ',')}\n`;
+        message += `   • Subtotal: R$ ${(price * item.quantity).toFixed(2).replace('.', ',')}\n\n`;
       });
       
-      message += "━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+      message += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
       message += `💰 *VALOR TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
     }
     
@@ -72,7 +74,7 @@ export default function WhatsAppButton() {
     message += "✅ Definir forma de pagamento\n";
     message += "✅ Agendar entrega\n\n";
     
-    message += "🏥 _Vytalle Estética - Produtos Premium para Profissionais_\n";
+    message += "🏥 _Vytalle Estética & Viscosuplementação - Produtos Premium para Profissionais_\n";
     message += "📧 _Pedido via Catálogo Digital_";
     
     return encodeURIComponent(message);
@@ -103,13 +105,13 @@ export default function WhatsAppButton() {
     }
 
     try {
-      const whatsappNumber = "5562999404495"; // Número da Vytalle
+      const whatsappNumber = "5521996192890"; // Número correto da Vytalle
       const message = generateWhatsAppMessage(formData);
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
       
       // Track analytics
       trackWhatsAppRedirect();
-      const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const total = items.reduce((sum, item) => sum + ((paymentMethod === 'pix' ? item.price_pix : item.price_card) * item.quantity), 0);
       
       trackLead({
         name: formData.name,
@@ -119,7 +121,7 @@ export default function WhatsAppButton() {
           id: item.id,
           name: item.name,
           quantity: item.quantity,
-          price: item.price
+          price: paymentMethod === 'pix' ? item.price_pix : item.price_card
         })),
         totalValue: total,
         converted: true
@@ -160,7 +162,7 @@ export default function WhatsAppButton() {
   };
 
   const handleQuickContact = () => {
-    const whatsappNumber = "5562999404495";
+    const whatsappNumber = "5521996192890";
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     
@@ -250,6 +252,18 @@ export default function WhatsAppButton() {
                   />
                 </div>
 
+                <div className="space-y-2">
+                  <Label>Método de Pagamento *</Label>
+                  <div className="flex gap-4">
+                    <label>
+                      <input type="radio" name="paymentMethod" value="pix" checked={paymentMethod === 'pix'} onChange={() => setPaymentMethod('pix')} /> PIX
+                    </label>
+                    <label>
+                      <input type="radio" name="paymentMethod" value="prazo" checked={paymentMethod === 'prazo'} onChange={() => setPaymentMethod('prazo')} /> Cartão
+                    </label>
+                  </div>
+                </div>
+
                 {itemCount > 0 && (
                   <div className="bg-vitale-neutral p-4 rounded-lg">
                     <p className="text-sm font-medium text-vitale-primary mb-2">
@@ -296,7 +310,7 @@ export default function WhatsAppButton() {
           
           {/* Main button */}
           <a
-            href={itemCount > 0 ? undefined : `https://wa.me/5562999404495?text=${generateWhatsAppMessage()}`}
+            href={itemCount > 0 ? undefined : `https://wa.me/5521996192890?text=${generateWhatsAppMessage()}`}
             target={itemCount > 0 ? undefined : "_blank"}
             rel="noopener noreferrer"
             data-testid="whatsapp-link"

@@ -1,12 +1,20 @@
-import { createSupabaseServerClient } from '@/lib/supabaseServer';
 import { redirect } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+
 import AdminForm from '@/components/AdminForm';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { createServerSupabaseClient } from '@/lib/supabaseServer';
+
 import AdminClient from './AdminClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Admin() {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createServerSupabaseClient();
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) redirect('/login');
 

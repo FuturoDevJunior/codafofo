@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { motion } from 'framer-motion';
 import {
   Minus,
   Package,
@@ -75,123 +76,134 @@ export default function CartItem({ item, onRemove, onUpdateQty }: CartItemProps)
   const totalItemPrice = item.price * item.quantity;
 
   return (
-    <Card className={`transition-all duration-300 ${
-      isRemoving ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
-    } hover:shadow-md border-l-4 border-l-vitale-primary/20`}>
-      <CardContent className="p-4">
-        <div className="flex gap-4">
-          {/* Imagem do Produto */}
-          <div className="flex-shrink-0">
-            <div className="w-20 h-20 bg-gradient-to-br from-vitale-neutral to-vitale-light rounded-lg overflow-hidden border-2 border-vitale-primary/10">
-              {item.images?.[0] ? (
-                <SmartImage 
-                  src={item.images[0]}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
-                  fallback="/api/placeholder/80/80"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <Package className="w-8 h-8 text-vitale-primary/30" />
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Informações do Produto */}
-          <div className="flex-1 space-y-2">
-            {/* Nome e Categoria */}
-            <div className="space-y-1">
-              <h3 className="font-semibold text-vitale-primary line-clamp-2 text-sm md:text-base">
-                {item.name}
-              </h3>
-              {item.category && (
-                <div className="flex items-center gap-1">
-                  <Tag className="w-3 h-3 text-neutral-500" />
-                  <span className="text-xs text-neutral-500">{item.category}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Preços */}
-            <div className="space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-neutral-600">
-                  {formatCurrency(item.price)} por unidade
-                </span>
-                <span className="text-lg font-bold text-vitale-primary">
-                  {formatCurrency(totalItemPrice)}
-                </span>
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+    >
+      <Card className={`transition-all duration-300 ${
+        isRemoving ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
+      } hover:shadow-md border-l-4 border-l-vitale-primary/20 rounded-xl`}>
+        <CardContent className="p-4">
+          <div className="flex gap-4">
+            {/* Imagem do Produto */}
+            <div className="flex-shrink-0">
+              <div className="w-20 h-20 bg-gradient-to-br from-vitale-neutral to-vitale-light rounded-lg overflow-hidden border-2 border-vitale-primary/10">
+                {item.images?.[0] ? (
+                  <SmartImage 
+                    src={item.images[0]}
+                    alt={`Foto do produto ${item.name}`}
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    fallback="/icons/icon-192.png"
+                    borderRadius="rounded-lg"
+                    objectFit="cover"
+                    productName={item.name}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Package className="w-8 h-8 text-vitale-primary/30" />
+                  </div>
+                )}
               </div>
-              {item.quantity > 1 && (
-                <p className="text-xs text-neutral-500">
-                  {item.quantity} × {formatCurrency(item.price)}
-                </p>
-              )}
             </div>
 
-            {/* Controles de Quantidade e Ações */}
-            <div className="flex items-center justify-between pt-2">
-              {/* Controles de Quantidade */}
-              <div className="flex items-center gap-2">
-                <Tooltip content="Diminuir quantidade" side="top">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => handleQuantityChange(-1)}
-                    disabled={item.quantity <= 1 || isUpdating}
-                    className="h-8 w-8 p-0 border-vitale-primary/20 hover:bg-vitale-primary hover:text-white"
-                  >
-                    <Minus className="w-3 h-3" />
-                  </Button>
-                </Tooltip>
-                
-                <Input 
-                  type="number" 
-                  value={item.quantity} 
-                  onChange={handleDirectQuantityChange}
-                  min={1}
-                  disabled={isUpdating}
-                  className="w-16 h-8 text-center font-semibold text-sm border-vitale-primary/20 focus:border-vitale-primary"
-                />
-                
-                <Tooltip content="Aumentar quantidade" side="top">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => handleQuantityChange(1)}
+            {/* Informações do Produto */}
+            <div className="flex-1 space-y-2">
+              {/* Nome e Categoria */}
+              <div className="space-y-1">
+                <h3 className="font-semibold text-vitale-primary line-clamp-2 text-sm md:text-base">
+                  {item.name}
+                </h3>
+                {item.category && (
+                  <div className="flex items-center gap-1">
+                    <Tag className="w-3 h-3 text-muted-foreground" />
+                    <span className="text-xs text-muted-foreground">{item.category}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Preços */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">
+                    {formatCurrency(item.price)} por unidade
+                  </span>
+                  <span className="text-lg font-bold text-vitale-primary">
+                    {formatCurrency(totalItemPrice)}
+                  </span>
+                </div>
+                {item.quantity > 1 && (
+                  <p className="text-xs text-muted-foreground">
+                    {item.quantity} × {formatCurrency(item.price)}
+                  </p>
+                )}
+              </div>
+
+              {/* Controles de Quantidade e Ações */}
+              <div className="flex items-center justify-between pt-2">
+                {/* Controles de Quantidade */}
+                <div className="flex items-center gap-2">
+                  <Tooltip content="Diminuir quantidade" side="top">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleQuantityChange(-1)}
+                      disabled={item.quantity <= 1 || isUpdating}
+                      className="h-8 w-8 p-0 border-vitale-primary/20 hover:bg-vitale-primary hover:text-white"
+                    >
+                      <Minus className="w-3 h-3" />
+                    </Button>
+                  </Tooltip>
+                  
+                  <Input 
+                    type="number" 
+                    value={item.quantity} 
+                    onChange={handleDirectQuantityChange}
+                    min={1}
                     disabled={isUpdating}
-                    className="h-8 w-8 p-0 border-vitale-primary/20 hover:bg-vitale-primary hover:text-white"
+                    className="w-16 h-8 text-center font-semibold text-sm border-vitale-primary/20 focus:border-vitale-primary"
+                  />
+                  
+                  <Tooltip content="Aumentar quantidade" side="top">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleQuantityChange(1)}
+                      disabled={isUpdating}
+                      className="h-8 w-8 p-0 border-vitale-primary/20 hover:bg-vitale-primary hover:text-white"
+                    >
+                      <Plus className="w-3 h-3" />
+                    </Button>
+                  </Tooltip>
+                </div>
+
+                {/* Botão Remover */}
+                <Tooltip content="Remover item" side="top">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={handleRemove}
+                    disabled={isRemoving}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50 h-8 px-3"
                   >
-                    <Plus className="w-3 h-3" />
+                    <Trash2 className="w-4 h-4 mr-1" />
+                    <span className="hidden sm:inline">Remover</span>
                   </Button>
                 </Tooltip>
               </div>
-
-              {/* Botão Remover */}
-              <Tooltip content="Remover item" side="top">
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={handleRemove}
-                  disabled={isRemoving}
-                  className="text-red-600 hover:text-red-700 hover:bg-red-50 h-8 px-3"
-                >
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  <span className="hidden sm:inline">Remover</span>
-                </Button>
-              </Tooltip>
             </div>
           </div>
-        </div>
 
-        {/* Loading States */}
-        {(isUpdating || isRemoving) && (
-          <div className="absolute inset-0 bg-white/60 rounded-lg flex items-center justify-center transition-all duration-200">
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-vitale-primary"></div>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          {/* Loading States */}
+          {(isUpdating || isRemoving) && (
+            <div className="absolute inset-0 bg-white/60 rounded-lg flex items-center justify-center transition-all duration-200">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-vitale-primary"></div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }

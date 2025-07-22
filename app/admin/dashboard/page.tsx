@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 import { formatCurrency } from '@/lib/utils';
-import { getMockProducts } from '@/lib/mockData';
+import { getProducts } from '@/lib/mockData';
 import analyticsManager from '@/lib/analytics';
 
 interface AdminSettings {
@@ -32,7 +32,7 @@ export default function AdminDashboard() {
     deliveryFee: 0
   });
   
-  const [products, setProducts] = useState(getMockProducts());
+  const [products, setProducts] = useState(getProducts());
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [showPrices, setShowPrices] = useState(true);
@@ -47,8 +47,8 @@ export default function AdminDashboard() {
   const analytics = {
     totalProducts: products.length,
     activeProducts: products.filter(p => p.active).length,
-    averagePrice: products.reduce((sum, p) => sum + p.price, 0) / products.length,
-    totalValue: products.reduce((sum, p) => sum + p.price, 0)
+    averagePrice: products.reduce((sum, p) => sum + (p.price_pix || (p as any).price_pix_original || 0), 0) / products.length,
+    totalValue: products.reduce((sum, p) => sum + (p.price_pix || (p as any).price_pix_original || 0), 0)
   };
 
   const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
@@ -82,7 +82,8 @@ export default function AdminDashboard() {
   const handleBulkPriceUpdate = (percentage: number) => {
     setProducts(prev => prev.map(p => ({
       ...p,
-      price: Math.round(p.price * (1 + percentage / 100) * 100) / 100
+      price_pix: Math.round((p.price_pix || (p as any).price_pix_original || 0) * (1 + percentage / 100) * 100) / 100,
+      price_card: Math.round((p.price_card || (p as any).price_card_original || 0) * (1 + percentage / 100) * 100) / 100
     })));
     toast({
       title: `📈 Preços ${percentage > 0 ? 'aumentados' : 'reduzidos'}!`,
@@ -516,16 +517,21 @@ export default function AdminDashboard() {
                       ) : (
                         <div className="flex items-center gap-2">
                           {showPrices && (
-                            <span className="font-semibold text-vitale-primary min-w-[80px] text-right">
-                              {formatCurrency(product.price)}
-                            </span>
+                            <div className="text-right min-w-[80px]">
+                              <div className="text-xs text-green-600 font-medium">
+                                PIX: {formatCurrency(product.price_pix || (product as any).price_pix_original || 0)}
+                              </div>
+                              <div className="text-xs text-vitale-primary font-medium">
+                                Card: {formatCurrency(product.price_card || (product as any).price_card_original || 0)}
+                              </div>
+                            </div>
                           )}
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => {
                               setEditingProduct(product.id);
-                              setTempPrice(product.price);
+                              setTempPrice(product.price_pix || (product as any).price_pix_original || 0);
                             }}
                             className="h-8 px-3 text-xs"
                           >

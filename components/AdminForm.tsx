@@ -51,9 +51,13 @@ export default function AdminForm({ product }: { product?: any }) {
       <Label htmlFor="name">Nome</Label><Input id="name" {...register('name')} />
       <Label htmlFor="slug">Slug</Label><Input id="slug" {...register('slug')} />
       <Label htmlFor="price">Preço</Label><Input id="price" type="number" {...register('price')} />
+      <Label htmlFor="price_pix">Preço PIX</Label>
+      <Input id="price_pix" type="number" step="0.01" {...register('price_pix', { valueAsNumber: true })} />
+      <Label htmlFor="price_card">Preço Cartão</Label>
+      <Input id="price_card" type="number" step="0.01" {...register('price_card', { valueAsNumber: true })} />
       <Label htmlFor="description">Descrição</Label><Input id="description" {...register('description')} />
       <Label htmlFor="images">Imagens (separadas por vírgula)</Label><Input id="images" {...register('images')} placeholder="/images/botox-50u.png, /images/botox-100u.png" />
-      <span className="text-xs text-neutral-500">Use sempre imagens reais do diretório <code>public/images/</code> (ex: <code>/images/botox-50u.png</code>).</span>
+      <span className="text-xs text-muted-foreground">Use sempre imagens reais do diretório <code>public/images/</code> (ex: <code>/images/botox-50u.png</code>).</span>
       <Label htmlFor="category">Categoria</Label>
       <Select defaultValue={product?.category} {...register('category')}>
         <SelectTrigger><SelectValue /></SelectTrigger>
@@ -64,7 +68,6 @@ export default function AdminForm({ product }: { product?: any }) {
           <SelectItem value="Visco-supl.">Visco-supl.</SelectItem>
         </SelectContent>
       </Select>
-      <Label htmlFor="discount_percent">Desconto (%)</Label><Input id="discount_percent" type="number" step="0.01" {...register('discount_percent')} />
       <Label htmlFor="currency">Moeda</Label><Input id="currency" {...register('currency')} placeholder="BRL" />
       <Label htmlFor="supplier_id">Fornecedor</Label>
       <Select defaultValue={product?.supplier_id} {...register('supplier_id')}>

@@ -254,3 +254,7 @@ O **Catálogo Digital Vytalle Estética** está **APROVADO** e **PRONTO PARA PRO
 
 *Relatório gerado automaticamente pelos testes funcionais*  
 *Vytalle Estética - Desenvolvido por RET TECNOLOGIA*
+
+- Todos os fluxos críticos testados com mocks e asserts usando apenas price_pix e price_prazo.
+- Não há mais lógica de desconto automática.
+- O método de pagamento é sempre explicitamente escolhido pelo cliente.

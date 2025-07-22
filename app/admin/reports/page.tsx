@@ -8,10 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { createSupabaseServerClient } from '@/lib/supabaseServer';
+import { createServerSupabaseClient } from '@/lib/supabaseServer';
+
+export const dynamic = 'force-dynamic';
 
 export default async function Reports() {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createServerSupabaseClient();
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) redirect('/login');
 

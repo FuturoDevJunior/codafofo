@@ -20,12 +20,12 @@ vi.mock('@/lib/store');
 describe('Checkout Page', () => {
   it('valida campos e envia pedido', async () => {
     const mockItems = [
-      { id: '1', name: 'Botox® 50U', price: 1200, quantity: 1, images: ['/images/botox-50u.png'] },
-      { id: '2', name: 'Botox® 100U', price: 1950, quantity: 1, images: ['/images/botox-100u.png'] },
-      { id: '3', name: 'Dysport® 300U', price: 1400, quantity: 1, images: ['/images/dysport-300u.png'] },
-      { id: '4', name: 'Xeomin® 50U', price: 900, quantity: 1, images: ['/images/xeomin-50u.png'] },
-      { id: '5', name: 'Xeomin® 100U', price: 1600, quantity: 1, images: ['/images/xeomin-100u.png'] },
-      { id: '6', name: 'Viscosuplementação Articular', price: 2500, quantity: 1, images: ['/images/visco-supl.png'] },
+      { id: '1', name: 'Botox® 50U', price_pix: 1200, price_prazo: 1300, quantity: 1, images: ['/images/botox-50u.png'] },
+      { id: '2', name: 'Botox® 100U', price_pix: 1950, price_prazo: 2100, quantity: 1, images: ['/images/botox-100u.png'] },
+      { id: '3', name: 'Dysport® 300U', price_pix: 1400, price_prazo: 1500, quantity: 1, images: ['/images/dysport-300u.png'] },
+      { id: '4', name: 'Xeomin® 50U', price_pix: 900, price_prazo: 1000, quantity: 1, images: ['/images/xeomin-50u.png'] },
+      { id: '5', name: 'Xeomin® 100U', price_pix: 1600, price_prazo: 1700, quantity: 1, images: ['/images/xeomin-100u.png'] },
+      { id: '6', name: 'Viscosuplementação Articular', price_pix: 2500, price_prazo: 2600, quantity: 1, images: ['/images/visco-supl.png'] },
     ];
     vi.mocked(useCartStore).mockReturnValue({ items: mockItems, clearCart: vi.fn(), removeItem: vi.fn(), updateQuantity: vi.fn() });
     global.fetch = vi.fn().mockResolvedValue({ ok: true, json: () => ({}) });
@@ -35,11 +35,11 @@ describe('Checkout Page', () => {
 
     // Etapa 1: Dados Pessoais
     const nomeInput = await screen.findByPlaceholderText('Dr(a). João Silva');
-    await user.type(nomeInput, 'Gabriel Ferreira');
+    await user.type(nomeInput, 'Dr. João Silva');
     const whatsappInput = await screen.findByPlaceholderText('(11) 99999-9999');
     await user.type(whatsappInput, '5511999999999');
     const emailInput = await screen.findByPlaceholderText('dr.joao@clinica.com.br');
-    await user.type(emailInput, 'gabriel@exemplo.com');
+    await user.type(emailInput, 'dr.joao@clinica.com.br');
     // Avançar para etapa 2
     await user.click(screen.getByRole('button', { name: /Próximo/i }));
 

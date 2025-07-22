@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Eye,
-  Heart,
   Package,
   ShoppingCart,
 } from 'lucide-react';
@@ -27,17 +26,24 @@ import { formatCurrency } from '@/lib/utils';
 import type { Product } from '@/types/product';
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  hidden: { opacity: 0, y: 30, scale: 0.9 },
   visible: { 
     opacity: 1, 
     y: 0, 
     scale: 1,
-    transition: { duration: 0.3, ease: "easeOut" }
+    transition: { 
+      duration: 0.6, 
+      ease: [0.25, 0.46, 0.45, 0.94],
+      staggerChildren: 0.1
+    }
   },
   hover: {
-    y: -4,
-    scale: 1.02,
-    transition: { duration: 0.2, ease: "easeOut" }
+    y: -8,
+    scale: 1.03,
+    transition: { 
+      duration: 0.3, 
+      ease: "easeOut"
+    }
   }
 };
 
@@ -48,10 +54,11 @@ const imageVariants = {
 
 export default function ProductCard({ product }: { product: Product }) {
   const [isLoading, setIsLoading] = useState(false);
-  const hasDiscount = product.discount_percent > 0;
-  const discountedPrice = hasDiscount
-    ? product.price * (1 - product.discount_percent / 100)
-    : product.price;
+  
+  // Detectar se temos preços PIX/Cartão ou preço único
+  const pixPrice = product.price_pix || 0;
+  const cardPrice = product.price_card || 0;
+  
   const addItem = useCartStore((s) => s.addItem);
   const { trackCartAdd } = useAnalytics();
 
@@ -61,7 +68,8 @@ export default function ProductCard({ product }: { product: Product }) {
       console.log('🛒 Adicionando produto ao carrinho:', { 
         id: product.id, 
         name: product.name, 
-        price: discountedPrice 
+        price_pix: pixPrice,
+        price_card: cardPrice 
       });
     }
     
@@ -70,13 +78,15 @@ export default function ProductCard({ product }: { product: Product }) {
       addItem({ 
         id: product.id, 
         name: product.name, 
-        price: discountedPrice, 
+        price: pixPrice, // Usar preço PIX como padrão
+        price_pix: pixPrice,
+        price_card: cardPrice,
         quantity: 1,
         images: product.images
       });
 
       // Track analytics
-      trackCartAdd(product.id, product.name, discountedPrice);
+      trackCartAdd(product.id, product.name, pixPrice);
       
       toast({ 
         title: '✅ Produto adicionado!', 
@@ -110,116 +120,159 @@ export default function ProductCard({ product }: { product: Product }) {
       initial="hidden" 
       animate="visible" 
       whileHover="hover"
-      className="group"
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="group h-full"
     >
-      <Card className="overflow-hidden bg-white rounded-2xl border border-neutral-200 hover:border-vitale-primary/30 transition-all duration-300 hover:shadow-lg flex flex-col h-full focus-ring"
+      <Card className="overflow-hidden bg-gradient-to-br from-white to-vitale-primary/5 rounded-2xl border border-vitale-primary/20 hover:border-vitale-primary/40 transition-all duration-300 hover:shadow-vitale flex flex-col h-full focus-ring"
             role="article"
             aria-labelledby={`product-${product.id}-name`}>
         
         {/* Header com Imagem */}
-        <CardHeader className="p-0 relative h-48 sm:h-52 lg:h-56 bg-gradient-to-br from-neutral-50 to-neutral-100 overflow-hidden group">
-          <motion.div variants={imageVariants} className="w-full h-full group-hover:scale-105 group-hover:shadow-[0_4px_32px_0_rgba(216,167,91,0.15)] transition-transform duration-300">
+        <CardHeader className="p-0 relative h-48 sm:h-52 md:h-56 bg-gradient-to-br from-vitale-neutral/30 to-vitale-light/50 overflow-hidden rounded-t-2xl">
+          <motion.div variants={imageVariants} className="w-full h-full">
             <SmartImage
               src={product.images?.[0]}
-              alt={`Imagem do produto ${product.name}`}
+              alt={`${product.name} - Tratamento estético profissional`}
               fallback="/icons/icon-192.png"
               fill
-              className="object-cover transition-transform duration-300"
+              className="object-cover transition-all duration-500 group-hover:scale-105"
               loading="lazy"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              borderRadius="rounded-2xl"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              borderRadius="rounded-t-2xl"
               objectFit="cover"
               productName={product.name}
             />
           </motion.div>
-          {/* Miniaturas de imagens secundárias */}
-          {product.images && product.images.length > 1 && (
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
-              {product.images.slice(0, 4).map((img, idx) => (
-                <SmartImage
-                  key={img}
-                  src={img}
-                  alt={`Miniatura ${idx + 1} de ${product.name}`}
-                  width={32}
-                  height={32}
-                  className={`border-2 ${idx === 0 ? 'border-vitale-primary' : 'border-white'} bg-white object-cover rounded-full shadow-sm transition-all duration-200`}
-                  borderRadius="rounded-full"
-                  objectFit="cover"
-                  productName={product.name}
-                />
-              ))}
-            </div>
-          )}
           
-          {/* Badges e Indicadores */}
-          <div className="absolute top-3 left-3 flex flex-col gap-2">
-            {hasDiscount && (
-              <motion.span 
-                className="bg-error-600 text-white text-xs font-bold px-2 py-1 rounded-lg shadow-md border-2 border-white/30"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2 }}
-                aria-label={`Desconto de ${product.discount_percent}%`}
-              >
-                -{product.discount_percent}%
-              </motion.span>
-            )}
+          {/* Status Badge */}
+          <div className="absolute top-3 left-3 z-10">
+            <motion.div 
+              className="bg-warning-500/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg border border-white/20"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, type: "spring" }}
+            >
+              <span className="flex items-center gap-1">
+                <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse-soft"></div>
+                Disponível
+              </span>
+            </motion.div>
           </div>
 
-          {/* Ações Rápidas */}
-          <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <Tooltip content="Favoritar produto" side="left">
-              <button
-                className="w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 focus-ring"
-                aria-label="Adicionar aos favoritos"
-                tabIndex={0}
+          {/* Quick Actions */}
+          <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10">
+            <Tooltip content="Ver detalhes completos" side="left">
+              <Link
+                href={`/products/${product.slug}`}
+                className="w-9 h-9 bg-white/95 hover:bg-white rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 focus-ring border border-vitale-primary/20 hover:border-vitale-primary"
+                aria-label={`Ver detalhes de ${product.name}`}
               >
-                <Heart className="w-4 h-4 text-neutral-600 hover:text-error-500" />
-              </button>
+                <Eye className="w-4 h-4 text-vitale-primary" />
+              </Link>
             </Tooltip>
           </div>
+
+          {/* Image indicator dots */}
+          {product.images && product.images.length > 1 && (
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+              {product.images.slice(0, 4).map((_, idx) => (
+                <div
+                  key={idx}
+                  className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                    idx === 0 
+                      ? 'bg-vitale-primary shadow-lg' 
+                      : 'bg-white/60 hover:bg-white/80'
+                  }`}
+                />
+              ))}
+              {product.images.length > 4 && (
+                <div className="text-xs text-white/80 font-medium bg-black/30 px-1.5 py-0.5 rounded-full">
+                  +{product.images.length - 4}
+                </div>
+              )}
+            </div>
+          )}
 
         </CardHeader>
 
         {/* Conteúdo do Card */}
-        <CardContent className="p-4 sm:p-5 flex flex-col flex-1 gap-3">
+        <CardContent className="p-4 sm:p-5 flex flex-col flex-1 gap-4">
           {/* Título e Categoria */}
-          <div className="space-y-1">
-            <CardTitle 
-              id={`product-${product.id}-name`}
-              className="text-base sm:text-lg font-semibold text-neutral-800 line-clamp-2 group-hover:text-vitale-primary transition-colors duration-200"
-            >
-              {product.name}
-            </CardTitle>
-            <p className="text-xs text-neutral-500 font-medium uppercase tracking-wide">
-              {product.category?.replace('_', ' ')}
-            </p>
+          <div className="space-y-2">
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <CardTitle 
+                  id={`product-${product.id}-name`}
+                  className="text-lg sm:text-xl font-bold text-vitale-primary line-clamp-2 leading-tight group-hover:text-vitale-secondary transition-colors duration-200"
+                >
+                  {product.name}
+                </CardTitle>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="bg-vitale-primary/10 px-2 py-1 rounded-md">
+                <span className="text-xs font-medium text-vitale-primary uppercase tracking-wide">
+                  {product.category?.replace('_', ' ')}
+                </span>
+              </div>
+            </div>
           </div>
 
-          {/* Preços */}
-          <div className="flex items-end gap-2">
-            {hasDiscount && (
-              <span className="text-sm text-neutral-400 line-through">
-                {formatCurrency(product.price, product.currency)}
-              </span>
-            )}
-            <span className="text-xl sm:text-2xl font-bold text-vitale-primary">
-              {formatCurrency(discountedPrice, product.currency)}
-            </span>
+          {/* Preços - Hierarquia melhorada */}
+          <div className="space-y-3">
+            {/* Preço PIX - Destaque principal */}
+            <div className="bg-gradient-to-r from-green-50 to-green-100/50 border border-green-200 rounded-xl p-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="bg-green-600 text-white px-2 py-1 rounded-lg text-xs font-bold">
+                    PIX
+                  </div>
+                  <span className="text-xs text-green-700 font-medium">à vista</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-xl sm:text-2xl font-bold text-green-600">
+                    {formatCurrency(pixPrice, product.currency)}
+                  </div>
+                  <div className="text-xs text-green-600/70">melhor preço</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Parcelamento - Secundário */}
+            <div className="bg-vitale-primary/5 border border-vitale-primary/20 rounded-lg p-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold text-vitale-primary">4x no cartão</span>
+                </div>
+                <div className="text-lg font-bold text-vitale-primary">
+                  {formatCurrency(cardPrice / 4, product.currency)}
+                </div>
+              </div>
+              <div className="text-xs text-vitale-primary/70 mt-1">
+                Total: {formatCurrency(cardPrice, product.currency)}
+              </div>
+            </div>
           </div>
 
-          {/* Disponibilidade Sempre Garantida */}
-          <div className="flex items-center gap-2 text-xs">
-            <Package className="w-3 h-3 text-success-600" />
-            <span className="font-medium text-success-600">
-              Disponível sob consulta
-            </span>
+          {/* Status e Disponibilidade */}
+          <div className="bg-success-50 border border-success-200 rounded-lg p-3 flex items-center gap-3">
+            <div className="bg-success-500 p-1.5 rounded-full">
+              <Package className="w-3 h-3 text-white" />
+            </div>
+            <div className="flex-1">
+              <div className="text-sm font-semibold text-success-700">
+                Produto Disponível
+              </div>
+              <div className="text-xs text-success-600">
+                Pronto para envio • Consulte condições
+              </div>
+            </div>
           </div>
 
-          {/* Ações */}
-          <div className="mt-auto flex gap-2 pt-2">
+          {/* Ações - Redesenhadas */}
+          <div className="mt-auto space-y-3 pt-2">
             <Button
-              className="flex-1 font-semibold rounded-xl py-2.5 transition-all duration-200 bg-vitale-primary text-white hover:bg-vitale-secondary shadow-md hover:shadow-lg interactive"
+              className="w-full font-semibold rounded-xl py-4 text-base transition-all duration-200 bg-vitale-primary text-white hover:bg-vitale-secondary shadow-lg hover:shadow-xl interactive focus-ring"
               onClick={handleAddToCart}
               disabled={isLoading}
               aria-label={`Adicionar ${product.name} ao carrinho`}
@@ -231,21 +284,20 @@ export default function ProductCard({ product }: { product: Product }) {
                 </div>
               ) : (
                 <div className="flex items-center gap-2 justify-center w-full">
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>Solicitar</span>
+                  <ShoppingCart className="w-5 h-5" />
+                  <span>Adicionar ao Carrinho</span>
                 </div>
               )}
             </Button>
-            <Tooltip content={`Ver detalhes de ${product.name}`} side="top">
-              <Link
-                href={`/products/${product.slug}`}
-                className="inline-flex items-center justify-center px-3 py-2.5 text-sm font-medium text-vitale-primary hover:text-vitale-secondary border border-vitale-primary/30 hover:border-vitale-secondary/50 rounded-xl bg-vitale-primary/5 hover:bg-vitale-secondary/10 transition-all duration-200 focus-ring"
-                aria-label={`Ver detalhes de ${product.name}`}
-                tabIndex={0}
-              >
-                <Eye className="w-4 h-4" />
-              </Link>
-            </Tooltip>
+            
+            <Link
+              href={`/products/${product.slug}`}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-vitale-primary hover:text-vitale-secondary border-2 border-vitale-primary/30 hover:border-vitale-primary/50 rounded-xl bg-white hover:bg-vitale-primary/5 transition-all duration-200 focus-ring"
+              aria-label={`Ver detalhes completos de ${product.name}`}
+            >
+              <Eye className="w-4 h-4" />
+              <span>Ver Detalhes Completos</span>
+            </Link>
           </div>
         </CardContent>
       </Card>

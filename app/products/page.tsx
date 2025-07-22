@@ -1,12 +1,19 @@
+import {
+  ArrowLeft,
+  Home,
+} from 'lucide-react';
+import Link from 'next/link';
+
 import ProductCard from '@/components/ProductCard';
-import { getMockProductsCached } from '@/lib/mockData';
+import { Button } from '@/components/ui/button';
+import { getProducts } from '@/lib/mockData';
 import { Product } from '@/types/product';
 
 export const revalidate = 3600; // ISR
 
 export default async function Products() {
-  // Usar cache inteligente para máxima performance
-  const products = await getMockProductsCached();
+  // Usar apenas mockData para garantir SSG
+  const products = await getProducts();
 
   if (!products || products.length === 0) {
     return (
@@ -23,7 +30,7 @@ export default async function Products() {
   }
 
   // Agrupar produtos por categoria
-  const productsByCategory = products.reduce((acc, product) => {
+  const productsByCategory: Record<string, Product[]> = products.reduce((acc, product) => {
     if (!acc[product.category]) {
       acc[product.category] = [];
     }
@@ -32,84 +39,164 @@ export default async function Products() {
   }, {} as Record<string, Product[]>);
 
   return (
-    <div className="space-y-12">
-      {/* Header da Página */}
-      <div className="text-center space-y-6">
-        <div className="space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">
-            Catálogo Vytalle Estética
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Descubra nossa seleção premium de tratamentos estéticos e viscosuplementação
-          </p>
-        </div>
+    <div className="min-h-screen">
+      {/* Container principal com espaçamento otimizado */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         
-        <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span>{products.length} produtos disponíveis</span>
+        {/* Breadcrumb e Navegação - Compacto */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2">
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb" className="flex items-center space-x-1 text-sm text-muted-foreground">
+            <Link 
+              href="/" 
+              className="flex items-center gap-1 hover:text-vitale-primary transition-colors focus-ring rounded px-1"
+              aria-label="Voltar para página inicial"
+            >
+              <Home className="h-4 w-4" />
+              <span className="hidden sm:inline">Início</span>
+            </Link>
+            <span className="text-muted-foreground/50" aria-hidden="true">/</span>
+            <span className="text-vitale-primary font-medium">Catálogo</span>
+          </nav>
+
+          {/* Botão Voltar - Mobile First */}
+          <Link href="/">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex items-center gap-2 border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary hover:text-white transition-all focus-ring"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span className="hidden sm:inline">Voltar ao Início</span>
+              <span className="sm:hidden">Início</span>
+            </Button>
+          </Link>
+        </div>
+
+        {/* Header da Página - Compacto */}
+        <div className="text-center space-y-4">
+          <div className="space-y-2">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-vitale-primary tracking-tight">
+              Catálogo Vytalle Estética & Viscosuplementação
+            </h1>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Descubra nossa seleção premium de produtos estéticos e viscosuplementação para profissionais
+            </p>
           </div>
-          <div className="w-px h-4 bg-border/50"></div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-            <span>{Object.keys(productsByCategory).length} categorias</span>
+          
+          {/* Indicadores de status - Melhorados */}
+          <div className="flex items-center justify-center gap-6 text-sm">
+            <div className="flex items-center gap-2 bg-success-50 px-3 py-1.5 rounded-full border border-success-200">
+              <div className="w-2 h-2 bg-success-500 rounded-full animate-pulse-soft"></div>
+              <span className="text-success-700 font-medium">{products.length} produtos disponíveis</span>
+            </div>
+            <div className="flex items-center gap-2 bg-vitale-primary/5 px-3 py-1.5 rounded-full border border-vitale-primary/20">
+              <div className="w-2 h-2 bg-vitale-primary rounded-full"></div>
+              <span className="text-vitale-primary font-medium">{Object.keys(productsByCategory).length} categorias</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Produtos por Categoria */}
-      <div className="space-y-16">
-        {Object.entries(productsByCategory).map(([category, categoryProducts]) => (
-          <div key={category} className="space-y-8">
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold text-primary">{category}</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                {category === 'Toxina Botulínica' && 'Toxinas botulínicas para redução de rugas e rejuvenescimento facial'}
-                {category === 'Bioestimulador' && 'Bioestimuladores para regeneração celular e estímulo de colágeno'}
-                {category === 'Preenchedor' && 'Preenchedores com ácido hialurônico para contorno e volume facial'}
-                {category === 'Fio Bioestimulação' && 'Fios de bioestimulação para lifting e regeneração de colágeno'}
-                {category === 'Microcânula' && 'Microcânulas profissionais para aplicação precisa e segura'}
-                {category === 'Enzima' && 'Enzimas para dissolução e correção de tratamentos estéticos'}
-                {category === 'Skinbooster' && 'Skinboosters para hidratação profunda e melhora da qualidade da pele'}
-                {category === 'Bioremodelador' && 'Bioremodeladores para regeneração tecidual e rejuvenescimento'}
-              </p>
-            </div>
+        {/* Produtos por Categoria - Grid otimizado */}
+        <div className="space-y-12">
+          {Object.entries(productsByCategory).map(([category, categoryProducts]) => (
+            <section key={category} className="space-y-6">
+              {/* Header da categoria */}
+              <div className="text-center space-y-3">
+                <h2 className="text-2xl sm:text-3xl font-bold text-vitale-primary">{category}</h2>
+                <p className="text-muted-foreground max-w-3xl mx-auto text-base leading-relaxed">
+                  {category === 'Toxina Botulínica' && 'Produtos originais de toxina botulínica das principais marcas mundiais'}
+                  {category === 'Bioestimulador' && 'Bioestimuladores certificados para regeneração celular e estímulo de colágeno'}
+                  {category === 'Preenchedor' && 'Preenchedores com ácido hialurônico de marcas renomadas e certificadas'}
+                  {category === 'Fio Bioestimulação' && 'Fios de bioestimulação profissionais para procedimentos estéticos'}
+                  {category === 'Microcânula' && 'Microcânulas profissionais de alta qualidade para aplicações precisas'}
+                  {category === 'Enzima' && 'Enzimas especializadas para dissolução e correção de procedimentos'}
+                  {category === 'Skinbooster' && 'Skinboosters premium para hidratação e melhora da qualidade da pele'}
+                  {category === 'Bioremodelador' && 'Bioremodeladores avançados para regeneração e rejuvenescimento tecidual'}
+                </p>
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categoryProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* CTA Final */}
-      <div className="text-center py-12 bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl">
-        <div className="space-y-6">
-          <h3 className="text-2xl font-bold text-primary">Pronto para começar?</h3>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Entre em contato conosco para agendar sua consulta e descobrir qual tratamento é ideal para você.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="https://wa.me/5562999999999"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
-            >
-              <span>WhatsApp</span>
-              <span className="text-lg">💬</span>
-            </a>
-            <a
-              href="tel:+5562999999999"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              <span>Ligar</span>
-              <span className="text-lg">📞</span>
-            </a>
-          </div>
+              {/* Grid responsivo melhorado */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6">
+                {categoryProducts.map((product, index) => (
+                  <div
+                    key={product.id}
+                    className="animate-slide-up"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+                
+                {/* Skeleton cards para preencher grid quando há poucos produtos */}
+                {categoryProducts.length < 5 && Array.from({ length: 5 - categoryProducts.length }).map((_, i) => (
+                  <div
+                    key={`skeleton-${category}-${i}`}
+                    className="hidden xl:block opacity-30"
+                  >
+                    <div className="bg-gradient-to-br from-vitale-neutral/50 to-vitale-light/50 rounded-2xl h-96 border-2 border-dashed border-vitale-primary/20 flex items-center justify-center">
+                      <div className="text-center space-y-2">
+                        <div className="w-8 h-8 bg-vitale-primary/20 rounded-full mx-auto"></div>
+                        <p className="text-xs text-vitale-primary/60 font-medium">Em breve</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
+
+        {/* CTA Final - Repositionado e melhorado */}
+        <section className="py-8 sm:py-12">
+          <div className="bg-gradient-to-br from-vitale-primary/8 via-vitale-secondary/5 to-vitale-primary/8 rounded-3xl p-6 sm:p-8 lg:p-12 text-center border border-vitale-primary/10 shadow-vitale">
+            <div className="max-w-3xl mx-auto space-y-6">
+              <div className="space-y-3">
+                <h3 className="text-2xl sm:text-3xl font-bold text-vitale-primary">
+                  Pronto para adquirir nossos produtos?
+                </h3>
+                <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
+                  Entre em contato conosco para conhecer nossos produtos, condições especiais e prazos de entrega. Nossa equipe está pronta para te atender.
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href="https://wa.me/5521996192890?text=Olá! Gostaria de saber mais sobre os produtos estéticos e viscosuplementação da Vytalle."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-all duration-200 shadow-lg hover:shadow-xl focus-ring min-w-[200px] interactive"
+                >
+                  <span className="text-xl">💬</span>
+                  <span>Falar no WhatsApp</span>
+                </a>
+                <a
+                  href="tel:+5521996192890"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-vitale-primary text-white font-semibold rounded-xl hover:bg-vitale-secondary transition-all duration-200 shadow-lg hover:shadow-xl focus-ring min-w-[200px] interactive"
+                >
+                  <span className="text-xl">📞</span>
+                  <span>Ligar Agora</span>
+                </a>
+              </div>
+
+              {/* Trust indicators */}
+              <div className="flex flex-wrap items-center justify-center gap-6 pt-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-success-500 rounded-full"></div>
+                  <span>Atendimento especializado</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-vitale-primary rounded-full"></div>
+                  <span>Produtos originais</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-info-500 rounded-full"></div>
+                  <span>Entrega em todo Brasil</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

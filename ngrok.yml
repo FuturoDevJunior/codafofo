@@ -1,0 +1,35 @@
+# Configuração do ngrok para o projeto Vytalle Estética
+# Arquivo: ngrok.yml
+
+version: "2"
+authtoken: # Adicione seu token ngrok aqui se quiser persistir
+
+tunnels:
+  # Desenvolvimento local
+  vytalle-dev:
+    addr: 5174
+    proto: http
+    subdomain: vytalle-dev  # Requer conta paga do ngrok
+    host_header: "localhost:5174"
+    inspect: true
+    
+  # Servidor de produção local (build)
+  vytalle-prod:
+    addr: 3001
+    proto: http
+    subdomain: vytalle-prod  # Requer conta paga do ngrok  
+    host_header: "localhost:3001"
+    inspect: true
+
+  # HTTPS seguro para testes em dispositivos móveis
+  vytalle-https:
+    addr: 5174
+    proto: http
+    schemes: ["https"]
+    host_header: "localhost:5174"
+    inspect: true
+    
+# Configurações globais
+web_addr: localhost:4040  # Interface web do ngrok
+log_level: info
+log_format: logfmt
