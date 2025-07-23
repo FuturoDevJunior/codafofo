@@ -38,21 +38,14 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center space-y-12 relative z-10">
           {/* Logo Principal Otimizado */}
           <div className="flex justify-center mb-8">
-            <div className="relative group">
-              <SmartImage 
-                src="/vytalle-logo.svg" 
-                alt="Vytalle Estética & Viscosuplementação - Logo Oficial" 
-                width={160} 
-                height={160}
-                className="h-32 w-32 sm:h-40 sm:w-40 lg:h-44 lg:w-44 drop-shadow-2xl group-hover:scale-105 transition-all duration-500 ease-out" 
-                priority={true}
-              />
-              {/* Selo de Qualidade */}
-              <div className="absolute -top-2 -right-2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                <CheckCircle className="w-3 h-3 inline mr-1" />
-                ANVISA
-              </div>
-            </div>
+            <SmartImage 
+              src="/vytalle-logo.svg" 
+              alt="Vytalle Estética & Viscosuplementação - Logo Oficial" 
+              width={160} 
+              height={160}
+              className="h-32 w-32 sm:h-40 sm:w-40 lg:h-44 lg:w-44 object-contain transition-all duration-500 ease-out" 
+              priority={true}
+            />
           </div>
           
           {/* Título Principal com Melhor Hierarquia */}

@@ -109,19 +109,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
               {/* Logo e Nome - Centralizado e responsivo */}
               <Link href="/" className="flex items-center gap-4 group transition-all duration-200 hover:opacity-90 focus-ring rounded-xl" aria-label="Ir para página inicial">
-                <div className="relative flex items-center justify-center">
+                <div className="flex items-center justify-center">
                   <Image 
                     src="/vytalle-logo.svg" 
                     alt="Vytalle Estética & Viscosuplementação - Logo Oficial" 
                     width={64}
                     height={64}
-                    className="h-12 w-12 sm:h-16 sm:w-16 drop-shadow-lg transition-all duration-200 group-hover:scale-105" 
+                    className="h-12 w-12 sm:h-16 sm:w-16 object-contain transition-all duration-200" 
                     priority
                   />
-                  {/* Selo ANVISA */}
-                  <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-green-600 rounded-full flex items-center justify-center shadow-md">
-                    <span className="text-[8px] sm:text-[10px] text-white font-bold">✓</span>
-                  </div>
                 </div>
                 <div className="flex flex-col justify-center">
                   <h1 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-vitale-primary leading-tight group-hover:text-vitale-secondary transition-colors">
