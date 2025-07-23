@@ -39,7 +39,7 @@ export default function Home() {
           {/* Logo Principal Otimizado */}
           <div className="flex justify-center mb-8">
             <SmartImage 
-              src="/vytalle-logo.svg" 
+              src="/Vytalle_Logo_Gold.png" 
               alt="Vytalle Estética & Viscosuplementação - Logo Oficial" 
               width={160} 
               height={160}

@@ -111,7 +111,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/" className="flex items-center gap-4 group transition-all duration-200 hover:opacity-90 focus-ring rounded-xl" aria-label="Ir para página inicial">
                 <div className="flex items-center justify-center">
                   <Image 
-                    src="/vytalle-logo.svg" 
+                    src="/Vytalle_Logo_Gold.png" 
                     alt="Vytalle Estética & Viscosuplementação - Logo Oficial" 
                     width={64}
                     height={64}
