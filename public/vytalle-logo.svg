@@ -1,0 +1,38 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#B8860B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CD853F;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="innerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5F5DC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E6E6FA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer circle -->
+  <circle cx="60" cy="60" r="58" fill="url(#goldGradient)" stroke="#8B4513" stroke-width="2"/>
+  
+  <!-- Inner circle -->
+  <circle cx="60" cy="60" r="45" fill="url(#innerGradient)" stroke="url(#goldGradient)" stroke-width="1"/>
+  
+  <!-- Letter V (stylized) -->
+  <path d="M35 35 L50 75 L60 55 L70 75 L85 35" stroke="url(#goldGradient)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Beauty symbol (stylized flower/star) -->
+  <g transform="translate(60,85)">
+    <circle cx="0" cy="0" r="8" fill="url(#goldGradient)"/>
+    <path d="M-6,-2 L0,-8 L6,-2 L8,0 L6,2 L0,8 L-6,2 L-8,0 Z" fill="#F5F5DC"/>
+  </g>
+  
+  <!-- Decorative dots -->
+  <circle cx="30" cy="45" r="2" fill="url(#goldGradient)"/>
+  <circle cx="90" cy="45" r="2" fill="url(#goldGradient)"/>
+  <circle cx="30" cy="75" r="2" fill="url(#goldGradient)"/>
+  <circle cx="90" cy="75" r="2" fill="url(#goldGradient)"/>
+  
+  <!-- Text "VYTALLE" in elegant typography -->
+  <text x="60" y="105" font-family="serif" font-size="8" font-weight="bold" text-anchor="middle" fill="url(#goldGradient)">VYTALLE</text>
+</svg>

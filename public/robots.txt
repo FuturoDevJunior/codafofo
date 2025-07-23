@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Bloquear área administrativa
+Disallow: /admin/
+
+# Arquivos do sistema
+Disallow: /_next/
+Disallow: /api/
+
+# Páginas internas
+Disallow: /success
+
+# Sitemap
+Sitemap: https://vytalle-estetica.vercel.app/sitemap.xml
+
+# Crawl-delay para evitar sobrecarga
+Crawl-delay: 1

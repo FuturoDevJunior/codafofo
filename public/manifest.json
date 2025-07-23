@@ -1,0 +1,16 @@
+{
+  "name": "Vytalle Estética - Catálogo",
+  "short_name": "Vytalle",
+  "description": "Catálogo premium de produtos estéticos",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3176b6",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
