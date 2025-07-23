@@ -98,18 +98,6 @@ jobs:
       - name: 🏗️ Build application
         run: npm run build
 
-      - name: 🐞 Print envs
-        run: printenv | sort
-
-      - name: 🐞 Debug build output
-        run: |
-          echo "Conteúdo do diretório após build:"
-          ls -la
-          echo "Conteúdo de .next:"
-          ls -la .next || echo ".next não existe"
-          echo "Conteúdo de public:"
-          ls -la public || echo "public não existe"
-
       - name: 💾 Cache build artifacts
         uses: actions/cache@v3
         with:
