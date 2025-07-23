@@ -27,7 +27,6 @@ dist/
 next-env.d.ts
 
 # Testing
-coverage/
 .nyc_output/
 *.lcov
 
@@ -102,7 +101,7 @@ dist
 
 # Gatsby files
 .cache/
-public
+public/uploads/
 
 # Storybook build outputs
 .out
@@ -126,7 +125,6 @@ temp/
 .supabase/
 
 # Uploads
-uploads/
 public/uploads/
 
 # Database
