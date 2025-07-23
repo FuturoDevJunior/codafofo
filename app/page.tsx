@@ -195,7 +195,7 @@ export default function Home() {
           {/* CTA para ver todos os produtos */}
           <div className="text-center mt-16">
             <Link href="/products">
-              <Button className="px-12 py-5 text-xl font-bold bg-gradient-to-r from-vitale-primary to-vitale-secondary text-white hover:from-vitale-secondary hover:to-vitale-primary rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <Button className="px-12 py-6 text-xl font-bold bg-gradient-to-r from-vitale-primary to-vitale-secondary text-white hover:from-vitale-secondary hover:to-vitale-primary rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 Ver Todos os Produtos
                 <ArrowRight className="w-6 h-6 ml-3" />
               </Button>
