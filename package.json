@@ -43,7 +43,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^17.2.0",
     "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^11.3.8",
+    "framer-motion": "^12.23.6",
     "idb": "^8.0.0",
     "isomorphic-dompurify": "^2.26.0",
     "lucide-react": "^0.418.0",
