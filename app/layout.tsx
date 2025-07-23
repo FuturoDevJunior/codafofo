@@ -12,6 +12,7 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://vytalle-estetica.vercel.app'),
   title: 'Vytalle Estética - Catálogo Premium | Produtos Médicos Estéticos Profissionais',
   description: 'Produtos médicos estéticos premium para profissionais: Toxinas botulínicas (Botox, Dysport, Xeomin), preenchedores de ácido hialurônico, bioestimuladores certificados ANVISA. Entrega expressa em todo Brasil.',
   keywords: [
@@ -78,8 +79,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               '@type': 'Organization',
               name: 'Vytalle Estética & Viscosuplementação',
               description: 'Distribuidora de produtos médicos estéticos premium para profissionais',
-              url: 'https://vytalle-catalog.vercel.app',
-              logo: 'https://vytalle-catalog.vercel.app/vytalle-logo.svg',
+              url: process.env.NEXT_PUBLIC_SITE_URL || 'https://vytalle-estetica.vercel.app',
+              logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vytalle-estetica.vercel.app'}/vytalle-logo.svg`,
               contactPoint: {
                 '@type': 'ContactPoint',
                 telephone: '+55-21-99619-2890',
@@ -143,9 +144,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </Link>
                   <Link href="/products" className="text-vitale-primary hover:text-vitale-secondary font-semibold transition-colors focus-ring px-3 py-2 rounded-lg">
                     Catálogo
-                  </Link>
-                  <Link href="/admin" className="text-vitale-primary hover:text-vitale-secondary font-semibold transition-colors focus-ring px-3 py-2 rounded-lg">
-                    Admin
                   </Link>
                   <a 
                     href="https://wa.me/5521996192890?text=Olá! Gostaria de informações sobre os produtos da Vytalle."
@@ -260,11 +258,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <li>
                     <Link href="/cart" className="text-neutral-700 hover:text-vitale-primary transition-colors text-sm">
                       Carrinho
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/admin" className="text-neutral-700 hover:text-vitale-primary transition-colors text-sm">
-                      Área Administrativa
                     </Link>
                   </li>
                 </ul>

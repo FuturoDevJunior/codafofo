@@ -4,12 +4,15 @@
   # Vytalle Estética - Catálogo Médico Premium
   
   [![CI](https://github.com/FuturoDevJunior/codafofo/actions/workflows/ci.yml/badge.svg)](https://github.com/FuturoDevJunior/codafofo/actions/workflows/ci.yml)
-  [![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](./coverage)
+  [![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](./RELATORIO_FINAL_TESTES.md)
   [![Release](https://img.shields.io/github/v/tag/FuturoDevJunior/codafofo?label=release)](https://github.com/FuturoDevJunior/codafofo/releases)
   [![Deploy](https://img.shields.io/badge/deploy-Vercel-black)](https://vytalle-estetica.vercel.app)
   [![License](https://img.shields.io/badge/license-Proprietary-blue)](./LICENSE)
   [![Node](https://img.shields.io/badge/node-%3E=18.0.0-green)](https://nodejs.org/)
   [![Status](https://img.shields.io/badge/status-Production%20Ready-success)](https://vytalle-estetica.vercel.app)
+  [![Security](https://img.shields.io/badge/security-HTTPS%20%2B%20CSP-green)](https://securityheaders.com/)
+  [![PWA](https://img.shields.io/badge/PWA-Ready-purple)](https://web.dev/pwa-checklist/)
+  [![A11y](https://img.shields.io/badge/A11y-WCAG%202.1%20AA-blue)](https://www.w3.org/WAI/WCAG21/quickref/)
   
   [🌐 **DEMO AO VIVO**](https://vytalle-estetica.vercel.app) • [📖 **DOCUMENTAÇÃO**](./docs/)
 </div>
@@ -79,7 +82,7 @@ cd codafofo
 npm install
 cp .env.example .env.local # Preencha as variáveis
 npm run db:init            # Prepara banco e aplica migrations
-npm run dev                # Servidor local na porta 5174
+npm run dev                # Servidor local na porta 3000
 ```
 - Para reset total: `npx supabase db reset --linked --yes`
 - Testes: `npm run test` (unitários), `npm run test:e2e` (e2e)
@@ -102,6 +105,7 @@ npm run dev                # Servidor local na porta 5174
 | `npm run db:init`     | Prepara banco, aplica migrations e seeds       |
 | `npm run dev:tunnel`  | Dev + túnel ngrok para testes mobile           |
 | `npm run tunnel:https`| Túnel HTTPS seguro (ngrok)                     |
+| `npm run analyze`     | Analisa bundle size e dependências             |
 
 ---
 
@@ -123,6 +127,43 @@ vytalle/
 ├── .github/workflows/  # CI/CD, deploy, dependabot
 └── README.md           # Este arquivo
 ```
+
+---
+
+## 🛠️ Stack Tecnológica (2025)
+
+### Frontend & UI
+- **Next.js 15.4.2** - App Router, Server Components, Static Generation
+- **React 18** - Concurrent Features, Suspense, Server Components
+- **TypeScript 5** - Type Safety, IntelliSense, Strict Mode
+- **Tailwind CSS 3.4** - Utility-first, JIT, Custom Design System
+- **Radix UI** - Headless Components, Accessibility, WAI-ARIA
+- **Framer Motion** - Animations, Gestures, Layout Animations
+- **Zustand** - State Management, Persist, DevTools
+
+### Backend & Database
+- **Supabase** - PostgreSQL, Auth, Storage, Edge Functions, RLS
+- **Edge Runtime** - Server-side Logic, API Routes, Middleware
+- **PostgreSQL 15** - ACID, Views, Triggers, Full-text Search
+
+### DevOps & Quality
+- **Vercel** - Deploy, Preview, Analytics, Edge Network
+- **GitHub Actions** - CI/CD, Tests, Security Scans
+- **Vitest** - Unit Tests, Coverage, Watch Mode
+- **Playwright** - E2E Tests, Cross-browser, Visual Testing
+- **ESLint + Prettier** - Code Quality, Formatting
+
+### Performance & SEO
+- **Next.js Image** - Optimization, WebP/AVIF, Lazy Loading
+- **PWA** - Manifest, Service Worker, Offline Support
+- **Sitemap.xml** - Dynamic Generation, SEO Optimization
+- **Meta Tags** - OpenGraph, Twitter Cards, JSON-LD
+
+### Security & Compliance
+- **HTTPS + CSP** - Content Security Policy, Headers
+- **RLS (Row Level Security)** - Database-level Access Control
+- **Environment Variables** - Secrets Management
+- **WCAG 2.1 AA** - Accessibility Compliance
 
 ---
 
