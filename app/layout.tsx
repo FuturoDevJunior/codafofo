@@ -1,6 +1,6 @@
 import './globals.css';
 
-import { MenuIcon, X } from 'lucide-react';
+import { MenuIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,7 +8,6 @@ import Link from 'next/link';
 import AccessibilityProvider from '@/components/AccessibilityProvider';
 import AnalyticsProvider from '@/components/AnalyticsProvider';
 import CartSidebar from '@/components/CartSidebar';
-import WhatsAppButton from '@/components/WhatsAppButton';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
@@ -107,10 +106,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 role="banner" 
                 aria-label="Cabeçalho principal">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex items-center justify-between">
-              {/* Logo e Nome - Otimizado */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
+              {/* Logo e Nome - Centralizado e responsivo */}
               <Link href="/" className="flex items-center gap-4 group transition-all duration-200 hover:opacity-90 focus-ring rounded-xl" aria-label="Ir para página inicial">
-                <div className="relative">
+                <div className="relative flex items-center justify-center">
                   <Image 
                     src="/vytalle-logo.svg" 
                     alt="Vytalle Estética & Viscosuplementação - Logo Oficial" 
@@ -124,7 +123,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <span className="text-[8px] sm:text-[10px] text-white font-bold">✓</span>
                   </div>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col justify-center">
                   <h1 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-vitale-primary leading-tight group-hover:text-vitale-secondary transition-colors">
                     Vytalle Estética
                   </h1>
@@ -195,9 +194,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
 
         {/* Footer Otimizado */}
-        <footer className="w-full border-t border-vitale-primary/20 bg-gradient-to-br from-white to-vitale-primary/5 py-12"
+        <footer className="w-full border-t border-neutral-200 bg-white/95 backdrop-blur-md mt-12"
                 role="contentinfo">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               
               {/* Informações da Empresa */}
@@ -210,7 +209,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     height={64}
                     className="h-16 w-16 drop-shadow-lg" 
                   />
-                  <div className="flex flex-col">
+                  <div className="flex flex-col justify-center">
                     <span className="text-xl font-bold text-vitale-primary">
                       Vytalle Estética
                     </span>
@@ -308,10 +307,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   Todos os direitos reservados.
                 </div>
                 <div className="flex gap-4 text-sm">
-                  <Link href="/privacy" className="text-neutral-600 hover:text-vitale-primary transition-colors">
+                  <Link href="/privacidade" className="text-neutral-600 hover:text-vitale-primary transition-colors">
                     Política de Privacidade
                   </Link>
-                  <Link href="/terms" className="text-neutral-600 hover:text-vitale-primary transition-colors">
+                  <Link href="/termos" className="text-neutral-600 hover:text-vitale-primary transition-colors">
                     Termos de Uso
                   </Link>
                 </div>
@@ -322,7 +321,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Componentes Flutuantes */}
         <CartSidebar />
-        <WhatsAppButton />
         <Toaster />
         </AnalyticsProvider>
         </AccessibilityProvider>

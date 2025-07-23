@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCartStore } from '@/lib/store';
 import { formatCurrency } from '@/lib/utils';
+import type { Product } from '@/types/product';
 
-export default function ProductDetailClient({ product }: { product: any }) {
+export default function ProductDetailClient({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const [payment, setPayment] = useState<'pix' | 'prazo'>('pix');
   const addItem = useCartStore((state) => state.addItem);

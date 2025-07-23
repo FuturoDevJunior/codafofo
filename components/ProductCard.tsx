@@ -63,15 +63,6 @@ export default function ProductCard({ product }: { product: Product }) {
   const { trackCartAdd } = useAnalytics();
 
   const handleAddToCart = async () => {
-    // Debug log em desenvolvimento
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🛒 Adicionando produto ao carrinho:', { 
-        id: product.id, 
-        name: product.name, 
-        price_pix: pixPrice,
-        price_card: cardPrice 
-      });
-    }
     
     setIsLoading(true);
     try {

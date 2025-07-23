@@ -133,7 +133,7 @@ export class SmartCache {
     this.updateMetrics();
     
     if (cleaned > 0) {
-      console.log(`Cache: cleaned ${cleaned} expired entries`);
+      // console.log(`Cache: cleaned ${cleaned} expired entries`);
     }
   }
 

@@ -31,7 +31,7 @@ export async function adminFormOnSubmit(data: ProductForm, product?: any) {
   else toast({ title: "Sucesso", description: "Produto salvo!" });
 }
 
-export default function AdminForm({ product }: { product?: any }) {
+export default function AdminForm({ product }: { product?: ProductForm }) {
   const { register, handleSubmit, setValue } = useForm<ProductForm>({ defaultValues: product });
   const [suppliers, setSuppliers] = useState<{ id: string; name: string }[]>([]);
 
