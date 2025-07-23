@@ -114,6 +114,9 @@ jobs:
           echo "Conteúdo de public:"
           ls -la public || echo "public não existe"
 
+      - name: Compacta build para artifact
+        run: tar -czf build-artifact.tar.gz .next public
+
       - name: 💾 Cache build artifacts
         uses: actions/cache@v3
         with:
@@ -129,9 +132,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-files-${{ github.sha }}
-          path: |
-            .next
-            public
+          path: build-artifact.tar.gz
           retention-days: 1
 
   # Teste isolado do build para garantir que mudanças não quebrem a compilação
@@ -155,6 +156,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-files-${{ github.sha }}
+          path: .
+
+      - name: Extrai build
+        run: tar -xzf build-artifact.tar.gz
 
       - name: 🧪 Test build output
         run: |
