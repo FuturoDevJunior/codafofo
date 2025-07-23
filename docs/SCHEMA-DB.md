@@ -83,3 +83,37 @@ SELECT * FROM popular_products LIMIT 5;
 -- Auditoria de updates em produtos
 SELECT * FROM audits WHERE table_name = 'products' AND action = 'update';
 ``` 
+
+## Exemplos de Queries Avançadas
+
+-- Top 5 produtos mais vendidos no mês
+SELECT name, SUM((item->>'quantidade')::int) AS total_vendidos
+FROM orders, jsonb_array_elements(items) AS item
+WHERE status = 'confirmed' AND created_at >= date_trunc('month', now())
+GROUP BY name
+ORDER BY total_vendidos DESC
+LIMIT 5;
+
+-- Resumo de pedidos por status
+SELECT status, COUNT(*) AS total, SUM(total) AS receita
+FROM orders
+GROUP BY status;
+
+## Explicação de Triggers
+- **generate_slug**: Gera automaticamente o slug do produto ao inserir/atualizar.
+- **calc_order_discount**: Calcula desconto aplicado no pedido.
+- **audit_changes**: Loga inserts/updates/deletes para auditoria.
+- **increment_views**: Incrementa views_count ao acessar produto.
+
+## Como Testar Policies
+- Use Supabase Studio (aba Policies) para simular queries como usuário autenticado e público.
+- Exemplo:
+```sql
+-- Testar SELECT público em products
+SET ROLE anon;
+SELECT * FROM products;
+
+-- Testar INSERT autenticado
+SET ROLE authenticated;
+INSERT INTO orders (...);
+``` 

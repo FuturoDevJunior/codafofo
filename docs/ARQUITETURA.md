@@ -443,3 +443,61 @@ flowchart TD
 - **Mermaid:** Diagramas podem ser visualizados no GitHub, VSCode ou ferramentas online.
 - **Cada campo/documento está comentado para facilitar onboarding e manutenção.**
 - **Fluxos mostram não só o caminho feliz, mas também automações e ramificações reais do projeto.** 
+
+---
+
+## 📊 Explicação dos Diagramas
+
+Cada diagrama Mermaid abaixo representa um fluxo real do sistema:
+- **Arquitetura Geral:** Mostra a interação entre usuário, frontend (Next.js), backend (Supabase) e banco (PostgreSQL).
+- **ER Simplificado:** Estrutura de dados e relações principais.
+- **Fluxo End-to-End:** Como dados trafegam do frontend ao banco e voltam.
+- **Onboarding:** Passos para devs iniciarem do zero.
+
+> **Exemplo real:** Ao criar um pedido, o frontend chama uma Edge Function, que insere no banco e retorna o PDF gerado.
+
+---
+
+## 🔄 Restore em Staging
+
+Para restaurar banco e storage em ambiente de staging:
+```bash
+npx supabase db restore --file backup.sql --db-url $STAGING_DB_URL
+# Para arquivos do storage, use scripts customizados ou exportação manual pelo Studio.
+```
+> **Dica:** Sempre teste o restore em staging antes de produção.
+
+---
+
+## 🔐 Exemplos de Policies RLS e Auditoria
+
+```sql
+-- Policy: Apenas admin pode deletar produtos
+CREATE POLICY "Admin delete products" ON PRODUCTS FOR DELETE USING (auth.role() = 'admin');
+
+-- Policy: Usuário só pode ver seus próprios pedidos
+CREATE POLICY "User read own orders" ON ORDERS FOR SELECT USING (user_id() = user_id);
+
+-- Auditoria: Log de updates em produtos
+CREATE TRIGGER audit_product_update
+AFTER UPDATE ON products
+FOR EACH ROW EXECUTE FUNCTION audit_changes();
+```
+> **Boas práticas:** Documente cada policy e trigger no código SQL e na documentação.
+
+---
+
+## ⚡ Edge Functions: Quando Usar
+
+- Para lógica customizada (ex: geração de PDF, integrações externas, validações avançadas).
+- Exemplo: Função que recebe pedido, gera PDF e retorna URL.
+
+---
+
+## 🕵️‍♂️ Auditoria e Logs
+- Use a tabela `audits` para rastrear todas as alterações críticas.
+- Consulte logs via Supabase Studio ou queries SQL.
+- Exemplo:
+```sql
+SELECT * FROM audits WHERE table_name = 'orders' AND action = 'delete';
+``` 

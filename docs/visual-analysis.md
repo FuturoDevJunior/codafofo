@@ -200,3 +200,38 @@ medical: {
 **📧 Desenvolvido por: Gabriel Ferreira (contato.ferreirag@outlook.com)**
 **📅 Data: 21/07/2025**
 **🎨 Status: Revisão Visual Completa - APROVADA**
+
+---
+
+## ✅ Checklist Visual
+- [x] Logo sem overlay ou selo extra
+- [x] Botões alinhados verticalmente no header
+- [x] Contraste mínimo AA em todos os textos
+- [x] Responsividade testada em iPhone SE, iPhone 14, Galaxy S20, iPad, desktop 1440px+
+- [x] Navegação por teclado e foco visível
+- [x] Imagens otimizadas e sem distorção
+
+---
+
+## ♿ Checklist de Acessibilidade
+- [x] Labels e ARIA em todos os inputs
+- [x] Navegação 100% por teclado
+- [x] Foco visível em todos os elementos interativos
+- [x] Contraste mínimo 4.5:1 (WCAG AA)
+- [x] Sem dependência exclusiva de cor
+- [x] Testado com axe e Lighthouse
+
+### Como rodar axe e Lighthouse
+```bash
+# Lighthouse (Chrome DevTools)
+# Acesse a aba Lighthouse e gere o relatório
+
+# axe (extensão ou npm)
+npx axe http://localhost:3000
+```
+
+---
+
+## 📸 Como Gerar Relatório Visual
+- Use a extensão GoFullPage ou DevTools para capturar screenshots completos.
+- Gere PDF do relatório visual e anexe na pasta docs/.

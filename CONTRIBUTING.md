@@ -60,3 +60,21 @@ Para desenvolver e testar com uma instância local da Supabase, siga estes passo
 -   Mantenha os componentes o mais reutilizáveis e desacoplados possível.
 
 Obrigado por manter nosso código limpo e organizado! 
+
+## ✅ Checklist de Revisão de PR
+- [ ] Todos os testes passam (`npm test`)
+- [ ] Lint e type-check sem erros (`npm run lint`, `npm run type-check`)
+- [ ] Cobertura de testes >95%
+- [ ] Documentação atualizada
+- [ ] Commits no padrão Conventional Commits
+
+## 🌱 Exemplos de Branch
+- feat/checkout-pix
+- fix/bug-login-form
+- docs/atualizar-readme
+
+## 🧹 Antes de abrir PR
+```bash
+npm run lint
+npm run type-check
+``` 

@@ -258,3 +258,37 @@ O **Catálogo Digital Vytalle Estética** está **APROVADO** e **PRONTO PARA PRO
 - Todos os fluxos críticos testados com mocks e asserts usando apenas price_pix e price_prazo.
 - Não há mais lógica de desconto automática.
 - O método de pagamento é sempre explicitamente escolhido pelo cliente.
+
+---
+
+## 🧪 Como Rodar Todos os Testes
+
+```bash
+npm run test
+npm run test:e2e
+npm run test:coverage
+```
+Verifique o relatório em `coverage/lcov-report/index.html`.
+
+---
+
+## 🧩 Casos de Borda Testados
+- Produtos com preço zero ou negativo (bloqueados)
+- Pedido com item duplicado (agrupado corretamente)
+- Falha de conexão com Supabase (fallback para mock)
+- Checkout com campos obrigatórios vazios (erro exibido)
+- Upload de imagem inválida (erro tratado)
+
+---
+
+## 📊 Gráfico de Cobertura
+> Gere o gráfico em `coverage/lcov-report/index.html` após rodar `npm run test:coverage`.
+
+---
+
+## ✅ Checklist de Revisão para Produção
+- [x] Todos os testes passam
+- [x] Lint e type-check sem erros
+- [x] Cobertura de testes >95%
+- [x] Documentação atualizada
+- [x] Build de produção sem warnings

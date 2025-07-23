@@ -1,5 +1,7 @@
 <div align="center">
-  <img src="./Vytalle_Logo_Gold.webp" width="120" alt="Logo Vytalle" />
+  <a href="https://vytalle-estetica.vercel.app" target="_blank" rel="noopener noreferrer">
+    <img src="./Vytalle_Logo_Gold.png" width="120" alt="Logo Vytalle" />
+  </a>
   
   # Vytalle Estética - Catálogo Médico Premium
   
@@ -15,6 +17,11 @@
   [![A11y](https://img.shields.io/badge/A11y-WCAG%202.1%20AA-blue)](https://www.w3.org/WAI/WCAG21/quickref/)
   
   [🌐 **DEMO AO VIVO**](https://vytalle-estetica.vercel.app) • [📖 **DOCUMENTAÇÃO**](./docs/)
+</div>
+
+<div align="center" style="margin-bottom: 1em;">
+  <strong>Plataforma B2B de catálogo médico premium, com checkout WhatsApp, admin avançado, PWA, CI/CD, segurança e performance máxima.<br/>
+  <em>Para profissionais exigentes e negócios que não aceitam menos que excelência.</em></strong>
 </div>
 
 ---
@@ -45,9 +52,12 @@ O **Vytalle Estética** é uma plataforma B2B para comercialização de produtos
 - [Endpoints Principais](#endpoints-principais)
 - [Diagramas Visuais](#diagramas-visuais-do-projeto)
 - [Checklist de Qualidade e Deploy](#checklist-de-qualidade-e-deploy)
+- [SEO & Performance](#seo--performance)
+- [FAQ](#-faq-perguntas-frequentes)
 - [Para Negócios & Representantes](#para-negócios--representantes)
 - [Roadmap](#roadmap)
 - [Créditos](#créditos)
+- [Contato](#-suporte-e-contato)
 
 ---
 
@@ -517,21 +527,118 @@ _Pedido via Catálogo Digital_
 
 ---
 
-## 🗃️ Tabela de Variáveis de Ambiente
+## 🏅 Missão, Visão e Valores
+
+A Vytalle Estética existe para elevar o padrão do mercado médico-estético, promovendo inovação, segurança, rastreabilidade e experiência premium para profissionais e pacientes. Compromisso total com compliance, automação e excelência em cada detalhe.
+
+---
+
+## 🚀 Primeiros Passos em 5 Minutos
+
+```bash
+git clone https://github.com/FuturoDevJunior/codafofo.git
+cd codafofo
+npm install
+cp .env.example .env.local
+npx supabase db reset --linked --yes
+npm run dev
+```
+Acesse http://localhost:3000 e veja o catálogo em ação.
+
+---
+
+## 📦 Exemplos de Payloads Reais
+
+### Exemplo de requisição para criar pedido
+```json
+POST /api/checkout
+{
+  "cliente": "Dra. Ana Paula",
+  "produtos": [
+    { "nome": "Botox 50U", "quantidade": 2, "preco": 530.00 },
+    { "nome": "Ellansé M", "quantidade": 1, "preco": 1200.00 }
+  ],
+  "total": 2260.00
+}
+```
+
+### Exemplo de resposta da API
+```json
+{
+  "status": "success",
+  "orderId": "b1c2d3e4-f5a6-7890-1234-56789abcdef0",
+  "pdfUrl": "https://supabase.co/storage/v1/object/public/orders/b1c2d3e4.pdf"
+}
+```
+
+---
+
+## 🗃️ Tabela de Variáveis de Ambiente Detalhada
 
 | Variável                      | Obrigatória | Exemplo / Descrição                  |
 |-------------------------------|-------------|--------------------------------------|
-| NEXT_PUBLIC_SUPABASE_URL      | Sim         | https://xxxx.supabase.co             |
-| NEXT_PUBLIC_SUPABASE_ANON_KEY | Sim         | chave-anon-supabase                  |
-| SUPABASE_SERVICE_ROLE_KEY     | Sim         | chave-service-role                   |
-| SUPABASE_DB_PASSWORD          | Sim         | senha-do-banco                       |
-| ADMIN_USERNAME                | Sim         | vytalle                              |
-| ADMIN_PASSWORD                | Sim         | admin2025                            |
-| VERCEL_TOKEN                  | Não         | Para CI/CD automático                |
-| VERCEL_ORG_ID                 | Não         | Para CI/CD automático                |
-| VERCEL_PROJECT_ID             | Não         | Para CI/CD automático                |
+| NEXT_PUBLIC_SUPABASE_URL      | Sim         | https://xxxx.supabase.co (URL do seu projeto Supabase) |
+| NEXT_PUBLIC_SUPABASE_ANON_KEY | Sim         | chave-anon-supabase (chave pública para frontend) |
+| SUPABASE_SERVICE_ROLE_KEY     | Sim         | chave-service-role (chave privada para scripts/admin) |
+| SUPABASE_DB_PASSWORD          | Sim         | senha-do-banco (senha do Postgres)   |
+| ADMIN_USERNAME                | Sim         | vytalle (usuário do painel admin)    |
+| ADMIN_PASSWORD                | Sim         | admin2025 (senha do painel admin)    |
+| VERCEL_TOKEN                  | Não         | Token para deploy automático         |
+| VERCEL_ORG_ID                 | Não         | ID da organização Vercel             |
+| VERCEL_PROJECT_ID             | Não         | ID do projeto Vercel                 |
 
-Veja `.env.example` para todos os detalhes.
+> **Dica:** Nunca compartilhe chaves privadas em repositórios públicos. Use variáveis de ambiente seguras no Vercel/Supabase.
+
+---
+
+## ✅ Checklist Visual e de Deploy
+
+### Visual (Pixel Perfect)
+- [x] Logo sem overlay ou selo extra
+- [x] Botões alinhados verticalmente no header
+- [x] Contraste mínimo AA em todos os textos
+- [x] Responsividade testada em iPhone SE, iPhone 14, Galaxy S20, iPad, desktop 1440px+
+- [x] Navegação por teclado e foco visível
+- [x] Imagens otimizadas e sem distorção
+
+### Deploy
+- [x] Backup do banco e storage realizado
+- [x] Build de produção sem warnings
+- [x] Testes unitários, integração e e2e passando
+- [x] Variáveis de ambiente revisadas
+- [x] Monitoramento pós-deploy ativo
+
+---
+
+## ❓ FAQ Expandido
+
+**Como resetar o banco de dados?**
+```bash
+npx supabase db reset --linked --yes
+```
+
+**Como rodar só os testes e2e?**
+```bash
+npm run test:e2e
+```
+
+**Como rodar build de produção local?**
+```bash
+npm run build && npm run start
+```
+
+**Como reportar um bug ou sugerir melhoria?**
+Abra uma issue no GitHub ou envie e-mail para contato.ferreirag@outlook.com
+
+**Como acessar o painel admin?**
+Acesse /admin/login com as credenciais do seu ambiente.
+
+---
+
+## 📞 Contato Rápido
+- WhatsApp: [21 99619-2890](https://wa.me/5521996192890)
+- E-mail: [contato.ferreirag@outlook.com](mailto:contato.ferreirag@outlook.com)
+- LinkedIn: [RET Consultoria](https://www.linkedin.com/company/ret-consultoria/)
 
 ---
 
