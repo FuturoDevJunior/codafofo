@@ -110,7 +110,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: 📤 Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-files-${{ github.sha }}
           path: |
@@ -136,7 +136,7 @@ jobs:
           cache: 'npm'
 
       - name: 📥 Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-files-${{ github.sha }}
 
