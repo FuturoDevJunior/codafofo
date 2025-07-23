@@ -65,7 +65,7 @@ const nextConfig = {
             value: 'http',
           },
         ],
-        destination: 'https://vytalle-estetica.vercel.app/$1',
+        destination: `https://${process.env.VERCEL_URL || 'vytalle-estetica.vercel.app'}/$1`,
         permanent: true,
       },
     ];

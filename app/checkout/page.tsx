@@ -313,10 +313,12 @@ Pedido completo e pronto para processamento!`;
               <Label htmlFor="name" className="text-sm font-medium">Nome Completo *</Label>
               <Input 
                 id="name"
+                name="name"
                 value={customerData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
                 placeholder="Dr(a). João Silva"
                 className="focus:ring-vitale-primary"
+                autoComplete="name"
               />
             </div>
 
@@ -324,10 +326,12 @@ Pedido completo e pronto para processamento!`;
               <Label htmlFor="phone" className="text-sm font-medium">WhatsApp *</Label>
               <Input 
                 id="phone"
+                name="phone"
                 value={customerData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 placeholder="(11) 99999-9999"
                 className="focus:ring-vitale-primary"
+                autoComplete="tel"
               />
             </div>
 
@@ -335,11 +339,13 @@ Pedido completo e pronto para processamento!`;
               <Label htmlFor="email" className="text-sm font-medium">E-mail Profissional *</Label>
               <Input 
                 id="email"
+                name="email"
                 type="email"
                 value={customerData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 placeholder="dr.joao@clinica.com.br"
                 className="focus:ring-vitale-primary"
+                autoComplete="email"
               />
             </div>
           </div>
@@ -363,10 +369,12 @@ Pedido completo e pronto para processamento!`;
               <Label htmlFor="crm" className="text-sm font-medium">CRM (Registro Profissional) *</Label>
               <Input 
                 id="crm"
+                name="crm"
                 value={customerData.crm}
                 onChange={(e) => handleInputChange('crm', e.target.value)}
                 placeholder="123456/SP"
                 className="focus:ring-vitale-primary"
+                autoComplete="off"
               />
             </div>
 
@@ -374,10 +382,12 @@ Pedido completo e pronto para processamento!`;
               <Label htmlFor="clinicName" className="text-sm font-medium">Nome da Clínica/Consultório *</Label>
               <Input 
                 id="clinicName"
+                name="clinicName"
                 value={customerData.clinicName}
                 onChange={(e) => handleInputChange('clinicName', e.target.value)}
                 placeholder="Clínica de Estética Avançada"
                 className="focus:ring-vitale-primary"
+                autoComplete="organization"
               />
             </div>
 
@@ -385,10 +395,12 @@ Pedido completo e pronto para processamento!`;
               <Label htmlFor="cnpj" className="text-sm font-medium">CNPJ (Opcional)</Label>
               <Input 
                 id="cnpj"
+                name="cnpj"
                 value={customerData.cnpj}
                 onChange={(e) => handleInputChange('cnpj', e.target.value)}
                 placeholder="00.000.000/0001-00"
                 className="focus:ring-vitale-primary"
+                autoComplete="off"
               />
             </div>
           </div>
@@ -413,10 +425,12 @@ Pedido completo e pronto para processamento!`;
                 <Label htmlFor="cep" className="text-sm font-medium">CEP *</Label>
                 <Input 
                   id="cep"
+                  name="cep"
                   value={customerData.cep}
                   onChange={(e) => handleInputChange('cep', e.target.value)}
                   placeholder="00000-000"
                   className="focus:ring-vitale-primary"
+                  autoComplete="postal-code"
                 />
               </div>
 
@@ -424,10 +438,12 @@ Pedido completo e pronto para processamento!`;
                 <Label htmlFor="city" className="text-sm font-medium">Cidade *</Label>
                 <Input 
                   id="city"
+                  name="city"
                   value={customerData.city}
                   onChange={(e) => handleInputChange('city', e.target.value)}
                   placeholder="São Paulo"
                   className="focus:ring-vitale-primary"
+                  autoComplete="address-level2"
                 />
               </div>
             </div>
@@ -436,10 +452,12 @@ Pedido completo e pronto para processamento!`;
               <Label htmlFor="state" className="text-sm font-medium">Estado *</Label>
               <Input 
                 id="state"
+                name="state"
                 value={customerData.state}
                 onChange={(e) => handleInputChange('state', e.target.value)}
                 placeholder="SP"
                 className="focus:ring-vitale-primary"
+                autoComplete="address-level1"
               />
             </div>
 
@@ -447,10 +465,12 @@ Pedido completo e pronto para processamento!`;
               <Label htmlFor="address" className="text-sm font-medium">Endereço Completo *</Label>
               <Input 
                 id="address"
+                name="address"
                 value={customerData.address}
                 onChange={(e) => handleInputChange('address', e.target.value)}
                 placeholder="Rua Example, 123 - Centro"
                 className="focus:ring-vitale-primary"
+                autoComplete="street-address"
               />
             </div>
           </div>
