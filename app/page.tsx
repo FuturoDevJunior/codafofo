@@ -35,7 +35,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iIzg5NzQ2NiIvPgo8L3N2Zz4K')] bg-repeat"></div>
         </div>
         
-        <div className="container mx-auto px-4 text-center space-y-12 relative z-10">
+        <div className="container mx-auto px-4 text-center space-y-8 md:space-y-12 relative z-10 max-w-responsive-lg">
           {/* Logo Principal Otimizado */}
           <div className="flex justify-center mb-8">
             <SmartImage 
@@ -49,46 +49,46 @@ export default function Home() {
           </div>
           
           {/* Título Principal com Melhor Hierarquia */}
-          <div className="space-y-6 max-w-4xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-vitale-primary leading-tight">
+          <div className="space-y-6 md:space-y-8 max-w-responsive mx-auto">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-vitale-primary leading-tight">
               Produtos Premium para
-              <span className="block text-vitale-secondary">Estética Profissional</span>
+              <span className="block text-vitale-secondary mt-2">Estética Profissional</span>
             </h1>
-            <p className="text-xl sm:text-2xl text-neutral-700 font-medium leading-relaxed max-w-3xl mx-auto">
-              <strong className="text-vitale-primary">Sua excelência profissional começa aqui.</strong>
-              <br />
-              Produtos originais, certificados ANVISA, com entrega expressa e suporte consultivo especializado para clínicas e profissionais em todo Brasil.
+            <p className="text-lg md:text-xl lg:text-2xl text-neutral-700 font-medium leading-relaxed max-w-4xl mx-auto px-4">
+              <strong className="text-vitale-primary text-xl md:text-2xl lg:text-3xl">Sua excelência profissional começa aqui.</strong>
+              <br className="hidden md:block" />
+              <span className="block mt-4 md:mt-2">Produtos originais, certificados ANVISA, com entrega expressa e suporte consultivo especializado para clínicas e profissionais em todo Brasil.</span>
             </p>
 
             {/* Badges de Confiança */}
-            <div className="flex flex-wrap items-center justify-center gap-8 pt-6">
-              <div className="flex items-center gap-3 bg-white/80 px-4 py-2 rounded-full shadow-md">
-                <Shield className="w-5 h-5 text-green-600" />
-                <span className="text-sm font-semibold text-neutral-800">Compra 100% Segura</span>
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 lg:gap-8 pt-6">
+              <div className="flex items-center gap-3 bg-white/90 px-4 md:px-6 py-3 md:py-4 rounded-full shadow-lg border border-green-200/50">
+                <Shield className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
+                <span className="text-sm md:text-base font-bold text-neutral-800">Compra 100% Segura</span>
               </div>
-              <div className="flex items-center gap-3 bg-white/80 px-4 py-2 rounded-full shadow-md">
-                <Award className="w-5 h-5 text-vitale-primary" />
-                <span className="text-sm font-semibold text-neutral-800">Produtos Certificados</span>
+              <div className="flex items-center gap-3 bg-white/90 px-4 md:px-6 py-3 md:py-4 rounded-full shadow-lg border border-vitale-primary/30">
+                <Award className="w-5 h-5 md:w-6 md:h-6 text-vitale-primary" />
+                <span className="text-sm md:text-base font-bold text-neutral-800">Produtos Certificados</span>
               </div>
-              <div className="flex items-center gap-3 bg-white/80 px-4 py-2 rounded-full shadow-md">
-                <Truck className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-semibold text-neutral-800">Entrega em 24-48h</span>
+              <div className="flex items-center gap-3 bg-white/90 px-4 md:px-6 py-3 md:py-4 rounded-full shadow-lg border border-blue-200/50">
+                <Truck className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
+                <span className="text-sm md:text-base font-bold text-neutral-800">Entrega em 24-48h</span>
               </div>
-              <div className="flex items-center gap-3 bg-white/80 px-4 py-2 rounded-full shadow-md">
-                <Users className="w-5 h-5 text-purple-600" />
-                <span className="text-sm font-semibold text-neutral-800">+2000 Profissionais</span>
+              <div className="flex items-center gap-3 bg-white/90 px-4 md:px-6 py-3 md:py-4 rounded-full shadow-lg border border-purple-200/50">
+                <Users className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
+                <span className="text-sm md:text-base font-bold text-neutral-800">+2000 Profissionais</span>
               </div>
             </div>
           </div>
 
           {/* Call to Actions Otimizados */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
-            <Link href="/products">
-              <Button className="group px-10 py-5 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 bg-vitale-primary text-white hover:bg-vitale-secondary rounded-2xl transform hover:scale-105">
-                <span className="flex items-center gap-3">
-                  <Package className="w-6 h-6" />
-                  Explorar Catálogo Completo
-                  <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+          <div className="flex flex-col lg:flex-row gap-4 md:gap-6 justify-center items-center pt-8">
+            <Link href="/products" className="w-full sm:w-auto">
+              <Button className="group w-full sm:w-auto px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl lg:text-2xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 bg-vitale-primary text-white hover:bg-vitale-secondary rounded-xl md:rounded-2xl transform hover:scale-105 min-h-[56px] md:min-h-[64px]">
+                <span className="flex items-center justify-center gap-3 md:gap-4">
+                  <Package className="w-6 h-6 md:w-7 md:h-7" />
+                  <span className="font-extrabold">Explorar Catálogo Completo</span>
+                  <ArrowRight className="w-6 h-6 md:w-7 md:h-7 group-hover:translate-x-2 transition-transform" />
                 </span>
               </Button>
             </Link>
@@ -97,11 +97,11 @@ export default function Home() {
               href="https://www.instagram.com/vytalle.estetica/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group"
+              className="group w-full sm:w-auto"
             >
-              <Button className="flex items-center gap-4 px-8 py-5 text-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105">
-                <Instagram className="w-6 h-6" />
-                <span>Siga no Instagram</span>
+              <Button className="w-full sm:w-auto flex items-center justify-center gap-3 md:gap-4 px-8 md:px-10 py-4 md:py-6 text-lg md:text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 rounded-xl md:rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 min-h-[56px] md:min-h-[64px]">
+                <Instagram className="w-6 h-6 md:w-7 md:h-7" />
+                <span className="font-bold">Siga no Instagram</span>
               </Button>
             </a>
 
@@ -109,10 +109,11 @@ export default function Home() {
               href="https://wa.me/5521996192890?text=Olá! Gostaria de conhecer os produtos da Vytalle Estética & Viscosuplementação."
               target="_blank"
               rel="noopener noreferrer"
+              className="w-full sm:w-auto"
             >
-              <Button className="px-8 py-5 text-lg font-semibold bg-green-600 text-white hover:bg-green-700 rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl flex items-center gap-3 transform hover:scale-105">
-                <MessageCircle className="w-6 h-6" />
-                <span>Consultor Especializado</span>
+              <Button className="w-full sm:w-auto px-8 md:px-10 py-4 md:py-6 text-lg md:text-xl font-bold bg-green-600 text-white hover:bg-green-700 rounded-xl md:rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl flex items-center justify-center gap-3 md:gap-4 transform hover:scale-105 min-h-[56px] md:min-h-[64px]">
+                <MessageCircle className="w-6 h-6 md:w-7 md:h-7" />
+                <span className="font-bold">Consultor Especializado</span>
               </Button>
             </a>
           </div>
@@ -120,13 +121,13 @@ export default function Home() {
       </section>
 
       {/* Produtos em Destaque - NOVA SEÇÃO */}
-      <section className="py-20 bg-gradient-to-br from-vitale-primary/5 via-white to-vitale-secondary/5">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-6 mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-vitale-primary">
+      <section className="section-padding bg-gradient-to-br from-vitale-primary/5 via-white to-vitale-secondary/5">
+        <div className="container mx-auto px-4 max-w-responsive-lg">
+          <div className="text-center space-y-6 md:space-y-8 mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-vitale-primary">
               Produtos em Destaque
             </h2>
-            <p className="text-xl text-neutral-700 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl lg:text-2xl text-neutral-700 max-w-4xl mx-auto leading-relaxed px-4">
               Conheça nossa seleção premium de produtos mais procurados por profissionais de estética
             </p>
             <div className="flex items-center justify-center gap-2">
@@ -137,9 +138,9 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid-responsive gap-responsive">
             {featuredProducts.map((product, index) => (
-              <Card key={product.id} className="group hover:shadow-2xl transition-all duration-300 border-2 border-vitale-primary/20 hover:border-vitale-primary/50 bg-white/90 backdrop-blur-sm transform hover:-translate-y-2">
+              <Card key={product.id} className="group hover:shadow-2xl transition-all duration-300 border-2 border-vitale-primary/20 hover:border-vitale-primary/50 bg-white/95 backdrop-blur-sm transform hover:-translate-y-3 rounded-xl md:rounded-2xl">
                 <CardHeader className="relative overflow-hidden rounded-t-lg">
                   <div className="aspect-square relative bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10 rounded-lg">
                     <SmartImage
@@ -175,7 +176,7 @@ export default function Home() {
                   <div className="flex items-center justify-between pt-4 border-t border-vitale-primary/20">
                     <div className="space-y-1">
                       <div className="text-2xl font-bold text-vitale-primary">
-                        R$ {product.price_pix?.toFixed(2) || '0,00'}
+                        R$ {product.price_pix?.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || '0,00'}
                       </div>
                       <div className="text-sm text-neutral-500">
                         À vista no PIX

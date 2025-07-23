@@ -27,7 +27,8 @@ const mockProduct = {
   price_pix: 10,
   price_card: 12,
   currency: 'BRL',
-  description: 'desc'
+  description: 'desc',
+  slug: 'produto-slug'
 };
 
 describe('ProductDetailClient', () => {

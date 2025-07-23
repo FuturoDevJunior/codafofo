@@ -14,7 +14,7 @@
   [![Status](https://img.shields.io/badge/status-Production%20Ready-success)](https://vytalle-estetica.vercel.app)
   [![Security](https://img.shields.io/badge/security-HTTPS%20%2B%20CSP-green)](https://securityheaders.com/)
   [![PWA](https://img.shields.io/badge/PWA-Ready-purple)](https://web.dev/pwa-checklist/)
-  [![A11y](https://img.shields.io/badge/A11y-WCAG%202.1%20AA-blue)](https://www.w3.org/WAI/WCAG21/quickref/)
+  [![A11y](https://img.shields.io/badge/A11y-WCAG%202.1%20AA-blue)](https://www.w3.org/Wautomatização/WCAG21/quickref/)
   
   [🌐 **DEMO AO VIVO**](https://vytalle-estetica.vercel.app) • [📖 **DOCUMENTAÇÃO**](./docs/)
 </div>
@@ -147,7 +147,7 @@ vytalle/
 - **React 18** - Concurrent Features, Suspense, Server Components
 - **TypeScript 5** - Type Safety, IntelliSense, Strict Mode
 - **Tailwind CSS 3.4** - Utility-first, JIT, Custom Design System
-- **Radix UI** - Headless Components, Accessibility, WAI-ARIA
+- **Radix UI** - Headless Components, Accessibility, Wautomatização-ARIA
 - **Framer Motion** - Animations, Gestures, Layout Animations
 - **Zustand** - State Management, Persist, DevTools
 
@@ -412,11 +412,12 @@ sequenceDiagram
 ## 🏅 Créditos
 
 <p align="center" style="margin-top: 2em; font-size: 1.15em;">
-  <img src="https://media.licdn.com/dms/image/v2/D4E0BAQG1XvgGPsgDgw/company-logo_200_200/B4EZfAq_6GHwAI-/0/1751284187904?e=1755734400&v=beta&t=58781mg62IJALOWHsotsjB4Mb_xn2jdeL-Dvha0YZtA" alt="Logo RET Consultoria" width="40" style="vertical-align: middle; margin-right: 12px; border-radius: 8px;"/>
+  <span style="display: inline-flex; align-items: center; gap: 16px;">
+    <img src="/icons/ret-logo.png" alt="Logo RET Consultoria" width="40" style="vertical-align: middle; margin-right: 12px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);"/>
+    <img src="/icons/ret-qr.png" alt="QR Code LinkedIn RET Consultoria" width="60" style="margin-top: 0; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);"/>
+  </span><br/>
   <strong>Projeto desenvolvido e mantido por <a href="https://www.linkedin.com/company/ret-consultoria/?viewAsMember=true" target="_blank" rel="noopener noreferrer">RET CONSULTORIA LTDA</a><br/>
   <em>Automação, Software e Inovação para o seu negócio.</em></strong>
-  <br/>
-  <img src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=https://www.linkedin.com/company/ret-consultoria/?viewAsMember=true" alt="QR Code LinkedIn RET Consultoria" width="60" style="margin-top: 8px;"/>
 </p>
 
 ---

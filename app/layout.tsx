@@ -1,6 +1,5 @@
 import './globals.css';
 
-import { MenuIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,6 +7,7 @@ import Link from 'next/link';
 import AccessibilityProvider from '@/components/AccessibilityProvider';
 import AnalyticsProvider from '@/components/AnalyticsProvider';
 import CartSidebar from '@/components/CartSidebar';
+import Header from '@/components/Header';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description: 'Toxinas botulínicas, preenchedores e bioestimuladores certificados ANVISA. Entrega expressa, suporte especializado.',
     images: [
       {
-        url: '/vytalle-logo.svg',
+        url: '/Vytalle_Logo_Gold.png',
         width: 1200,
         height: 630,
         alt: 'Vytalle Estética - Logo',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Vytalle Estética - Produtos Premium',
     description: 'Produtos médicos estéticos certificados para profissionais',
-    images: ['/vytalle-logo.svg'],
+    images: ['/Vytalle_Logo_Gold.png'],
   },
   manifest: '/manifest.json',
   robots: {
@@ -79,7 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: 'Vytalle Estética & Viscosuplementação',
               description: 'Distribuidora de produtos médicos estéticos premium para profissionais',
               url: process.env.NEXT_PUBLIC_SITE_URL || 'https://vytalle-estetica.vercel.app',
-              logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vytalle-estetica.vercel.app'}/vytalle-logo.svg`,
+              logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://vytalle-estetica.vercel.app'}/Vytalle_Logo_Gold.png`,
               contactPoint: {
                 '@type': 'ContactPoint',
                 telephone: '+55-21-99619-2890',
@@ -102,93 +102,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AccessibilityProvider>
         <AnalyticsProvider>
         {/* Header Profissional Otimizado */}
-        <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-lg"
-                role="banner" 
-                aria-label="Cabeçalho principal">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
-              {/* Logo e Nome - Centralizado e responsivo */}
-              <Link href="/" className="flex items-center gap-4 group transition-all duration-200 hover:opacity-90 focus-ring rounded-xl" aria-label="Ir para página inicial">
-                <div className="flex items-center justify-center">
-                  <Image 
-                    src="/Vytalle_Logo_Gold.png" 
-                    alt="Vytalle Estética & Viscosuplementação - Logo Oficial" 
-                    width={64}
-                    height={64}
-                    className="h-12 w-12 sm:h-16 sm:w-16 object-contain transition-all duration-200" 
-                    priority
-                  />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <h1 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-vitale-primary leading-tight group-hover:text-vitale-secondary transition-colors">
-                    Vytalle Estética
-                  </h1>
-                  <p className="text-xs sm:text-sm text-neutral-600 font-medium tracking-wide group-hover:text-vitale-primary transition-colors">
-                    Produtos Premium Certificados
-                  </p>
-                </div>
-              </Link>
-
-              {/* Navegação Desktop */}
-              <nav className="hidden lg:flex items-center gap-8" 
-                   role="navigation" 
-                   aria-label="Navegação principal">
-                <div className="flex items-center gap-8">
-                  <Link href="/" className="text-vitale-primary hover:text-vitale-secondary font-semibold transition-colors focus-ring px-3 py-2 rounded-lg">
-                    Início
-                  </Link>
-                  <Link href="/products" className="text-vitale-primary hover:text-vitale-secondary font-semibold transition-colors focus-ring px-3 py-2 rounded-lg">
-                    Catálogo
-                  </Link>
-                  <a 
-                    href="https://wa.me/5521996192890?text=Olá! Gostaria de informações sobre os produtos da Vytalle."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300 shadow-md hover:shadow-lg focus-ring"
-                  >
-                    WhatsApp
-                  </a>
-                </div>
-              </nav>
-
-              {/* Status e Indicadores Mobile */}
-              <div className="flex items-center gap-3 lg:hidden">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" 
-                       aria-label="Status online"></div>
-                  <span className="text-xs font-medium text-green-700">Online</span>
-                </div>
-                
-                {/* Menu Mobile Button */}
-                <button 
-                  className="lg:hidden p-2 text-vitale-primary hover:text-vitale-secondary transition-colors focus-ring rounded-lg"
-                  aria-label="Menu de navegação móvel"
-                >
-                  <MenuIcon className="w-6 h-6" />
-                </button>
-              </div>
-
-              {/* Status Desktop */}
-              <div className="hidden lg:flex items-center gap-4">
-                <div className="flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" 
-                       aria-label="Status online"></div>
-                  <span className="text-sm font-medium text-green-700">Catálogo Online</span>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm font-semibold text-vitale-primary">+2000 Profissionais</div>
-                  <div className="text-xs text-neutral-600">Confiança Comprovada</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
+        <Header />
         {/* Conteúdo Principal */}
         <main role="main">
           {children}
         </main>
-
         {/* Footer Otimizado */}
         <footer className="w-full border-t border-neutral-200 bg-white/95 backdrop-blur-md mt-12"
                 role="contentinfo">
@@ -199,11 +117,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="lg:col-span-2 space-y-6">
                 <div className="flex items-center gap-4">
                   <Image 
-                    src="/vytalle-logo.svg" 
+                    src="/Vytalle_Logo_Gold.png" 
                     alt="Logo Vytalle Estética" 
                     width={64}
                     height={64}
-                    className="h-16 w-16 drop-shadow-lg" 
+                    className="h-16 w-16 drop-shadow-lg object-contain" 
                   />
                   <div className="flex flex-col justify-center">
                     <span className="text-xl font-bold text-vitale-primary">

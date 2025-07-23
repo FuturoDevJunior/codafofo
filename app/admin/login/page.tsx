@@ -1,182 +1,139 @@
 'use client';
 
 import { useState } from 'react';
-
-import { motion } from 'framer-motion';
-import {
-  Eye,
-  EyeOff,
-  Lock,
-  User,
-} from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Eye, EyeOff, Lock, Mail, Shield } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/lib/supabase';
 
 export default function AdminLogin() {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [email, setEmail] = useState('admin@vytalle.com.br');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { toast } = useToast();
-
-  // Credenciais obtidas das variáveis de ambiente
-  const ADMIN_CREDENTIALS = {
-    username: process.env.ADMIN_USERNAME || 'vytalle',
-    password: process.env.ADMIN_PASSWORD || 'admin2025'
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
 
-    // Simulação de verificação
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password
+      });
 
-    if (
-      credentials.username === ADMIN_CREDENTIALS.username && 
-      credentials.password === ADMIN_CREDENTIALS.password
-    ) {
-      // Salvar sessão no localStorage (em produção, use JWT ou similar)
-      localStorage.setItem('vytalle-admin-session', 'authenticated');
-      
-      toast({
-        title: "✅ Login realizado!",
-        description: "Bem-vindo ao painel administrativo.",
-      });
-      
-      router.push('/admin/dashboard');
-    } else {
-      toast({
-        title: "Usuário ou senha inválidos.",
-        description: "",
-        variant: "destructive"
-      });
+      if (authError) {
+        if (authError.message.includes('Invalid login credentials')) {
+          setError('Email ou senha incorretos.');
+        } else {
+          setError('Erro no login. Tente novamente.');
+        }
+        return;
+      }
+
+      if (!authData.user) {
+        setError('Erro inesperado no login.');
+        return;
+      }
+
+      router.push('/admin');
+
+    } catch (err) {
+      setError('Erro inesperado. Tente novamente.');
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-vitale-primary/10 via-white to-vitale-secondary/10 flex items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
-      >
-        <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
-          <CardHeader className="text-center pb-2">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-vitale-primary to-vitale-secondary rounded-2xl flex items-center justify-center mb-4">
-              <Lock className="h-8 w-8 text-white" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-neutral-800">
-              Painel Administrativo
-            </CardTitle>
-            <p className="text-neutral-600 text-sm">
-              Vytalle Estética - Acesso Restrito
-            </p>
-          </CardHeader>
-          
-          <CardContent className="space-y-6">
-            <form onSubmit={handleLogin} className="space-y-4">
-              
-              {/* Username */}
-              <div className="space-y-2">
-                <Label htmlFor="username" className="flex items-center gap-2 text-sm font-medium">
-                  <User className="h-4 w-4" />
-                  Usuário
-                </Label>
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="w-20 h-20 bg-vitale-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Shield className="w-10 h-10 text-vitale-primary" />
+          </div>
+          <h1 className="text-3xl font-bold text-vitale-primary mb-2">
+            Painel Admin
+          </h1>
+          <p className="text-neutral-600">
+            Acesso restrito - Supabase Auth
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-xl border-2 border-vitale-primary/20 p-8">
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-2">
+              <label htmlFor="email" className="block text-sm font-bold text-vitale-primary">
+                Email Administrativo
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-vitale-primary w-5 h-5" />
                 <Input
-                  id="username"
-                  type="text"
-                  value={credentials.username}
-                  onChange={(e) => setCredentials(prev => ({ ...prev, username: e.target.value }))}
-                  placeholder="Digite seu usuário"
-                  className="h-11 bg-white/50 border-neutral-200 focus:border-vitale-primary"
-                  required
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-12 py-4 text-lg border-2 border-vitale-primary/30 focus:border-vitale-primary rounded-xl"
+                  disabled={isLoading}
+                  autoComplete="username"
                 />
               </div>
+            </div>
 
-              {/* Password */}
-              <div className="space-y-2">
-                <Label htmlFor="password" className="flex items-center gap-2 text-sm font-medium">
-                  <Lock className="h-4 w-4" />
-                  Senha
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={credentials.password}
-                    onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
-                    placeholder="Digite sua senha"
-                    className="h-11 bg-white/50 border-neutral-200 focus:border-vitale-primary pr-10"
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-0 top-0 h-11 px-3 hover:bg-transparent"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-neutral-400" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-neutral-400" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-
-              {/* Login Button */}
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full h-11 bg-gradient-to-r from-vitale-primary to-vitale-secondary hover:from-vitale-primary/90 hover:to-vitale-secondary/90 text-white font-semibold transition-all duration-200"
-              >
-                {isLoading ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span>Entrando...</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <Lock className="h-4 w-4" />
-                    <span>Entrar no Painel</span>
-                  </div>
-                )}
-              </Button>
-            </form>
-
-            {/* Security Notice */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-              <h4 className="text-sm font-semibold text-amber-700 mb-2">
-                🔒 Acesso Restrito
-              </h4>
-              <div className="text-sm text-amber-600">
-                <p>Entre em contato com o administrador para obter credenciais de acesso.</p>
+            <div className="space-y-2">
+              <label htmlFor="password" className="block text-sm font-bold text-vitale-primary">
+                Senha
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-vitale-primary w-5 h-5" />
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="pl-12 pr-12 py-4 text-lg border-2 border-vitale-primary/30 focus:border-vitale-primary rounded-xl"
+                  disabled={isLoading}
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-vitale-primary"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
             </div>
 
-            {/* Security Note */}
-            <div className="text-center text-xs text-neutral-500">
-              <p>🔒 Acesso seguro e protegido</p>
-              <p>Desenvolvido por RET TECNOLOGIA</p>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+            {error && (
+              <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4">
+                <p className="text-red-800 text-sm font-medium">{error}</p>
+              </div>
+            )}
+
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-4 text-lg font-bold bg-vitale-primary hover:bg-vitale-secondary text-white rounded-xl min-h-[56px]"
+            >
+              {isLoading ? 'Verificando...' : 'Entrar com Supabase'}
+            </Button>
+          </form>
+
+          <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+            <p className="text-sm text-blue-800 font-medium">
+              🔒 Autenticação 100% segura via Supabase
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

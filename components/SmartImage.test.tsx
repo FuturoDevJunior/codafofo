@@ -4,14 +4,14 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 // Mock do Next.js Image
 vi.mock('next/image', () => ({
   default: ({ src, alt, onError, onLoad, ...props }: any) => (
-    <img
-      src={src}
-      alt={alt}
+    <div
+      data-src={src}
+      aria-label={alt}
       onError={onError}
       onLoad={onLoad}
       {...props}
       data-testid="smart-image"
-    />
+    >Mock: {src}</div>
   )
 }));
 
