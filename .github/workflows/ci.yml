@@ -95,8 +95,24 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci --prefer-offline --no-audit
 
+      - name: Cria .env fake para build
+        run: |
+          echo "NEXT_PUBLIC_FAKE=1" > .env
+
       - name: 🏗️ Build application
-        run: npm run build
+        run: npm run build | tee build.log
+
+      - name: 🐞 Log do build
+        run: cat build.log
+
+      - name: 🐞 Debug build output antes do upload
+        run: |
+          echo "Conteúdo do diretório após build:"
+          ls -la
+          echo "Conteúdo de .next:"
+          ls -la .next || echo ".next não existe"
+          echo "Conteúdo de public:"
+          ls -la public || echo "public não existe"
 
       - name: 💾 Cache build artifacts
         uses: actions/cache@v3
