@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+# Executar testes completos antes do push
+echo "🧪 Executando testes completos antes do push..."
+npm run test:ci
+
+# Verificar qualidade do código
+echo "🔍 Verificando qualidade do código..."
+npm run quality:check
+
+echo "✅ Pre-push checks passed!" 
