@@ -6,8 +6,8 @@
   # Vytalle Estética - Catálogo Médico Premium
   
   [![CI/CD](https://github.com/FuturoDevJunior/codafofo/workflows/CI/badge.svg)](https://github.com/FuturoDevJunior/codafofo/actions)
-  [![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen)](./docs/TESTING.md)
-  [![Tests](https://img.shields.io/badge/tests-640%20passing-success)](#-testes--qualidade)
+  [![Coverage](https://img.shields.io/badge/coverage-61.5%25-brightgreen)](./docs/TESTING.md)
+  [![Tests](https://img.shields.io/badge/tests-720%20passing-success)](#-testes--qualidade)
   [![Deploy](https://img.shields.io/badge/deploy-Vercel-black)](https://vytalle-estetica.vercel.app)
   [![License](https://img.shields.io/badge/license-Proprietary-blue)](./LICENSE)
   [![Node](https://img.shields.io/badge/node-%3E=18.0.0-green)](https://nodejs.org/)
@@ -28,16 +28,16 @@
 
 ## 🎯 Visão Geral
 
-O **Vytalle Estética** é uma plataforma B2B para comercialização de produtos médicos premium, com checkout via WhatsApp, painel admin avançado, Supabase, PWA, CI/CD, versionamento, automação de releases e foco total em segurança, performance e compliance.
+O **Vytalle Estética** é uma plataforma B2B completa para comercialização de produtos médicos premium, desenvolvida com tecnologias modernas e foco total em experiência do usuário, performance e segurança.
 
-### 🏆 Diferenciais
+### 🏆 Diferenciais Principais
 
-- **💬 Checkout WhatsApp**: Mensagem profissional, pós-venda com upsell, automação comercial
-- **🛡️ Segurança Avançada**: RLS, auditoria, logs, headers de segurança, validação rigorosa
-- **⚡ Performance Máxima**: PWA, mobile-first, Core Web Vitals otimizados, bundle <350kB
-- **🧪 Qualidade Garantida**: 640 testes automatizados, cobertura >96%, CI/CD robusto
-- **📊 Admin "No-Code"**: Painel intuitivo, relatórios, gestão completa de produtos
-- **🔧 Deploy Profissional**: Automático, rollback instantâneo, monitoramento 24/7
+- **💬 Checkout WhatsApp**: Integração nativa com WhatsApp Business, mensagens profissionais e automação comercial
+- **🛡️ Segurança Avançada**: RLS (Row Level Security), auditoria completa, validação rigorosa e headers de segurança
+- **⚡ Performance Máxima**: PWA, mobile-first, Core Web Vitals otimizados, bundle otimizado
+- **🧪 Qualidade Garantida**: 720 testes automatizados, cobertura de código, CI/CD robusto
+- **📊 Admin Intuitivo**: Painel administrativo completo com gestão de produtos, relatórios e customização
+- **🔧 Deploy Profissional**: Automático, rollback instantâneo, monitoramento contínuo
 
 ---
 
@@ -82,7 +82,7 @@ npm run db:init
 npm run dev
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000) e veja o catálogo em ação!
+Acesse [http://localhost:5174](http://localhost:5174) e veja o catálogo em ação!
 
 ### 📋 Pré-requisitos
 
@@ -118,7 +118,7 @@ VERCEL_PROJECT_ID=your-project-id
 | **Banco não conecta** | `npm run db:init` |
 | **Testes falham** | `npm run test:reset` |
 | **Deploy falha** | Verificar variáveis de ambiente |
-| **Admin não acessa** | `npm run setup-admin` |
+| **Admin não acessa** | `npm run admin:setup` |
 
 ---
 
@@ -126,10 +126,10 @@ VERCEL_PROJECT_ID=your-project-id
 
 ### Frontend & UI
 - **Next.js 15.4.2** - App Router, Server Components, Static Generation
-- **React 18** - Concurrent Features, Suspense, Server Components
+- **React 18.3.1** - Concurrent Features, Suspense, Server Components
 - **TypeScript 5** - Type Safety, IntelliSense, Strict Mode
 - **Tailwind CSS 3.4** - Utility-first, JIT, Custom Design System
-- **Radix UI** - Headless Components, Accessibility, Wautomatização-ARIA
+- **Radix UI** - Headless Components, Accessibility, WAI-ARIA
 - **Framer Motion** - Animations, Gestures, Layout Animations
 - **Zustand** - State Management, Persist, DevTools
 
@@ -144,6 +144,7 @@ VERCEL_PROJECT_ID=your-project-id
 - **Vitest** - Unit Tests, Coverage, Watch Mode
 - **Playwright** - E2E Tests, Cross-browser, Visual Testing
 - **ESLint + Prettier** - Code Quality, Formatting
+- **Husky** - Git Hooks, Pre-commit Checks
 
 ### Performance & SEO
 - **Next.js Image** - Optimization, WebP/AVIF, Lazy Loading
@@ -164,55 +165,109 @@ VERCEL_PROJECT_ID=your-project-id
 ```
 vytalle/
 ├── 📂 app/                    # Next.js App Router
-│   ├── 📂 (routes)/           # Route groups
-│   │   ├── 📂 admin/          # Admin routes
-│   │   ├── 📂 products/       # Product routes
-│   │   ├── 📂 cart/           # Cart routes
-│   │   └── 📂 checkout/       # Checkout routes
+│   ├── 📂 admin/              # Admin routes
+│   │   ├── 📂 audits/         # Auditoria
+│   │   ├── 📂 customization/  # Personalização
+│   │   ├── 📂 leads/          # Leads
+│   │   ├── 📂 orders/         # Pedidos
+│   │   ├── 📂 reports/        # Relatórios
+│   │   └── 📂 users/          # Usuários
 │   ├── 📂 api/                # API routes
-│   ├── 📄 globals.css         # Global styles
-│   ├── 📄 layout.tsx          # Root layout
-│   └── 📄 page.tsx            # Home page
-├── 📂 components/             # Reusable components
-│   ├── 📂 ui/                 # Base UI components
-│   ├── 📂 admin/              # Admin components
-│   ├── 📂 cart/               # Cart components
-│   └── 📂 products/           # Product components
-├── 📂 lib/                    # Business logic
-│   ├── 📄 supabase.ts         # Database client
-│   ├── 📄 auth.ts             # Authentication
-│   ├── 📄 validation.ts       # Data validation
-│   ├── 📄 utils.ts            # Utilities
-│   └── 📄 store.ts            # State management
-├── 📂 types/                  # TypeScript types
-├── 📂 supabase/               # Database
-│   ├── 📂 migrations/         # Database migrations
+│   │   ├── 📂 admin-setup/    # Setup admin
+│   │   ├── 📂 checkout/       # Checkout
+│   │   └── 📂 error-report/   # Relatórios de erro
+│   ├── 📂 cart/               # Carrinho
+│   ├── 📂 checkout/           # Checkout
+│   ├── 📂 products/           # Produtos
+│   │   └── 📂 [slug]/         # Detalhes do produto
+│   ├── 📂 privacidade/        # Política de privacidade
+│   ├── 📂 termos/             # Termos de uso
+│   ├── 📂 success/            # Página de sucesso
+│   ├── 📄 globals.css         # Estilos globais
+│   ├── 📄 layout.tsx          # Layout raiz
+│   ├── 📄 page.tsx            # Página inicial
+│   └── 📄 sitemap.ts          # Sitemap dinâmico
+├── 📂 components/             # Componentes reutilizáveis
+│   ├── 📂 ui/                 # Componentes base
+│   ├── 📂 admin/              # Componentes admin
+│   ├── 📂 auth/               # Componentes de autenticação
+│   ├── 📂 cart/               # Componentes do carrinho
+│   └── 📂 products/           # Componentes de produtos
+├── 📂 lib/                    # Lógica de negócio
+│   ├── 📂 supabase/           # Clientes Supabase
+│   ├── 📄 analytics.ts        # Analytics
+│   ├── 📄 auth.ts             # Autenticação
+│   ├── 📄 errorHandling.ts    # Tratamento de erros
+│   ├── 📄 logger.ts           # Sistema de logs
+│   ├── 📄 mockData.ts         # Dados mock
+│   ├── 📄 productService.ts   # Serviços de produto
+│   ├── 📄 store.ts            # Gerenciamento de estado
+│   ├── 📄 utils.ts            # Utilitários
+│   └── 📄 validation.ts       # Validações
+├── 📂 hooks/                  # Custom hooks
+├── 📂 types/                  # Tipos TypeScript
+├── 📂 supabase/               # Configuração Supabase
 │   ├── 📂 functions/          # Edge functions
-│   └── 📂 seeds/              # Seed data
-├── 📂 public/                 # Static assets
-├── 📂 docs/                   # Documentation
-├── 📂 tests/                  # Test files
-└── 📂 scripts/                # Build scripts
+│   └── 📂 migrations/         # Migrações do banco
+├── 📂 scripts/                # Scripts de automação
+├── 📂 tests/                  # Testes E2E
+├── 📂 docs/                   # Documentação
+└── 📂 public/                 # Assets estáticos
 ```
 
 ---
 
 ## 🔧 Scripts Disponíveis
 
+### 🚀 Desenvolvimento
 | Script | Comando | Descrição |
 |--------|---------|-----------|
-| **Desenvolvimento** | `npm run dev` | Inicia app em modo desenvolvimento |
-| **Build** | `npm run build` | Build de produção + migrations |
-| **Produção** | `npm run start` | Sobe app em modo produção |
-| **Testes** | `npm run test` | Testes unitários (Vitest, RTL) |
+| **Dev** | `npm run dev` | Inicia app em desenvolvimento (porta 5174) |
+| **Dev Fast** | `npm run dev:fast` | Dev sem inicialização do banco |
+| **Dev Turbo** | `npm run dev:turbo` | Dev com Turbo mode |
+| **Túnel** | `npm run tunnel` | Dev + túnel ngrok para testes mobile |
+
+### 🏗️ Build & Deploy
+| Script | Comando | Descrição |
+|--------|---------|-----------|
+| **Build** | `npm run build` | Build de produção |
+| **Build + DB** | `npm run build:with-db` | Build + inicialização do banco |
+| **Start** | `npm run start` | App em modo produção |
+| **Preview** | `npm run preview` | Preview em porta 4000 |
+
+### 🧪 Testes & Qualidade
+| Script | Comando | Descrição |
+|--------|---------|-----------|
+| **Testes** | `npm run test` | Testes unitários (Vitest) |
+| **Testes CI** | `npm run test:ci` | Testes para CI/CD |
+| **Cobertura** | `npm run test:coverage` | Relatório de cobertura |
 | **E2E** | `npm run test:e2e` | Testes end-to-end (Playwright) |
-| **Cobertura** | `npm run test:coverage` | Gera relatório de cobertura |
-| **Lint** | `npm run lint` | Lint de código (ESLint) |
-| **Type Check** | `npm run type-check` | Checagem de tipos TypeScript |
-| **DB Init** | `npm run db:init` | Prepara banco, aplica migrations e seeds |
-| **Túnel** | `npm run dev:tunnel` | Dev + túnel ngrok para testes mobile |
-| **Análise** | `npm run analyze` | Analisa bundle size e dependências |
-| **Reset** | `npm run test:reset` | Reset completo para desenvolvimento |
+| **Lint** | `npm run lint` | Lint de código |
+| **Type Check** | `npm run type-check` | Verificação de tipos |
+| **Format** | `npm run format` | Formatação com Prettier |
+
+### 🗄️ Banco de Dados
+| Script | Comando | Descrição |
+|--------|---------|-----------|
+| **DB Init** | `npm run db:init` | Inicializa banco, migrations e seeds |
+| **DB Migrate** | `npm run db:migrate` | Aplica migrações |
+| **DB Reset** | `npm run db:reset` | Reset completo do banco |
+| **DB Backup** | `npm run db:backup` | Backup dos dados |
+
+### 👨‍💼 Admin
+| Script | Comando | Descrição |
+|--------|---------|-----------|
+| **Admin Setup** | `npm run admin:setup` | Configura usuário admin |
+| **Admin Test** | `npm run admin:test` | Testa configuração admin |
+| **Admin Auto** | `npm run admin:auto` | Automação completa do admin |
+
+### 📊 Monitoramento
+| Script | Comando | Descrição |
+|--------|---------|-----------|
+| **Health Check** | `npm run monitor:health` | Verifica saúde da aplicação |
+| **Performance** | `npm run performance:lighthouse` | Análise de performance |
+| **SEO Check** | `npm run seo:check` | Verificação de SEO |
+| **Security Audit** | `npm run security:audit` | Auditoria de segurança |
 
 ---
 
@@ -226,10 +281,10 @@ vytalle/
 | `GET` | `/api/products/[slug]` | Detalhes de um produto | Pública |
 | `POST` | `/api/checkout` | Cria pedido e gera PDF | Pública |
 | `GET` | `/api/orders` | Lista pedidos | Admin |
-| `POST` | `/api/auth/login` | Login admin | Pública |
-| `GET` | `/api/health` | Healthcheck | Pública |
+| `POST` | `/api/admin-setup` | Setup inicial admin | Pública |
+| `POST` | `/api/error-report` | Relatório de erros | Pública |
 
-### Exemplo de Integração ERP
+### Exemplo de Integração
 
 ```javascript
 // Exemplo: Node.js
@@ -267,21 +322,6 @@ const vytalle = new VytalleAPI(
 const products = await vytalle.getProducts('Toxina Botulínica');
 ```
 
-### Testando a API Localmente
-
-```bash
-# Health check
-curl http://localhost:3000/api/health
-
-# Listar produtos
-curl http://localhost:3000/api/products
-
-# Criar pedido
-curl -X POST http://localhost:3000/api/checkout \
-  -H "Content-Type: application/json" \
-  -d '{"customer":{"name":"Dr. Silva","email":"dr@clinic.com"},"products":[{"id":"1","quantity":2}]}'
-```
-
 ### Exemplo de Mensagem WhatsApp
 
 ```
@@ -289,7 +329,6 @@ curl -X POST http://localhost:3000/api/checkout \
 
 *DADOS DO CLIENTE*
 Nome: Dra. Ana Paula
-
 CEP: 21361-020
 
 *PRODUTOS SOLICITADOS*
@@ -322,8 +361,8 @@ _Pedido via Catálogo Digital_
 
 | Tipo de Teste | Total | Passando | Cobertura |
 |---------------|-------|----------|-----------|
-| **Unitário (Vitest)** | 640 | 640 | 96%+ |
-| **Integração** | 40 | 40 | 100% |
+| **Unitário (Vitest)** | 720 | 720 | 61.5% |
+| **Integração** | 63 | 63 | 100% |
 | **E2E (Playwright)** | 7 | 7 | 100% |
 
 ### Comandos de Teste
@@ -482,7 +521,7 @@ CREATE POLICY "Pedidos admin" ON orders
 
 ```bash
 # Lighthouse local
-npm run lighthouse
+npm run performance:lighthouse
 
 # Bundle analyzer
 npm run analyze
@@ -559,7 +598,7 @@ git commit -m "test(unit): cobre cenários de erro"
 - [ ] Testes adicionados/atualizados
 - [ ] Build de produção sem warnings
 - [ ] Variáveis de ambiente documentadas
-- [ ] Cobertura de testes mantida >95%
+- [ ] Cobertura de testes mantida >60%
 
 ---
 
@@ -623,11 +662,16 @@ Este projeto é proprietário, todos os direitos reservados à **RET CONSULTORIA
 
 ### ✅ Concluído
 
-- [x] Catálogo dinâmico, imagens reais, descrições detalhadas
-- [x] Checkout WhatsApp, upsell, painel admin, auditoria
-- [x] Seeds automatizadas, integração Supabase, PWA, CI/CD
-- [x] Testes unitários, integração, e2e, cobertura >95%
-- [x] Deploy automático, changelog, releases, versionamento
+- [x] Catálogo dinâmico com produtos reais
+- [x] Checkout WhatsApp integrado
+- [x] Painel admin completo
+- [x] Sistema de auditoria
+- [x] PWA funcional
+- [x] CI/CD automatizado
+- [x] 720 testes automatizados
+- [x] Deploy em produção
+- [x] Documentação completa
+- [x] Hooks do Husky ativos
 
 ### 🔄 Em Desenvolvimento
 
