@@ -1,5 +1,3 @@
-import { redirect } from 'next/navigation';
-
 import {
   Badge,
   Calendar,
@@ -12,6 +10,7 @@ import {
   Truck,
   User,
 } from 'lucide-react';
+import { redirect } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,24 +37,7 @@ import { formatCurrency } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
-interface Order {
-  id: string;
-  customer_name: string;
-  customer_phone: string;
-  customer_email: string;
-  status: string;
-  payment_status: string;
-  payment_method: string;
-  total: number;
-  subtotal: number;
-  shipping_cost: number;
-  discount_amount: number;
-  created_at: string;
-  updated_at: string;
-  tracking_code?: string;
-  estimated_delivery?: string;
-  notes?: string;
-}
+// Interface Order removida pois não está sendo utilizada
 
 function OrderStatusBadge({ status }: { status: string }) {
   const statusConfig = {
@@ -68,7 +50,7 @@ function OrderStatusBadge({ status }: { status: string }) {
   };
 
   const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
-  
+
   return (
     <span className={`rounded-full px-2 py-1 text-xs font-semibold ${config.className}`}>
       {config.label}
@@ -85,7 +67,7 @@ function PaymentStatusBadge({ status }: { status: string }) {
   };
 
   const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
-  
+
   return (
     <span className={`rounded-full px-2 py-1 text-xs font-semibold ${config.className}`}>
       {config.label}
@@ -97,7 +79,9 @@ export default async function OrdersPage() {
   const supabase = await createServerSupabaseClient();
 
   // Verificar autenticação
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   if (!session) {
     redirect('/admin/login');
   }
@@ -117,18 +101,20 @@ export default async function OrdersPage() {
     shipped: orders?.filter(o => o.status === 'shipped').length || 0,
     delivered: orders?.filter(o => o.status === 'delivered').length || 0,
     revenue: orders?.reduce((sum, o) => sum + (Number(o.total) || 0), 0) || 0,
-    avgOrder: orders?.length ? (orders.reduce((sum, o) => sum + (Number(o.total) || 0), 0) / orders.length) : 0,
+    avgOrder: orders?.length
+      ? orders.reduce((sum, o) => sum + (Number(o.total) || 0), 0) / orders.length
+      : 0,
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light">
       {/* Header */}
-      <header className="bg-white border-b-2 border-vitale-primary/20 shadow-lg sticky top-0 z-30">
+      <header className="bg-white sticky top-0 z-30 border-b-2 border-vitale-primary/20 shadow-lg">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-vitale-primary">
-                <Package className="h-6 w-6 text-white" />
+                <Package className="text-white h-6 w-6" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-vitale-primary">Gestão de Pedidos</h1>
@@ -145,7 +131,7 @@ export default async function OrdersPage() {
               </Button>
               <Button
                 onClick={() => window.history.back()}
-                className="bg-vitale-primary hover:bg-vitale-secondary text-white"
+                className="text-white bg-vitale-primary hover:bg-vitale-secondary"
               >
                 Voltar ao Dashboard
               </Button>
@@ -164,9 +150,7 @@ export default async function OrdersPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-vitale-primary">{stats.total}</div>
-              <p className="text-xs text-muted-foreground">
-                {stats.pending} pendentes
-              </p>
+              <p className="text-xs text-muted-foreground">{stats.pending} pendentes</p>
             </CardContent>
           </Card>
 
@@ -176,7 +160,7 @@ export default async function OrdersPage() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-green-600 text-2xl font-bold">
                 {formatCurrency(stats.revenue)}
               </div>
               <p className="text-xs text-muted-foreground">
@@ -191,10 +175,8 @@ export default async function OrdersPage() {
               <Badge className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{stats.confirmed}</div>
-              <p className="text-xs text-muted-foreground">
-                {stats.shipped} enviados
-              </p>
+              <div className="text-blue-600 text-2xl font-bold">{stats.confirmed}</div>
+              <p className="text-xs text-muted-foreground">{stats.shipped} enviados</p>
             </CardContent>
           </Card>
 
@@ -204,7 +186,7 @@ export default async function OrdersPage() {
               <Truck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.delivered}</div>
+              <div className="text-green-600 text-2xl font-bold">{stats.delivered}</div>
               <p className="text-xs text-muted-foreground">
                 {((stats.delivered / stats.total) * 100).toFixed(1)}% do total
               </p>
@@ -232,11 +214,7 @@ export default async function OrdersPage() {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                   <div>
                     <Label htmlFor="search">Buscar</Label>
-                    <Input
-                      id="search"
-                      placeholder="Nome, email, telefone..."
-                      className="w-full"
-                    />
+                    <Input id="search" placeholder="Nome, email, telefone..." className="w-full" />
                   </div>
                   <div>
                     <Label htmlFor="status">Status</Label>
@@ -311,11 +289,9 @@ export default async function OrdersPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {orders?.map((order) => (
+                      {orders?.map(order => (
                         <TableRow key={order.id}>
-                          <TableCell className="font-mono text-xs">
-                            #{order.id.slice(-6)}
-                          </TableCell>
+                          <TableCell className="font-mono text-xs">#{order.id.slice(-6)}</TableCell>
                           <TableCell>
                             <div>
                               <div className="font-medium">{order.customer_name}</div>
@@ -368,9 +344,9 @@ export default async function OrdersPage() {
                         </TableRow>
                       )) || (
                         <TableRow>
-                          <TableCell colSpan={9} className="text-center py-8">
+                          <TableCell colSpan={9} className="py-8 text-center">
                             <div className="text-muted-foreground">
-                              <Package className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                              <Package className="mx-auto mb-4 h-12 w-12 opacity-50" />
                               <p>Nenhum pedido encontrado</p>
                               <p className="text-xs">Os pedidos aparecerão aqui quando criados</p>
                             </div>
@@ -444,7 +420,7 @@ export default async function OrdersPage() {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Resumo Financeiro</CardTitle>
@@ -453,15 +429,13 @@ export default async function OrdersPage() {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span>Receita Total:</span>
-                      <span className="font-semibold text-green-600">
+                      <span className="text-green-600 font-semibold">
                         {formatCurrency(stats.revenue)}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Ticket Médio:</span>
-                      <span className="font-semibold">
-                        {formatCurrency(stats.avgOrder)}
-                      </span>
+                      <span className="font-semibold">{formatCurrency(stats.avgOrder)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Total de Pedidos:</span>

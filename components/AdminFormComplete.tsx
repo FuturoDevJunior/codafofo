@@ -2,9 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-import { useForm } from 'react-hook-form';
-
 import { AlertCircle, Calendar, Package, Percent, Save, Star } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 
 import ImageUploader from '@/components/admin/ImageUploader';
 import { Button } from '@/components/ui/button';
@@ -67,9 +66,24 @@ interface CompleteProductForm {
 export async function completeProductSubmit(data: CompleteProductForm, product?: any) {
   try {
     // Processar campos especiais
-    const images = data.images ? data.images.split(',').map(img => img.trim()).filter(img => img) : [];
-    const tags = data.tags ? data.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
-    const seoKeywords = data.seo_keywords ? data.seo_keywords.split(',').map(kw => kw.trim()).filter(kw => kw) : [];
+    const images = data.images
+      ? data.images
+          .split(',')
+          .map(img => img.trim())
+          .filter(img => img)
+      : [];
+    const tags = data.tags
+      ? data.tags
+          .split(',')
+          .map(tag => tag.trim())
+          .filter(tag => tag)
+      : [];
+    const seoKeywords = data.seo_keywords
+      ? data.seo_keywords
+          .split(',')
+          .map(kw => kw.trim())
+          .filter(kw => kw)
+      : [];
 
     // Preparar dados para envio
     const productData = {
@@ -89,31 +103,28 @@ export async function completeProductSubmit(data: CompleteProductForm, product?:
     };
 
     const { error } = product
-      ? await supabase
-          .from('products')
-          .update(productData)
-          .eq('id', product.id)
+      ? await supabase.from('products').update(productData).eq('id', product.id)
       : await supabase.from('products').insert(productData);
 
     if (error) {
-      toast({ 
-        title: 'Erro ao salvar', 
-        description: error.message, 
-        variant: 'destructive' 
+      toast({
+        title: 'Erro ao salvar',
+        description: error.message,
+        variant: 'destructive',
       });
       return false;
     } else {
-      toast({ 
-        title: 'Sucesso!', 
-        description: product ? 'Produto atualizado com sucesso!' : 'Produto criado com sucesso!' 
+      toast({
+        title: 'Sucesso!',
+        description: product ? 'Produto atualizado com sucesso!' : 'Produto criado com sucesso!',
       });
       return true;
     }
-  } catch (error) {
-    toast({ 
-      title: 'Erro inesperado', 
-      description: 'Ocorreu um erro ao salvar o produto', 
-      variant: 'destructive' 
+  } catch (_error) {
+    toast({
+      title: 'Erro inesperado',
+      description: 'Ocorreu um erro ao salvar o produto',
+      variant: 'destructive',
     });
     return false;
   }
@@ -128,7 +139,13 @@ export default function AdminFormComplete({
   onCancel?: () => void;
   onSuccess?: () => void;
 }) {
-  const { register, handleSubmit, setValue, watch, formState: { isSubmitting } } = useForm<CompleteProductForm>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<CompleteProductForm>({
     defaultValues: {
       // Valores padrão
       currency: 'BRL',
@@ -141,13 +158,19 @@ export default function AdminFormComplete({
       // Carregar dados do produto se fornecido
       ...(product && {
         ...product,
-        images: Array.isArray(product.images) ? product.images.join(', ') : (product.images || ''),
-        tags: Array.isArray(product.tags) ? product.tags.join(', ') : (product.tags || ''),
-        seo_keywords: Array.isArray(product.seo_keywords) ? product.seo_keywords.join(', ') : (product.seo_keywords || ''),
-        discount_valid_until: product.discount_valid_until ? new Date(product.discount_valid_until).toISOString().split('T')[0] : '',
-        expiration_date: product.expiration_date ? new Date(product.expiration_date).toISOString().split('T')[0] : '',
+        images: Array.isArray(product.images) ? product.images.join(', ') : product.images || '',
+        tags: Array.isArray(product.tags) ? product.tags.join(', ') : product.tags || '',
+        seo_keywords: Array.isArray(product.seo_keywords)
+          ? product.seo_keywords.join(', ')
+          : product.seo_keywords || '',
+        discount_valid_until: product.discount_valid_until
+          ? new Date(product.discount_valid_until).toISOString().split('T')[0]
+          : '',
+        expiration_date: product.expiration_date
+          ? new Date(product.expiration_date).toISOString().split('T')[0]
+          : '',
       }),
-    }
+    },
   });
 
   const [suppliers, setSuppliers] = useState<{ id: string; name: string }[]>([]);
@@ -170,7 +193,8 @@ export default function AdminFormComplete({
   // Gerar slug automaticamente baseado no nome
   const watchName = watch('name');
   useEffect(() => {
-    if (watchName && !product) { // Só auto-gerar para produtos novos
+    if (watchName && !product) {
+      // Só auto-gerar para produtos novos
       const slug = watchName
         .toLowerCase()
         .normalize('NFD')
@@ -187,7 +211,7 @@ export default function AdminFormComplete({
     setIsLoading(true);
     const success = await completeProductSubmit(data, product);
     setIsLoading(false);
-    
+
     if (success && onSuccess) {
       onSuccess();
     }
@@ -209,14 +233,28 @@ export default function AdminFormComplete({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="form-container" data-testid="admin-form-complete">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="form-container"
+      data-testid="admin-form-complete"
+    >
       <Tabs defaultValue="basic" className="space-y-lg">
         <TabsList className="tabs-list">
-          <TabsTrigger value="basic" className="tab-trigger">Básico</TabsTrigger>
-          <TabsTrigger value="pricing" className="tab-trigger">Preços</TabsTrigger>
-          <TabsTrigger value="inventory" className="tab-trigger">Estoque</TabsTrigger>
-          <TabsTrigger value="details" className="tab-trigger">Detalhes</TabsTrigger>
-          <TabsTrigger value="seo" className="tab-trigger">SEO/Marketing</TabsTrigger>
+          <TabsTrigger value="basic" className="tab-trigger">
+            Básico
+          </TabsTrigger>
+          <TabsTrigger value="pricing" className="tab-trigger">
+            Preços
+          </TabsTrigger>
+          <TabsTrigger value="inventory" className="tab-trigger">
+            Estoque
+          </TabsTrigger>
+          <TabsTrigger value="details" className="tab-trigger">
+            Detalhes
+          </TabsTrigger>
+          <TabsTrigger value="seo" className="tab-trigger">
+            SEO/Marketing
+          </TabsTrigger>
         </TabsList>
 
         {/* Aba Básica */}
@@ -231,28 +269,28 @@ export default function AdminFormComplete({
             <CardContent className="card-content">
               <div className="grid-2-cols gap-md">
                 <div className="form-group">
-                  <Label htmlFor="name" className="form-label required">Nome do Produto</Label>
-                  <Input 
-                    id="name" 
-                    {...register('name', { required: 'Nome é obrigatório' })} 
+                  <Label htmlFor="name" className="form-label required">
+                    Nome do Produto
+                  </Label>
+                  <Input
+                    id="name"
+                    {...register('name', { required: 'Nome é obrigatório' })}
                     placeholder="Ex: Botox 100 Unidades"
                     className="input-primary"
                   />
                 </div>
                 <div className="form-group">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="slug" className="form-label required">URL (Slug)</Label>
-                    <Button 
-                      type="button" 
-                      onClick={generateSlug}
-                      className="btn-secondary btn-sm"
-                    >
+                    <Label htmlFor="slug" className="form-label required">
+                      URL (Slug)
+                    </Label>
+                    <Button type="button" onClick={generateSlug} className="btn-secondary btn-sm">
                       Gerar
                     </Button>
                   </div>
-                  <Input 
-                    id="slug" 
-                    {...register('slug', { required: 'Slug é obrigatório' })} 
+                  <Input
+                    id="slug"
+                    {...register('slug', { required: 'Slug é obrigatório' })}
                     placeholder="botox-100-unidades"
                     className="input-primary"
                   />
@@ -260,7 +298,9 @@ export default function AdminFormComplete({
               </div>
 
               <div className="form-group">
-                <Label htmlFor="category" className="form-label required">Categoria</Label>
+                <Label htmlFor="category" className="form-label required">
+                  Categoria
+                </Label>
                 <Select defaultValue={product?.category} {...register('category')}>
                   <SelectTrigger className="select-primary">
                     <SelectValue placeholder="Selecione a categoria" />
@@ -280,7 +320,9 @@ export default function AdminFormComplete({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description" variant="required">Descrição</Label>
+                <Label htmlFor="description" variant="required">
+                  Descrição
+                </Label>
                 <Textarea
                   id="description"
                   {...register('description')}
@@ -295,7 +337,7 @@ export default function AdminFormComplete({
                     id="active"
                     type="checkbox"
                     {...register('active')}
-                    className="h-4 w-4 rounded border-gray-300"
+                    className="border-gray-300 h-4 w-4 rounded"
                   />
                   <Label htmlFor="active">Produto Ativo</Label>
                 </div>
@@ -304,7 +346,7 @@ export default function AdminFormComplete({
                     id="featured"
                     type="checkbox"
                     {...register('featured')}
-                    className="h-4 w-4 rounded border-gray-300"
+                    className="border-gray-300 h-4 w-4 rounded"
                   />
                   <Label htmlFor="featured">Produto em Destaque</Label>
                 </div>
@@ -313,7 +355,7 @@ export default function AdminFormComplete({
                     id="requires_prescription"
                     type="checkbox"
                     {...register('requires_prescription')}
-                    className="h-4 w-4 rounded border-gray-300"
+                    className="border-gray-300 h-4 w-4 rounded"
                   />
                   <Label htmlFor="requires_prescription">Requer Prescrição</Label>
                 </div>
@@ -334,32 +376,47 @@ export default function AdminFormComplete({
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <div className="space-y-2">
-                  <Label htmlFor="price" variant="required">Preço Base (R$)</Label>
+                  <Label htmlFor="price" variant="required">
+                    Preço Base (R$)
+                  </Label>
                   <Input
                     id="price"
                     type="number"
                     step="0.01"
-                    {...register('price', { required: 'Preço base é obrigatório', valueAsNumber: true })}
+                    {...register('price', {
+                      required: 'Preço base é obrigatório',
+                      valueAsNumber: true,
+                    })}
                     placeholder="0.00"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="price_pix" variant="required">Preço PIX (R$)</Label>
+                  <Label htmlFor="price_pix" variant="required">
+                    Preço PIX (R$)
+                  </Label>
                   <Input
                     id="price_pix"
                     type="number"
                     step="0.01"
-                    {...register('price_pix', { required: 'Preço PIX é obrigatório', valueAsNumber: true })}
+                    {...register('price_pix', {
+                      required: 'Preço PIX é obrigatório',
+                      valueAsNumber: true,
+                    })}
                     placeholder="0.00"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="price_card" variant="required">Preço Cartão (R$)</Label>
+                  <Label htmlFor="price_card" variant="required">
+                    Preço Cartão (R$)
+                  </Label>
                   <Input
                     id="price_card"
                     type="number"
                     step="0.01"
-                    {...register('price_card', { required: 'Preço cartão é obrigatório', valueAsNumber: true })}
+                    {...register('price_card', {
+                      required: 'Preço cartão é obrigatório',
+                      valueAsNumber: true,
+                    })}
                     placeholder="0.00"
                   />
                 </div>
@@ -392,7 +449,7 @@ export default function AdminFormComplete({
               </div>
 
               <div className="border-t pt-4">
-                <h4 className="font-semibold mb-3">Desconto</h4>
+                <h4 className="mb-3 font-semibold">Desconto</h4>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="discount_percentage">Desconto (%)</Label>
@@ -516,30 +573,18 @@ export default function AdminFormComplete({
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lot_number">Número do Lote</Label>
-                  <Input
-                    id="lot_number"
-                    {...register('lot_number')}
-                    placeholder="LOT123456"
-                  />
+                  <Input id="lot_number" {...register('lot_number')} placeholder="LOT123456" />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="expiration_date">Data de Validade</Label>
-                <Input
-                  id="expiration_date"
-                  type="date"
-                  {...register('expiration_date')}
-                />
+                <Input id="expiration_date" type="date" {...register('expiration_date')} />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="tags">Tags (separadas por vírgula)</Label>
-                <Input
-                  id="tags"
-                  {...register('tags')}
-                  placeholder="botox, antirrugas, facial"
-                />
+                <Input id="tags" {...register('tags')} placeholder="botox, antirrugas, facial" />
                 <p className="text-xs text-muted-foreground">
                   Tags para organização e busca interna
                 </p>
@@ -554,7 +599,8 @@ export default function AdminFormComplete({
                   rows={3}
                 />
                 <p className="text-xs text-muted-foreground">
-                  URLs das imagens do produto. Use o gerenciador de imagens abaixo para upload automático.
+                  URLs das imagens do produto. Use o gerenciador de imagens abaixo para upload
+                  automático.
                 </p>
               </div>
 
@@ -610,12 +656,12 @@ export default function AdminFormComplete({
                 </p>
               </div>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="bg-blue-50 border-blue-200 rounded-lg border p-4">
                 <div className="flex items-start gap-2">
-                  <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <AlertCircle className="text-blue-600 mt-0.5 h-5 w-5 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold text-blue-900">Dicas de SEO</h4>
-                    <ul className="text-sm text-blue-800 mt-2 space-y-1">
+                    <h4 className="text-blue-900 font-semibold">Dicas de SEO</h4>
+                    <ul className="text-blue-800 mt-2 space-y-1 text-sm">
                       <li>• Use palavras-chave relevantes no nome e descrição</li>
                       <li>• Mantenha a meta descrição entre 120-160 caracteres</li>
                       <li>• Use imagens de alta qualidade com nomes descritivos</li>
@@ -631,17 +677,17 @@ export default function AdminFormComplete({
 
       {/* Botões de ação */}
       <div className="form-actions">
-        <Button 
-          type="submit" 
-          disabled={isSubmitting || isLoading}
-          className="btn-primary btn-lg"
-        >
+        <Button type="submit" disabled={isSubmitting || isLoading} className="btn-primary btn-lg">
           <Save className="mr-2 h-4 w-4" />
-          {isSubmitting || isLoading ? 'Salvando...' : (product ? 'Atualizar Produto' : 'Criar Produto')}
+          {isSubmitting || isLoading
+            ? 'Salvando...'
+            : product
+              ? 'Atualizar Produto'
+              : 'Criar Produto'}
         </Button>
         {onCancel && (
-          <Button 
-            type="button" 
+          <Button
+            type="button"
             onClick={onCancel}
             disabled={isSubmitting || isLoading}
             className="btn-outline btn-lg"

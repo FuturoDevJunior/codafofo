@@ -13,7 +13,6 @@ import {
   Package,
   Palette,
   Plus,
-  Search,
   Settings,
   Trash2,
   Users,
@@ -58,8 +57,6 @@ export default function AdminDashboard({
   user,
 }: DashboardProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSupplier, setSelectedSupplier] = useState('');
@@ -178,9 +175,7 @@ export default function AdminDashboard({
                 <Settings className="text-white icon-lg" />
               </div>
               <div>
-                <h1 className="dashboard-title">
-                  Dashboard Administrativo
-                </h1>
+                <h1 className="dashboard-title">Dashboard Administrativo</h1>
                 <p className="dashboard-subtitle">
                   Bem-vindo, <span className="font-semibold">{user.email}</span> • Vytalle Estética
                   & Viscosuplementação
@@ -233,19 +228,14 @@ export default function AdminDashboard({
       <div className="dashboard-content">
         {/* Estatísticas */}
         <div className="stats-grid" data-testid="admin-stats">
-          <section
-            className="stats-card"
-            aria-label="Total de produtos"
-          >
+          <section className="stats-card" aria-label="Total de produtos">
             <div className="stats-content">
               <div className="stats-icon bg-primary">
                 <Package className="icon-md text-white" />
               </div>
               <div>
                 <h3 className="stats-label">Total</h3>
-                <p className="stats-value text-primary">
-                  {stats.totalProducts}
-                </p>
+                <p className="stats-value text-primary">{stats.totalProducts}</p>
               </div>
             </div>
           </section>
@@ -396,9 +386,7 @@ export default function AdminDashboard({
         {/* Tabela de Produtos */}
         <div className="table-container">
           <div className="table-header">
-            <h2 className="table-title">
-              Gerenciar Produtos ({filteredProducts.length})
-            </h2>
+            <h2 className="table-title">Gerenciar Produtos ({filteredProducts.length})</h2>
           </div>
 
           <div className="overflow-x-auto">
@@ -542,9 +530,9 @@ export default function AdminDashboard({
                               </TabsList>
 
                               <TabsContent value="details" className="mt-6">
-                                <AdminFormComplete 
-                                  product={product as any} 
-                                  onSuccess={() => window.location.reload()} 
+                                <AdminFormComplete
+                                  product={product as any}
+                                  onSuccess={() => window.location.reload()}
                                 />
                               </TabsContent>
 
