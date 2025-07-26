@@ -1,0 +1,412 @@
+/* =================================================================== */
+/* VYTALLE DESIGN SYSTEM - ANIMAÇÕES E MICRO-INTERAÇÕES              */
+/* =================================================================== */
+
+/* ===== KEYFRAMES ESSENCIAIS ===== */
+@keyframes pulse-gentle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-down {
+  0% { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes rotate-loading {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes progress-bar {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+@keyframes typing {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ===== ANIMAÇÕES DE ENTRADA ===== */
+.animate-fade-in {
+  animation: fade-in var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-slide-down {
+  animation: slide-down var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-bounce-in {
+  animation: bounce-in var(--duration-slow) var(--ease-bounce) forwards;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+}
+
+/* ===== MICRO-INTERAÇÕES DE BOTÕES ===== */
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-outline:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.btn-outline:active {
+  transform: translateY(0);
+  transition: all var(--duration-fast) var(--ease-in);
+}
+
+.btn-primary::before,
+.btn-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left var(--duration-normal) var(--ease-out);
+}
+
+.btn-primary:hover::before,
+.btn-secondary:hover::before {
+  left: 100%;
+}
+
+/* ===== ANIMAÇÕES DE LOADING ===== */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-neutral-200);
+  border-top: 2px solid var(--color-primary);
+  border-radius: 50%;
+  animation: rotate-loading 1s linear infinite;
+}
+
+.loading-dots::after {
+  content: '';
+  animation: typing 1.5s infinite;
+}
+
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+/* ===== HOVER E FOCUS STATES ===== */
+.interactive-hover {
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.interactive-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.card-hover {
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--color-primary);
+}
+
+/* ===== ANIMAÇÕES DE FORMULÁRIO ===== */
+.form-field {
+  position: relative;
+  overflow: hidden;
+}
+
+.form-field::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: all var(--duration-normal) var(--ease-out);
+  transform: translateX(-50%);
+}
+
+.form-field:focus-within::after {
+  width: 100%;
+}
+
+.input-primary:focus,
+.textarea-primary:focus,
+.select-primary:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-alpha-10);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+/* ===== ANIMAÇÕES DE PROGRESSO ===== */
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--color-neutral-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: var(--radius-full);
+  animation: progress-bar var(--duration-slow) var(--ease-out) forwards;
+}
+
+/* ===== ANIMAÇÕES DE NOTIFICAÇÃO ===== */
+.notification-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.notification-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.notification-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.notification-exit-active {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all var(--duration-normal) var(--ease-in);
+}
+
+/* ===== ANIMAÇÕES DE MODAL ===== */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  animation: fade-in var(--duration-fast) var(--ease-out) forwards;
+}
+
+.modal-content {
+  animation: bounce-in var(--duration-normal) var(--ease-bounce) forwards;
+}
+
+/* ===== ANIMAÇÕES DE TABS ===== */
+.tab-content {
+  animation: slide-up var(--duration-fast) var(--ease-out) forwards;
+}
+
+.tab-trigger {
+  position: relative;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.tab-trigger::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width var(--duration-fast) var(--ease-out);
+}
+
+.tab-trigger[data-state="active"]::after {
+  width: 100%;
+}
+
+/* ===== EFEITOS DE RIPPLE ===== */
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width var(--duration-normal) var(--ease-out), 
+              height var(--duration-normal) var(--ease-out);
+}
+
+.ripple-effect:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* ===== ANIMAÇÕES DE SUCESSO/ERRO ===== */
+.success-animation {
+  animation: bounce-in var(--duration-normal) var(--ease-bounce) forwards;
+  color: var(--color-success);
+}
+
+.error-animation {
+  animation: shake var(--duration-fast) var(--ease-out) forwards;
+  color: var(--color-error);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* ===== ANIMAÇÕES DE HOVER CARDS ===== */
+.product-card {
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.product-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: var(--shadow-xl);
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.1);
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+/* ===== ANIMAÇÕES DE DASHBOARD ===== */
+.dashboard-stats-card {
+  animation: slide-up var(--duration-normal) var(--ease-out) forwards;
+  animation-delay: calc(var(--index, 0) * 100ms);
+}
+
+.dashboard-header {
+  animation: slide-down var(--duration-normal) var(--ease-out) forwards;
+}
+
+/* ===== RESPONSIVE ANIMATIONS ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== ANIMAÇÕES DE SCROLL ===== */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== ANIMAÇÕES DE TYPING ===== */
+.typing-indicator::after {
+  content: '|';
+  animation: typing 1s infinite;
+  color: var(--color-primary);
+}
+
+/* ===== ANIMAÇÕES DE PULSE ===== */
+.pulse-primary {
+  animation: pulse-gentle 2s infinite;
+  animation-delay: 0s;
+}
+
+.pulse-secondary {
+  animation: pulse-gentle 2s infinite;
+  animation-delay: 0.5s;
+}
+
+/* ===== ANIMAÇÕES DE SCALE ===== */
+.scale-hover {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.scale-hover:hover {
+  transform: scale(1.05);
+}
+
+.scale-active {
+  transition: transform var(--duration-fast) var(--ease-in);
+}
+
+.scale-active:active {
+  transform: scale(0.95);
+}
+
+/* ===== ANIMAÇÕES DE GLOW ===== */
+.glow-primary {
+  box-shadow: 0 0 20px var(--color-primary-alpha-30);
+  animation: pulse-gentle 3s infinite;
+}
+
+.glow-success {
+  box-shadow: 0 0 20px var(--color-success-alpha-30);
+  animation: pulse-gentle 3s infinite;
+}
+
+.glow-error {
+  box-shadow: 0 0 20px var(--color-error-alpha-30);
+  animation: pulse-gentle 3s infinite;
+}
+
+/* ===== ANIMAÇÕES DE FLOAT ===== */
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ===== PERFORMANCE OTIMIZATIONS ===== */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

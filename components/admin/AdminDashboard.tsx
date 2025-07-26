@@ -21,7 +21,7 @@ import {
 import Image from 'next/image';
 
 import ImageUploader from '@/components/admin/ImageUploader';
-import AdminForm from '@/components/AdminForm';
+import AdminFormComplete from '@/components/AdminFormComplete';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -168,30 +168,30 @@ export default function AdminDashboard({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light">
+    <div className="dashboard-container">
       {/* Header Administrativo */}
-      <header className="bg-white sticky top-0 z-30 border-b-2 border-vitale-primary/20 shadow-lg">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-center lg:gap-4">
-            <div className="flex items-center gap-3 lg:gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-vitale-primary lg:h-12 lg:w-12">
-                <Settings className="text-white h-5 w-5 lg:h-6 lg:w-6" />
+      <header className="dashboard-header">
+        <div className="container-responsive px-spacing-md py-spacing-md">
+          <div className="dashboard-header-content">
+            <div className="dashboard-brand">
+              <div className="icon-container bg-primary">
+                <Settings className="text-white icon-lg" />
               </div>
               <div>
-                <h1 className="text-xl font-bold leading-tight text-vitale-primary lg:text-2xl xl:text-3xl">
+                <h1 className="dashboard-title">
                   Dashboard Administrativo
                 </h1>
-                <p className="text-xs text-neutral-600 lg:text-sm xl:text-base">
+                <p className="dashboard-subtitle">
                   Bem-vindo, <span className="font-semibold">{user.email}</span> • Vytalle Estética
                   & Viscosuplementação
                 </p>
               </div>
             </div>
-            <div className="flex w-full flex-wrap items-center gap-2 lg:w-auto lg:gap-3">
+            <div className="dashboard-actions">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="bg-green-600 hover:bg-green-700 text-white flex w-full min-w-[100px] items-center gap-2 rounded-xl px-3 py-2 sm:w-auto lg:min-w-[120px] lg:px-4">
-                    <Plus className="h-4 w-4 lg:h-5 lg:w-5" />
+                  <Button className="btn-success btn-lg">
+                    <Plus className="icon-md" />
                     <span className="hidden sm:inline">Novo Produto</span>
                     <span className="sm:hidden">Novo</span>
                   </Button>
@@ -203,28 +203,26 @@ export default function AdminDashboard({
                     </DialogTitle>
                     <DialogDescription>Preencha todas as informações do produto</DialogDescription>
                   </DialogHeader>
-                  <AdminForm />
+                  <AdminFormComplete onSuccess={() => window.location.reload()} />
                 </DialogContent>
               </Dialog>
 
               <Button
                 onClick={() => (window.location.href = '/admin/customization')}
-                variant="outline"
-                className="flex w-full min-w-[100px] items-center gap-2 rounded-xl border-vitale-primary/30 px-3 py-2 text-vitale-primary hover:bg-vitale-primary/10 sm:w-auto lg:min-w-[120px] lg:px-4"
+                className="btn-outline btn-lg"
                 aria-label="Personalizar site"
               >
-                <Palette className="h-4 w-4 lg:h-5 lg:w-5" />
+                <Palette className="icon-md" />
                 <span className="hidden sm:inline">Personalizar</span>
                 <span className="sm:hidden">Personalizar</span>
               </Button>
 
               <Button
                 onClick={handleLogout}
-                variant="outline"
-                className="border-red-200 text-red-600 hover:bg-red-50 flex w-full min-w-[80px] items-center gap-2 rounded-xl px-3 py-2 sm:w-auto lg:min-w-[100px] lg:px-4"
+                className="btn-danger btn-lg"
                 aria-label="Sair do painel administrativo"
               >
-                <LogOut className="h-4 w-4 lg:h-5 lg:w-5" />
+                <LogOut className="icon-md" />
                 <span className="hidden sm:inline">Sair</span>
               </Button>
             </div>
@@ -232,20 +230,20 @@ export default function AdminDashboard({
         </div>
       </header>
 
-      <div className="max-w-responsive-lg container mx-auto px-2 py-8 sm:px-4 md:px-6">
+      <div className="dashboard-content">
         {/* Estatísticas */}
-        <div className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 lg:gap-6" data-testid="admin-stats">
+        <div className="stats-grid" data-testid="admin-stats">
           <section
-            className="bg-white rounded-xl border-2 border-vitale-primary/20 p-3 shadow-lg sm:p-4 lg:p-6"
+            className="stats-card"
             aria-label="Total de produtos"
           >
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-vitale-primary/10 sm:h-10 sm:w-10">
-                <Package className="h-4 w-4 text-vitale-primary sm:h-5 sm:w-5" />
+            <div className="stats-content">
+              <div className="stats-icon bg-primary">
+                <Package className="icon-md text-white" />
               </div>
               <div>
-                <h3 className="text-xs font-semibold text-vitale-primary sm:text-sm">Total</h3>
-                <p className="text-lg font-bold text-vitale-primary sm:text-xl lg:text-2xl">
+                <h3 className="stats-label">Total</h3>
+                <p className="stats-value text-primary">
                   {stats.totalProducts}
                 </p>
               </div>
@@ -302,11 +300,11 @@ export default function AdminDashboard({
         </div>
 
         {/* Filtros e Ações */}
-        <div className="bg-white mb-8 rounded-xl border-2 border-vitale-primary/20 p-4 shadow-lg md:p-6">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="filters-card">
+          <div className="filters-grid">
             {/* Busca */}
-            <div className="sm:col-span-2 lg:col-span-1">
-              <Label htmlFor="admin-search" variant="default" size="sm" className="mb-2">
+            <div className="search-container">
+              <Label htmlFor="admin-search" className="form-label mb-spacing-xs">
                 Buscar Produtos
               </Label>
               <Input
@@ -314,8 +312,7 @@ export default function AdminDashboard({
                 placeholder="Nome, categoria, descrição..."
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                inputSize="md"
-                leftIcon={<Search className="h-4 w-4" />}
+                className="input-primary"
                 aria-label="Buscar produtos por nome, categoria ou descrição"
               />
             </div>
@@ -397,9 +394,9 @@ export default function AdminDashboard({
         </div>
 
         {/* Tabela de Produtos */}
-        <div className="bg-white overflow-x-auto rounded-xl border-2 border-vitale-primary/20 shadow-lg">
-          <div className="min-w-[600px] border-b border-vitale-primary/20 p-4 md:p-6">
-            <h2 className="text-xl font-bold text-vitale-primary md:text-2xl">
+        <div className="table-container">
+          <div className="table-header">
+            <h2 className="table-title">
               Gerenciar Produtos ({filteredProducts.length})
             </h2>
           </div>
@@ -545,7 +542,10 @@ export default function AdminDashboard({
                               </TabsList>
 
                               <TabsContent value="details" className="mt-6">
-                                <AdminForm product={product as any} />
+                                <AdminFormComplete 
+                                  product={product as any} 
+                                  onSuccess={() => window.location.reload()} 
+                                />
                               </TabsContent>
 
                               <TabsContent value="images" className="mt-6">

@@ -4,6 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import complete design system */
+@import '../styles/design-system.css';
+
 /* Variáveis CSS personalizadas */
 :root {
   --max-responsive: 1400px;
