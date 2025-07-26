@@ -215,6 +215,19 @@ vytalle/
 └── 📂 public/                 # Assets estáticos
 ```
 
+### 📊 Diagramas da Arquitetura
+
+Para uma compreensão visual completa da arquitetura, consulte:
+
+- **[🏗️ Arquitetura Geral](./docs/DIAGRAMS.md#arquitetura-geral)** - Visão de alto nível do sistema
+- **[🔄 Fluxo de Dados](./docs/DIAGRAMS.md#fluxo-de-dados)** - Como os dados fluem pela aplicação
+- **[🧩 Estrutura de Componentes](./docs/DIAGRAMS.md#estrutura-de-componentes)** - Hierarquia e relacionamentos
+- **[🔐 Fluxo de Autenticação](./docs/DIAGRAMS.md#fluxo-de-autenticação)** - Segurança e RLS
+- **[🛒 Fluxo de Checkout](./docs/DIAGRAMS.md#fluxo-de-checkout)** - Processo de compra completo
+- **[🗄️ Estrutura do Banco](./docs/DIAGRAMS.md#estrutura-do-banco)** - Schema e relacionamentos
+- **[🧪 Fluxo de Testes](./docs/DIAGRAMS.md#fluxo-de-testes)** - Pipeline de qualidade
+- **[🚀 Deploy e CI/CD](./docs/DIAGRAMS.md#deploy-e-cicd)** - Processo de entrega
+
 ---
 
 ## 🔧 Scripts Disponíveis
@@ -536,6 +549,7 @@ npm run vitals
 
 ### Guias Específicos
 
+- **[📊 Diagramas](./docs/DIAGRAMS.md)** - Diagramas técnicos detalhados da arquitetura
 - **[🤝 Contribuição](./docs/CONTRIBUTING.md)** - Como contribuir para o projeto
 - **[🚀 Deploy](./docs/DEPLOYMENT.md)** - Guia completo de deploy
 - **[🌐 API](./docs/API.md)** - Documentação detalhada da API
