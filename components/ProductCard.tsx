@@ -32,13 +32,13 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({
-  product: _product,
+  product,
   variant = 'default',
   onCompare: _onCompare,
   canCompare = true,
 }: ProductCardProps) {
   // Usar product para evitar warning
-  const productName = _product.name;
+  const productName = product.name;
   const [isLoading, setIsLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -46,9 +46,9 @@ export default function ProductCard({
   const { trackCartAdd } = useAnalytics();
 
   // Usar a variável product para evitar warning
-  const productId = _product.id;
-  const productPrice = _product.price_pix || 0;
-  const productImages = _product.images;
+  const productId = product.id;
+  const productPrice = product.price_pix || 0;
+  const productImages = product.images;
 
   const handleAddToCart = async () => {
     setIsLoading(true);
@@ -58,7 +58,7 @@ export default function ProductCard({
         name: productName,
         price: productPrice,
         price_pix: productPrice,
-        price_card: _product.price_card || 0,
+        price_card: product.price_card || 0,
         quantity: 1,
         images: productImages,
       });
@@ -198,8 +198,8 @@ export default function ProductCard({
             className="h-full w-full"
           >
             <SmartImage
-              src={_product.images?.[0] || _product.image || '/images/placeholder.jpg'}
-              alt={`${_product.name} - Estético profissional`}
+              src={product.images?.[0] || product.image || '/images/placeholder.jpg'}
+              alt={`${product.name} - Estético profissional`}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               fallback="/images/placeholder.jpg"
             />
@@ -243,7 +243,7 @@ export default function ProductCard({
                     asChild
                     className="bg-white/95 hover:bg-white rounded-full border-vitale-primary/20 p-3 text-vitale-primary shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
                   >
-                    <a href={`/products/${_product.slug}`} aria-label="Ver detalhes completos">
+                    <a href={`/products/${product.slug}`} aria-label="Ver detalhes completos">
                       <MotionDiv whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
                         <Eye className="h-5 w-5" />
                       </MotionDiv>
@@ -258,7 +258,7 @@ export default function ProductCard({
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => _onCompare?.(_product)}
+                      onClick={() => _onCompare?.(product)}
                       className="bg-white/95 hover:bg-white rounded-full border-vitale-primary/20 p-3 text-vitale-primary shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
                     >
                       <MotionDiv
@@ -313,7 +313,7 @@ export default function ProductCard({
                 textShadow: '0 1px 2px rgba(0,0,0,0.3)',
               }}
             >
-              {_product.category}
+              {product.category}
             </MotionSpan>
           </MotionDiv>
 
@@ -362,7 +362,7 @@ export default function ProductCard({
           <MotionDiv variants={contentVariants}>
             {/* Nome do produto */}
             <h3 className="text-gray-900 mb-2 line-clamp-2 font-semibold transition-colors group-hover:text-vitale-primary">
-              {_product.name}
+              {product.name}
             </h3>
 
             {/* Preços - Interface que transmite confiança */}
@@ -380,7 +380,7 @@ export default function ProductCard({
                   }}
                   transition={{ duration: 0.2 }}
                 >
-                  {formatCurrency(_product.price_pix || 0)}
+                  {formatCurrency(product.price_pix || 0)}
                 </MotionSpan>
                 <MotionSpan
                   className="text-emerald-600 bg-emerald-50 rounded-full px-2 py-0.5 text-sm font-medium"
@@ -390,7 +390,7 @@ export default function ProductCard({
                 </MotionSpan>
               </MotionDiv>
 
-              {_product.price_card && _product.price_card !== _product.price_pix && (
+              {product.price_card && product.price_card !== product.price_pix && (
                 <MotionDiv
                   className="flex items-center gap-2"
                   initial={{ opacity: 0, y: 10 }}
@@ -398,17 +398,17 @@ export default function ProductCard({
                   transition={{ duration: 0.3, delay: 0.1 }}
                 >
                   <MotionSpan className="text-gray-700 text-lg" whileHover={{ scale: 1.02 }}>
-                    {formatCurrency(_product.price_card)}
+                    {formatCurrency(product.price_card)}
                   </MotionSpan>
                   <span className="text-blue-600 bg-blue-50 rounded-full px-2 py-0.5 text-sm">
                     💳 cartão
                   </span>
-                  {_product.price_card > 0 && (
+                  {product.price_card > 0 && (
                     <MotionDiv
                       className="text-gray-500 bg-gray-50 rounded-full px-2 py-0.5 text-xs"
                       whileHover={{ scale: 1.05, backgroundColor: '#f0f9ff' }}
                     >
-                      ou {formatCurrency(_product.price_card / 4)} em 4x
+                      ou {formatCurrency(product.price_card / 4)} em 4x
                     </MotionDiv>
                   )}
                 </MotionDiv>
