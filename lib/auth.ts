@@ -10,7 +10,7 @@ const mockUsers: User[] = [
     email: 'admin@vytalle.com',
     role: 'admin',
     active: true,
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
   },
   {
     id: '2',
@@ -19,7 +19,7 @@ const mockUsers: User[] = [
     role: 'vendedor',
     commission_percent: 5,
     active: true,
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
   },
   {
     id: '3',
@@ -28,15 +28,15 @@ const mockUsers: User[] = [
     role: 'vendedor',
     commission_percent: 4,
     active: true,
-    created_at: new Date().toISOString()
-  }
+    created_at: new Date().toISOString(),
+  },
 ];
 
 // Senhas mockadas (em produção seria hash)
 const mockPasswords: Record<string, string> = {
   'admin@vytalle.com': 'admin123',
   'joao@vendedor.com': 'vendedor123',
-  'maria@vendedor.com': 'vendedor456'
+  'maria@vendedor.com': 'vendedor456',
 };
 
 export class AuthService {
@@ -55,12 +55,12 @@ export class AuthService {
     const session: AuthSession = {
       user,
       token: btoa(`${user.id}-${Date.now()}`),
-      expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24h
+      expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24h
     };
 
     // Salvar no localStorage
     localStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
-    
+
     return session;
   }
 
@@ -70,13 +70,13 @@ export class AuthService {
 
   static getCurrentSession(): AuthSession | null {
     if (typeof window === 'undefined') return null;
-    
+
     try {
       const sessionData = localStorage.getItem(this.SESSION_KEY);
       if (!sessionData) return null;
 
       const session: AuthSession = JSON.parse(sessionData);
-      
+
       // Verificar se não expirou
       if (new Date(session.expires_at) < new Date()) {
         this.logout();
@@ -141,6 +141,6 @@ export function useAuth() {
     isAdmin,
     isVendedor,
     login,
-    logout
+    logout,
   };
 }

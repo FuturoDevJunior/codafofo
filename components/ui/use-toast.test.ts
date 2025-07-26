@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  reducer,
-  toast,
-} from './use-toast';
+import { reducer, toast } from './use-toast';
 
 describe('use-toast', () => {
   it('adiciona toast', () => {
@@ -36,4 +29,4 @@ describe('use-toast', () => {
     expect(typeof t.dismiss).toBe('function');
     expect(typeof t.update).toBe('function');
   });
-}); 
+});

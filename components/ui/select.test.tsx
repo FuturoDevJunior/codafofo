@@ -1,20 +1,8 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from './select';
+import { Select, SelectContent, SelectItem, SelectTrigger } from './select';
 
 describe('Select UI', () => {
   it('renderiza Select e permite selecionar item', async () => {
@@ -29,4 +17,4 @@ describe('Select UI', () => {
     );
     expect(screen.getByText('Selecione')).toBeInTheDocument();
   });
-}); 
+});

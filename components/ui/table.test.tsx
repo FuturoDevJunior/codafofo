@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import {
   Table,
@@ -40,4 +33,4 @@ describe('Table UI', () => {
     expect(screen.getByText('Coluna')).toBeInTheDocument();
     expect(screen.getByText('Valor')).toBeInTheDocument();
   });
-}); 
+});

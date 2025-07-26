@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  cn,
-  formatCurrency,
-} from './utils';
+import { cn, formatCurrency } from './utils';
 
 describe('utils', () => {
   it('cn combina classes corretamente', () => {
@@ -21,4 +14,4 @@ describe('utils', () => {
   it('formatCurrency formata USD corretamente', () => {
     expect(formatCurrency(10, 'USD')).toMatch(/\$10\.00|US\$ 10,00/);
   });
-}); 
+});

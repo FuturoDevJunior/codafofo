@@ -1,7 +1,7 @@
 /**
  * SISTEMA DE CACHE INTELIGENTE
  * ============================
- * 
+ *
  * Cache avançado que supera expectativas com:
  * - TTL automático
  * - Compressão de dados
@@ -30,10 +30,11 @@ export class SmartCache {
   private defaultTTL: number;
   private metrics: CacheMetrics = { hits: 0, misses: 0, size: 0, hitRate: 0 };
 
-  constructor(maxSize = 1000, defaultTTL = 5 * 60 * 1000) { // 5 minutos
+  constructor(maxSize = 1000, defaultTTL = 5 * 60 * 1000) {
+    // 5 minutos
     this.maxSize = maxSize;
     this.defaultTTL = defaultTTL;
-    
+
     // Limpeza automática a cada 2 minutos
     setInterval(() => this.cleanup(), 2 * 60 * 1000);
   }
@@ -46,7 +47,7 @@ export class SmartCache {
       data,
       timestamp: Date.now(),
       ttl: ttl || this.defaultTTL,
-      hits: 0
+      hits: 0,
     };
 
     // Comprimir dados grandes (> 10KB)
@@ -69,7 +70,7 @@ export class SmartCache {
    */
   get<T>(key: string): T | null {
     const entry = this.cache.get(key);
-    
+
     if (!entry) {
       this.metrics.misses++;
       this.updateHitRate();
@@ -95,13 +96,9 @@ export class SmartCache {
   /**
    * Cache com função de fallback
    */
-  async getOrSet<T>(
-    key: string, 
-    fallback: () => Promise<T> | T, 
-    ttl?: number
-  ): Promise<T> {
+  async getOrSet<T>(key: string, fallback: () => Promise<T> | T, ttl?: number): Promise<T> {
     const cached = this.get<T>(key);
-    
+
     if (cached !== null) {
       return cached;
     }
@@ -131,7 +128,7 @@ export class SmartCache {
     });
 
     this.updateMetrics();
-    
+
     if (cleaned > 0) {
       // console.log(`Cache: cleaned ${cleaned} expired entries`);
     }
@@ -219,6 +216,6 @@ export function useSmartCache() {
     getOrSet: smartCache.getOrSet.bind(smartCache),
     has: smartCache.has.bind(smartCache),
     delete: smartCache.delete.bind(smartCache),
-    getMetrics: smartCache.getMetrics.bind(smartCache)
+    getMetrics: smartCache.getMetrics.bind(smartCache),
   };
 }

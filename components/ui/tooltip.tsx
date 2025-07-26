@@ -17,7 +17,7 @@ export function Tooltip({ content, children, side = 'top', delayDuration = 200 }
         <RadixTooltip.Portal>
           <RadixTooltip.Content
             side={side}
-            className="z-50 rounded-md bg-neutral-900/95 px-3 py-1.5 text-xs text-white shadow-lg animate-fade-in data-[state=delayed-open]:animate-fade-in will-change-transform"
+            className="text-white animate-fade-in data-[state=delayed-open]:animate-fade-in z-50 rounded-md bg-neutral-900/95 px-3 py-1.5 text-xs shadow-lg will-change-transform"
             sideOffset={8}
           >
             {content}
@@ -27,4 +27,4 @@ export function Tooltip({ content, children, side = 'top', delayDuration = 200 }
       </RadixTooltip.Root>
     </RadixTooltip.Provider>
   );
-} 
+}

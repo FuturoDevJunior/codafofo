@@ -14,7 +14,9 @@ export const dynamic = 'force-dynamic';
 
 export default async function Reports() {
   const supabase = await createServerSupabaseClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   if (!session) redirect('/login');
 
   const { data: popular } = await supabase.from('popular_products').select('*');
@@ -22,8 +24,8 @@ export default async function Reports() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Relatórios</h1>
-      <h2 className="text-xl font-semibold mt-4 mb-2">Produtos Mais Populares</h2>
+      <h1 className="mb-6 text-3xl font-bold">Relatórios</h1>
+      <h2 className="mb-2 mt-4 text-xl font-semibold">Produtos Mais Populares</h2>
       <Table>
         <TableHeader>
           <TableRow>
@@ -34,7 +36,7 @@ export default async function Reports() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {popular?.map((p) => (
+          {popular?.map(p => (
             <TableRow key={p.name}>
               <TableCell>{p.name}</TableCell>
               <TableCell>{p.category}</TableCell>
@@ -44,7 +46,7 @@ export default async function Reports() {
           ))}
         </TableBody>
       </Table>
-      <h2 className="text-xl font-semibold mt-8 mb-2">Resumo de Pedidos</h2>
+      <h2 className="mb-2 mt-8 text-xl font-semibold">Resumo de Pedidos</h2>
       <Table>
         <TableHeader>
           <TableRow>
@@ -54,7 +56,7 @@ export default async function Reports() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {summary?.map((s) => (
+          {summary?.map(s => (
             <TableRow key={s.status}>
               <TableCell>{s.status}</TableCell>
               <TableCell>{s.count}</TableCell>
@@ -65,4 +67,4 @@ export default async function Reports() {
       </Table>
     </div>
   );
-} 
+}

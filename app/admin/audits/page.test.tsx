@@ -1,9 +1,4 @@
-import {
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import Audits from './page';
 
@@ -11,9 +6,9 @@ const mockSupabase = {
   auth: { getSession: vi.fn() },
   from: vi.fn().mockReturnValue({
     select: vi.fn().mockReturnValue({
-      order: vi.fn().mockResolvedValue({ data: [] })
-    })
-  })
+      order: vi.fn().mockResolvedValue({ data: [] }),
+    }),
+  }),
 };
 
 describe('Audits Page', () => {
@@ -28,4 +23,4 @@ describe('Audits Page', () => {
     const Page = await Audits();
     expect(Page).toBeDefined();
   });
-}); 
+});

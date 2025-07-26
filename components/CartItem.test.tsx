@@ -1,29 +1,28 @@
 import Image from 'next/image';
-import {
-  afterEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import CartItem from './CartItem';
 
-const mockItem = { id: '1', name: 'Botox', price: 1200, price_pix: 1200, price_card: 1300, quantity: 2, images: [] };
+const mockItem = {
+  id: '1',
+  name: 'Botox',
+  price: 1200,
+  price_pix: 1200,
+  price_card: 1300,
+  quantity: 2,
+  images: [],
+};
 const onRemove = vi.fn();
 const onUpdateQty = vi.fn();
 
 // Mock do SmartImage para garantir <img> nos testes
 vi.mock('./SmartImage', () => ({
-  default: ({ src, alt }: { src: string; alt: string }) => <Image src={src} alt={alt} width={100} height={100} />,
+  default: ({ src, alt }: { src: string; alt: string }) => (
+    <Image src={src} alt={alt} width={100} height={100} />
+  ),
 }));
 
 // ATENÇÃO: Testes de SmartImage (busca por <img>) e Tooltip (busca por texto do tooltip) podem falhar em ambiente de teste (JSDOM)
@@ -78,4 +77,4 @@ describe('CartItem', () => {
       expect(document.body.innerHTML).toMatch(/animate-spin/);
     });
   });
-}); 
+});

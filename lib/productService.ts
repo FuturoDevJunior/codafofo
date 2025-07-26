@@ -9,24 +9,24 @@ export class ProductService {
   static async getProducts(): Promise<Product[]> {
     // Simular delay de API
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     const user = AuthService.getCurrentUser();
-    
+
     if (!user) {
       // Usuário anônimo - dados públicos
       return getProducts();
     }
-    
+
     if (user.role === 'admin') {
       // Admin - dados completos com preços originais
       return getProductsAdmin();
     }
-    
+
     if (user.role === 'vendedor') {
       // Vendedor - dados com comissão
       return getProductsVendor();
     }
-    
+
     // Padrão - dados públicos
     return getProducts();
   }
@@ -44,15 +44,15 @@ export class ProductService {
 
   static async getProductsCached(): Promise<Product[]> {
     const now = Date.now();
-    
-    if (this.cachedProducts && (now - this.lastCacheTime) < this.CACHE_DURATION) {
+
+    if (this.cachedProducts && now - this.lastCacheTime < this.CACHE_DURATION) {
       return this.cachedProducts;
     }
-    
+
     const products = await this.getProducts();
     this.cachedProducts = products;
     this.lastCacheTime = now;
-    
+
     return products;
   }
 

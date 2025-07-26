@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import {
   Toast,
@@ -36,7 +29,9 @@ describe('Toast UI', () => {
     expect(screen.getByText('Mensagem')).toBeInTheDocument();
     expect(screen.getByText('Desfazer')).toBeInTheDocument();
     // O botão de fechar não tem texto visível, buscar pelo role e atributo toast-close
-    const closeBtn = screen.getAllByRole('button').find(btn => btn.getAttribute('toast-close') !== null);
+    const closeBtn = screen
+      .getAllByRole('button')
+      .find(btn => btn.getAttribute('toast-close') !== null);
     expect(closeBtn).toBeDefined();
   });
-}); 
+});

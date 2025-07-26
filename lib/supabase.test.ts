@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 // Mock das variáveis de ambiente
 const mockEnv = {
   NEXT_PUBLIC_SUPABASE_URL: 'https://test-project.supabase.co',
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: 'test-anon-key'
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: 'test-anon-key',
 };
 
 // Mock do createClient
@@ -18,17 +18,17 @@ vi.mock('@supabase/supabase-js', () => ({
     from: vi.fn(() => ({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
-          single: vi.fn()
-        }))
-      }))
-    }))
-  }))
+          single: vi.fn(),
+        })),
+      })),
+    })),
+  })),
 }));
 
 describe('Supabase Client', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Mock process.env
     Object.keys(mockEnv).forEach(key => {
       vi.stubEnv(key, mockEnv[key as keyof typeof mockEnv]);
@@ -41,7 +41,7 @@ describe('Supabase Client', () => {
 
   it('deve criar cliente Supabase', async () => {
     const { supabase } = await import('./supabase');
-    
+
     expect(supabase).toBeDefined();
     expect(supabase.auth).toBeDefined();
     expect(supabase.from).toBeDefined();
@@ -49,14 +49,14 @@ describe('Supabase Client', () => {
 
   it('deve ter métodos de autenticação', async () => {
     const { supabase } = await import('./supabase');
-    
+
     expect(supabase).toBeDefined();
     expect(supabase.auth).toBeDefined();
   });
 
   it('deve ter método from para queries', async () => {
     const { supabase } = await import('./supabase');
-    
+
     expect(supabase).toBeDefined();
     expect(typeof supabase.from).toBe('function');
   });

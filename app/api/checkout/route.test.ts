@@ -20,8 +20,11 @@ beforeAll(async () => {
 
 describe('API Checkout', () => {
   it('processa POST com dados válidos', async () => {
-    const mockReq = { method: 'POST', json: async () => ({ customer_name: 'Test', items: [], total: 100 }) } as Request;
+    const mockReq = {
+      method: 'POST',
+      json: async () => ({ customer_name: 'Test', items: [], total: 100 }),
+    } as Request;
     const res = await POST(mockReq);
     expect(res.status).toBe(200);
   });
-}); 
+});

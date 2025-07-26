@@ -35,11 +35,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.3,
-    }
+    },
   ];
 
   // Páginas de produtos dinâmicas
-  const productPages = mockProducts.map((product) => ({
+  const productPages = mockProducts.map(product => ({
     url: `${baseUrl}/products/${product.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,

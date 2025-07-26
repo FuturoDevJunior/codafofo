@@ -61,7 +61,7 @@ function StatusBadge({ status }: { status: string }) {
   };
 
   const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.novo;
-  
+
   return (
     <span className={`rounded-full px-2 py-1 text-xs font-semibold ${config.className}`}>
       {config.label}
@@ -73,7 +73,9 @@ export default async function LeadsPage() {
   const supabase = await createServerSupabaseClient();
 
   // Verificar autenticação
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   if (!session) {
     redirect('/admin/login');
   }
@@ -93,7 +95,7 @@ export default async function LeadsPage() {
       origem: 'WhatsApp Catálogo',
     },
     {
-      id: '2', 
+      id: '2',
       cliente_nome: 'Dra. Ana Costa',
       cliente_telefone: '11998776655',
       produto_interesse: 'Preenchedores',
@@ -122,21 +124,26 @@ export default async function LeadsPage() {
   const stats = {
     total: leads.length,
     novos: leads.filter(l => l.status === 'novo').length,
-    emAndamento: leads.filter(l => ['contato', 'interessado', 'negociacao'].includes(l.status)).length,
+    emAndamento: leads.filter(l => ['contato', 'interessado', 'negociacao'].includes(l.status))
+      .length,
     fechados: leads.filter(l => l.status === 'fechado').length,
-    valorTotal: leads.filter(l => l.status === 'fechado').reduce((sum, l) => sum + l.valor_estimado, 0),
-    valorPotencial: leads.filter(l => ['interessado', 'negociacao'].includes(l.status)).reduce((sum, l) => sum + l.valor_estimado, 0),
+    valorTotal: leads
+      .filter(l => l.status === 'fechado')
+      .reduce((sum, l) => sum + l.valor_estimado, 0),
+    valorPotencial: leads
+      .filter(l => ['interessado', 'negociacao'].includes(l.status))
+      .reduce((sum, l) => sum + l.valor_estimado, 0),
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light">
       {/* Header */}
-      <header className="bg-white border-b-2 border-vitale-primary/20 shadow-lg sticky top-0 z-30">
+      <header className="bg-white sticky top-0 z-30 border-b-2 border-vitale-primary/20 shadow-lg">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-600">
-                <MessageCircle className="h-6 w-6 text-white" />
+              <div className="bg-green-600 flex h-12 w-12 items-center justify-center rounded-xl">
+                <MessageCircle className="text-white h-6 w-6" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-vitale-primary">Controle de Leads</h1>
@@ -153,7 +160,7 @@ export default async function LeadsPage() {
               </Button>
               <Button
                 onClick={() => window.history.back()}
-                className="bg-vitale-primary hover:bg-vitale-secondary text-white"
+                className="text-white bg-vitale-primary hover:bg-vitale-secondary"
               >
                 Voltar ao Dashboard
               </Button>
@@ -172,9 +179,7 @@ export default async function LeadsPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-vitale-primary">{stats.total}</div>
-              <p className="text-xs text-muted-foreground">
-                Contatos registrados
-              </p>
+              <p className="text-xs text-muted-foreground">Contatos registrados</p>
             </CardContent>
           </Card>
 
@@ -184,10 +189,8 @@ export default async function LeadsPage() {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">{stats.emAndamento}</div>
-              <p className="text-xs text-muted-foreground">
-                Oportunidades ativas
-              </p>
+              <div className="text-orange-600 text-2xl font-bold">{stats.emAndamento}</div>
+              <p className="text-xs text-muted-foreground">Oportunidades ativas</p>
             </CardContent>
           </Card>
 
@@ -197,10 +200,8 @@ export default async function LeadsPage() {
               <Star className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.fechados}</div>
-              <p className="text-xs text-muted-foreground">
-                Vendas concluídas
-              </p>
+              <div className="text-green-600 text-2xl font-bold">{stats.fechados}</div>
+              <p className="text-xs text-muted-foreground">Vendas concluídas</p>
             </CardContent>
           </Card>
 
@@ -210,7 +211,7 @@ export default async function LeadsPage() {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-green-600 text-2xl font-bold">
                 {formatCurrency(stats.valorTotal)}
               </div>
               <p className="text-xs text-muted-foreground">
@@ -240,11 +241,7 @@ export default async function LeadsPage() {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                   <div>
                     <Label htmlFor="search">Buscar</Label>
-                    <Input
-                      id="search"
-                      placeholder="Nome, telefone..."
-                      className="w-full"
-                    />
+                    <Input id="search" placeholder="Nome, telefone..." className="w-full" />
                   </div>
                   <div>
                     <Label htmlFor="status">Status</Label>
@@ -316,14 +313,12 @@ export default async function LeadsPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {leads.map((lead) => (
+                      {leads.map(lead => (
                         <TableRow key={lead.id}>
                           <TableCell>
                             <div>
                               <div className="font-medium">{lead.cliente_nome}</div>
-                              <div className="text-xs text-muted-foreground">
-                                {lead.origem}
-                              </div>
+                              <div className="text-xs text-muted-foreground">{lead.origem}</div>
                             </div>
                           </TableCell>
                           <TableCell>
@@ -357,11 +352,13 @@ export default async function LeadsPage() {
                           </TableCell>
                           <TableCell>
                             <div className="flex gap-1">
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 variant="outline"
                                 className="text-green-600 border-green-200 hover:bg-green-50"
-                                onClick={() => window.open(`https://wa.me/55${lead.cliente_telefone}`, '_blank')}
+                                onClick={() =>
+                                  window.open(`https://wa.me/55${lead.cliente_telefone}`, '_blank')
+                                }
                               >
                                 <MessageCircle className="h-3 w-3" />
                               </Button>
@@ -386,30 +383,32 @@ export default async function LeadsPage() {
                 { status: 'novo', title: 'Novos Leads', color: 'blue' },
                 { status: 'negociacao', title: 'Em Negociação', color: 'orange' },
                 { status: 'fechado', title: 'Fechados', color: 'green' },
-              ].map((stage) => (
+              ].map(stage => (
                 <Card key={stage.status}>
                   <CardHeader>
-                    <CardTitle className={`text-${stage.color}-600`}>
-                      {stage.title}
-                    </CardTitle>
+                    <CardTitle className={`text-${stage.color}-600`}>{stage.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
                       {leads
-                        .filter(lead => 
-                          stage.status === 'novo' ? lead.status === 'novo' :
-                          stage.status === 'negociacao' ? ['interessado', 'negociacao'].includes(lead.status) :
-                          lead.status === 'fechado'
+                        .filter(lead =>
+                          stage.status === 'novo'
+                            ? lead.status === 'novo'
+                            : stage.status === 'negociacao'
+                              ? ['interessado', 'negociacao'].includes(lead.status)
+                              : lead.status === 'fechado'
                         )
-                        .map((lead) => (
-                        <div key={lead.id} className="p-3 border rounded-lg">
-                          <div className="font-medium text-sm">{lead.cliente_nome}</div>
-                          <div className="text-xs text-muted-foreground">{lead.produto_interesse}</div>
-                          <div className="text-xs font-semibold text-green-600 mt-1">
-                            {formatCurrency(lead.valor_estimado)}
+                        .map(lead => (
+                          <div key={lead.id} className="rounded-lg border p-3">
+                            <div className="text-sm font-medium">{lead.cliente_nome}</div>
+                            <div className="text-xs text-muted-foreground">
+                              {lead.produto_interesse}
+                            </div>
+                            <div className="text-green-600 mt-1 text-xs font-semibold">
+                              {formatCurrency(lead.valor_estimado)}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -425,13 +424,18 @@ export default async function LeadsPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {['João Santos', 'Pedro Lima', 'Maria Costa'].map((vendedor) => {
+                    {['João Santos', 'Pedro Lima', 'Maria Costa'].map(vendedor => {
                       const leadsVendedor = leads.filter(l => l.vendedor_responsavel === vendedor);
                       const fechados = leadsVendedor.filter(l => l.status === 'fechado').length;
-                      const valor = leadsVendedor.filter(l => l.status === 'fechado').reduce((sum, l) => sum + l.valor_estimado, 0);
-                      
+                      const valor = leadsVendedor
+                        .filter(l => l.status === 'fechado')
+                        .reduce((sum, l) => sum + l.valor_estimado, 0);
+
                       return (
-                        <div key={vendedor} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div
+                          key={vendedor}
+                          className="flex items-center justify-between rounded-lg border p-3"
+                        >
                           <div>
                             <div className="font-medium">{vendedor}</div>
                             <div className="text-xs text-muted-foreground">
@@ -439,11 +443,14 @@ export default async function LeadsPage() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="font-semibold text-green-600">
+                            <div className="text-green-600 font-semibold">
                               {formatCurrency(valor)}
                             </div>
                             <div className="text-xs text-muted-foreground">
-                              {leadsVendedor.length ? Math.round((fechados / leadsVendedor.length) * 100) : 0}% conversão
+                              {leadsVendedor.length
+                                ? Math.round((fechados / leadsVendedor.length) * 100)
+                                : 0}
+                              % conversão
                             </div>
                           </div>
                         </div>
@@ -452,19 +459,22 @@ export default async function LeadsPage() {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Origem dos Leads</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {['WhatsApp Catálogo', 'WhatsApp Direto', 'Indicação'].map((origem) => {
+                    {['WhatsApp Catálogo', 'WhatsApp Direto', 'Indicação'].map(origem => {
                       const leadsOrigem = leads.filter(l => l.origem === origem);
                       const fechados = leadsOrigem.filter(l => l.status === 'fechado').length;
-                      
+
                       return (
-                        <div key={origem} className="flex justify-between items-center p-3 border rounded-lg">
+                        <div
+                          key={origem}
+                          className="flex items-center justify-between rounded-lg border p-3"
+                        >
                           <div>
                             <div className="font-medium">{origem}</div>
                             <div className="text-xs text-muted-foreground">
@@ -474,7 +484,10 @@ export default async function LeadsPage() {
                           <div className="text-right">
                             <div className="font-semibold">{fechados} fechados</div>
                             <div className="text-xs text-muted-foreground">
-                              {leadsOrigem.length ? Math.round((fechados / leadsOrigem.length) * 100) : 0}% conversão
+                              {leadsOrigem.length
+                                ? Math.round((fechados / leadsOrigem.length) * 100)
+                                : 0}
+                              % conversão
                             </div>
                           </div>
                         </div>

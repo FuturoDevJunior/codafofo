@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 const mockSupabase = {
   auth: { getSession: vi.fn() },
-  from: vi.fn().mockReturnValue({ select: vi.fn().mockResolvedValue({ data: [] }) })
+  from: vi.fn().mockReturnValue({ select: vi.fn().mockResolvedValue({ data: [] }) }),
 };
 
 import Reports from './page';
@@ -19,4 +19,4 @@ describe('Reports Page', () => {
     const Page = await Reports();
     expect(Page).toBeDefined();
   });
-}); 
+});

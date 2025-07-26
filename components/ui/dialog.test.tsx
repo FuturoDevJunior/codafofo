@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import {
   Dialog,
@@ -32,4 +25,4 @@ describe('Dialog UI', () => {
     );
     expect(screen.getByText('Open')).toBeInTheDocument();
   });
-}); 
+});

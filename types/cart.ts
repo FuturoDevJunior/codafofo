@@ -11,8 +11,8 @@ export interface CartItem {
 
 export interface CartState {
   items: CartItem[];
-  addItem: (item: CartItem) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  addItem: (_item: CartItem) => void;
+  removeItem: (_id: string) => void;
+  updateQuantity: (_id: string, _quantity: number) => void;
   clearCart: () => void;
-} 
+}

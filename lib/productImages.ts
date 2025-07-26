@@ -1,7 +1,7 @@
 /**
  * MAPEAMENTO DE IMAGENS DOS PRODUTOS VYTALLE
  * ==========================================
- * 
+ *
  * Sistema inteligente de fallback para imagens de produtos
  * Garante que sempre há uma imagem válida sendo exibida
  */
@@ -10,7 +10,7 @@
 export const productImageMap: Record<string, string[]> = {
   // TOXINAS BOTULÍNICAS - imagens reais dos produtos
   'dl-botox-100ui': ['/images/products/dl-botox-100ui.jpg'],
-  'dl-botox-200ui': ['/images/products/dl-botox-200ui.jpg'],  
+  'dl-botox-200ui': ['/images/products/dl-botox-200ui.jpg'],
   'dl-botox-50ui': ['/images/products/dl-botox-50ui.jpg'],
   'dl-botulift-100ui': ['/images/products/dl-botulift-100ui.jpg'],
   'dl-botulift-150ui': ['/images/products/dl-botulift-150ui.jpg'],
@@ -123,19 +123,19 @@ export const productImageMap: Record<string, string[]> = {
 
   // ENZIMAS - imagens reais onde disponíveis
   'dl-hialuronidase-1500ui': ['/images/products/dl-hialuronidase-1500ui.jpg'],
-  'dl-hialuronidase-3-vials': ['/icons/enzyme-icon.svg']
+  'dl-hialuronidase-3-vials': ['/icons/enzyme-icon.svg'],
 };
 
 // Fallbacks por categoria
 export const categoryImageFallbacks: Record<string, string> = {
   'Toxina Botulínica': '/icons/syringe-icon.svg',
-  'Bioestimuladores': '/icons/collagen-icon.svg',
-  'Bioremodeladores': '/icons/regeneration-icon.svg',
-  'Skinboosters': '/icons/hydration-icon.svg',
-  'Preenchedores': '/icons/filler-icon.svg',
+  Bioestimuladores: '/icons/collagen-icon.svg',
+  Bioremodeladores: '/icons/regeneration-icon.svg',
+  Skinboosters: '/icons/hydration-icon.svg',
+  Preenchedores: '/icons/filler-icon.svg',
   'Fios Bioestimulação': '/icons/thread-icon.svg',
-  'Microcânulas': '/icons/needle-icon.svg',
-  'Enzimas': '/icons/enzyme-icon.svg'
+  Microcânulas: '/icons/needle-icon.svg',
+  Enzimas: '/icons/enzyme-icon.svg',
 };
 
 // Fallback final
@@ -149,12 +149,12 @@ export function getProductImages(slug: string, category: string): string[] {
   if (productImageMap[slug]) {
     return productImageMap[slug];
   }
-  
+
   // Fallback para categoria
   if (categoryImageFallbacks[category]) {
     return [categoryImageFallbacks[category]];
   }
-  
+
   // Fallback final
   return [defaultProductImage];
 }

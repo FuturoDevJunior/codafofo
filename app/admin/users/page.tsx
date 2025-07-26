@@ -72,9 +72,11 @@ function RoleBadge({ role }: { role: string }) {
 
   const config = roleConfig[role as keyof typeof roleConfig] || roleConfig.user;
   const Icon = config.icon;
-  
+
   return (
-    <span className={`rounded-full px-2 py-1 text-xs font-semibold flex items-center gap-1 ${config.className}`}>
+    <span
+      className={`flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${config.className}`}
+    >
       <Icon className="h-3 w-3" />
       {config.label}
     </span>
@@ -85,7 +87,9 @@ export default async function UsersPage() {
   const supabase = await createServerSupabaseClient();
 
   // Verificar autenticação
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   if (!session) {
     redirect('/admin/login');
   }
@@ -120,12 +124,12 @@ export default async function UsersPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light">
       {/* Header */}
-      <header className="bg-white border-b-2 border-vitale-primary/20 shadow-lg sticky top-0 z-30">
+      <header className="bg-white sticky top-0 z-30 border-b-2 border-vitale-primary/20 shadow-lg">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-vitale-primary">
-                <Users className="h-6 w-6 text-white" />
+                <Users className="text-white h-6 w-6" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-vitale-primary">Gestão de Usuários</h1>
@@ -143,9 +147,7 @@ export default async function UsersPage() {
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Adicionar Novo Usuário</DialogTitle>
-                    <DialogDescription>
-                      Crie um novo usuário no sistema
-                    </DialogDescription>
+                    <DialogDescription>Crie um novo usuário no sistema</DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
                     <div>
@@ -199,9 +201,7 @@ export default async function UsersPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-vitale-primary">{stats.total}</div>
-              <p className="text-xs text-muted-foreground">
-                Usuários cadastrados
-              </p>
+              <p className="text-xs text-muted-foreground">Usuários cadastrados</p>
             </CardContent>
           </Card>
 
@@ -211,10 +211,8 @@ export default async function UsersPage() {
               <Crown className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">{stats.admins}</div>
-              <p className="text-xs text-muted-foreground">
-                Acesso total ao sistema
-              </p>
+              <div className="text-red-600 text-2xl font-bold">{stats.admins}</div>
+              <p className="text-xs text-muted-foreground">Acesso total ao sistema</p>
             </CardContent>
           </Card>
 
@@ -224,10 +222,8 @@ export default async function UsersPage() {
               <Shield className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-purple-600">{stats.managers}</div>
-              <p className="text-xs text-muted-foreground">
-                Acesso gerencial
-              </p>
+              <div className="text-purple-600 text-2xl font-bold">{stats.managers}</div>
+              <p className="text-xs text-muted-foreground">Acesso gerencial</p>
             </CardContent>
           </Card>
 
@@ -237,10 +233,8 @@ export default async function UsersPage() {
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.recentSignIns}</div>
-              <p className="text-xs text-muted-foreground">
-                Últimos 7 dias
-              </p>
+              <div className="text-green-600 text-2xl font-bold">{stats.recentSignIns}</div>
+              <p className="text-xs text-muted-foreground">Últimos 7 dias</p>
             </CardContent>
           </Card>
         </div>
@@ -265,11 +259,7 @@ export default async function UsersPage() {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                   <div>
                     <Label htmlFor="search">Buscar usuário</Label>
-                    <Input
-                      id="search"
-                      placeholder="Nome, email..."
-                      className="w-full"
-                    />
+                    <Input id="search" placeholder="Nome, email..." className="w-full" />
                   </div>
                   <div>
                     <Label htmlFor="role-filter">Função</Label>
@@ -323,7 +313,7 @@ export default async function UsersPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {users.map((user) => (
+                      {users.map(user => (
                         <TableRow key={user.id}>
                           <TableCell>
                             <div className="flex items-center gap-3">
@@ -399,9 +389,9 @@ export default async function UsersPage() {
                       ))}
                       {users.length === 0 && (
                         <TableRow>
-                          <TableCell colSpan={7} className="text-center py-8">
+                          <TableCell colSpan={7} className="py-8 text-center">
                             <div className="text-muted-foreground">
-                              <Users className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                              <Users className="mx-auto mb-4 h-12 w-12 opacity-50" />
                               <p>Nenhum usuário encontrado</p>
                               <p className="text-xs">Adicione usuários para gerenciar o sistema</p>
                             </div>
@@ -420,16 +410,16 @@ export default async function UsersPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Crown className="h-5 w-5 text-red-600" />
+                    <Crown className="text-red-600 h-5 w-5" />
                     Administrador
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="mb-4 text-sm text-muted-foreground">
                     Acesso total ao sistema, pode gerenciar usuários, produtos e configurações.
                   </p>
                   <div className="space-y-2">
-                    <div className="text-2xl font-bold text-red-600">{stats.admins}</div>
+                    <div className="text-red-600 text-2xl font-bold">{stats.admins}</div>
                     <p className="text-xs">usuários com esta função</p>
                   </div>
                 </CardContent>
@@ -438,16 +428,16 @@ export default async function UsersPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Shield className="h-5 w-5 text-purple-600" />
+                    <Shield className="text-purple-600 h-5 w-5" />
                     Gerente
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="mb-4 text-sm text-muted-foreground">
                     Pode gerenciar produtos, pedidos e visualizar relatórios.
                   </p>
                   <div className="space-y-2">
-                    <div className="text-2xl font-bold text-purple-600">{stats.managers}</div>
+                    <div className="text-purple-600 text-2xl font-bold">{stats.managers}</div>
                     <p className="text-xs">usuários com esta função</p>
                   </div>
                 </CardContent>
@@ -456,16 +446,16 @@ export default async function UsersPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5 text-blue-600" />
+                    <User className="text-blue-600 h-5 w-5" />
                     Usuário
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="mb-4 text-sm text-muted-foreground">
                     Acesso básico ao sistema, pode visualizar produtos e fazer pedidos.
                   </p>
                   <div className="space-y-2">
-                    <div className="text-2xl font-bold text-blue-600">{stats.users}</div>
+                    <div className="text-blue-600 text-2xl font-bold">{stats.users}</div>
                     <p className="text-xs">usuários com esta função</p>
                   </div>
                 </CardContent>
@@ -482,10 +472,17 @@ export default async function UsersPage() {
                 <div className="space-y-4">
                   {users
                     .filter(u => u.last_sign_in_at)
-                    .sort((a, b) => new Date(b.last_sign_in_at!).getTime() - new Date(a.last_sign_in_at!).getTime())
+                    .sort(
+                      (a, b) =>
+                        new Date(b.last_sign_in_at!).getTime() -
+                        new Date(a.last_sign_in_at!).getTime()
+                    )
                     .slice(0, 10)
-                    .map((user) => (
-                      <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    .map(user => (
+                      <div
+                        key={user.id}
+                        className="flex items-center justify-between rounded-lg border p-3"
+                      >
                         <div className="flex items-center gap-3">
                           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-vitale-primary/10">
                             <User className="h-4 w-4 text-vitale-primary" />
@@ -497,10 +494,12 @@ export default async function UsersPage() {
                         </div>
                         <div className="text-right">
                           <div className="text-sm font-medium">
-                            {user.last_sign_in_at && new Date(user.last_sign_in_at).toLocaleDateString('pt-BR')}
+                            {user.last_sign_in_at &&
+                              new Date(user.last_sign_in_at).toLocaleDateString('pt-BR')}
                           </div>
                           <div className="text-xs text-muted-foreground">
-                            {user.last_sign_in_at && new Date(user.last_sign_in_at).toLocaleTimeString('pt-BR')}
+                            {user.last_sign_in_at &&
+                              new Date(user.last_sign_in_at).toLocaleTimeString('pt-BR')}
                           </div>
                         </div>
                       </div>
