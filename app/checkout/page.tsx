@@ -25,6 +25,7 @@ import { toast } from '@/components/ui/use-toast';
 import UpsellModal from '@/components/UpsellModal';
 import { useCartStore } from '@/lib/store';
 import { formatCurrency } from '@/lib/utils';
+import type { Product } from '@/types';
 
 interface CustomerData {
   name: string;
@@ -181,25 +182,25 @@ export default function Checkout() {
     setCurrentStep(prev => prev - 1);
   };
 
-  const handleUpsellPurchase = async (product: any) => {
+  const handleUpsellPurchase = async (product: Product) => {
     const message = `🎯 OFERTA ESPECIAL APROVEITADA!
 
-✅ PEDIDO PRINCIPAL: Já confirmado e enviado
+📦 **${product.name}**
+• Valor: ${formatCurrency(product.price_pix)}
+• Categoria: ${product.category}
+• Descrição: ${product.description || 'Sem descrição'}
 
-🔥 PRODUTO ADICIONAL:
-• ${product.name}
-• Valor: ${formatCurrency(product.discountPrice)}
-• Desconto aplicado: ${product.discount}%
-• Economia total: ${formatCurrency(product.originalPrice - product.discountPrice)}
+🛒 **Adicionado ao carrinho!**
+• Quantidade: 1 unidade
+• Total: ${formatCurrency(product.price_pix)}
 
-💎 Esta oferta especial será adicionada ao seu pedido principal.
-💳 Mesmo meio de pagamento já escolhido.
-📦 Entrega conjunta (sem custo adicional de frete).
+💳 **Formas de pagamento:**
+• PIX: ${formatCurrency(product.price_pix)}
+• Cartão: ${formatCurrency(product.price_card)}
+• Prazo: ${formatCurrency(product.price_prazo)}
 
-Confirma a adição deste produto ao seu pedido?
-
-Vytalle Estética & Viscosuplementação
-WhatsApp: +55 21 99619-2890`;
+🚀 **Próximo passo:** Finalizar compra no WhatsApp!
+    `;
 
     const whatsappNumber = '5521996192890';
     const encodedMessage = encodeURIComponent(message);
@@ -231,11 +232,6 @@ WhatsApp: +55 21 99619-2890`;
     setIsLoading(true);
     try {
       // Preparar mensagem profissional para WhatsApp
-      const orderItems = items
-        .map(item => `• ${item.name} - Qtd: ${item.quantity} - ${formatCurrency(item.price)}`)
-        .join('\n');
-
-      // Substituir mensagens multi-linha com emoji por texto puro
       const whatsappMessage = `
 
 PROCESSO DE FINALIZAÇÃO:
@@ -941,7 +937,7 @@ Pedido completo e pronto para processamento!`;
             setShowUpsellModal(false);
             router.push('/success');
           }}
-          onPurchase={handleUpsellPurchase}
+          onPurchase={product => handleUpsellPurchase(product as unknown as Product)}
           timeLimit={600}
         />
       </div>

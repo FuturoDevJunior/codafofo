@@ -37,8 +37,7 @@ describe('SmartImage', () => {
   it('deve renderizar com placeholder durante carregamento', async () => {
     render(<SmartImage src="/test-image.jpg" alt="Test Image" />);
 
-    // Verificar se skeleton/placeholder está presente inicialmente
-    const placeholder = screen.queryByTestId('image-placeholder');
+    // Verificar se imagem está presente
     const image = screen.getByTestId('next-image');
 
     expect(image).toBeInTheDocument();

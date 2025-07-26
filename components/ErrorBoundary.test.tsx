@@ -191,7 +191,6 @@ describe('ErrorBoundary', () => {
   describe('Informações de Debug', () => {
     it('deve exibir informações de erro em desenvolvimento', () => {
       // Simular ambiente de desenvolvimento
-      const originalEnv = process.env.NODE_ENV;
       vi.stubEnv('NODE_ENV', 'development');
 
       render(

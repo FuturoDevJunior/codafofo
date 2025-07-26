@@ -1,24 +1,18 @@
-import Image from 'next/image';
 import { act } from 'react';
-import {
-  afterEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import Image from 'next/image';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import ProductCarousel from './Carousel';
 
 // Mock do SmartImage para retornar uma tag <img> simples
 vi.mock('./SmartImage', () => ({
-  default: ({ src, alt }: { src: string; alt: string }) => <Image src={src} alt={alt} width={100} height={100} />,
+  default: ({ src, alt }: { src: string; alt: string }) => (
+    <Image src={src} alt={alt} width={100} height={100} />
+  ),
 }));
 
 const mockImages = ['/img1.jpg', '/img2.jpg'];
@@ -26,7 +20,7 @@ const mockImages = ['/img1.jpg', '/img2.jpg'];
 describe('ProductCarousel', () => {
   it('renderiza todas as imagens no carousel', async () => {
     render(<ProductCarousel images={mockImages} />);
-    
+
     // Usamos findAllByRole para aguardar a renderização das imagens mockadas
     const images = await screen.findAllByRole('img');
     expect(images).toHaveLength(2);
@@ -57,7 +51,6 @@ describe('ProductCarousel', () => {
     const carousel = screen.getByRole('region', { name: '' });
     carousel.focus();
     await userEvent.keyboard('{ArrowRight}');
-    const dots = screen.getAllByRole('button', { name: /Ir para slide/i });
     // ATENÇÃO: Em ambiente JSDOM, Embla pode não atualizar o dot ativo devido à ausência de layout real.
     // No navegador real, o dot muda corretamente. Use e2e para cobertura visual total.
     // await waitFor(() => expect(dots[1]).toHaveClass('bg-vitale-primary'));
@@ -77,4 +70,4 @@ describe('ProductCarousel', () => {
   });
 });
 
-afterEach(() => vi.clearAllMocks()); 
+afterEach(() => vi.clearAllMocks());

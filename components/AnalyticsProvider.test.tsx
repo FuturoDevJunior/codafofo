@@ -1,18 +1,22 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock do next/navigation
 const mockUsePathname = vi.fn();
 vi.mock('next/navigation', () => ({
-  usePathname: () => mockUsePathname()
+  usePathname: () => mockUsePathname(),
 }));
 
 // Mock do analytics
 const mockTrackPageView = vi.fn();
 vi.mock('@/lib/analytics', () => ({
+  default: {
+    trackPageView: mockTrackPageView,
+  },
   analytics: {
-    trackPageView: mockTrackPageView
-  }
+    trackPageView: mockTrackPageView,
+  },
 }));
 
 describe('AnalyticsProvider', () => {
@@ -24,7 +28,7 @@ describe('AnalyticsProvider', () => {
   it('deve renderizar children corretamente', async () => {
     // Import após os mocks
     const AnalyticsProvider = (await import('./AnalyticsProvider')).default;
-    
+
     render(
       <AnalyticsProvider>
         <div data-testid="child-content">Test Content</div>
@@ -37,9 +41,9 @@ describe('AnalyticsProvider', () => {
 
   it('deve chamar trackPageView na montagem inicial', async () => {
     mockUsePathname.mockReturnValue('/products');
-    
+
     const AnalyticsProvider = (await import('./AnalyticsProvider')).default;
-    
+
     render(
       <AnalyticsProvider>
         <div>Content</div>
@@ -51,7 +55,7 @@ describe('AnalyticsProvider', () => {
 
   it('deve chamar trackPageView quando pathname muda', async () => {
     const AnalyticsProvider = (await import('./AnalyticsProvider')).default;
-    
+
     const { rerender } = render(
       <AnalyticsProvider>
         <div>Content</div>
@@ -63,7 +67,7 @@ describe('AnalyticsProvider', () => {
 
     // Simula mudança de rota
     mockUsePathname.mockReturnValue('/cart');
-    
+
     rerender(
       <AnalyticsProvider>
         <div>Content</div>
@@ -78,12 +82,12 @@ describe('AnalyticsProvider', () => {
 
   it('deve lidar com diferentes rotas', async () => {
     const AnalyticsProvider = (await import('./AnalyticsProvider')).default;
-    
+
     const routes = ['/products', '/cart', '/admin', '/checkout'];
-    
+
     for (const [index, route] of routes.entries()) {
       mockUsePathname.mockReturnValue(route);
-      
+
       render(
         <AnalyticsProvider>
           <div key={index}>Content {index}</div>
@@ -97,7 +101,7 @@ describe('AnalyticsProvider', () => {
 
   it('deve funcionar com múltiplos children', async () => {
     const AnalyticsProvider = (await import('./AnalyticsProvider')).default;
-    
+
     render(
       <AnalyticsProvider>
         <div data-testid="child-1">Child 1</div>
@@ -113,27 +117,19 @@ describe('AnalyticsProvider', () => {
 
   it('deve funcionar com children nulo/undefined', async () => {
     const AnalyticsProvider = (await import('./AnalyticsProvider')).default;
-    
+
     expect(() => {
-      render(
-        <AnalyticsProvider>
-          {null}
-        </AnalyticsProvider>
-      );
+      render(<AnalyticsProvider>{null}</AnalyticsProvider>);
     }).not.toThrow();
 
     expect(() => {
-      render(
-        <AnalyticsProvider>
-          {undefined}
-        </AnalyticsProvider>
-      );
+      render(<AnalyticsProvider>{undefined}</AnalyticsProvider>);
     }).not.toThrow();
   });
 
   it('deve preservar estrutura de elementos aninhados', async () => {
     const AnalyticsProvider = (await import('./AnalyticsProvider')).default;
-    
+
     render(
       <AnalyticsProvider>
         <header>

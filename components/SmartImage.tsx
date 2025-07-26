@@ -1,9 +1,6 @@
-"use client";
+'use client';
 
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 
 import { Package } from 'lucide-react';
 import Image from 'next/image';
@@ -27,7 +24,7 @@ interface SmartImageProps {
 /**
  * COMPONENTE DE IMAGEM INTELIGENTE
  * ===============================
- * 
+ *
  * Supera expectativas com:
  * - Fallback automático
  * - Loading graceful
@@ -47,7 +44,7 @@ export default function SmartImage({
   sizes,
   borderRadius = 'rounded-xl',
   objectFit = 'cover',
-  productName
+  productName,
 }: SmartImageProps) {
   const [currentSrc, setCurrentSrc] = useState(src);
   const [isLoading, setIsLoading] = useState(true);
@@ -64,24 +61,23 @@ export default function SmartImage({
   }, [src]);
 
   const handleError = () => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('SmartImage error loading:', src, 'retryCount:', retryCount);
-    }
-    if (retryCount < maxRetries && currentSrc !== fallback) {
-      // Retry com delay
-      setTimeout(() => {
-        setRetryCount(prev => prev + 1);
-        setCurrentSrc(src); // Retry original src
-      }, 1000 * (retryCount + 1));
+    if (retryCount < maxRetries) {
+      // Log apenas em desenvolvimento
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log('SmartImage error loading:', src, 'retryCount:', retryCount);
+      }
+      setRetryCount(prev => prev + 1);
+      setCurrentSrc(`${src}?retry=${retryCount + 1}`);
     } else {
-      // Use fallback
-      setCurrentSrc(fallback);
       setHasError(true);
     }
   };
 
   const handleLoad = () => {
+    // Log apenas em desenvolvimento
     if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.log('SmartImage loaded successfully:', currentSrc);
     }
     setIsLoading(false);
@@ -90,63 +86,59 @@ export default function SmartImage({
 
   // Skeleton loading component - Enhanced with better animation
   const LoadingSkeleton = () => (
-    <div 
-      className={`
-        bg-gradient-to-r from-vitale-neutral/60 via-vitale-light to-vitale-neutral/60
-        flex items-center justify-center
-        ${borderRadius} ${className}
-        relative overflow-hidden
-        ${fill ? 'absolute inset-0' : ''}
-      `}
+    <div
+      className={`flex items-center justify-center bg-gradient-to-r from-vitale-neutral/60 via-vitale-light to-vitale-neutral/60 ${borderRadius} ${className} relative overflow-hidden ${fill ? 'absolute inset-0' : ''} `}
       style={!fill ? { width, height } : undefined}
     >
       {/* Shimmer effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-vitale-primary/15 to-transparent animate-shimmer" />
-      
+      <div className="from-transparent to-transparent absolute inset-0 animate-shimmer bg-gradient-to-r via-vitale-primary/15" />
+
       {/* Pulsing icon */}
-      <div className="bg-vitale-primary/10 p-2 sm:p-3 rounded-full animate-pulse-soft relative z-10">
-        <Package className="w-4 h-4 sm:w-6 sm:h-6 text-vitale-primary/40 flex-shrink-0" />
+      <div className="relative z-10 animate-pulse-soft rounded-full bg-vitale-primary/10 p-2 sm:p-3">
+        <Package className="h-4 w-4 flex-shrink-0 text-vitale-primary/40 sm:h-6 sm:w-6" />
       </div>
-      
+
       {/* Loading indicator */}
       <div className="absolute bottom-1 right-1 flex space-x-1">
-        <div className="w-1 h-1 bg-vitale-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-        <div className="w-1 h-1 bg-vitale-primary/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-        <div className="w-1 h-1 bg-vitale-primary/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+        <div
+          className="h-1 w-1 animate-bounce rounded-full bg-vitale-primary/40"
+          style={{ animationDelay: '0ms' }}
+        ></div>
+        <div
+          className="h-1 w-1 animate-bounce rounded-full bg-vitale-primary/40"
+          style={{ animationDelay: '150ms' }}
+        ></div>
+        <div
+          className="h-1 w-1 animate-bounce rounded-full bg-vitale-primary/40"
+          style={{ animationDelay: '300ms' }}
+        ></div>
       </div>
     </div>
   );
 
   // Error state component - Enhanced for better visual appeal
   const ErrorState = () => (
-    <div 
-      className={`
-        bg-gradient-to-br from-vitale-primary/10 via-vitale-neutral/80 to-vitale-secondary/10
-        border-2 border-vitale-primary/30
-        flex flex-col items-center justify-center p-2 sm:p-4
-        ${borderRadius} ${className}
-        ${fill ? 'absolute inset-0' : ''}
-        relative overflow-hidden
-      `}
+    <div
+      className={`flex flex-col items-center justify-center border-2 border-vitale-primary/30 bg-gradient-to-br from-vitale-primary/10 via-vitale-neutral/80 to-vitale-secondary/10 p-2 sm:p-4 ${borderRadius} ${className} ${fill ? 'absolute inset-0' : ''} relative overflow-hidden`}
       style={!fill ? { width, height } : undefined}
     >
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-gradient-to-r from-vitale-primary/20 via-transparent to-vitale-secondary/20 transform rotate-45 scale-150" />
+        <div className="via-transparent absolute inset-0 rotate-45 scale-150 transform bg-gradient-to-r from-vitale-primary/20 to-vitale-secondary/20" />
       </div>
-      
+
       {/* Icon with enhanced styling */}
-      <div className="bg-vitale-primary/15 p-2 sm:p-3 rounded-full mb-2 relative z-10">
-        <Package className="w-4 h-4 sm:w-6 sm:h-6 text-vitale-primary/70 flex-shrink-0" />
+      <div className="relative z-10 mb-2 rounded-full bg-vitale-primary/15 p-2 sm:p-3">
+        <Package className="h-4 w-4 flex-shrink-0 text-vitale-primary/70 sm:h-6 sm:w-6" />
       </div>
-      
+
       {/* Product name with better typography */}
-      <span className="text-xs sm:text-sm font-medium text-vitale-primary/80 text-center line-clamp-2 relative z-10 max-w-full">
+      <span className="relative z-10 line-clamp-2 max-w-full text-center text-xs font-medium text-vitale-primary/80 sm:text-sm">
         {productName || alt || 'Produto Vytalle'}
       </span>
-      
+
       {/* Subtle badge */}
-      <div className="absolute top-1 right-1 bg-vitale-primary/20 text-vitale-primary text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+      <div className="absolute right-1 top-1 rounded-full bg-vitale-primary/20 px-1.5 py-0.5 text-[8px] font-bold text-vitale-primary sm:text-[10px]">
         IMG
       </div>
     </div>
@@ -158,7 +150,10 @@ export default function SmartImage({
   }
 
   return (
-    <div className={fill ? 'relative w-full h-full' : 'relative'} style={!fill ? { width, height } : undefined}>
+    <div
+      className={fill ? 'relative h-full w-full' : 'relative'}
+      style={!fill ? { width, height } : undefined}
+    >
       {isLoading && <LoadingSkeleton />}
       <Image
         src={currentSrc || fallback}

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { renderHook } from '@testing-library/react';
 
-import { analytics, useAnalytics } from './analytics';
+import analytics, { useAnalytics } from './analytics';
 
 // Mock localStorage
 const mockLocalStorage = {

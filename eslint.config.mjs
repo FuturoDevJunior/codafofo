@@ -1,8 +1,10 @@
-import { defineConfig } from "eslint/config";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { defineConfig } from 'eslint/config';
+
+import { FlatCompat } from '@eslint/eslintrc';
+import js from '@eslint/js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,9 +18,10 @@ export default defineConfig([{
     extends: compat.extends("next/core-web-vitals"),
 
     rules: {
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "no-console": "off",
+        "no-console": ["error", { "allow": ["warn", "error"] }],
         "@next/next/no-img-element": "off",
+        "prefer-const": "error",
+        "no-var": "error",
+        "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
     },
 }]);

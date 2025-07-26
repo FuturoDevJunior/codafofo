@@ -1,23 +1,23 @@
 /**
  * SISTEMA DE ANALYTICS AVANÇADO - VYTALLE ESTÉTICA
  * ===============================================
- * 
+ *
  * Sistema completo de tracking, analytics e monitoramento
  */
 
-interface VisitorInfo {
-  ip: string;
-  userAgent: string;
-  timestamp: Date;
-  page: string;
-  referrer?: string;
-  sessionId: string;
-  location?: {
-    country?: string;
-    city?: string;
-    region?: string;
-  };
-}
+// interface VisitorInfo {
+//   ip: string;
+//   userAgent: string;
+//   timestamp: Date;
+//   page: string;
+//   referrer?: string;
+//   sessionId: string;
+//   location?: {
+//     country?: string;
+//     city?: string;
+//     region?: string;
+//   };
+// }
 
 interface PageView {
   id: string;
@@ -69,10 +69,7 @@ class AnalyticsManager {
   constructor() {
     this.sessionId = this.generateSessionId();
     this.pageStartTime = Date.now();
-    
-    if (typeof window !== 'undefined') {
-      this.initializeTracking();
-    }
+    this.initializeTracking();
   }
 
   static getInstance(): AnalyticsManager {
@@ -88,46 +85,39 @@ class AnalyticsManager {
 
   private async getClientIP(): Promise<string> {
     try {
-      // Tentar obter IP através de serviços públicos
       const response = await fetch('https://api.ipify.org?format=json');
       const data = await response.json();
       return data.ip || 'unknown';
-    } catch (error) {
-      // Fallback para IP local
+    } catch {
       return 'unknown';
     }
   }
 
   private getUserAgent(): string {
-    return typeof window !== 'undefined' ? navigator.userAgent : 'unknown';
+    return typeof window !== 'undefined' ? window.navigator.userAgent : 'server';
   }
 
   private initializeTracking(): void {
-    // Track page unload para calcular tempo na página
-    window.addEventListener('beforeunload', () => {
-      this.trackPageExit();
-    });
-
-    // Track interactions gerais
-    ['click', 'scroll', 'keydown'].forEach(event => {
-      window.addEventListener(event, () => {
-        this.interactions++;
+    if (typeof window !== 'undefined') {
+      // Track page visibility changes
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          this.trackPageExit();
+        }
       });
-    });
 
-    // Track mudanças de página
-    const originalPushState = history.pushState;
-    history.pushState = (...args) => {
-      this.trackPageExit();
-      originalPushState.apply(history, args);
-      setTimeout(() => this.trackPageView(), 100);
-    };
+      // Track before unload
+      window.addEventListener('beforeunload', () => {
+        this.trackPageExit();
+      });
+    }
   }
 
   async trackPageView(page?: string): Promise<void> {
-    const currentPage = page || (typeof window !== 'undefined' ? window.location.pathname : 'unknown');
+    const currentPage =
+      page || (typeof window !== 'undefined' ? window.location.pathname : 'unknown');
     const ip = await this.getClientIP();
-    
+
     const pageView: PageView = {
       id: `pv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       page: currentPage,
@@ -135,7 +125,7 @@ class AnalyticsManager {
       ip,
       userAgent: this.getUserAgent(),
       sessionId: this.sessionId,
-      interactions: 0
+      interactions: 0,
     };
 
     this.saveToStorage('pageViews', pageView);
@@ -146,24 +136,26 @@ class AnalyticsManager {
   private trackPageExit(): void {
     const duration = Date.now() - this.pageStartTime;
     const pageViews = this.getFromStorage('pageViews') || [];
-    
+
     if (pageViews.length > 0) {
-      const lastView = pageViews[pageViews.length - 1];
+      const lastView = pageViews[pageViews.length - 1] as PageView;
       lastView.duration = duration;
       lastView.interactions = this.interactions;
       this.saveToStorage('pageViews', lastView, true);
     }
   }
 
-  async trackCartEvent(event: Omit<CartEvent, 'id' | 'timestamp' | 'ip' | 'sessionId'>): Promise<void> {
+  async trackCartEvent(
+    event: Omit<CartEvent, 'id' | 'timestamp' | 'ip' | 'sessionId'>
+  ): Promise<void> {
     const ip = await this.getClientIP();
-    
+
     const cartEvent: CartEvent = {
       ...event,
       id: `cart_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       timestamp: new Date(),
       ip,
-      sessionId: this.sessionId
+      sessionId: this.sessionId,
     };
 
     this.saveToStorage('cartEvents', cartEvent);
@@ -171,24 +163,24 @@ class AnalyticsManager {
 
   async trackLead(lead: Omit<LeadEvent, 'id' | 'timestamp' | 'ip' | 'sessionId'>): Promise<void> {
     const ip = await this.getClientIP();
-    
+
     const leadEvent: LeadEvent = {
       ...lead,
       id: `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       timestamp: new Date(),
       ip,
-      sessionId: this.sessionId
+      sessionId: this.sessionId,
     };
 
     this.saveToStorage('leads', leadEvent);
   }
 
-  private saveToStorage(key: string, data: any, update = false): void {
+  private saveToStorage(key: string, data: PageView | CartEvent | LeadEvent, update = false): void {
     if (typeof window === 'undefined') return;
 
     try {
       const existing = JSON.parse(localStorage.getItem(`vytalle_${key}`) || '[]');
-      
+
       if (update && existing.length > 0) {
         existing[existing.length - 1] = data;
       } else {
@@ -206,7 +198,7 @@ class AnalyticsManager {
     }
   }
 
-  private getFromStorage(key: string): any[] {
+  private getFromStorage(key: string): (PageView | CartEvent | LeadEvent)[] {
     if (typeof window === 'undefined') return [];
 
     try {
@@ -226,31 +218,38 @@ class AnalyticsManager {
       currentSession: {
         sessionId: this.sessionId,
         startTime: new Date(this.pageStartTime),
-        interactions: this.interactions
-      }
+        interactions: this.interactions,
+      },
     };
   }
 
   getRecentActivity(hours = 24) {
-    const cutoff = new Date(Date.now() - (hours * 60 * 60 * 1000));
-    const data = this.getAnalyticsData();
+    const cutoff = Date.now() - hours * 60 * 60 * 1000;
+    const pageViews = this.getFromStorage('pageViews').filter(
+      item => item.timestamp.getTime() > cutoff
+    );
+    const cartEvents = this.getFromStorage('cartEvents').filter(
+      item => item.timestamp.getTime() > cutoff
+    );
+    const leads = this.getFromStorage('leads').filter(item => item.timestamp.getTime() > cutoff);
 
     return {
-      pageViews: data.pageViews.filter(pv => new Date(pv.timestamp) > cutoff),
-      cartEvents: data.cartEvents.filter(ce => new Date(ce.timestamp) > cutoff),
-      leads: data.leads.filter(l => new Date(l.timestamp) > cutoff)
+      pageViews,
+      cartEvents,
+      leads,
     };
   }
 
   getTopPages(limit = 10) {
     const pageViews = this.getFromStorage('pageViews');
-    const pageCounts = pageViews.reduce((acc, pv) => {
-      acc[pv.page] = (acc[pv.page] || 0) + 1;
+    const pageCounts = pageViews.reduce((acc: Record<string, number>, pv) => {
+      const pageView = pv as PageView;
+      acc[pageView.page] = (acc[pageView.page] || 0) + 1;
       return acc;
     }, {});
 
     return Object.entries(pageCounts)
-      .sort(([,a], [,b]) => (b as number) - (a as number))
+      .sort(([, a], [, b]) => (b as number) - (a as number))
       .slice(0, limit)
       .map(([page, count]) => ({ page, count }));
   }
@@ -261,8 +260,10 @@ class AnalyticsManager {
     const pageViews = this.getFromStorage('pageViews');
 
     const uniqueVisitors = new Set(pageViews.map(pv => pv.sessionId)).size;
-    const cartAdds = cartEvents.filter(ce => ce.type === 'add').length;
-    const checkoutAttempts = cartEvents.filter(ce => ce.type === 'whatsapp_redirect').length;
+    const cartAdds = cartEvents.filter(ce => (ce as CartEvent).type === 'add').length;
+    const checkoutAttempts = cartEvents.filter(
+      ce => (ce as CartEvent).type === 'whatsapp_redirect'
+    ).length;
     const conversions = leads.length;
 
     return {
@@ -270,52 +271,47 @@ class AnalyticsManager {
       cartAdds,
       checkoutAttempts,
       conversions,
-      cartAddRate: uniqueVisitors > 0 ? (cartAdds / uniqueVisitors * 100).toFixed(2) + '%' : '0%',
-      checkoutRate: cartAdds > 0 ? (checkoutAttempts / cartAdds * 100).toFixed(2) + '%' : '0%',
-      conversionRate: checkoutAttempts > 0 ? (conversions / checkoutAttempts * 100).toFixed(2) + '%' : '0%'
+      cartAddRate: uniqueVisitors > 0 ? ((cartAdds / uniqueVisitors) * 100).toFixed(2) + '%' : '0%',
+      checkoutRate: cartAdds > 0 ? ((checkoutAttempts / cartAdds) * 100).toFixed(2) + '%' : '0%',
+      conversionRate:
+        checkoutAttempts > 0 ? ((conversions / checkoutAttempts) * 100).toFixed(2) + '%' : '0%',
     };
   }
 
   clearOldData(days = 30): void {
-    const cutoff = new Date(Date.now() - (days * 24 * 60 * 60 * 1000));
-    
+    const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+
     ['pageViews', 'cartEvents', 'leads'].forEach(key => {
       const data = this.getFromStorage(key);
-      const filtered = data.filter(item => new Date(item.timestamp) > cutoff);
+      const filtered = data.filter(item => item.timestamp.getTime() > cutoff);
       localStorage.setItem(`vytalle_${key}`, JSON.stringify(filtered));
     });
   }
 
   exportData() {
-    const data = this.getAnalyticsData();
-    const exportData = {
-      ...data,
-      exportedAt: new Date().toISOString(),
-      totalRecords: data.pageViews.length + data.cartEvents.length + data.leads.length
+    return {
+      sessionId: this.sessionId,
+      timestamp: new Date().toISOString(),
+      data: {
+        pageViews: this.getFromStorage('pageViews'),
+        cartEvents: this.getFromStorage('cartEvents'),
+        leads: this.getFromStorage('leads'),
+      },
     };
-
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `vytalle-analytics-${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
   }
 }
 
-// Instância singleton
-export const analytics = AnalyticsManager.getInstance();
+const analytics = AnalyticsManager.getInstance();
 
-// Hooks para React
+export default analytics;
+
 export function useAnalytics() {
   const trackPageView = (page?: string) => analytics.trackPageView(page);
-  const trackCartAdd = (productId: string, productName: string, price: number) => 
+  const trackCartAdd = (productId: string, productName: string, price: number) =>
     analytics.trackCartEvent({ type: 'add', productId, productName, quantity: 1, price });
   const trackCartRemove = (productId: string, productName: string) =>
     analytics.trackCartEvent({ type: 'remove', productId, productName });
-  const trackWhatsAppRedirect = () =>
-    analytics.trackCartEvent({ type: 'whatsapp_redirect' });
+  const trackWhatsAppRedirect = () => analytics.trackCartEvent({ type: 'whatsapp_redirect' });
   const trackLead = (lead: Omit<LeadEvent, 'id' | 'timestamp' | 'ip' | 'sessionId'>) =>
     analytics.trackLead(lead);
 
@@ -324,8 +320,6 @@ export function useAnalytics() {
     trackCartAdd,
     trackCartRemove,
     trackWhatsAppRedirect,
-    trackLead
+    trackLead,
   };
 }
-
-export default analytics;

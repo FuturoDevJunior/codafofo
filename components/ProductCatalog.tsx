@@ -53,46 +53,40 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
     setPriceRange(priceExtent as [number, number]);
   }, [priceExtent]);
 
-  // Filtrar e ordenar produtos
-  const filteredProducts = useMemo(() => {
-    let filtered = products.filter(product => {
-      // Busca por texto
-      const matchesSearch =
-        searchTerm === '' ||
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchTerm.toLowerCase());
+  // Filtros aplicados
+  const filtered = products.filter(product => {
+    const matchesSearch =
+      searchTerm === '' ||
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description?.toLowerCase().includes(searchTerm.toLowerCase());
 
-      // Categoria
-      const matchesCategory = selectedCategory === '' || product.category === selectedCategory;
+    const matchesCategory =
+      selectedCategory === '' ||
+      selectedCategory === 'all' ||
+      product.category === selectedCategory;
 
-      // Preço
-      const productPrice = product.price_pix || 0;
-      const matchesPrice = productPrice >= priceRange[0] && productPrice <= priceRange[1];
+    const matchesPrice =
+      (product.price_pix || 0) >= priceRange[0] && (product.price_pix || 0) <= priceRange[1];
 
-      return matchesSearch && matchesCategory && matchesPrice;
-    });
+    return matchesSearch && matchesCategory && matchesPrice;
+  });
 
-    // Ordenação
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'name-asc':
-          return a.name.localeCompare(b.name);
-        case 'name-desc':
-          return b.name.localeCompare(a.name);
-        case 'price-asc':
-          return (a.price_pix || 0) - (b.price_pix || 0);
-        case 'price-desc':
-          return (b.price_pix || 0) - (a.price_pix || 0);
-        case 'category':
-          return a.category.localeCompare(b.category) || a.name.localeCompare(b.name);
-        default:
-          return 0;
-      }
-    });
-
-    return filtered;
-  }, [products, searchTerm, selectedCategory, priceRange, sortBy]);
+  // Ordenação aplicada
+  const sorted = [...filtered].sort((a, b) => {
+    switch (sortBy) {
+      case 'name-asc':
+        return a.name.localeCompare(b.name);
+      case 'name-desc':
+        return b.name.localeCompare(a.name);
+      case 'price-asc':
+        return (a.price_pix || 0) - (b.price_pix || 0);
+      case 'price-desc':
+        return (b.price_pix || 0) - (a.price_pix || 0);
+      case 'category':
+      default:
+        return a.category.localeCompare(b.category);
+    }
+  });
 
   // Limpar filtros
   const clearFilters = () => {
@@ -278,9 +272,9 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
       {/* Resultados */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-neutral-600" data-testid="results-count">
-          <strong>{filteredProducts.length}</strong> produto
-          {filteredProducts.length !== 1 ? 's' : ''} encontrado
-          {filteredProducts.length !== 1 ? 's' : ''}
+          <strong>{sorted.length}</strong> produto
+          {sorted.length !== 1 ? 's' : ''} encontrado
+          {sorted.length !== 1 ? 's' : ''}
           {searchTerm && ` para "${searchTerm}"`}
         </p>
         {sortBy !== 'category' && (
@@ -310,7 +304,7 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
             <ProductCardSkeleton key={i} />
           ))}
         </div>
-      ) : filteredProducts.length > 0 ? (
+      ) : sorted.length > 0 ? (
         <div
           className={`grid gap-4 md:gap-6 ${
             viewMode === 'grid-large'
@@ -321,7 +315,7 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
           }`}
           data-testid="products-grid"
         >
-          {filteredProducts.map((product, index) => (
+          {sorted.map((product, index) => (
             <div
               key={product.id}
               className="animate-slide-up"

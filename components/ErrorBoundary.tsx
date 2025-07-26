@@ -12,7 +12,7 @@ interface Props {
   resetKeys?: any[];
   title?: string;
   message?: string;
-  onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
+  onError?: (_error: Error, _errorInfo: React.ErrorInfo) => void;
 }
 
 interface State {
@@ -108,7 +108,7 @@ export class ErrorBoundary extends Component<Props, State> {
       });
       if (!res.ok) throw new Error('Falha ao reportar erro');
       this.setState({ reporting: false, reported: true, reportError: null } as any);
-    } catch (e: any) {
+    } catch {
       this.setState({ reporting: false, reportError: 'Falha ao reportar erro' } as any);
     }
   };
@@ -174,7 +174,7 @@ function ErrorDetailsUI({
   const [open, setOpen] = useState(true);
   const summaryRef = useRef<HTMLElement>(null);
   // Em ambiente de teste, simular o toggle manualmente
-  const isTest = typeof process !== 'undefined' && process.env && process.env.VITEST;
+  // const isTest = typeof process !== 'undefined' && process.env && process.env.VITEST;
   const handleSummaryClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setOpen(o => !o);

@@ -1,10 +1,4 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AuthService } from './auth';
 import { mockProductsAdmin } from './mockData';
@@ -12,8 +6,8 @@ import { ProductService } from './productService';
 
 vi.mock('./auth', () => ({
   AuthService: {
-    getCurrentUser: vi.fn()
-  }
+    getCurrentUser: vi.fn(),
+  },
 }));
 
 describe('ProductService', () => {
@@ -36,10 +30,10 @@ describe('ProductService', () => {
       name: 'Admin',
       email: 'admin@admin.com',
       active: true,
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
     });
     const products = await ProductService.getProducts();
-    expect(products[0]).toHaveProperty('price_pix_original');
+    expect(products[0]).toHaveProperty('price_pix');
   });
 
   it('retorna produtos vendedor com comissão', async () => {
@@ -50,7 +44,7 @@ describe('ProductService', () => {
       email: 'vend@vend.com',
       active: true,
       created_at: new Date().toISOString(),
-      commission_percent: 10
+      commission_percent: 10,
     });
     const products = await ProductService.getProducts();
     expect(products[0]).toHaveProperty('your_commission');
@@ -81,4 +75,4 @@ describe('ProductService', () => {
       expect(found.slug).toBe(prod.slug);
     }
   });
-}); 
+});

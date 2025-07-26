@@ -45,9 +45,8 @@ export default function AdminLoginForm() {
       }
 
       router.push('/admin');
-    } catch (err) {
-      setError('Erro inesperado. Tente novamente.');
-    } finally {
+    } catch {
+      setError('Erro ao fazer login. Verifique suas credenciais.');
       setIsLoading(false);
     }
   };

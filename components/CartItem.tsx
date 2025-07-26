@@ -1,51 +1,40 @@
 import { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import {
-  Minus,
-  Package,
-  Plus,
-  Tag,
-  Trash2,
-} from 'lucide-react';
+import { Minus, Package, Plus, Tag, Trash2 } from 'lucide-react';
 
 import SmartImage from '@/components/SmartImage';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tooltip } from '@/components/ui/tooltip';
 import { toast } from '@/components/ui/use-toast';
 import { formatCurrency } from '@/lib/utils';
 
 interface CartItemProps {
-  item: { 
-    id: string; 
-    name: string; 
-    price: number; 
-    quantity: number; 
+  item: {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
     images?: string[];
     category?: string;
   };
-  onRemove: (id: string) => void;
-  onUpdateQty: (id: string, qty: number) => void;
+  onRemove: (_id: string) => void;
+  onUpdateQty: (_id: string, _qty: number) => void;
 }
 
 export default function CartItem({ item, onRemove, onUpdateQty }: CartItemProps) {
-  const [isUpdating, setIsUpdating] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  const handleQuantityChange = async (delta: number) => {
-    const newQuantity = Math.max(1, item.quantity + delta);
-    if (newQuantity !== item.quantity) {
+  const handleQuantityChange = async (newQuantity: number) => {
+    if (newQuantity > 0) {
       setIsUpdating(true);
       try {
         onUpdateQty(item.id, newQuantity);
-        await new Promise(resolve => setTimeout(resolve, 200)); // Smooth feedback
       } finally {
-        setIsUpdating(false);
+        setTimeout(() => setIsUpdating(false), 500);
       }
     }
   };
@@ -61,15 +50,10 @@ export default function CartItem({ item, onRemove, onUpdateQty }: CartItemProps)
       onRemove(item.id);
       toast({
         title: '🗑️ Produto removido',
-        description: `${item.name} foi removido do carrinho`
+        description: `${item.name} foi removido do carrinho`,
       });
-    } catch (error) {
-      toast({
-        title: '❌ Erro',
-        description: 'Não foi possível remover o produto',
-        variant: 'destructive'
-      });
-      setIsRemoving(false);
+    } finally {
+      setTimeout(() => setIsRemoving(false), 500);
     }
   };
 
@@ -81,29 +65,31 @@ export default function CartItem({ item, onRemove, onUpdateQty }: CartItemProps)
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
-      <Card className={`transition-all duration-300 ${
-        isRemoving ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
-      } hover:shadow-md border-l-4 border-l-vitale-primary/20 rounded-xl`}>
+      <Card
+        className={`transition-all duration-300 ${
+          isRemoving ? 'scale-95 opacity-50' : 'scale-100 opacity-100'
+        } rounded-xl border-l-4 border-l-vitale-primary/20 hover:shadow-md`}
+      >
         <CardContent className="p-4">
           <div className="flex gap-4">
             {/* Imagem do Produto */}
             <div className="flex-shrink-0">
-              <div className="w-20 h-20 bg-gradient-to-br from-vitale-neutral to-vitale-light rounded-lg overflow-hidden border-2 border-vitale-primary/10">
+              <div className="h-20 w-20 overflow-hidden rounded-lg border-2 border-vitale-primary/10 bg-gradient-to-br from-vitale-neutral to-vitale-light">
                 {item.images?.[0] ? (
-                  <SmartImage 
+                  <SmartImage
                     src={item.images[0]}
                     alt={`Foto do produto ${item.name}`}
                     width={80}
                     height={80}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                     fallback="/icons/icon-192.png"
                     borderRadius="rounded-lg"
                     objectFit="cover"
                     productName={item.name}
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Package className="w-8 h-8 text-vitale-primary/30" />
+                  <div className="flex h-full w-full items-center justify-center">
+                    <Package className="h-8 w-8 text-vitale-primary/30" />
                   </div>
                 )}
               </div>
@@ -113,12 +99,12 @@ export default function CartItem({ item, onRemove, onUpdateQty }: CartItemProps)
             <div className="flex-1 space-y-2">
               {/* Nome e Categoria */}
               <div className="space-y-1">
-                <h3 className="font-semibold text-vitale-primary line-clamp-2 text-sm md:text-base">
+                <h3 className="line-clamp-2 text-sm font-semibold text-vitale-primary md:text-base">
                   {item.name}
                 </h3>
                 {item.category && (
                   <div className="flex items-center gap-1">
-                    <Tag className="w-3 h-3 text-muted-foreground" />
+                    <Tag className="h-3 w-3 text-muted-foreground" />
                     <span className="text-xs text-muted-foreground">{item.category}</span>
                   </div>
                 )}
@@ -146,49 +132,49 @@ export default function CartItem({ item, onRemove, onUpdateQty }: CartItemProps)
                 {/* Controles de Quantidade */}
                 <div className="flex items-center gap-2">
                   <Tooltip content="Diminuir quantidade" side="top">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => handleQuantityChange(-1)}
-                      disabled={item.quantity <= 1 || isUpdating}
-                      className="h-8 w-8 p-0 border-vitale-primary/20 hover:bg-vitale-primary hover:text-white"
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleQuantityChange(item.quantity - 1)}
+                      disabled={item.quantity <= 1}
+                      className="hover:text-white h-8 w-8 border-vitale-primary/20 p-0 hover:bg-vitale-primary"
                     >
-                      <Minus className="w-3 h-3" />
+                      <Minus className="h-3 w-3" />
                     </Button>
                   </Tooltip>
-                  
-                  <Input 
-                    type="number" 
-                    value={item.quantity} 
+
+                  <Input
+                    type="number"
+                    value={item.quantity}
                     onChange={handleDirectQuantityChange}
                     min={1}
-                    disabled={isUpdating}
-                    className="w-16 h-8 text-center font-semibold text-sm border-vitale-primary/20 focus:border-vitale-primary"
+                    disabled={false}
+                    className="h-8 w-16 border-vitale-primary/20 text-center text-sm font-semibold focus:border-vitale-primary"
                   />
-                  
+
                   <Tooltip content="Aumentar quantidade" side="top">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => handleQuantityChange(1)}
-                      disabled={isUpdating}
-                      className="h-8 w-8 p-0 border-vitale-primary/20 hover:bg-vitale-primary hover:text-white"
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleQuantityChange(item.quantity + 1)}
+                      disabled={false}
+                      className="hover:text-white h-8 w-8 border-vitale-primary/20 p-0 hover:bg-vitale-primary"
                     >
-                      <Plus className="w-3 h-3" />
+                      <Plus className="h-3 w-3" />
                     </Button>
                   </Tooltip>
                 </div>
 
                 {/* Botão Remover */}
                 <Tooltip content="Remover item" side="top">
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     size="sm"
                     onClick={handleRemove}
                     disabled={isRemoving}
                     className="text-red-600 hover:text-red-700 hover:bg-red-50 h-8 px-3"
                   >
-                    <Trash2 className="w-4 h-4 mr-1" />
+                    <Trash2 className="mr-1 h-4 w-4" />
                     <span className="hidden sm:inline">Remover</span>
                   </Button>
                 </Tooltip>
@@ -197,9 +183,9 @@ export default function CartItem({ item, onRemove, onUpdateQty }: CartItemProps)
           </div>
 
           {/* Loading States */}
-          {(isUpdating || isRemoving) && (
-            <div className="absolute inset-0 bg-white/60 rounded-lg flex items-center justify-center transition-all duration-200">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-vitale-primary"></div>
+          {(isRemoving || isUpdating) && (
+            <div className="bg-white/60 absolute inset-0 flex items-center justify-center rounded-lg transition-all duration-200">
+              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-vitale-primary"></div>
             </div>
           )}
         </CardContent>

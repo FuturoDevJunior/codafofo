@@ -1,12 +1,12 @@
 /**
  * SISTEMA DE LOGGING PROFISSIONAL - VYTALLE ESTÉTICA
  * =================================================
- * 
+ *
  * Sistema de logging que funciona apenas em development
  * e não expõe logs em produção
  */
 
-type LogLevel = 'info' | 'warn' | 'error' | 'debug';
+import type { LogLevel } from '@/types';
 
 interface LogConfig {
   isDevelopment: boolean;
@@ -21,7 +21,7 @@ class Logger {
     this.config = {
       isDevelopment: process.env.NODE_ENV === 'development',
       enableConsole: process.env.NODE_ENV === 'development',
-      enableDebug: process.env.ENABLE_DEBUG === 'true'
+      enableDebug: process.env.ENABLE_DEBUG === 'true',
     };
   }
 
@@ -37,10 +37,12 @@ class Logger {
     return `${timestamp} [${level.toUpperCase()}] ${prefix} ${message}`;
   }
 
-  info(message: string, context?: string): void {
-    if (this.shouldLog('info')) {
-      console.info(this.formatMessage('info', message, context));
+  info(message: string, data?: unknown, context?: string): void {
+    const logMessage = this.formatMessage('info' as LogLevel, message, context);
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(logMessage, data || '');
     }
+    // Em produção, enviar para serviço de logging
   }
 
   warn(message: string, context?: string): void {
@@ -58,12 +60,10 @@ class Logger {
     }
   }
 
-  debug(message: string, data?: any, context?: string): void {
-    if (this.shouldLog('debug')) {
-      console.debug(this.formatMessage('debug', message, context));
-      if (data) {
-        console.debug('Debug data:', data);
-      }
+  debug(message: string, data?: unknown, context?: string): void {
+    if (process.env.NODE_ENV === 'development') {
+      const logMessage = this.formatMessage('debug' as LogLevel, message, context);
+      console.warn(logMessage, data || '');
     }
   }
 
@@ -84,11 +84,7 @@ class Logger {
 export const logger = new Logger();
 
 // Utility para medir performance
-export function measurePerformance<T>(
-  operation: string,
-  fn: () => T,
-  context?: string
-): T {
+export function measurePerformance<T>(operation: string, fn: () => T, context?: string): T {
   const start = Date.now();
   try {
     const result = fn();
@@ -116,7 +112,11 @@ export async function measureAsyncPerformance<T>(
     return result;
   } catch (error) {
     const duration = Date.now() - start;
-    logger.error(`Async operation "${operation}" failed after ${duration}ms`, error as Error, context);
+    logger.error(
+      `Async operation "${operation}" failed after ${duration}ms`,
+      error as Error,
+      context
+    );
     throw error;
   }
 }

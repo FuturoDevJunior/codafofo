@@ -1,5 +1,5 @@
-import { Product } from '@/types/product';
 import { getProductImages } from '@/lib/productImages';
+import { Product } from '@/types/product';
 
 /**
  * CATÁLOGO VYTALLE ESTÉTICA - SISTEMA SIMPLIFICADO
@@ -1250,11 +1250,7 @@ export const mockProducts: Product[] = [
 // Dados administrativos com informações sensíveis
 export const mockProductsAdmin = mockProducts.map(product => ({
   ...product,
-  price_pix_original: product.price_pix,
-  price_card_original: product.price_prazo,
   commission_percent: 15, // 15% de comissão padrão
-  cost_price: Math.round(product.price_pix * 0.6), // 60% do preço PIX como custo
-  profit_margin: Math.round(product.price_pix * 0.4), // 40% de margem
 }));
 
 // Funções para usuários anônimos (dados públicos)
@@ -1275,8 +1271,7 @@ export function getProductsVendor() {
   return mockProductsAdmin
     .filter(p => p.active !== false)
     .map(product => {
-      const { price_pix_original, price_card_original, cost_price, profit_margin, ...safeProduct } =
-        product;
+      const { ...safeProduct } = product;
       return {
         ...safeProduct,
         your_commission: Math.round(product.price_pix * (product.commission_percent / 100)),

@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { ArrowRight, CheckCircle, Clock, Gift, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+import { CheckCircle, Clock, ShoppingCart, X } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { formatCurrency } from '@/lib/utils';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface UpsellProduct {
   id: string;
@@ -21,15 +22,15 @@ interface UpsellProduct {
 interface UpsellModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onPurchase: (product: UpsellProduct) => void;
+  onPurchase: (_product: UpsellProduct) => Promise<void>;
   timeLimit?: number; // em segundos
 }
 
-export default function UpsellModal({ 
-  isOpen, 
-  onClose, 
-  onPurchase, 
-  timeLimit = 600 // 10 minutos default
+export default function UpsellModal({
+  isOpen,
+  onClose,
+  onPurchase,
+  timeLimit = 600, // 10 minutos default
 }: UpsellModalProps) {
   const [timeLeft, setTimeLeft] = useState(timeLimit);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +38,7 @@ export default function UpsellModal({
   // Countdown timer
   useEffect(() => {
     if (!isOpen) return;
-    
+
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
@@ -68,8 +69,8 @@ export default function UpsellModal({
   const upsellProduct: UpsellProduct = {
     id: 'modal-upsell-1',
     name: 'Kit Profissional Premium + Curso Online',
-    originalPrice: 1899.00,
-    discountPrice: 1139.40,
+    originalPrice: 1899.0,
+    discountPrice: 1139.4,
     discount: 40,
     category: 'Oferta Especial',
     description: 'Combinação perfeita para maximizar seus resultados profissionais',
@@ -79,9 +80,9 @@ export default function UpsellModal({
       'Curso Online Completo (R$ 499)',
       'Certificado Reconhecido',
       'Suporte VIP por 30 dias',
-      'Frete Grátis Garantido'
+      'Frete Grátis Garantido',
     ],
-    urgency: 'Apenas 5 kits restantes!'
+    urgency: 'Apenas 5 kits restantes!',
   };
 
   const handlePurchase = async () => {
@@ -89,8 +90,8 @@ export default function UpsellModal({
     try {
       await onPurchase(upsellProduct);
       onClose();
-    } catch (error) {
-      console.error('Erro no upsell:', error);
+    } catch {
+      console.error('Erro no upsell');
     } finally {
       setIsLoading(false);
     }
@@ -101,107 +102,101 @@ export default function UpsellModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      
+      <div className="bg-black/50 absolute inset-0 backdrop-blur-sm" onClick={onClose} />
+
       {/* Modal */}
-      <div className="relative w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
-        <Card className="relative bg-white border-2 border-vitale-primary shadow-2xl">
+      <div className="relative mx-4 max-h-[90vh] w-full max-w-2xl overflow-y-auto">
+        <Card className="bg-white shadow-2xl relative border-2 border-vitale-primary">
           {/* Close button */}
-          <button
+          <Button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-2 rounded-full bg-neutral-100 hover:bg-neutral-200 transition-colors"
+            variant="ghost"
+            size="sm"
+            className="absolute right-2 top-2 text-neutral-500 hover:text-neutral-700"
+            aria-label="Fechar modal"
           >
-            <X className="w-4 h-4" />
-          </button>
+            <X className="h-5 w-5" />
+          </Button>
 
           {/* Header com urgência */}
-          <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Gift className="w-6 h-6" />
-              <span className="font-bold text-lg">OFERTA EXCLUSIVA!</span>
+          <div className="from-red-500 to-red-600 text-white bg-gradient-to-r p-6 text-center">
+            <div className="mb-2 flex items-center justify-center gap-2">
+              <ShoppingCart className="h-6 w-6" />
+              <span className="text-lg font-bold">OFERTA EXCLUSIVA!</span>
             </div>
-            <h2 className="text-2xl font-bold mb-2">
-              Não Perca Esta Oportunidade Única!
-            </h2>
-            <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-2">
-              <Clock className="w-5 h-5" />
-              <span className="font-bold text-xl">
-                {formatTime(timeLeft)}
-              </span>
+            <h2 className="mb-2 text-2xl font-bold">Não Perca Esta Oportunidade Única!</h2>
+            <div className="bg-white/20 inline-flex items-center gap-2 rounded-full px-4 py-2">
+              <Clock className="h-5 w-5" />
+              <span className="text-xl font-bold">{formatTime(timeLeft)}</span>
             </div>
-            <p className="text-sm opacity-90 mt-2">
-              {upsellProduct.urgency}
-            </p>
+            <p className="mt-2 text-sm opacity-90">{upsellProduct.urgency}</p>
           </div>
 
           <CardContent className="p-6">
             {/* Produto */}
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center bg-vitale-primary/10 text-vitale-primary px-3 py-1 rounded-full text-sm font-semibold mb-3">
+            <div className="mb-6 text-center">
+              <div className="mb-3 inline-flex items-center rounded-full bg-vitale-primary/10 px-3 py-1 text-sm font-semibold text-vitale-primary">
                 {upsellProduct.category}
               </div>
-              <h3 className="text-2xl font-bold text-neutral-800 mb-2">
-                {upsellProduct.name}
-              </h3>
-              <p className="text-neutral-600">
-                {upsellProduct.description}
-              </p>
+              <h3 className="mb-2 text-2xl font-bold text-neutral-800">{upsellProduct.name}</h3>
+              <p className="text-neutral-600">{upsellProduct.description}</p>
             </div>
 
             {/* Preços em destaque */}
-            <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-xl p-6 mb-6 text-center">
-              <div className="flex items-center justify-center gap-4 mb-4">
+            <div className="from-green-50 to-green-100 border-green-200 mb-6 rounded-xl border-2 bg-gradient-to-br p-6 text-center">
+              <div className="mb-4 flex items-center justify-center gap-4">
                 <div>
                   <p className="text-sm text-neutral-500">De:</p>
                   <p className="text-xl text-neutral-500 line-through">
-                    {formatCurrency(upsellProduct.originalPrice)}
+                    {upsellProduct.originalPrice.toLocaleString('pt-br', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
                   </p>
                 </div>
-                <div className="bg-red-500 text-white font-bold px-4 py-2 rounded-full">
+                <div className="bg-red-500 text-white rounded-full px-4 py-2 font-bold">
                   -{upsellProduct.discount}% OFF
                 </div>
                 <div>
-                  <p className="text-sm text-green-700">Por apenas:</p>
-                  <p className="text-3xl font-bold text-green-600">
-                    {formatCurrency(upsellProduct.discountPrice)}
+                  <p className="text-green-700 text-sm">Por apenas:</p>
+                  <p className="text-green-600 text-3xl font-bold">
+                    {upsellProduct.discountPrice.toLocaleString('pt-br', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
                   </p>
                 </div>
               </div>
-              
+
               <div className="text-center">
-                <p className="text-green-700 font-bold text-lg mb-1">
-                  Você Economiza: {formatCurrency(upsellProduct.originalPrice - upsellProduct.discountPrice)}
+                <p className="text-green-700 mb-1 text-lg font-bold">
+                  Você Economiza: {upsellProduct.originalPrice - upsellProduct.discountPrice}
                 </p>
-                <p className="text-sm text-green-600">
-                  ou 12x de {formatCurrency(upsellProduct.discountPrice / 12)} sem juros
+                <p className="text-green-600 text-sm">
+                  ou 12x de {upsellProduct.discountPrice / 12} sem juros
                 </p>
               </div>
             </div>
 
             {/* Benefícios */}
             <div className="mb-6">
-              <h4 className="font-bold text-lg text-vitale-primary mb-4 text-center">
+              <h4 className="mb-4 text-center text-lg font-bold text-vitale-primary">
                 ✨ O Que Você Vai Receber:
               </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {upsellProduct.benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm font-medium text-neutral-700">
-                      {benefit}
-                    </span>
+                  <div key={index} className="flex items-center gap-3 rounded-lg bg-neutral-50 p-3">
+                    <CheckCircle className="text-green-500 h-5 w-5 flex-shrink-0" />
+                    <span className="text-sm font-medium text-neutral-700">{benefit}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Garantias */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <h4 className="font-bold text-blue-800 mb-2">🛡️ Suas Garantias:</h4>
-              <div className="text-sm text-blue-700 space-y-1">
+            <div className="bg-blue-50 border-blue-200 mb-6 rounded-lg border p-4">
+              <h4 className="text-blue-800 mb-2 font-bold">🛡️ Suas Garantias:</h4>
+              <div className="text-blue-700 space-y-1 text-sm">
                 <p>✅ Produtos 100% originais certificados</p>
                 <p>✅ Frete grátis em todo Brasil</p>
                 <p>✅ Suporte VIP prioritário</p>
@@ -210,34 +205,38 @@ export default function UpsellModal({
             </div>
 
             {/* Urgência e escassez */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-center">
+            <div className="bg-amber-50 border-amber-200 mb-6 rounded-lg border p-4 text-center">
               <p className="text-amber-800 font-bold">
                 ⚠️ Esta oferta é válida apenas para os próximos {formatTime(timeLeft)}
               </p>
-              <p className="text-sm text-amber-700 mt-1">
-                Após este tempo, você pagará o preço normal de {formatCurrency(upsellProduct.originalPrice)}
+              <p className="text-amber-700 mt-1 text-sm">
+                Após este tempo, você pagará o preço normal de{' '}
+                {upsellProduct.originalPrice.toLocaleString('pt-br', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </p>
             </div>
 
             {/* Botões */}
             <div className="space-y-4">
-              <Button 
+              <Button
                 onClick={handlePurchase}
                 disabled={isLoading || timeLeft <= 0}
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 text-lg transition-all duration-300 transform hover:scale-105"
+                className="from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white w-full transform bg-gradient-to-r py-4 text-lg font-bold transition-all duration-300 hover:scale-105"
               >
                 {isLoading ? (
                   'Processando...'
                 ) : (
                   <>
                     Sim! Quero Aproveitar Esta Oferta
-                    <ArrowRight className="w-5 h-5 ml-2" />
+                    <ShoppingCart className="ml-2 h-5 w-5" />
                   </>
                 )}
               </Button>
-              
-              <Button 
-                variant="outline" 
+
+              <Button
+                variant="outline"
                 onClick={onClose}
                 className="w-full border-neutral-300 text-neutral-600 hover:bg-neutral-50"
               >
@@ -247,13 +246,12 @@ export default function UpsellModal({
 
             {/* Testemunho social */}
             <div className="mt-6 text-center">
-              <div className="bg-neutral-50 rounded-lg p-4">
-                <p className="text-sm italic text-neutral-600 mb-2">
-                  &quot;Investimento que se paga em poucos procedimentos. O curso online vale muito!&quot;
+              <div className="rounded-lg bg-neutral-50 p-4">
+                <p className="mb-2 text-sm italic text-neutral-600">
+                  &quot;Investimento que se paga em poucos procedimentos. O curso online vale
+                  muito!&quot;
                 </p>
-                <p className="text-xs text-neutral-500">
-                  - Dr. Marina Silva, Dermatologista
-                </p>
+                <p className="text-xs text-neutral-500">- Dr. Marina Silva, Dermatologista</p>
               </div>
             </div>
           </CardContent>

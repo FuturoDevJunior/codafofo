@@ -12,7 +12,7 @@ interface ImageUploaderProps {
   productId: string;
   productName: string;
   currentImages: string[];
-  onImagesUpdate: (newImages: string[]) => void;
+  onImagesUpdate: (_newImages: string[]) => void;
   maxImages?: number;
 }
 
@@ -70,7 +70,7 @@ export default function ImageUploader({
         setUploadProgress(prev => ({ ...prev, [file.name]: 0 }));
 
         // Upload para o Supabase Storage
-        const { data, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('product-images')
           .upload(fileName, file, {
             cacheControl: '3600',
@@ -93,8 +93,7 @@ export default function ImageUploader({
       }
 
       if (uploadedUrls.length > 0) {
-        const newImages = [...currentImages, ...uploadedUrls];
-        onImagesUpdate(newImages);
+        onImagesUpdate([...currentImages, ...uploadedUrls]);
         setSuccess(`${uploadedUrls.length} imagem(ns) carregada(s) com sucesso!`);
 
         // Limpar success após 3 segundos

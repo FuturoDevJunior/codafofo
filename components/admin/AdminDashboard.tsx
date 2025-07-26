@@ -43,18 +43,19 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/lib/supabase';
 import { formatCurrency } from '@/lib/utils';
+import type { Product, User } from '@/types';
 
-interface AdminDashboardProps {
-  products: any[];
-  suppliers: any[];
-  user: any;
+interface DashboardProps {
+  products: Product[];
+  suppliers: any[]; // TODO: Criar interface Supplier
+  user: User;
 }
 
 export default function AdminDashboard({
   products: initialProducts,
   suppliers,
   user,
-}: AdminDashboardProps) {
+}: DashboardProps) {
   const [products, setProducts] = useState(initialProducts);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -136,8 +137,8 @@ export default function AdminDashboard({
       const rows = filteredProducts.map(p => [
         p.name,
         p.category || '',
-        p.price_pix || p.price || '',
-        p.price_card || p.price || '',
+        p.price_pix || '',
+        p.price_card || '',
         p.active !== false ? 'Ativo' : 'Inativo',
         (p.images?.length || 0) + ' imagem(ns)',
         p.description || '',
@@ -463,10 +464,10 @@ export default function AdminDashboard({
 
                     {/* Preços */}
                     <TableCell className="text-green-700 text-xs font-semibold lg:text-sm">
-                      {formatCurrency(product.price_pix || product.price || 0)}
+                      {formatCurrency(product.price_pix || 0)}
                     </TableCell>
                     <TableCell className="text-blue-700 text-xs font-semibold lg:text-sm">
-                      {formatCurrency(product.price_card || product.price || 0)}
+                      {formatCurrency(product.price_card || 0)}
                     </TableCell>
 
                     {/* Status */}
@@ -525,7 +526,7 @@ export default function AdminDashboard({
                               </TabsList>
 
                               <TabsContent value="details" className="mt-6">
-                                <AdminForm product={product} />
+                                <AdminForm product={product as any} />
                               </TabsContent>
 
                               <TabsContent value="images" className="mt-6">

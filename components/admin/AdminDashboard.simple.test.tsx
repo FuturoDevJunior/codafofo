@@ -1,5 +1,8 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import type { Product, User } from '@/types';
 import { render, screen } from '@testing-library/react';
+
 import AdminDashboard from './AdminDashboard';
 
 // Mock básicos para evitar problemas
@@ -22,16 +25,21 @@ vi.mock('@/lib/supabase', () => ({
 }));
 
 describe('AdminDashboard - Testes Básicos', () => {
-  const user = { id: '1', email: 'admin@vytalle.com.br', name: 'Admin' };
+  const user: User = {
+    id: '1',
+    email: 'admin@test.com',
+    role: 'admin',
+  };
   const suppliers = [{ id: 'sup1', name: 'Fornecedor 1' }];
-  const products = [
+  const products: Product[] = [
     {
-      id: 'prod1',
+      id: '1',
       name: 'Produto Teste',
-      category: 'Categoria',
-      price_pix: 100,
-      price_prazo: 120,
-      description: 'desc',
+      category: 'Categoria Teste',
+      price_pix: 90,
+      price_card: 100,
+      price_prazo: 110,
+      description: 'Descrição teste',
       images: [],
       active: true,
       slug: 'produto-teste',

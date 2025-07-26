@@ -211,7 +211,6 @@ export default function AccessibilityProvider({ children }: { children: React.Re
           if (element instanceof HTMLElement) {
             const styles = window.getComputedStyle(element);
             const color = styles.color;
-            const backgroundColor = styles.backgroundColor;
 
             // Se o texto for muito claro, escurecer
             if (color.includes('rgb(139, 116, 90)') || color.includes('#8b745a')) {

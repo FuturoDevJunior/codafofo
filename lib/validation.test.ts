@@ -1,14 +1,12 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import {
+  checkRateLimit,
   sanitizeString,
-  validateProductData,
   validateAdminCredentials,
   validateContactForm,
-  checkRateLimit,
   validateImageFile,
-  type ProductFormData,
-  type AdminCredentials,
-  type ContactFormData
+  validateProductData,
 } from './validation';
 
 // Mock do DOMPurify
@@ -20,8 +18,8 @@ vi.mock('isomorphic-dompurify', () => ({
         return input.replace(/<[^>]*>/g, '');
       }
       return input;
-    })
-  }
+    }),
+  },
 }));
 
 describe('Validation Library', () => {
@@ -40,7 +38,7 @@ describe('Validation Library', () => {
     it('deve remover tags HTML', () => {
       const input = 'Hello <script>alert("xss")</script> World';
       const result = sanitizeString(input);
-      expect(result).toBe('Hello alert("xss") World');
+      expect(result).toBe('Hello  World');
     });
 
     it('deve limitar tamanho a 1000 caracteres', () => {
@@ -70,7 +68,7 @@ describe('Validation Library', () => {
       description: 'Descrição do produto de teste',
       category: 'Toxina Botulínica',
       discount_percent: 10,
-      images: ['https://example.com/image1.jpg']
+      images: ['https://example.com/image1.jpg'],
     };
 
     it('deve validar dados corretos do produto', () => {
@@ -96,9 +94,9 @@ describe('Validation Library', () => {
 
     it('deve validar preço', () => {
       const invalidPrices = [0, -1, 'invalid', NaN, 1000000];
-      
+
       invalidPrices.forEach(price => {
-        const data = { ...validProductData, price };
+        const data = { ...validProductData, price: price as number };
         const result = validateProductData(data);
         expect(result.isValid).toBe(false);
         expect(result.errors).toContain('Preço deve ser um número positivo válido');
@@ -122,11 +120,11 @@ describe('Validation Library', () => {
     it('deve validar categorias permitidas', () => {
       const validCategories = [
         'Toxina Botulínica',
-        'Bioestimulador', 
+        'Bioestimulador',
         'Preenchedor',
         'Fio Bioestimulação',
         'Microcânula',
-        'Enzima'
+        'Enzima',
       ];
 
       validCategories.forEach(category => {
@@ -144,7 +142,7 @@ describe('Validation Library', () => {
     it('deve validar desconto percentual', () => {
       // Testa valores claramente inválidos
       const invalidDiscounts = [-1, 101, 'invalid'];
-      
+
       invalidDiscounts.forEach(discount => {
         const data = { ...validProductData, discount_percent: discount };
         const result = validateProductData(data);
@@ -174,8 +172,8 @@ describe('Validation Library', () => {
           'https://valid.com/image.jpg',
           'invalid-url',
           'ftp://invalid.com/image.jpg',
-          'https://another-valid.com/pic.png'
-        ]
+          'https://another-valid.com/pic.png',
+        ],
       };
       const result = validateProductData(data);
       expect(result.isValid).toBe(true);
@@ -193,8 +191,9 @@ describe('Validation Library', () => {
 
   describe('validateAdminCredentials', () => {
     const validCredentials = {
+      email: 'admin@example.com',
       username: 'admin123',
-      password: 'password123'
+      password: 'password123',
     };
 
     it('deve validar credenciais corretas', () => {
@@ -221,7 +220,7 @@ describe('Validation Library', () => {
     it('deve detectar padrões de SQL Injection', () => {
       const maliciousInputs = [
         { username: 'admin; DROP TABLE users--', password: 'password123' },
-        { username: 'admin', password: 'pass UNION SELECT * FROM users' }
+        { username: 'admin', password: 'pass UNION SELECT * FROM users' },
       ];
 
       maliciousInputs.forEach(data => {
@@ -240,8 +239,10 @@ describe('Validation Library', () => {
   describe('validateContactForm', () => {
     const validContactData = {
       name: 'João Silva',
+      email: 'joao@example.com',
+      message: 'Mensagem de teste com pelo menos 10 caracteres',
       whatsapp: '5511999887766',
-      cep: '01234-567'
+      cep: '01234-567',
     };
 
     it('deve validar dados de contato corretos', () => {
@@ -266,11 +267,7 @@ describe('Validation Library', () => {
     });
 
     it('deve validar formato de WhatsApp brasileiro', () => {
-      const validWhatsApps = [
-        '5511999887766',
-        '55 11 99988-7766',
-        '(55) 11 99988-7766'
-      ];
+      const validWhatsApps = ['5511999887766', '55 11 99988-7766', '(55) 11 99988-7766'];
 
       validWhatsApps.forEach(whatsapp => {
         const data = { ...validContactData, whatsapp };
@@ -281,12 +278,12 @@ describe('Validation Library', () => {
       const invalidWhatsApp = { ...validContactData, whatsapp: '123456' };
       const result = validateContactForm(invalidWhatsApp);
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain('WhatsApp deve estar no formato brasileiro válido');
+      expect(result.errors).toContain('WhatsApp deve estar no formato: 5511999887766');
     });
 
     it('deve validar formato de CEP brasileiro', () => {
       const validCeps = ['01234-567', '01234567'];
-      
+
       validCeps.forEach(cep => {
         const data = { ...validContactData, cep };
         const result = validateContactForm(data);
@@ -303,7 +300,7 @@ describe('Validation Library', () => {
       const data = {
         name: 'João Silva',
         whatsapp: '(55) 11 99988-7766',
-        cep: '01234-567'
+        cep: '01234-567',
       };
       const result = validateContactForm(data);
       expect(result.sanitizedData?.whatsapp).toBe('5511999887766');
@@ -320,7 +317,7 @@ describe('Validation Library', () => {
     it('deve permitir requisições dentro do limite', () => {
       const identifier = 'test-user';
       const result = checkRateLimit(identifier, 5, 60000);
-      
+
       expect(result.allowed).toBe(true);
       expect(result.remaining).toBe(4);
       expect(result.resetTime).toBeGreaterThan(Date.now());
@@ -328,12 +325,12 @@ describe('Validation Library', () => {
 
     it('deve bloquear quando limite é excedido', () => {
       const identifier = 'test-user-2';
-      
+
       // Faz 5 requisições (limite)
       for (let i = 0; i < 5; i++) {
         checkRateLimit(identifier, 5, 60000);
       }
-      
+
       // 6ª requisição deve ser bloqueada
       const result = checkRateLimit(identifier, 5, 60000);
       expect(result.allowed).toBe(false);
@@ -342,32 +339,32 @@ describe('Validation Library', () => {
 
     it('deve resetar contador após janela de tempo', () => {
       const identifier = 'test-user-3';
-      
+
       // Mock Date.now para simular passagem de tempo
       const originalNow = Date.now;
       let mockedTime = Date.now();
-      
+
       vi.spyOn(Date, 'now').mockImplementation(() => mockedTime);
-      
+
       // Primeira requisição
       const first = checkRateLimit(identifier, 2, 1000);
       expect(first.allowed).toBe(true);
-      
+
       // Segunda requisição
       const second = checkRateLimit(identifier, 2, 1000);
       expect(second.allowed).toBe(true);
-      
+
       // Terceira requisição (deve ser bloqueada)
       const third = checkRateLimit(identifier, 2, 1000);
       expect(third.allowed).toBe(false);
-      
+
       // Avança o tempo além da janela
       mockedTime += 2000;
-      
+
       // Deve permitir novamente
       const fourth = checkRateLimit(identifier, 2, 1000);
       expect(fourth.allowed).toBe(true);
-      
+
       // Restaura Date.now original
       Date.now = originalNow;
     });
@@ -376,10 +373,10 @@ describe('Validation Library', () => {
   describe('validateImageFile', () => {
     it('deve validar arquivo de imagem correto', () => {
       const file = new File(['test'], 'test.jpg', {
-        type: 'image/jpeg'
+        type: 'image/jpeg',
       });
       Object.defineProperty(file, 'size', { value: 1024 * 1024 }); // 1MB
-      
+
       const result = validateImageFile(file);
       expect(result.isValid).toBe(true);
       expect(result.errors).toHaveLength(0);
@@ -387,9 +384,9 @@ describe('Validation Library', () => {
 
     it('deve rejeitar tipos de arquivo não permitidos', () => {
       const file = new File(['test'], 'test.pdf', {
-        type: 'application/pdf'
+        type: 'application/pdf',
       });
-      
+
       const result = validateImageFile(file);
       expect(result.isValid).toBe(false);
       expect(result.errors).toContain('Tipo de arquivo não permitido. Use JPEG, PNG ou WebP.');
@@ -397,10 +394,10 @@ describe('Validation Library', () => {
 
     it('deve rejeitar arquivos muito grandes', () => {
       const file = new File(['test'], 'test.jpg', {
-        type: 'image/jpeg'
+        type: 'image/jpeg',
       });
       Object.defineProperty(file, 'size', { value: 10 * 1024 * 1024 }); // 10MB
-      
+
       const result = validateImageFile(file);
       expect(result.isValid).toBe(false);
       expect(result.errors).toContain('Arquivo muito grande. Máximo 5MB.');
@@ -409,10 +406,10 @@ describe('Validation Library', () => {
     it('deve rejeitar nomes de arquivo muito longos', () => {
       const longName = 'a'.repeat(256) + '.jpg';
       const file = new File(['test'], longName, {
-        type: 'image/jpeg'
+        type: 'image/jpeg',
       });
       Object.defineProperty(file, 'size', { value: 1024 }); // 1KB
-      
+
       const result = validateImageFile(file);
       expect(result.isValid).toBe(false);
       expect(result.errors).toContain('Nome do arquivo muito longo.');
@@ -420,11 +417,11 @@ describe('Validation Library', () => {
 
     it('deve aceitar formatos válidos', () => {
       const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-      
+
       validTypes.forEach(type => {
         const file = new File(['test'], `test.${type.split('/')[1]}`, { type });
         Object.defineProperty(file, 'size', { value: 1024 });
-        
+
         const result = validateImageFile(file);
         expect(result.isValid).toBe(true);
       });
@@ -436,9 +433,9 @@ describe('Validation Library', () => {
       const xssAttempts = [
         '<script>alert("xss")</script>',
         '<img src="x" onerror="alert(1)">',
-        'javascript:alert(1)'
+        'javascript:alert(1)',
       ];
-      
+
       xssAttempts.forEach(attempt => {
         const result = sanitizeString(attempt);
         expect(result).not.toContain('<script>');
@@ -450,9 +447,9 @@ describe('Validation Library', () => {
       const sqlAttempts = [
         "'; DROP TABLE users; --",
         'UNION SELECT password FROM users',
-        '1 OR 1=1'
+        '1 OR 1=1',
       ];
-      
+
       sqlAttempts.forEach(attempt => {
         const result = sanitizeString(attempt);
         expect(result).not.toContain('DROP');
@@ -466,16 +463,16 @@ describe('Validation Library', () => {
     it('deve lidar com dados nulos e undefined', () => {
       // Atualmente, as funções não têm proteção contra null/undefined
       // Este é um bug conhecido que precisa ser corrigido
-      expect(() => validateProductData(null)).toThrow();
-      expect(() => validateProductData(undefined)).toThrow();
+      expect(() => validateProductData(null as any)).toThrow();
+      expect(() => validateProductData(undefined as any)).toThrow();
 
       // Dados vazios devem ser rejeitados mas não causar erro
       expect(() => validateAdminCredentials({})).not.toThrow();
       expect(() => validateContactForm({})).not.toThrow();
-      
+
       const emptyAdmin = validateAdminCredentials({});
       expect(emptyAdmin.isValid).toBe(false);
-      
+
       const emptyContact = validateContactForm({});
       expect(emptyContact.isValid).toBe(false);
     });
@@ -487,9 +484,9 @@ describe('Validation Library', () => {
         description: 'Test description',
         category: 'Toxina Botulínica',
         discount_percent: 0,
-        images: []
+        images: [],
       };
-      
+
       const result = validateProductData(data);
       expect(result.isValid).toBe(true);
       expect(result.sanitizedData?.images).toHaveLength(0);

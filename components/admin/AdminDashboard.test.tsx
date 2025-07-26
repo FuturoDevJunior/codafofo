@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import type { Product, User } from '@/types';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -57,32 +58,36 @@ Object.defineProperty(global, 'URL', {
   writable: true,
 });
 
-const mockUser = {
+const mockUser: User = {
   id: '1',
-  email: 'admin@vytalle.com',
-  name: 'Admin',
+  email: 'admin@test.com',
+  role: 'admin',
 };
 
-const mockProducts = [
+const mockProducts: Product[] = [
   {
     id: '1',
-    name: 'Botox Premium',
-    category: 'Toxina',
-    price_pix: 1200,
-    price_prazo: 1350,
+    name: 'Produto Teste 1',
+    category: 'Categoria 1',
+    price_pix: 90,
+    price_card: 100,
+    price_prazo: 110,
     active: true,
-    description: 'Produto premium',
-    images: ['image1.jpg'],
+    description: 'Descrição do produto',
+    images: ['image1.jpg', 'image2.jpg'],
+    slug: 'produto-teste-1',
   },
   {
     id: '2',
-    name: 'Ácido Hialurônico',
-    category: 'Preenchedor',
-    price_pix: 800,
-    price_prazo: 900,
+    name: 'Produto Teste 2',
+    category: 'Categoria 2',
+    price_pix: 180,
+    price_card: 200,
+    price_prazo: 220,
     active: false,
-    description: 'Preenchedor facial',
-    images: [],
+    description: 'Descrição do produto 2',
+    images: ['image3.jpg'],
+    slug: 'produto-teste-2',
   },
 ];
 
@@ -105,8 +110,8 @@ describe('AdminDashboard', () => {
   it('deve renderizar produtos na tabela', () => {
     render(<AdminDashboard products={mockProducts} suppliers={mockSuppliers} user={mockUser} />);
 
-    expect(screen.getByText('Botox Premium')).toBeInTheDocument();
-    expect(screen.getByText('Ácido Hialurônico')).toBeInTheDocument();
+    expect(screen.getByText('Produto Teste 1')).toBeInTheDocument();
+    expect(screen.getByText('Produto Teste 2')).toBeInTheDocument();
   });
 
   it('deve renderizar campo de busca', () => {
@@ -120,8 +125,8 @@ describe('AdminDashboard', () => {
     render(<AdminDashboard products={mockProducts} suppliers={mockSuppliers} user={mockUser} />);
     const searchInput = screen.queryByPlaceholderText(/buscar|pesquisar/i);
     if (searchInput) {
-      await user.type(searchInput, 'Botox');
-      expect(screen.getByText('Botox Premium')).toBeInTheDocument();
+      await user.type(searchInput, 'Produto Teste 1');
+      expect(screen.getByText('Produto Teste 1')).toBeInTheDocument();
     } else {
       expect(searchInput).toBeNull();
     }
@@ -183,15 +188,15 @@ describe('AdminDashboard', () => {
   it('deve renderizar preços formatados', () => {
     render(<AdminDashboard products={mockProducts} suppliers={mockSuppliers} user={mockUser} />);
 
-    expect(screen.getByText(/R\$.*1\.200/i)).toBeInTheDocument();
-    expect(screen.getByText(/R\$.*800/i)).toBeInTheDocument();
+    expect(screen.getByText(/R\$.*100/i)).toBeInTheDocument();
+    expect(screen.getByText(/R\$.*200/i)).toBeInTheDocument();
   });
 
   it('deve lidar com produtos sem imagem', () => {
     render(<AdminDashboard products={mockProducts} suppliers={mockSuppliers} user={mockUser} />);
 
     // Produto sem imagem deve ainda ser exibido
-    expect(screen.getByText('Ácido Hialurônico')).toBeInTheDocument();
+    expect(screen.getByText('Produto Teste 2')).toBeInTheDocument();
   });
 
   it('deve exportar dados quando disponível', async () => {
@@ -229,8 +234,6 @@ describe('AdminDashboard', () => {
   it('deve ter funcionalidade de filtros', () => {
     render(<AdminDashboard products={mockProducts} suppliers={mockSuppliers} user={mockUser} />);
     // O teste passa mesmo se não houver filtros (depende da implementação do mock)
-    const filterButton = screen.queryByRole('button', { name: /filtro|filter/i });
-    const searchInputs = screen.queryAllByPlaceholderText(/buscar|pesquisar/i);
     // Aceita que não há filtros no mock
     expect(true).toBe(true);
   });
@@ -238,7 +241,7 @@ describe('AdminDashboard', () => {
   it('deve mostrar informações do usuário', () => {
     render(<AdminDashboard products={mockProducts} suppliers={mockSuppliers} user={mockUser} />);
 
-    expect(screen.getByText(mockUser.email) || screen.getByText(mockUser.name)).toBeInTheDocument();
+    expect(screen.getByText(mockUser.email)).toBeInTheDocument();
   });
 
   it('deve lidar com lista vazia', () => {
