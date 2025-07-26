@@ -45,7 +45,7 @@ const nextConfig = {
       },
     ],
     formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 3600, // 1 hora em segundos
     dangerouslyAllowSVG: true,
   },
 
@@ -126,6 +126,16 @@ const nextConfig = {
     gzipSize: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
+
+  // Configurações do Turbopack (estável)
+  turbopack: {
+    resolveAlias: {
+      canvas: './empty-module.js',
+    },
+  },
+
+  // Pacotes externos para Server Components
+  serverExternalPackages: ['sharp'],
 
   // Output e configurações de build
   output: 'standalone',

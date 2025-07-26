@@ -1,13 +1,14 @@
 /**
  * SISTEMA DE TRATAMENTO DE ERROS ROBUSTO - VYTALLE ESTÉTICA
  * ========================================================
- * 
+ *
  * Sistema centralizado para tratar diferentes tipos de erros
  * com fallbacks e recovery automático
  */
 
 import { logger } from './logger';
 
+/* eslint-disable no-unused-vars */
 export enum ErrorType {
   NETWORK = 'NETWORK',
   VALIDATION = 'VALIDATION',
@@ -15,8 +16,9 @@ export enum ErrorType {
   NOT_FOUND = 'NOT_FOUND',
   SERVER = 'SERVER',
   CLIENT = 'CLIENT',
-  UNKNOWN = 'UNKNOWN'
+  UNKNOWN = 'UNKNOWN',
 }
+/* eslint-enable no-unused-vars */
 
 export interface AppError {
   type: ErrorType;
@@ -45,9 +47,11 @@ export class ErrorHandler {
     if (!error) return ErrorType.UNKNOWN;
 
     // Erros de rede
-    if (error.name === 'NetworkError' || 
-        error.message?.includes('fetch') ||
-        error.code === 'NETWORK_ERROR') {
+    if (
+      error.name === 'NetworkError' ||
+      error.message?.includes('fetch') ||
+      error.code === 'NETWORK_ERROR'
+    ) {
       return ErrorType.NETWORK;
     }
 
@@ -77,7 +81,7 @@ export class ErrorHandler {
   // Criar AppError padronizado
   createError(error: any, context?: string): AppError {
     const type = this.classifyError(error);
-    
+
     return {
       type,
       message: this.getErrorMessage(error, type),
@@ -85,10 +89,10 @@ export class ErrorHandler {
       details: {
         originalError: error.message || error,
         context,
-        stack: error.stack
+        stack: error.stack,
       },
       timestamp: new Date(),
-      retryable: this.isRetryable(type)
+      retryable: this.isRetryable(type),
     };
   }
 
@@ -132,7 +136,7 @@ export class ErrorHandler {
       return result;
     } catch (error) {
       const appError = this.createError(error, context);
-      
+
       logger.error(`Operation failed: ${operationId}`, error as Error, context);
 
       // Se não é retentável ou excedeu tentativas, lançar erro
@@ -144,9 +148,12 @@ export class ErrorHandler {
       // Incrementar contador e tentar novamente
       this.retryAttempts.set(operationId, attempts + 1);
       const delay = this.baseRetryDelay * Math.pow(2, attempts); // Backoff exponencial
-      
-      logger.warn(`Retrying operation ${operationId} in ${delay}ms (attempt ${attempts + 1}/${this.maxRetries})`, context);
-      
+
+      logger.warn(
+        `Retrying operation ${operationId} in ${delay}ms (attempt ${attempts + 1}/${this.maxRetries})`,
+        context
+      );
+
       await new Promise(resolve => setTimeout(resolve, delay));
       return this.withRetry(operation, operationId, context);
     }
@@ -162,12 +169,12 @@ export class ErrorHandler {
       return await this.withRetry(apiCall, `api-${context || 'unknown'}`, context);
     } catch (error) {
       logger.error(`API call failed: ${context}`, error as Error);
-      
+
       if (fallback) {
         logger.fallback('API', 'fallback function', 'API call failed');
         return fallback();
       }
-      
+
       throw error;
     }
   }
@@ -176,10 +183,13 @@ export class ErrorHandler {
   validateInput(data: any, schema: any, context?: string): void {
     // Implementar validação básica
     if (!data) {
-      throw this.createError({
-        type: ErrorType.VALIDATION,
-        message: 'Dados são obrigatórios'
-      }, context);
+      throw this.createError(
+        {
+          type: ErrorType.VALIDATION,
+          message: 'Dados são obrigatórios',
+        },
+        context
+      );
     }
 
     // Aqui você poderia integrar com uma biblioteca de validação como Yup ou Zod
@@ -188,11 +198,11 @@ export class ErrorHandler {
   // Handler para formulários
   handleFormError(error: any, fieldName?: string): string {
     const appError = this.createError(error, `form-${fieldName}`);
-    
+
     if (appError.type === ErrorType.VALIDATION) {
       return appError.message;
     }
-    
+
     return 'Erro ao processar formulário. Tente novamente.';
   }
 
@@ -206,22 +216,14 @@ export class ErrorHandler {
 export const errorHandler = ErrorHandler.getInstance();
 
 // Utility functions
-export function safeAsync<T>(
-  promise: Promise<T>,
-  defaultValue: T,
-  context?: string
-): Promise<T> {
+export function safeAsync<T>(promise: Promise<T>, defaultValue: T, context?: string): Promise<T> {
   return promise.catch(error => {
     logger.error(`Safe async operation failed: ${context}`, error, context);
     return defaultValue;
   });
 }
 
-export function safeFn<T>(
-  fn: () => T,
-  defaultValue: T,
-  context?: string
-): T {
+export function safeFn<T>(fn: () => T, defaultValue: T, context?: string): T {
   try {
     return fn();
   } catch (error) {
@@ -254,7 +256,7 @@ export function useErrorHandling() {
   return {
     handleError,
     handleAsyncError,
-    createError: (error: any, context?: string) => errorHandler.createError(error, context)
+    createError: (error: any, context?: string) => errorHandler.createError(error, context),
   };
 }
 
