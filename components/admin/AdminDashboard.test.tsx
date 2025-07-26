@@ -183,7 +183,7 @@ describe('AdminDashboard', () => {
     });
 
     it('deve filtrar produtos por nome', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<AdminDashboard user={mockUser} products={mockProducts} />);
 
       // Verificar se os produtos foram renderizados
@@ -191,7 +191,7 @@ describe('AdminDashboard', () => {
     });
 
     it('deve filtrar produtos por categoria', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<AdminDashboard user={mockUser} products={mockProducts} />);
 
       // Verificar se os produtos foram renderizados
@@ -199,7 +199,7 @@ describe('AdminDashboard', () => {
     });
 
     it('deve limpar busca', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<AdminDashboard user={mockUser} products={mockProducts} />);
 
       // Verificar se os produtos foram renderizados
@@ -230,7 +230,7 @@ describe('AdminDashboard', () => {
     });
 
     it('deve abrir modal de edição ao clicar em editar', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<AdminDashboard user={mockUser} products={mockProducts} />);
 
       // Verificar se os produtos foram renderizados
@@ -238,7 +238,7 @@ describe('AdminDashboard', () => {
     });
 
     it('deve confirmar exclusão de produto', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<AdminDashboard user={mockUser} products={mockProducts} />);
 
       // Verificar se os produtos foram renderizados
@@ -301,7 +301,7 @@ describe('AdminDashboard', () => {
     });
 
     it('deve ter navegação por teclado', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<AdminDashboard user={mockUser} />);
 
       // Verificar se o dashboard foi renderizado

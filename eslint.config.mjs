@@ -22,6 +22,6 @@ export default defineConfig([{
         "@next/next/no-img-element": "off",
         "prefer-const": "error",
         "no-var": "error",
-        "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+        "no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
     },
 }]);

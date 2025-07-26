@@ -34,9 +34,11 @@ interface ProductCardProps {
 export default function ProductCard({
   product: _product,
   variant = 'default',
-  onCompare,
+  onCompare: _onCompare,
   canCompare = true,
 }: ProductCardProps) {
+  // Usar product para evitar warning
+  const productName = _product.name;
   const [isLoading, setIsLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -44,7 +46,6 @@ export default function ProductCard({
   const { trackCartAdd } = useAnalytics();
 
   // Usar a variável product para evitar warning
-  const productName = _product.name;
   const productId = _product.id;
   const productPrice = _product.price_pix || 0;
   const productImages = _product.images;
@@ -251,13 +252,13 @@ export default function ProductCard({
                 </MotionDiv>
               </Tooltip>
 
-              {canCompare && onCompare && (
+              {canCompare && _onCompare && (
                 <Tooltip content="Comparar produto">
                   <MotionDiv variants={buttonVariants} whileHover="hover" whileTap="tap">
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => onCompare(_product)}
+                      onClick={() => _onCompare?.(_product)}
                       className="bg-white/95 hover:bg-white rounded-full border-vitale-primary/20 p-3 text-vitale-primary shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl"
                     >
                       <MotionDiv

@@ -225,7 +225,7 @@ vi.mock('@/components/ui/skeleton', () => ({
 }));
 
 vi.mock('@/components/SmartImage', () => ({
-  default: (props: any) => <img {...props} />,
+  default: (props: any) => <img {...props} alt={props.alt || ''} />,
 }));
 
 vi.mock('@/components/ui/badge', () => ({

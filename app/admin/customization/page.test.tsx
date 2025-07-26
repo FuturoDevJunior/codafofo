@@ -158,32 +158,32 @@ describe('CustomizationPage', () => {
 
   describe('Interações do Usuário', () => {
     it('deve permitir edição de campos', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<CustomizationPage />);
 
       const companyNameInput = screen.getByLabelText('Nome da Empresa');
-      await user.clear(companyNameInput);
-      await user.type(companyNameInput, 'Nova Empresa');
+      await _user.clear(companyNameInput);
+      await _user.type(companyNameInput, 'Nova Empresa');
 
       expect(companyNameInput).toHaveValue('Nova Empresa');
     });
 
     it('deve salvar customizações', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<CustomizationPage />);
 
       const saveButton = screen.getByText('Salvar Mudanças');
-      await user.click(saveButton);
+      await _user.click(saveButton);
 
       expect(mockUseCustomization.saveCustomization).toHaveBeenCalled();
     });
 
     it('deve resetar customizações', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<CustomizationPage />);
 
       const resetButton = screen.getByText('Resetar');
-      await user.click(resetButton);
+      await _user.click(resetButton);
 
       expect(mockUseCustomization.resetCustomization).toHaveBeenCalled();
     });
@@ -191,7 +191,7 @@ describe('CustomizationPage', () => {
 
   describe('Estados de Loading', () => {
     it('deve mostrar loading durante salvamento', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(<CustomizationPage />);
 
       const saveButton = screen.getByText('Salvar Mudanças');

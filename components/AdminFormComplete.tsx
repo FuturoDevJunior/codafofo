@@ -120,7 +120,7 @@ export async function completeProductSubmit(data: CompleteProductForm, product?:
       });
       return true;
     }
-  } catch (_error) {
+  } catch {
     toast({
       title: 'Erro inesperado',
       description: 'Ocorreu um erro ao salvar o produto',

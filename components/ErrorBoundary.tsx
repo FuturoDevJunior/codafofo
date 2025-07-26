@@ -113,7 +113,7 @@ export class ErrorBoundary extends Component<Props, State> {
       if (typeof window !== 'undefined') {
         this.setState({ reporting: false, reported: true, reportError: null } as any);
       }
-    } catch (error) {
+    } catch {
       if (typeof window !== 'undefined') {
         this.setState({ reporting: false, reportError: 'Falha ao reportar erro' } as any);
       }

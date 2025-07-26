@@ -91,7 +91,7 @@ describe('ImageUploader', () => {
 
   describe('Funcionalidades de Upload', () => {
     it('deve permitir clicar no botão de upload', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(
         <ImageUploader
           productId="test-id"
@@ -200,7 +200,7 @@ describe('ImageUploader', () => {
     });
 
     it('deve permitir clicar no botão de remover', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       const currentImages = ['image1.jpg'];
       const mockOnImagesUpdate = vi.fn();
 

@@ -68,7 +68,7 @@ const mockProduct = {
   slug: 'produto-teste',
 };
 
-const mockSuppliers = [
+const _mockSuppliers = [
   { id: '1', name: 'Fornecedor A' },
   { id: '2', name: 'Fornecedor B' },
 ];
@@ -399,7 +399,7 @@ describe('AdminForm', () => {
     });
 
     it('deve lidar com muitos fornecedores', async () => {
-      const manySuppliers = Array.from({ length: 100 }, (_, i) => ({
+      const _manySuppliers = Array.from({ length: 100 }, (_, i) => ({
         id: `${i}`,
         name: `Fornecedor ${i}`,
       }));
