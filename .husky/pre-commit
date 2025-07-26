@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
 # Execute lint-staged para arquivos staged
 npx lint-staged
@@ -10,7 +9,7 @@ npm run type-check
 # Executar testes básicos se houver arquivos de teste modificados
 if git diff --cached --name-only | grep -q "\.test\.\|\.spec\."; then
   echo "🧪 Executando testes para arquivos modificados..."
-  npm run test:ci --passWithNoTests --bail
+  npm run test:ci
 fi
 
 echo "✅ Pre-commit checks passed!"
