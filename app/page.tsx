@@ -45,13 +45,14 @@ export default function Home() {
               {/* Logo container */}
               <div className="bg-white/80 shadow-2xl relative rounded-full border-2 border-vitale-primary/10 p-4 backdrop-blur-lg transition-all duration-500 group-hover:border-vitale-primary/30 sm:p-6 md:p-8">
                 <SmartImage
-                  src="/Vytalle_Logo_Gold.png"
+                  src="/Vytalle_Logo_Gold.webp"
                   alt="Vytalle Estética & Viscosuplementação - Logo Oficial"
                   width={200}
                   height={200}
                   className="logo-image h-32 w-32 object-contain transition-all duration-700 ease-out group-hover:scale-110 sm:h-40 sm:w-40 md:h-48 md:w-48 lg:h-56 lg:w-56 xl:h-64 xl:w-64"
                   priority={true}
                   objectFit="contain"
+                  sizes="(max-width: 640px) 128px, (max-width: 768px) 160px, (max-width: 1024px) 192px, (max-width: 1280px) 224px, 256px"
                 />
               </div>
 
@@ -62,16 +63,16 @@ export default function Home() {
 
           {/* Título Principal com Melhor Hierarquia */}
           <div className="max-w-responsive mx-auto space-y-6 md:space-y-8">
-            <h1 className="xl:text-7xl text-4xl font-extrabold leading-tight text-vitale-primary md:text-5xl lg:text-6xl">
+            <h1 className="xl:text-7xl text-high-contrast text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl">
               Produtos Premium para
-              <span className="mt-2 block text-vitale-secondary">Estética Profissional</span>
+              <span className="text-emphasis mt-2 block">Estética Profissional</span>
             </h1>
-            <p className="mx-auto max-w-4xl px-4 text-lg font-medium leading-relaxed text-neutral-700 md:text-xl lg:text-2xl">
-              <strong className="text-xl text-vitale-primary md:text-2xl lg:text-3xl">
+            <p className="mx-auto max-w-4xl px-4 text-lg font-medium leading-relaxed text-neutral-800 md:text-xl lg:text-2xl">
+              <strong className="text-high-contrast text-xl md:text-2xl lg:text-3xl">
                 Sua excelência profissional começa aqui.
               </strong>
               <br className="hidden md:block" />
-              <span className="mt-4 block md:mt-2">
+              <span className="mt-4 block text-neutral-700 md:mt-2">
                 Produtos originais, certificados ANVISA, com entrega expressa e suporte consultivo
                 especializado para clínicas e profissionais em todo Brasil.
               </span>

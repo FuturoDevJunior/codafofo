@@ -35,7 +35,7 @@ export const metadata: Metadata = {
       'Toxinas botulínicas, preenchedores e bioestimuladores certificados ANVISA. Entrega expressa, suporte especializado.',
     images: [
       {
-        url: '/Vytalle_Logo_Gold.png',
+        url: '/Vytalle_Logo_Gold.webp',
         width: 1200,
         height: 630,
         alt: 'Vytalle Estética & Viscosuplementação - Logo',

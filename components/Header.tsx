@@ -28,12 +28,13 @@ export default function Header() {
         >
           <div className="relative">
             <Image
-              src="/Vytalle_Logo_Gold.png"
+              src="/Vytalle_Logo_Gold.webp"
               alt="Vytalle Estética & Viscosuplementação - Logo Oficial"
               width={60}
               height={60}
               className="logo-image h-12 w-12 object-contain transition-all duration-300 group-hover:rotate-1 group-hover:scale-110 sm:h-14 sm:w-14 md:h-16 md:w-16"
               priority
+              sizes="(max-width: 640px) 48px, (max-width: 768px) 56px, 64px"
             />
             <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-vitale-primary/20 to-vitale-secondary/20 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100" />
           </div>
@@ -77,9 +78,9 @@ export default function Header() {
             <Dialog.Trigger asChild>
               <button
                 aria-label="Abrir menu de navegação"
-                className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl p-3 text-vitale-primary hover:bg-vitale-primary/10 focus:outline-none focus:ring-2 focus:ring-vitale-primary"
+                className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl p-3 text-vitale-primary transition-all duration-200 hover:bg-vitale-primary/10 focus:outline-none focus:ring-2 focus:ring-vitale-primary focus:ring-offset-2"
               >
-                <MenuIcon className="h-7 w-7" />
+                <MenuIcon className="h-7 w-7" aria-hidden="true" />
               </button>
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -92,11 +93,12 @@ export default function Header() {
                     onClick={() => setMobileOpen(false)}
                   >
                     <Image
-                      src="/Vytalle_Logo_Gold.png"
+                      src="/Vytalle_Logo_Gold.webp"
                       alt="Logo"
                       width={40}
                       height={40}
                       className="logo-image h-8 w-8 object-contain sm:h-10 sm:w-10"
+                      sizes="(max-width: 640px) 32px, 40px"
                     />
                     <span className="text-xl font-bold text-vitale-primary">
                       Vytalle Estética & Viscosuplementação

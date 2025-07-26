@@ -41,7 +41,7 @@ export default function CartSidebar() {
   return (
     <>
       {/* Cart Button - sempre visível, com ícone e badge de quantidade */}
-      <div className="fixed bottom-6 right-6 z-toast">
+      <div className="fixed bottom-20 right-4 z-toast sm:bottom-6 sm:right-6">
         <motion.div
           className="relative"
           initial={{ scale: 0, opacity: 0 }}
