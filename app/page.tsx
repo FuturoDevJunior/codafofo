@@ -37,20 +37,21 @@ export default function Home() {
 
         <div className="max-w-responsive-lg container relative z-10 mx-auto space-y-12 px-4 text-center md:space-y-16">
           {/* Logo Principal REDESIGN - Muito maior destaque */}
-          <div className="mb-12 flex justify-center">
+          <div className="logo-container mb-12 flex justify-center">
             <div className="group relative">
               {/* Glow effect */}
               <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-vitale-primary/20 via-vitale-secondary/20 to-vitale-primary/20 opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-100"></div>
 
               {/* Logo container */}
-              <div className="bg-white/80 shadow-2xl relative rounded-full border-2 border-vitale-primary/10 p-8 backdrop-blur-lg transition-all duration-500 group-hover:border-vitale-primary/30">
+              <div className="bg-white/80 shadow-2xl relative rounded-full border-2 border-vitale-primary/10 p-4 backdrop-blur-lg transition-all duration-500 group-hover:border-vitale-primary/30 sm:p-6 md:p-8">
                 <SmartImage
                   src="/Vytalle_Logo_Gold.png"
                   alt="Vytalle Estética & Viscosuplementação - Logo Oficial"
                   width={200}
                   height={200}
-                  className="h-40 w-40 object-contain transition-all duration-700 ease-out group-hover:scale-110 sm:h-48 sm:w-48 lg:h-56 lg:w-56 xl:h-64 xl:w-64"
+                  className="logo-image h-32 w-32 object-contain transition-all duration-700 ease-out group-hover:scale-110 sm:h-40 sm:w-40 md:h-48 md:w-48 lg:h-56 lg:w-56 xl:h-64 xl:w-64"
                   priority={true}
+                  objectFit="contain"
                 />
               </div>
 

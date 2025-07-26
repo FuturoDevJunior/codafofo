@@ -32,7 +32,7 @@ export default function Header() {
               alt="Vytalle Estética & Viscosuplementação - Logo Oficial"
               width={60}
               height={60}
-              className="h-14 w-14 object-contain transition-all duration-300 group-hover:rotate-1 group-hover:scale-110 md:h-16 md:w-16"
+              className="logo-image h-12 w-12 object-contain transition-all duration-300 group-hover:rotate-1 group-hover:scale-110 sm:h-14 sm:w-14 md:h-16 md:w-16"
               priority
             />
             <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-vitale-primary/20 to-vitale-secondary/20 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100" />
@@ -96,7 +96,7 @@ export default function Header() {
                       alt="Logo"
                       width={40}
                       height={40}
-                      className="h-10 w-10 object-contain"
+                      className="logo-image h-8 w-8 object-contain sm:h-10 sm:w-10"
                     />
                     <span className="text-xl font-bold text-vitale-primary">
                       Vytalle Estética & Viscosuplementação

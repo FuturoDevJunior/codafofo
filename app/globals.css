@@ -252,9 +252,22 @@
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
+
   .content-padding {
     padding: 1rem;
+  }
+  
+  /* Correções específicas para logo no mobile */
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logo-image {
+    object-fit: contain !important;
+    max-width: 100%;
+    height: auto;
   }
 }
 
