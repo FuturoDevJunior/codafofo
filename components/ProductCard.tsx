@@ -175,7 +175,7 @@ export default function ProductCard({ product, variant = 'vertical' }: ProductCa
         </CardHeader>
 
         {/* Conteúdo do Card */}
-        <CardContent className="content-padding gap-responsive-sm flex flex-1 flex-col">
+        <CardContent className="content-padding gap-responsive-sm flex min-w-0 flex-1 flex-col">
           {/* Título e Categoria */}
           <div className="space-y-2">
             <div className="flex items-start justify-between gap-2">
@@ -183,6 +183,7 @@ export default function ProductCard({ product, variant = 'vertical' }: ProductCa
                 <CardTitle
                   id={`product-${product.id}-name`}
                   className="line-clamp-2 text-lg font-bold leading-tight text-vitale-primary md:text-xl lg:text-2xl"
+                  title={product.name}
                 >
                   {product.name}
                 </CardTitle>
@@ -212,7 +213,9 @@ export default function ProductCard({ product, variant = 'vertical' }: ProductCa
                   <div className="font-black text-green-600 text-xl md:text-2xl lg:text-3xl">
                     {formatCurrency(pixPrice, product.currency)}
                   </div>
-                  <div className="text-green-600/80 text-sm font-medium">melhor preço</div>
+                  <div className="text-green-600/80 whitespace-nowrap text-sm font-medium">
+                    melhor preço
+                  </div>
                 </div>
               </div>
             </div>

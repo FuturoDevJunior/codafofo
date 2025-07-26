@@ -1,18 +1,17 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
 import {
-  Search,
   Filter,
-  X,
-  Grid3X3,
   Grid2X2,
+  Grid3X3,
   List,
+  Package,
+  Search,
   SortAsc,
   SortDesc,
-  Package,
-  Eye,
-  EyeOff,
+  X,
 } from 'lucide-react';
 
 import ProductCard from '@/components/ProductCard';
@@ -200,7 +199,7 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
             )}
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             {/* Categoria */}
             <div>
               <label className="mb-2 block text-sm font-medium text-vitale-primary">
@@ -211,6 +210,7 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
                 onChange={e => setSelectedCategory(e.target.value)}
                 className="w-full rounded-lg border border-vitale-primary/30 p-3 focus:border-vitale-primary focus:outline-none"
                 data-testid="category-filter"
+                aria-label="Filtrar por categoria"
               >
                 <option value="">Todas as categorias</option>
                 {categories.map(category => (
@@ -262,6 +262,7 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
                 onChange={e => setSortBy(e.target.value as SortOption)}
                 className="w-full rounded-lg border border-vitale-primary/30 p-3 focus:border-vitale-primary focus:outline-none"
                 data-testid="sort-select"
+                aria-label="Ordenar produtos"
               >
                 <option value="category">Categoria</option>
                 <option value="name-asc">Nome A-Z</option>
