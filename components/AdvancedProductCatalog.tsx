@@ -196,7 +196,11 @@ export default function AdvancedProductCatalog({
 
   // Lazy loading - carregar mais produtos automaticamente
   useEffect(() => {
-    if (currentPage >= totalPages - LAZY_LOAD_THRESHOLD && !isLoadingMore) {
+    if (
+      currentPage >= totalPages - LAZY_LOAD_THRESHOLD &&
+      !isLoadingMore &&
+      currentPage < totalPages
+    ) {
       setIsLoadingMore(true);
       setTimeout(() => {
         setCurrentPage(prev => Math.min(prev + 1, totalPages));
@@ -623,7 +627,7 @@ export default function AdvancedProductCatalog({
         </div>
 
         {/* Loading mais produtos */}
-        {isLoadingMore && (
+        {isLoadingMore && currentPage < totalPages && (
           <div className="flex justify-center py-4">
             <div className="flex items-center gap-2">
               <RefreshCw className="h-4 w-4 animate-spin" />
