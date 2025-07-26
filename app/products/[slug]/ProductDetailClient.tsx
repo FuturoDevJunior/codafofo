@@ -12,9 +12,9 @@ import type { Product } from '@/types/product';
 export default function ProductDetailClient({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const [payment, setPayment] = useState<'pix' | 'prazo'>('pix');
-  const addItem = useCartStore((state) => state.addItem);
+  const addItem = useCartStore(state => state.addItem);
 
-  const price = payment === 'pix' ? product.price_pix : product.price_card;
+  const price = payment === 'pix' ? product.price_pix : product.price_prazo;
 
   const handleAdd = () => {
     addItem({
@@ -22,17 +22,17 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       name: product.name,
       price,
       price_pix: product.price_pix,
-      price_card: product.price_card,
+      price_card: product.price_prazo,
       quantity,
       images: product.images || [],
-      category: product.category
+      category: product.category,
     });
   };
 
   return (
     <div>
       <ProductCarousel images={product.images} />
-      <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
+      <h1 className="mb-2 text-2xl font-bold">{product.name}</h1>
       <p className="mb-2">Categoria: {product.category}</p>
       <p className="mb-2">{product.description}</p>
       <div className="mb-4">
@@ -54,19 +54,19 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             checked={payment === 'prazo'}
             onChange={() => setPayment('prazo')}
           />{' '}
-          Cartão ({formatCurrency(product.price_card)})
+          Cartão ({formatCurrency(product.price_prazo)})
         </label>
       </div>
-      <div className="flex items-center gap-2 mb-4">
+      <div className="mb-4 flex items-center gap-2">
         <Input
           type="number"
           min={1}
           value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
+          onChange={e => setQuantity(Number(e.target.value))}
           className="w-20"
         />
         <Button onClick={handleAdd}>Adicionar ao Carrinho</Button>
       </div>
     </div>
   );
-} 
+}

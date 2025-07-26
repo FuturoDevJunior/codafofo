@@ -1,0 +1,23 @@
+-- Migration para duplicar campos de preço PIX e Prazo
+-- Substitui o campo PRICE único pelos campos PRICE_PIX e PRICE_PRAZO
+
+-- Adicionar novos campos temporariamente
+ALTER TABLE PRODUCTS ADD COLUMN PRICE_PIX DECIMAL(10, 2);
+ALTER TABLE PRODUCTS ADD COLUMN PRICE_PRAZO DECIMAL(10, 2);
+
+-- Migrar dados existentes (assumindo que o preço atual é PIX e prazo é 10% maior)
+UPDATE PRODUCTS SET 
+    PRICE_PIX = PRICE,
+    PRICE_PRAZO = PRICE * 1.10
+WHERE PRICE_PIX IS NULL;
+
+-- Tornar os campos obrigatórios
+ALTER TABLE PRODUCTS ALTER COLUMN PRICE_PIX SET NOT NULL;
+ALTER TABLE PRODUCTS ALTER COLUMN PRICE_PRAZO SET NOT NULL;
+
+-- Remover campo antigo
+ALTER TABLE PRODUCTS DROP COLUMN PRICE;
+
+-- Criar índices para performance
+CREATE INDEX IDX_PRODUCTS_PRICE_PIX ON PRODUCTS(PRICE_PIX);
+CREATE INDEX IDX_PRODUCTS_PRICE_PRAZO ON PRODUCTS(PRICE_PRAZO);

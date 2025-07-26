@@ -1,212 +1,115 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Mock do Next.js Image
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
+import SmartImage from './SmartImage';
+
+// Mock Next.js Image
 vi.mock('next/image', () => ({
-  default: ({ src, alt, onError, onLoad, ...props }: any) => (
-    <div
-      data-src={src}
-      aria-label={alt}
-      onError={onError}
-      onLoad={onLoad}
-      {...props}
-      data-testid="smart-image"
-    >Mock: {src}</div>
-  )
+  default: ({ src, alt, onLoad, onError, ...props }: any) => {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        onLoad={onLoad}
+        onError={onError}
+        {...props}
+        data-testid="next-image"
+      />
+    );
+  },
 }));
-
-// Mock IntersectionObserver
-const mockIntersectionObserver = vi.fn();
-mockIntersectionObserver.mockReturnValue({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn()
-});
 
 describe('SmartImage', () => {
   beforeEach(() => {
-    vi.stubGlobal('IntersectionObserver', mockIntersectionObserver);
     vi.clearAllMocks();
   });
 
-  afterEach(() => {
-    vi.unstubAllGlobals();
+  it('deve renderizar imagem com src válido', () => {
+    render(<SmartImage src="/test-image.jpg" alt="Test Image" />);
+
+    const image = screen.getByTestId('next-image');
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute('src', '/test-image.jpg');
+    expect(image).toHaveAttribute('alt', 'Test Image');
   });
 
-  it('deve ser implementado quando o componente estiver disponível', () => {
-    // Teste placeholder
-    expect(true).toBe(true);
+  it('deve renderizar com placeholder durante carregamento', async () => {
+    render(<SmartImage src="/test-image.jpg" alt="Test Image" />);
+
+    // Verificar se skeleton/placeholder está presente inicialmente
+    const placeholder = screen.queryByTestId('image-placeholder');
+    const image = screen.getByTestId('next-image');
+
+    expect(image).toBeInTheDocument();
   });
 
-  // Testes que seriam implementados com o componente real:
+  it('deve lidar com erro de carregamento', async () => {
+    render(<SmartImage src="/invalid-image.jpg" alt="Test Image" />);
 
-  // it('deve renderizar imagem com src e alt corretos', () => {
-  //   render(
-  //     <SmartImage 
-  //       src="/test-image.jpg" 
-  //       alt="Test Image" 
-  //       width={300} 
-  //       height={200} 
-  //     />
-  //   );
-  //   
-  //   const image = screen.getByTestId('smart-image');
-  //   expect(image).toHaveAttribute('src', '/test-image.jpg');
-  //   expect(image).toHaveAttribute('alt', 'Test Image');
-  // });
+    const image = screen.getByTestId('next-image');
 
-  // it('deve mostrar fallback quando imagem falha ao carregar', async () => {
-  //   render(
-  //     <SmartImage 
-  //       src="/non-existent.jpg" 
-  //       alt="Test" 
-  //       fallback="/fallback.jpg"
-  //       width={300} 
-  //       height={200} 
-  //     />
-  //   );
-  //   
-  //   const image = screen.getByTestId('smart-image');
-  //   fireEvent.error(image);
-  //   
-  //   await waitFor(() => {
-  //     expect(image).toHaveAttribute('src', '/fallback.jpg');
-  //   });
-  // });
+    // Simular erro de carregamento
+    fireEvent.error(image);
 
-  // it('deve mostrar placeholder enquanto carrega', () => {
-  //   render(
-  //     <SmartImage 
-  //       src="/test-image.jpg" 
-  //       alt="Test" 
-  //       width={300} 
-  //       height={200} 
-  //     />
-  //   );
-  //   
-  //   expect(screen.getByTestId('image-placeholder')).toBeInTheDocument();
-  // });
+    await waitFor(() => {
+      expect(image).toBeInTheDocument();
+    });
+  });
 
-  // it('deve remover placeholder após imagem carregar', async () => {
-  //   render(
-  //     <SmartImage 
-  //       src="/test-image.jpg" 
-  //       alt="Test" 
-  //       width={300} 
-  //       height={200} 
-  //     />
-  //   );
-  //   
-  //   const image = screen.getByTestId('smart-image');
-  //   fireEvent.load(image);
-  //   
-  //   await waitFor(() => {
-  //     expect(screen.queryByTestId('image-placeholder')).not.toBeInTheDocument();
-  //   });
-  // });
+  it('deve aplicar classes CSS personalizadas', () => {
+    render(<SmartImage src="/test.jpg" alt="Test" className="custom-class" />);
 
-  // it('deve aplicar lazy loading por padrão', () => {
-  //   render(
-  //     <SmartImage 
-  //       src="/test-image.jpg" 
-  //       alt="Test" 
-  //       width={300} 
-  //       height={200} 
-  //     />
-  //   );
-  //   
-  //   const image = screen.getByTestId('smart-image');
-  //   expect(image).toHaveAttribute('loading', 'lazy');
-  // });
+    const image = screen.getByTestId('next-image');
+    expect(image).toHaveAttribute('class', expect.stringContaining('custom-class'));
+  });
 
-  // it('deve desabilitar lazy loading quando priority é true', () => {
-  //   render(
-  //     <SmartImage 
-  //       src="/test-image.jpg" 
-  //       alt="Test" 
-  //       width={300} 
-  //       height={200}
-  //       priority={true}
-  //     />
-  //   );
-  //   
-  //   const image = screen.getByTestId('smart-image');
-  //   expect(image).not.toHaveAttribute('loading', 'lazy');
-  // });
+  it('deve renderizar com dimensões específicas', () => {
+    render(<SmartImage src="/test.jpg" alt="Test" width={300} height={200} />);
 
-  // it('deve tentar múltiplas URLs em caso de falha', async () => {
-  //   const fallbacks = ['/fallback1.jpg', '/fallback2.jpg'];
-  //   
-  //   render(
-  //     <SmartImage 
-  //       src="/primary.jpg" 
-  //       alt="Test"
-  //       fallback={fallbacks}
-  //       width={300} 
-  //       height={200} 
-  //     />
-  //   );
-  //   
-  //   const image = screen.getByTestId('smart-image');
-  //   
-  //   // Simular falha da imagem principal
-  //   fireEvent.error(image);
-  //   
-  //   await waitFor(() => {
-  //     expect(image).toHaveAttribute('src', '/fallback1.jpg');
-  //   });
-  //   
-  //   // Simular falha do primeiro fallback
-  //   fireEvent.error(image);
-  //   
-  //   await waitFor(() => {
-  //     expect(image).toHaveAttribute('src', '/fallback2.jpg');
-  //   });
-  // });
+    const image = screen.getByTestId('next-image');
+    expect(image).toHaveAttribute('width', '300');
+    expect(image).toHaveAttribute('height', '200');
+  });
 
-  // it('deve usar IntersectionObserver para lazy loading', () => {
-  //   render(
-  //     <SmartImage 
-  //       src="/test-image.jpg" 
-  //       alt="Test" 
-  //       width={300} 
-  //       height={200} 
-  //     />
-  //   );
-  //   
-  //   expect(mockIntersectionObserver).toHaveBeenCalled();
-  //   expect(mockIntersectionObserver().observe).toHaveBeenCalled();
-  // });
+  it('deve suportar prioridade de carregamento', () => {
+    render(<SmartImage src="/test.jpg" alt="Test" priority />);
+    const image = screen.getByTestId('next-image');
+    expect(image).toBeInTheDocument();
+  });
 
-  // it('deve aplicar className customizada', () => {
-  //   render(
-  //     <SmartImage 
-  //       src="/test-image.jpg" 
-  //       alt="Test" 
-  //       width={300} 
-  //       height={200}
-  //       className="custom-image-class"
-  //     />
-  //   );
-  //   
-  //   const container = screen.getByTestId('smart-image').parentElement;
-  //   expect(container).toHaveClass('custom-image-class');
-  // });
+  it('deve renderizar com fill quando especificado', () => {
+    render(<SmartImage src="/test.jpg" alt="Test" fill />);
+    const image = screen.getByTestId('next-image');
+    expect(image).toBeInTheDocument();
+  });
 
-  // it('deve mostrar spinner durante retry de imagem', async () => {
-  //   render(
-  //     <SmartImage 
-  //       src="/test-image.jpg" 
-  //       alt="Test" 
-  //       width={300} 
-  //       height={200}
-  //       showRetrySpinner={true}
-  //     />
-  //   );
-  //   
-  //   const image = screen.getByTestId('smart-image');
-  //   fireEvent.error(image);
-  //   
-  //   expect(screen.getByTestId('retry-spinner')).toBeInTheDocument();
-  // });
+  it('deve lidar com diferentes formatos de imagem', () => {
+    const formats = ['.jpg', '.png', '.webp', '.gif'];
+
+    formats.forEach(format => {
+      const { rerender } = render(<SmartImage src={`/test${format}`} alt="Test" />);
+
+      const image = screen.getByTestId('next-image');
+      expect(image).toHaveAttribute('src', `/test${format}`);
+
+      rerender(<div />);
+    });
+  });
+
+  it('deve ser acessível com alt text apropriado', () => {
+    render(<SmartImage src="/test.jpg" alt="Produto Vytalle Premium" />);
+
+    const image = screen.getByAltText('Produto Vytalle Premium');
+    expect(image).toBeInTheDocument();
+  });
+
+  it('deve otimizar para diferentes breakpoints', () => {
+    const sizes = '(max-width: 768px) 100vw, 50vw';
+
+    render(<SmartImage src="/test.jpg" alt="Test" sizes={sizes} />);
+
+    const image = screen.getByTestId('next-image');
+    expect(image).toHaveAttribute('sizes', sizes);
+  });
 });

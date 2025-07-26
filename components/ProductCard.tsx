@@ -1,23 +1,14 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import {
-  Eye,
-  Package,
-  ShoppingCart,
-} from 'lucide-react';
+import { Eye, Package, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 
 import SmartImage from '@/components/SmartImage';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip } from '@/components/ui/tooltip';
 import { toast } from '@/components/ui/use-toast';
 import { useAnalytics } from '@/lib/analytics';
@@ -27,78 +18,82 @@ import type { Product } from '@/types/product';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30, scale: 0.9 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     scale: 1,
-    transition: { 
-      duration: 0.6, 
+    transition: {
+      duration: 0.6,
       ease: [0.25, 0.46, 0.45, 0.94],
-      staggerChildren: 0.1
-    }
+      staggerChildren: 0.1,
+    },
   },
   hover: {
     y: -8,
     scale: 1.03,
-    transition: { 
-      duration: 0.3, 
-      ease: "easeOut"
-    }
-  }
+    transition: {
+      duration: 0.3,
+      ease: 'easeOut',
+    },
+  },
 };
 
 const imageVariants = {
   initial: { scale: 1 },
-  hover: { scale: 1.05, transition: { duration: 0.3 } }
+  hover: { scale: 1.05, transition: { duration: 0.3 } },
 };
 
-export default function ProductCard({ product }: { product: Product }) {
+interface ProductCardProps {
+  product: Product;
+  variant?: 'vertical' | 'horizontal';
+}
+
+export default function ProductCard({ product, variant = 'vertical' }: ProductCardProps) {
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Detectar se temos preços PIX/Cartão ou preço único
   const pixPrice = product.price_pix || 0;
-  const cardPrice = product.price_card || 0;
-  
-  const addItem = useCartStore((s) => s.addItem);
+  const cardPrice = product.price_prazo || 0;
+
+  const addItem = useCartStore(s => s.addItem);
   const { trackCartAdd } = useAnalytics();
 
   const handleAddToCart = async () => {
-    
     setIsLoading(true);
     try {
-      addItem({ 
-        id: product.id, 
-        name: product.name, 
+      addItem({
+        id: product.id,
+        name: product.name,
         price: pixPrice, // Usar preço PIX como padrão
         price_pix: pixPrice,
         price_card: cardPrice,
         quantity: 1,
-        images: product.images
+        images: product.images,
       });
 
       // Track analytics
       trackCartAdd(product.id, product.name, pixPrice);
-      
-      toast({ 
-        title: '✅ Produto adicionado!', 
+
+      toast({
+        title: '✅ Produto adicionado!',
         description: `${product.name} foi adicionado ao seu carrinho`,
         duration: 3000,
       });
     } catch (error) {
       console.error('Erro ao adicionar ao carrinho:', error);
-      
+
       // Tratamento específico de falha de rede/API
       const isNetworkError = error instanceof TypeError && error.message.includes('fetch');
       const isTimeoutError = error instanceof Error && error.name === 'AbortError';
-      
-      toast({ 
-        title: '❌ Erro', 
-        description: isNetworkError 
+
+      toast({
+        title: '❌ Erro',
+        description: isNetworkError
           ? 'Falha na conexão. Verifique sua internet e tente novamente.'
           : isTimeoutError
-          ? 'Tempo esgotado. O servidor está demorando para responder.'
-          : 'Não foi possível adicionar o produto. Tente novamente.',
-        variant: 'destructive'
+            ? 'Tempo esgotado. O servidor está demorando para responder.'
+            : 'Não foi possível adicionar o produto. Tente novamente.',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -106,31 +101,33 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <motion.div 
-      variants={cardVariants} 
-      initial="hidden" 
-      animate="visible" 
+    <motion.div
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
       whileHover="hover"
       transition={{ duration: 0.4, ease: 'easeOut' }}
       className="group h-full"
     >
       <Card
-        className="overflow-hidden bg-white rounded-2xl border border-vitale-primary/20 hover:border-vitale-primary/40 transition-all duration-300 hover:shadow-vitale flex flex-col h-full focus-ring"
+        className="bg-white flex h-full flex-col overflow-hidden rounded-2xl border border-vitale-primary/20 transition-all duration-300 focus-ring hover:border-vitale-primary/40 hover:shadow-vitale"
         role="article"
-        aria-labelledby={`product-${product.id}-name`}>
-        
+        aria-labelledby={`product-${product.id}-name`}
+      >
         {/* Header com Imagem */}
-        <CardHeader className="p-0 relative h-52 sm:h-56 md:h-60 lg:h-64 bg-vitale-primary/5 overflow-hidden rounded-t-2xl">
-          <motion.div variants={imageVariants} className="w-full h-full">
+        <CardHeader className="relative h-52 overflow-hidden rounded-t-2xl bg-vitale-primary/5 p-0 sm:h-56 md:h-60 lg:h-64">
+          <motion.div variants={imageVariants} className="h-full w-full">
             <SmartImage
               src={product.images?.[0]}
               alt={`${product.name} - Estético profissional`}
               fallback={
-                product.category === 'Botox' || product.category === 'Dysport' || product.category === 'Xeomin'
+                product.category === 'Botox' ||
+                product.category === 'Dysport' ||
+                product.category === 'Xeomin'
                   ? '/icons/medicine-bottle.png'
                   : product.category === 'Visco-supl.'
-                  ? '/icons/syringe.png'
-                  : '/icons/pill-bottle.png'
+                    ? '/icons/syringe.png'
+                    : '/icons/pill-bottle.png'
               }
               fill
               className="object-cover transition-all duration-500 group-hover:scale-105"
@@ -141,62 +138,59 @@ export default function ProductCard({ product }: { product: Product }) {
               productName={product.name}
             />
           </motion.div>
-          
+
           {/* Status Badge */}
 
           {/* Quick Actions */}
-          <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10">
+          <div className="absolute right-3 top-3 z-10 flex flex-col gap-2 opacity-0 transition-all duration-200 group-hover:opacity-100">
             <Tooltip content="Ver detalhes completos" side="left">
               <Link
                 href={`/products/${product.slug}`}
-                className="w-9 h-9 bg-white/95 hover:bg-white rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 focus-ring border border-vitale-primary/20 hover:border-vitale-primary"
+                className="bg-white/95 hover:bg-white flex h-9 w-9 items-center justify-center rounded-xl border border-vitale-primary/20 shadow-lg transition-all duration-200 focus-ring hover:border-vitale-primary hover:shadow-xl"
                 aria-label={`Ver detalhes de ${product.name}`}
               >
-                <Eye className="w-4 h-4 text-vitale-primary" />
+                <Eye className="h-4 w-4 text-vitale-primary" />
               </Link>
             </Tooltip>
           </div>
 
           {/* Image indicator dots */}
           {product.images && product.images.length > 1 && (
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+            <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
               {product.images.slice(0, 4).map((_, idx) => (
                 <div
                   key={idx}
-                  className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                    idx === 0 
-                      ? 'bg-vitale-primary shadow-lg' 
-                      : 'bg-white/60 hover:bg-white/80'
+                  className={`h-2 w-2 rounded-full transition-all duration-200 ${
+                    idx === 0 ? 'bg-vitale-primary shadow-lg' : 'bg-white/60 hover:bg-white/80'
                   }`}
                 />
               ))}
               {product.images.length > 4 && (
-                <div className="text-xs text-white/80 font-medium bg-black/30 px-1.5 py-0.5 rounded-full">
+                <div className="text-white/80 bg-black/30 rounded-full px-1.5 py-0.5 text-xs font-medium">
                   +{product.images.length - 4}
                 </div>
               )}
             </div>
           )}
-
         </CardHeader>
 
         {/* Conteúdo do Card */}
-        <CardContent className="content-padding flex flex-col flex-1 gap-responsive-sm">
+        <CardContent className="content-padding gap-responsive-sm flex flex-1 flex-col">
           {/* Título e Categoria */}
           <div className="space-y-2">
             <div className="flex items-start justify-between gap-2">
-              <div className="flex-1 min-w-0">
-                <CardTitle 
+              <div className="min-w-0 flex-1">
+                <CardTitle
                   id={`product-${product.id}-name`}
-                  className="line-clamp-2 text-lg md:text-xl lg:text-2xl font-bold text-vitale-primary leading-tight"
+                  className="line-clamp-2 text-lg font-bold leading-tight text-vitale-primary md:text-xl lg:text-2xl"
                 >
                   {product.name}
                 </CardTitle>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="bg-vitale-primary/10 px-3 py-2 rounded-lg">
-                <span className="text-sm md:text-base font-bold text-vitale-primary uppercase tracking-wide">
+              <div className="rounded-lg bg-vitale-primary/10 px-3 py-2">
+                <span className="text-sm font-bold uppercase tracking-wide text-vitale-primary md:text-base">
                   {product.category?.replace('_', ' ')}
                 </span>
               </div>
@@ -206,49 +200,51 @@ export default function ProductCard({ product }: { product: Product }) {
           {/* Preços - Hierarquia melhorada */}
           <div className="space-y-3">
             {/* Preço PIX - Destaque principal */}
-            <div className="bg-gradient-to-r from-green-50 to-green-100/50 border-2 border-green-200 rounded-xl p-4">
+            <div className="from-green-50 to-green-100/50 border-green-200 rounded-xl border-2 bg-gradient-to-r p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-bold">
+                  <div className="bg-green-600 text-white rounded-lg px-3 py-2 text-sm font-bold">
                     PIX
                   </div>
-                  <span className="text-sm md:text-base text-green-700 font-bold">à vista</span>
+                  <span className="text-green-700 text-sm font-bold md:text-base">à vista</span>
                 </div>
                 <div className="text-right">
-                  <div className="text-xl md:text-2xl lg:text-3xl font-black text-green-600">
+                  <div className="font-black text-green-600 text-xl md:text-2xl lg:text-3xl">
                     {formatCurrency(pixPrice, product.currency)}
                   </div>
-                  <div className="text-sm text-green-600/80 font-medium">melhor preço</div>
+                  <div className="text-green-600/80 text-sm font-medium">melhor preço</div>
                 </div>
               </div>
             </div>
 
             {/* Parcelamento - Secundário */}
-            <div className="bg-vitale-primary/5 border-2 border-vitale-primary/20 rounded-xl p-4">
+            <div className="rounded-xl border-2 border-vitale-primary/20 bg-vitale-primary/5 p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm md:text-base font-bold text-vitale-primary">4x no cartão</span>
+                  <span className="text-sm font-bold text-vitale-primary md:text-base">
+                    4x no cartão
+                  </span>
                 </div>
-                <div className="text-lg md:text-xl lg:text-2xl font-black text-vitale-primary">
+                <div className="font-black text-lg text-vitale-primary md:text-xl lg:text-2xl">
                   {formatCurrency(cardPrice / 4, product.currency)}
                 </div>
               </div>
-              <div className="text-sm text-vitale-primary/80 mt-2 font-medium">
+              <div className="mt-2 text-sm font-medium text-vitale-primary/80">
                 Total: {formatCurrency(cardPrice, product.currency)}
               </div>
             </div>
           </div>
 
           {/* Status e Disponibilidade */}
-          <div className="bg-success-50 border-2 border-success-200 rounded-xl p-4 flex items-center gap-4">
-            <div className="bg-success-500 p-2 rounded-full">
-              <Package className="w-4 h-4 md:w-5 md:h-5 text-white" />
+          <div className="border-success-200 flex items-center gap-4 rounded-xl border-2 bg-success-50 p-4">
+            <div className="rounded-full bg-success-500 p-2">
+              <Package className="text-white h-4 w-4 md:h-5 md:w-5" />
             </div>
             <div className="flex-1">
-              <div className="text-sm md:text-base font-bold text-success-700">
+              <div className="text-sm font-bold text-success-700 md:text-base">
                 Disponível para envio imediato
               </div>
-              <div className="text-sm text-success-600 font-medium">
+              <div className="text-sm font-medium text-success-600">
                 Consulte condições especiais
               </div>
             </div>
@@ -257,30 +253,30 @@ export default function ProductCard({ product }: { product: Product }) {
           {/* Ações - Redesenhadas */}
           <div className="mt-auto space-y-4 pt-4">
             <Button
-              className="w-full font-bold rounded-xl py-4 md:py-5 text-base md:text-lg transition-all duration-200 bg-vitale-primary text-white hover:bg-vitale-secondary shadow-lg hover:shadow-xl interactive focus-ring min-h-[52px] md:min-h-[56px]"
+              className="text-white min-h-[52px] w-full rounded-xl bg-vitale-primary py-4 text-base font-bold shadow-lg transition-all duration-200 focus-ring interactive hover:bg-vitale-secondary hover:shadow-xl md:min-h-[56px] md:py-5 md:text-lg"
               onClick={handleAddToCart}
               disabled={isLoading}
               aria-label={`Adicionar ${product.name} ao carrinho`}
             >
               {isLoading ? (
-                <div className="flex items-center gap-2 justify-center w-full">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <div className="flex w-full items-center justify-center gap-2">
+                  <div className="border-white/30 border-t-white h-4 w-4 animate-spin rounded-full border-2" />
                   <span>Adicionando...</span>
                 </div>
               ) : (
-                <div className="flex items-center gap-2 justify-center w-full">
-                  <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+                <div className="flex w-full items-center justify-center gap-2">
+                  <ShoppingCart className="h-5 w-5 md:h-6 md:w-6" />
                   <span className="font-bold">Adicionar ao Carrinho</span>
                 </div>
               )}
             </Button>
-            
+
             <Link
               href={`/products/${product.slug}`}
-              className="w-full inline-flex items-center justify-center gap-3 px-4 py-3 md:py-4 text-sm md:text-base font-bold text-vitale-primary hover:text-vitale-secondary border-2 border-vitale-primary/30 hover:border-vitale-primary/50 rounded-xl bg-white hover:bg-vitale-primary/5 transition-all duration-200 focus-ring min-h-[48px] md:min-h-[52px]"
+              className="bg-white inline-flex min-h-[48px] w-full items-center justify-center gap-3 rounded-xl border-2 border-vitale-primary/30 px-4 py-3 text-sm font-bold text-vitale-primary transition-all duration-200 focus-ring hover:border-vitale-primary/50 hover:bg-vitale-primary/5 hover:text-vitale-secondary md:min-h-[52px] md:py-4 md:text-base"
               aria-label={`Ver detalhes completos de ${product.name}`}
             >
-              <Eye className="w-4 h-4 md:w-5 md:h-5" />
+              <Eye className="h-4 w-4 md:h-5 md:w-5" />
               <span>Ver Detalhes Completos</span>
             </Link>
           </div>

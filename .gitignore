@@ -123,6 +123,7 @@ temp/
 
 # Supabase
 .supabase/
+supabase/.temp/
 
 # Uploads
 public/uploads/

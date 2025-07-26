@@ -1,14 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  getProducts,
-  getProductBySlug,
-  mockProducts,
-} from './mockData';
+import { getProductBySlug, getProducts, mockProducts } from './mockData';
 
 describe('mockData', () => {
   it('getProducts retorna apenas produtos ativos', () => {
@@ -28,10 +20,11 @@ describe('mockData', () => {
     expect(prod).toBeNull();
   });
 
-  it('mockProducts têm preços PIX e cartão', () => {
+  it('mockProducts têm preços PIX, cartão e prazo', () => {
     mockProducts.forEach(product => {
       expect(product.price_pix).toBeGreaterThan(0);
       expect(product.price_card).toBeGreaterThan(0);
+      expect(product.price_prazo).toBeGreaterThan(0);
       expect(product.slug).toBeTruthy();
       expect(product.category).toBeTruthy();
     });
@@ -45,4 +38,4 @@ describe('mockData', () => {
       expect(product.currency).toBe('BRL');
     });
   });
-}); 
+});

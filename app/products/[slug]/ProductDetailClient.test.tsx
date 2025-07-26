@@ -1,15 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
-import {
-  fireEvent,
-  render,
-  screen,
-} from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import ProductDetailClient from './ProductDetailClient';
 
@@ -26,9 +17,10 @@ const mockProduct = {
   images: ['img1.jpg'],
   price_pix: 10,
   price_card: 12,
+  price_prazo: 12,
   currency: 'BRL',
   description: 'desc',
-  slug: 'produto-slug'
+  slug: 'produto-slug',
 };
 
 describe('ProductDetailClient', () => {
@@ -48,8 +40,8 @@ describe('ProductDetailClient', () => {
         price: 10, // price_pix
         quantity: 3,
         images: ['img1.jpg'],
-        category: 'Test'
+        category: 'Test',
       })
     );
   });
-}); 
+});
