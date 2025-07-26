@@ -97,19 +97,26 @@ export class ErrorBoundary extends Component<Props, State> {
       const payload = {
         error: error instanceof Error ? error.toString() : String(error),
         stack: error?.stack || '',
-        url: window.location.href,
-        userAgent: navigator.userAgent,
+        url: typeof window !== 'undefined' ? window.location.href : '',
+        userAgent: typeof window !== 'undefined' ? navigator.userAgent : '',
         timestamp: new Date().toISOString(),
       };
+
       const res = await fetch('/api/error-report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+
       if (!res.ok) throw new Error('Falha ao reportar erro');
-      this.setState({ reporting: false, reported: true, reportError: null } as any);
-    } catch {
-      this.setState({ reporting: false, reportError: 'Falha ao reportar erro' } as any);
+
+      if (typeof window !== 'undefined') {
+        this.setState({ reporting: false, reported: true, reportError: null } as any);
+      }
+    } catch (error) {
+      if (typeof window !== 'undefined') {
+        this.setState({ reporting: false, reportError: 'Falha ao reportar erro' } as any);
+      }
     }
   };
 

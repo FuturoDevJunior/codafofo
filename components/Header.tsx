@@ -11,6 +11,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 const NAV_LINKS = [
   { href: '/', label: 'Início' },
   { href: '/products', label: 'Catálogo' },
+  { href: '/cart', label: 'Carrinho' },
 ];
 
 export default function Header() {

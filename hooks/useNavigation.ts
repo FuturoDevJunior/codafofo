@@ -1,7 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
 
 interface NavigationOptions {
   fallbackUrl?: string;
@@ -34,8 +35,10 @@ export function useNavigation(options: NavigationOptions = {}) {
 
         // Simular delay mínimo para evitar flicker
         setTimeout(() => {
-          setState({ isNavigating: false, error: null });
-          options.onSuccess?.(url);
+          if (typeof window !== 'undefined') {
+            setState({ isNavigating: false, error: null });
+            options.onSuccess?.(url);
+          }
         }, 50);
       } catch (error) {
         console.warn('Erro na navegação programática, usando fallback:', error);
@@ -79,7 +82,9 @@ export function useNavigation(options: NavigationOptions = {}) {
     try {
       router.refresh();
     } catch (error) {
-      window.location.reload();
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
     }
   }, [router]);
 
