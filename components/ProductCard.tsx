@@ -108,6 +108,7 @@ export default function ProductCard({ product, variant = 'vertical' }: ProductCa
       whileHover="hover"
       transition={{ duration: 0.4, ease: 'easeOut' }}
       className="group h-full"
+      style={{ display: 'block' }}
     >
       <Card
         className="bg-white flex h-full flex-col overflow-hidden rounded-2xl border border-vitale-primary/20 transition-all duration-300 focus-ring hover:border-vitale-primary/40 hover:shadow-vitale"
@@ -182,7 +183,7 @@ export default function ProductCard({ product, variant = 'vertical' }: ProductCa
               <div className="min-w-0 flex-1">
                 <CardTitle
                   id={`product-${product.id}-name`}
-                  className="line-clamp-2 text-lg font-bold leading-tight text-vitale-primary md:text-xl lg:text-2xl"
+                  className="product-title text-lg font-bold leading-tight text-vitale-primary md:text-xl lg:text-2xl"
                   title={product.name}
                 >
                   {product.name}
@@ -190,8 +191,8 @@ export default function ProductCard({ product, variant = 'vertical' }: ProductCa
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="rounded-lg bg-vitale-primary/10 px-3 py-2">
-                <span className="text-sm font-bold uppercase tracking-wide text-vitale-primary md:text-base">
+              <div className="rounded-lg bg-vitale-primary/10 px-2 py-1.5 md:px-3 md:py-2">
+                <span className="text-xs font-bold uppercase tracking-wide text-vitale-primary md:text-sm lg:text-base">
                   {product.category?.replace('_', ' ')}
                 </span>
               </div>
@@ -202,18 +203,20 @@ export default function ProductCard({ product, variant = 'vertical' }: ProductCa
           <div className="space-y-3">
             {/* Preço PIX - Destaque principal */}
             <div className="from-green-50 to-green-100/50 border-green-200 rounded-xl border-2 bg-gradient-to-r p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="bg-green-600 text-white rounded-lg px-3 py-2 text-sm font-bold">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-2">
+                  <div className="bg-green-600 text-white flex-shrink-0 rounded-lg px-2 py-1.5 text-xs font-bold">
                     PIX
                   </div>
-                  <span className="text-green-700 text-sm font-bold md:text-base">à vista</span>
+                  <span className="text-green-700 truncate text-xs font-bold md:text-sm">
+                    à vista
+                  </span>
                 </div>
-                <div className="text-right">
-                  <div className="font-black text-green-600 text-xl md:text-2xl lg:text-3xl">
+                <div className="price-container text-right">
+                  <div className="font-black text-green-600 price-text text-lg md:text-xl lg:text-2xl">
                     {formatCurrency(pixPrice, product.currency)}
                   </div>
-                  <div className="text-green-600/80 whitespace-nowrap text-sm font-medium">
+                  <div className="text-green-600/80 price-label text-xs font-medium md:text-sm">
                     melhor preço
                   </div>
                 </div>
@@ -222,32 +225,32 @@ export default function ProductCard({ product, variant = 'vertical' }: ProductCa
 
             {/* Parcelamento - Secundário */}
             <div className="rounded-xl border-2 border-vitale-primary/20 bg-vitale-primary/5 p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-vitale-primary md:text-base">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-2">
+                  <span className="text-xs font-bold text-vitale-primary md:text-sm">
                     4x no cartão
                   </span>
                 </div>
-                <div className="font-black text-lg text-vitale-primary md:text-xl lg:text-2xl">
+                <div className="font-black price-text text-base text-vitale-primary md:text-lg lg:text-xl">
                   {formatCurrency(cardPrice / 4, product.currency)}
                 </div>
               </div>
-              <div className="mt-2 text-sm font-medium text-vitale-primary/80">
+              <div className="mt-2 text-xs font-medium text-vitale-primary/80 md:text-sm">
                 Total: {formatCurrency(cardPrice, product.currency)}
               </div>
             </div>
           </div>
 
           {/* Status e Disponibilidade */}
-          <div className="border-success-200 flex items-center gap-4 rounded-xl border-2 bg-success-50 p-4">
-            <div className="rounded-full bg-success-500 p-2">
-              <Package className="text-white h-4 w-4 md:h-5 md:w-5" />
+          <div className="border-success-200 flex items-center gap-3 rounded-xl border-2 bg-success-50 p-3 md:p-4">
+            <div className="flex-shrink-0 rounded-full bg-success-500 p-1.5 md:p-2">
+              <Package className="text-white h-3 w-3 md:h-4 md:w-4 lg:h-5 lg:w-5" />
             </div>
-            <div className="flex-1">
-              <div className="text-sm font-bold text-success-700 md:text-base">
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-bold text-success-700 md:text-sm lg:text-base">
                 Disponível para envio imediato
               </div>
-              <div className="text-sm font-medium text-success-600">
+              <div className="text-xs font-medium text-success-600 md:text-sm">
                 Consulte condições especiais
               </div>
             </div>

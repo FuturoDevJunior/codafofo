@@ -200,8 +200,29 @@ describe('AdminDashboard', () => {
 
     const exportButton = screen.queryByRole('button', { name: /exportar|download/i });
     if (exportButton) {
+      // Mock da função de download para evitar erro de navegação
+      const originalCreateElement = document.createElement;
+      const mockLink = {
+        href: '',
+        download: '',
+        click: vi.fn(),
+        style: {},
+      };
+      document.createElement = vi.fn().mockReturnValue(mockLink);
+
+      // Mock do document.body
+      const originalAppendChild = document.body.appendChild;
+      const originalRemoveChild = document.body.removeChild;
+      document.body.appendChild = vi.fn();
+      document.body.removeChild = vi.fn();
+
       await user.click(exportButton);
       expect(exportButton).toBeInTheDocument();
+
+      // Restaurar funções originais
+      document.createElement = originalCreateElement;
+      document.body.appendChild = originalAppendChild;
+      document.body.removeChild = originalRemoveChild;
     }
   });
 

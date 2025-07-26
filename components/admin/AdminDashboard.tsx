@@ -31,6 +31,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Table,
   TableBody,
@@ -122,38 +123,40 @@ export default function AdminDashboard({
   };
 
   const exportToCSV = () => {
-    const headers = [
-      'Nome',
-      'Categoria',
-      'Preço PIX',
-      'Preço Cartão',
-      'Status',
-      'Imagens',
-      'Descrição',
-    ];
-    const rows = filteredProducts.map(p => [
-      p.name,
-      p.category || '',
-      p.price_pix || p.price || '',
-      p.price_card || p.price || '',
-      p.active !== false ? 'Ativo' : 'Inativo',
-      (p.images?.length || 0) + ' imagem(ns)',
-      p.description || '',
-    ]);
+    if (typeof document !== 'undefined') {
+      const headers = [
+        'Nome',
+        'Categoria',
+        'Preço PIX',
+        'Preço Cartão',
+        'Status',
+        'Imagens',
+        'Descrição',
+      ];
+      const rows = filteredProducts.map(p => [
+        p.name,
+        p.category || '',
+        p.price_pix || p.price || '',
+        p.price_card || p.price || '',
+        p.active !== false ? 'Ativo' : 'Inativo',
+        (p.images?.length || 0) + ' imagem(ns)',
+        p.description || '',
+      ]);
 
-    const csvContent = [headers, ...rows]
-      .map(row => row.map(field => `"${field}"`).join(','))
-      .join('\n');
+      const csvContent = [headers, ...rows]
+        .map(row => row.map(field => `"${field}"`).join(','))
+        .join('\n');
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `vytalle-produtos-${new Date().toISOString().split('T')[0]}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `vytalle-produtos-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
   };
 
   return (
@@ -161,25 +164,26 @@ export default function AdminDashboard({
       {/* Header Administrativo */}
       <header className="bg-white sticky top-0 z-30 border-b-2 border-vitale-primary/20 shadow-lg">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center md:gap-4">
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-vitale-primary">
-                <Settings className="text-white h-6 w-6" />
+          <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-center lg:gap-4">
+            <div className="flex items-center gap-3 lg:gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-vitale-primary lg:h-12 lg:w-12">
+                <Settings className="text-white h-5 w-5 lg:h-6 lg:w-6" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold leading-tight text-vitale-primary md:text-3xl">
+                <h1 className="text-xl font-bold leading-tight text-vitale-primary lg:text-2xl xl:text-3xl">
                   Dashboard Administrativo
                 </h1>
-                <p className="text-sm text-neutral-600 md:text-base">
+                <p className="text-xs text-neutral-600 lg:text-sm xl:text-base">
                   Bem-vindo, <span className="font-semibold">{user.email}</span> • Vytalle Estética
+                  & Viscosuplementação
                 </p>
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex w-full flex-wrap items-center gap-2 lg:w-auto lg:gap-3">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="bg-green-600 hover:bg-green-700 text-white flex min-w-[120px] items-center gap-2 rounded-xl px-4 py-2">
-                    <Plus className="h-5 w-5" />
+                  <Button className="bg-green-600 hover:bg-green-700 text-white flex w-full min-w-[100px] items-center gap-2 rounded-xl px-3 py-2 sm:w-auto lg:min-w-[120px] lg:px-4">
+                    <Plus className="h-4 w-4 lg:h-5 lg:w-5" />
                     <span className="hidden sm:inline">Novo Produto</span>
                     <span className="sm:hidden">Novo</span>
                   </Button>
@@ -197,10 +201,10 @@ export default function AdminDashboard({
               <Button
                 onClick={handleLogout}
                 variant="outline"
-                className="border-red-200 text-red-600 hover:bg-red-50 flex min-w-[100px] items-center gap-2 rounded-xl px-4 py-2"
+                className="border-red-200 text-red-600 hover:bg-red-50 flex w-full min-w-[80px] items-center gap-2 rounded-xl px-3 py-2 sm:w-auto lg:min-w-[100px] lg:px-4"
                 aria-label="Sair do painel administrativo"
               >
-                <LogOut className="h-5 w-5" />
+                <LogOut className="h-4 w-4 lg:h-5 lg:w-5" />
                 <span className="hidden sm:inline">Sair</span>
               </Button>
             </div>
@@ -210,63 +214,68 @@ export default function AdminDashboard({
 
       <div className="max-w-responsive-lg container mx-auto px-2 py-8 sm:px-4 md:px-6">
         {/* Estatísticas */}
-        <div
-          className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6"
-          data-testid="admin-stats"
-        >
+        <div className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 lg:gap-6" data-testid="admin-stats">
           <section
-            className="bg-white rounded-xl border-2 border-vitale-primary/20 p-4 shadow-lg md:p-6"
+            className="bg-white rounded-xl border-2 border-vitale-primary/20 p-3 shadow-lg sm:p-4 lg:p-6"
             aria-label="Total de produtos"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-vitale-primary/10">
-                <Package className="h-5 w-5 text-vitale-primary" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-vitale-primary/10 sm:h-10 sm:w-10">
+                <Package className="h-4 w-4 text-vitale-primary sm:h-5 sm:w-5" />
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-vitale-primary">Total</h3>
-                <p className="text-2xl font-bold text-vitale-primary">{stats.totalProducts}</p>
+                <h3 className="text-xs font-semibold text-vitale-primary sm:text-sm">Total</h3>
+                <p className="text-lg font-bold text-vitale-primary sm:text-xl lg:text-2xl">
+                  {stats.totalProducts}
+                </p>
               </div>
             </div>
           </section>
           <section
-            className="bg-white border-green-200 rounded-xl border-2 p-4 shadow-lg md:p-6"
+            className="bg-white border-green-200 rounded-xl border-2 p-3 shadow-lg sm:p-4 lg:p-6"
             aria-label="Produtos ativos"
           >
-            <div className="flex items-center gap-3">
-              <div className="bg-green-100 flex h-10 w-10 items-center justify-center rounded-lg">
-                <BarChart3 className="text-green-600 h-5 w-5" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-green-100 flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10">
+                <BarChart3 className="text-green-600 h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <div>
-                <h3 className="text-green-700 text-sm font-semibold">Ativos</h3>
-                <p className="text-green-700 text-2xl font-bold">{stats.activeProducts}</p>
+                <h3 className="text-green-700 text-xs font-semibold sm:text-sm">Ativos</h3>
+                <p className="text-green-700 text-lg font-bold sm:text-xl lg:text-2xl">
+                  {stats.activeProducts}
+                </p>
               </div>
             </div>
           </section>
           <section
-            className="bg-white border-blue-200 rounded-xl border-2 p-4 shadow-lg md:p-6"
+            className="bg-white border-blue-200 rounded-xl border-2 p-3 shadow-lg sm:p-4 lg:p-6"
             aria-label="Categorias"
           >
-            <div className="flex items-center gap-3">
-              <div className="bg-blue-100 flex h-10 w-10 items-center justify-center rounded-lg">
-                <Filter className="text-blue-600 h-5 w-5" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-blue-100 flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10">
+                <Filter className="text-blue-600 h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <div>
-                <h3 className="text-blue-700 text-sm font-semibold">Categorias</h3>
-                <p className="text-blue-700 text-2xl font-bold">{stats.categories}</p>
+                <h3 className="text-blue-700 text-xs font-semibold sm:text-sm">Categorias</h3>
+                <p className="text-blue-700 text-lg font-bold sm:text-xl lg:text-2xl">
+                  {stats.categories}
+                </p>
               </div>
             </div>
           </section>
           <section
-            className="bg-white border-purple-200 rounded-xl border-2 p-4 shadow-lg md:p-6"
+            className="bg-white border-purple-200 rounded-xl border-2 p-3 shadow-lg sm:p-4 lg:p-6"
             aria-label="Fornecedores"
           >
-            <div className="flex items-center gap-3">
-              <div className="bg-purple-100 flex h-10 w-10 items-center justify-center rounded-lg">
-                <Users className="text-purple-600 h-5 w-5" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-purple-100 flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10">
+                <Users className="text-purple-600 h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <div>
-                <h3 className="text-purple-700 text-sm font-semibold">Fornecedores</h3>
-                <p className="text-purple-700 text-2xl font-bold">{stats.suppliers}</p>
+                <h3 className="text-purple-700 text-xs font-semibold sm:text-sm">Fornecedores</h3>
+                <p className="text-purple-700 text-lg font-bold sm:text-xl lg:text-2xl">
+                  {stats.suppliers}
+                </p>
               </div>
             </div>
           </section>
@@ -274,35 +283,27 @@ export default function AdminDashboard({
 
         {/* Filtros e Ações */}
         <div className="bg-white mb-8 rounded-xl border-2 border-vitale-primary/20 p-4 shadow-lg md:p-6">
-          <div className="flex flex-col items-start gap-4 lg:flex-row lg:items-end">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {/* Busca */}
-            <div className="w-full min-w-[180px] flex-1">
-              <label
-                className="mb-2 block text-sm font-bold text-vitale-primary"
-                htmlFor="admin-search"
-              >
+            <div className="sm:col-span-2 lg:col-span-1">
+              <Label htmlFor="admin-search" variant="default" size="sm" className="mb-2">
                 Buscar Produtos
-              </label>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-vitale-primary" />
-                <Input
-                  id="admin-search"
-                  placeholder="Nome, categoria, descrição..."
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                  className="rounded-xl border-2 border-vitale-primary/30 py-3 pl-12 text-base focus:border-vitale-primary"
-                  aria-label="Buscar produtos por nome, categoria ou descrição"
-                />
-              </div>
+              </Label>
+              <Input
+                id="admin-search"
+                placeholder="Nome, categoria, descrição..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                inputSize="md"
+                leftIcon={<Search className="h-4 w-4" />}
+                aria-label="Buscar produtos por nome, categoria ou descrição"
+              />
             </div>
             {/* Filtro Categoria */}
-            <div className="w-full min-w-[140px] lg:w-64">
-              <label
-                className="mb-2 block text-sm font-bold text-vitale-primary"
-                htmlFor="admin-category"
-              >
+            <div className="sm:col-span-1">
+              <Label htmlFor="admin-category" variant="default" size="sm" className="mb-2">
                 Categoria
-              </label>
+              </Label>
               <select
                 id="admin-category"
                 value={selectedCategory}
@@ -319,13 +320,10 @@ export default function AdminDashboard({
               </select>
             </div>
             {/* Filtro Fornecedor */}
-            <div className="w-full min-w-[140px] lg:w-64">
-              <label
-                className="mb-2 block text-sm font-bold text-vitale-primary"
-                htmlFor="admin-supplier"
-              >
+            <div className="sm:col-span-1">
+              <Label htmlFor="admin-supplier" variant="default" size="sm" className="mb-2">
                 Fornecedor
-              </label>
+              </Label>
               <select
                 id="admin-supplier"
                 value={selectedSupplier}
@@ -341,10 +339,13 @@ export default function AdminDashboard({
                 ))}
               </select>
             </div>
-            {/* Exportar */}
+          </div>
+
+          {/* Botão Exportar */}
+          <div className="mt-4 flex justify-end">
             <Button
               onClick={exportToCSV}
-              className="bg-blue-600 hover:bg-blue-700 text-white flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl px-6 py-3 lg:w-auto"
+              className="bg-blue-600 hover:bg-blue-700 text-white flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl px-6 py-3 sm:w-auto"
               aria-label="Exportar produtos para CSV"
             >
               <Download className="h-5 w-5" />
@@ -384,31 +385,31 @@ export default function AdminDashboard({
           </div>
 
           <div className="overflow-x-auto">
-            <Table className="min-w-[900px]">
+            <Table className="min-w-[800px] lg:min-w-[900px]">
               <TableHeader>
                 <TableRow className="bg-vitale-primary/5">
-                  <TableHead className="min-w-[60px] font-bold text-vitale-primary">
+                  <TableHead className="min-w-[50px] text-xs font-bold text-vitale-primary lg:min-w-[60px] lg:text-sm">
                     Imagem
                   </TableHead>
-                  <TableHead className="min-w-[200px] font-bold text-vitale-primary">
+                  <TableHead className="min-w-[150px] text-xs font-bold text-vitale-primary lg:min-w-[200px] lg:text-sm">
                     Nome
                   </TableHead>
-                  <TableHead className="min-w-[120px] font-bold text-vitale-primary">
+                  <TableHead className="min-w-[100px] text-xs font-bold text-vitale-primary lg:min-w-[120px] lg:text-sm">
                     Categoria
                   </TableHead>
-                  <TableHead className="min-w-[100px] font-bold text-vitale-primary">
+                  <TableHead className="min-w-[80px] text-xs font-bold text-vitale-primary lg:min-w-[100px] lg:text-sm">
                     Preço PIX
                   </TableHead>
-                  <TableHead className="min-w-[100px] font-bold text-vitale-primary">
+                  <TableHead className="min-w-[80px] text-xs font-bold text-vitale-primary lg:min-w-[100px] lg:text-sm">
                     Preço Cartão
                   </TableHead>
-                  <TableHead className="min-w-[80px] font-bold text-vitale-primary">
+                  <TableHead className="min-w-[60px] text-xs font-bold text-vitale-primary lg:min-w-[80px] lg:text-sm">
                     Status
                   </TableHead>
-                  <TableHead className="min-w-[100px] font-bold text-vitale-primary">
+                  <TableHead className="min-w-[80px] text-xs font-bold text-vitale-primary lg:min-w-[100px] lg:text-sm">
                     Imagens
                   </TableHead>
-                  <TableHead className="min-w-[200px] font-bold text-vitale-primary">
+                  <TableHead className="min-w-[150px] text-xs font-bold text-vitale-primary lg:min-w-[200px] lg:text-sm">
                     Ações
                   </TableHead>
                 </TableRow>
@@ -418,7 +419,7 @@ export default function AdminDashboard({
                   <TableRow key={product.id} className="hover:bg-vitale-primary/5">
                     {/* Imagem Principal */}
                     <TableCell>
-                      <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-lg bg-vitale-primary/10">
+                      <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-vitale-primary/10 lg:h-12 lg:w-12">
                         {product.images?.[0] ? (
                           <Image
                             src={product.images[0]}
@@ -428,20 +429,23 @@ export default function AdminDashboard({
                             className="h-full w-full object-cover"
                           />
                         ) : (
-                          <Package className="h-6 w-6 text-vitale-primary" />
+                          <Package className="h-4 w-4 text-vitale-primary lg:h-6 lg:w-6" />
                         )}
                       </div>
                     </TableCell>
 
                     {/* Nome */}
                     <TableCell className="font-medium">
-                      <div className="max-w-[200px]">
-                        <p className="truncate font-bold text-vitale-primary" title={product.name}>
+                      <div className="max-w-[150px] lg:max-w-[200px]">
+                        <p
+                          className="truncate text-xs font-bold text-vitale-primary lg:text-sm"
+                          title={product.name}
+                        >
                           {product.name}
                         </p>
                         {product.description && (
                           <p
-                            className="truncate text-sm text-neutral-600"
+                            className="truncate text-xs text-neutral-600 lg:text-sm"
                             title={product.description}
                           >
                             {product.description}
@@ -452,23 +456,23 @@ export default function AdminDashboard({
 
                     {/* Categoria */}
                     <TableCell>
-                      <span className="rounded-full bg-vitale-primary/10 px-2 py-1 text-xs font-semibold text-vitale-primary">
+                      <span className="rounded-full bg-vitale-primary/10 px-1 py-0.5 text-xs font-semibold text-vitale-primary lg:px-2 lg:py-1">
                         {product.category || 'Sem categoria'}
                       </span>
                     </TableCell>
 
                     {/* Preços */}
-                    <TableCell className="text-green-700 font-semibold">
+                    <TableCell className="text-green-700 text-xs font-semibold lg:text-sm">
                       {formatCurrency(product.price_pix || product.price || 0)}
                     </TableCell>
-                    <TableCell className="text-blue-700 font-semibold">
+                    <TableCell className="text-blue-700 text-xs font-semibold lg:text-sm">
                       {formatCurrency(product.price_card || product.price || 0)}
                     </TableCell>
 
                     {/* Status */}
                     <TableCell>
                       <span
-                        className={`rounded-full px-2 py-1 text-xs font-semibold ${
+                        className={`rounded-full px-1 py-0.5 text-xs font-semibold lg:px-2 lg:py-1 ${
                           product.active !== false
                             ? 'bg-green-100 text-green-700'
                             : 'bg-red-100 text-red-700'
@@ -480,9 +484,9 @@ export default function AdminDashboard({
 
                     {/* Contador de Imagens */}
                     <TableCell>
-                      <div className="flex items-center gap-2">
-                        <ImageIcon className="h-4 w-4 text-vitale-primary" />
-                        <span className="text-sm font-medium text-vitale-primary">
+                      <div className="flex items-center gap-1 lg:gap-2">
+                        <ImageIcon className="h-3 w-3 text-vitale-primary lg:h-4 lg:w-4" />
+                        <span className="text-xs font-medium text-vitale-primary lg:text-sm">
                           {product.images?.length || 0}
                         </span>
                       </div>
@@ -490,16 +494,16 @@ export default function AdminDashboard({
 
                     {/* Ações */}
                     <TableCell>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1 lg:gap-2">
                         {/* Editar Produto */}
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button
                               size="sm"
-                              className="text-white min-w-[40px] bg-vitale-primary hover:bg-vitale-secondary"
+                              className="text-white h-8 min-w-[32px] bg-vitale-primary hover:bg-vitale-secondary lg:h-9 lg:min-w-[40px]"
                               title="Editar produto"
                             >
-                              <Edit className="h-4 w-4" />
+                              <Edit className="h-3 w-3 lg:h-4 lg:w-4" />
                             </Button>
                           </DialogTrigger>
                           <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
@@ -545,10 +549,10 @@ export default function AdminDashboard({
                           <DialogTrigger asChild>
                             <Button
                               size="sm"
-                              className="bg-blue-600 hover:bg-blue-700 text-white min-w-[40px]"
+                              className="bg-blue-600 hover:bg-blue-700 text-white h-8 min-w-[32px] lg:h-9 lg:min-w-[40px]"
                               title="Gerenciar imagens"
                             >
-                              <ImageIcon className="h-4 w-4" />
+                              <ImageIcon className="h-3 w-3 lg:h-4 lg:w-4" />
                             </Button>
                           </DialogTrigger>
                           <DialogContent className="max-h-[90vh] max-w-6xl overflow-y-auto">
@@ -575,21 +579,21 @@ export default function AdminDashboard({
                         <Button
                           size="sm"
                           variant="outline"
-                          className="min-w-[40px] border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary/10"
+                          className="h-8 min-w-[32px] border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary/10 lg:h-9 lg:min-w-[40px]"
                           onClick={() => window.open(`/products/${product.slug}`, '_blank')}
                           title="Ver produto no site"
                         >
-                          <Eye className="h-4 w-4" />
+                          <Eye className="h-3 w-3 lg:h-4 lg:w-4" />
                         </Button>
 
                         {/* Excluir */}
                         <Button
                           size="sm"
-                          className="bg-red-600 hover:bg-red-700 text-white min-w-[40px]"
+                          className="bg-red-600 hover:bg-red-700 text-white h-8 min-w-[32px] lg:h-9 lg:min-w-[40px]"
                           onClick={() => handleDeleteProduct(product.id, product.name)}
                           title="Excluir produto"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3 w-3 lg:h-4 lg:w-4" />
                         </Button>
                       </div>
                     </TableCell>

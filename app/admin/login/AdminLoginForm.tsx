@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/supabase/browser';
 
 export default function AdminLoginForm() {
@@ -65,48 +66,46 @@ export default function AdminLoginForm() {
         <div className="bg-white rounded-2xl border-2 border-vitale-primary/20 p-8 shadow-xl">
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-bold text-vitale-primary">
+              <Label htmlFor="email" variant="required" size="md">
                 Email Administrativo
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-vitale-primary" />
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  className="rounded-xl border-2 border-vitale-primary/30 py-4 pl-12 text-lg focus:border-vitale-primary"
-                  disabled={isLoading}
-                  autoComplete="username"
-                />
-              </div>
+              </Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                inputSize="lg"
+                leftIcon={<Mail className="h-5 w-5" />}
+                disabled={isLoading}
+                autoComplete="username"
+              />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-bold text-vitale-primary">
+              <Label htmlFor="password" variant="required" size="md">
                 Senha
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-vitale-primary" />
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  className="rounded-xl border-2 border-vitale-primary/30 py-4 pl-12 pr-12 text-lg focus:border-vitale-primary"
-                  disabled={isLoading}
-                  autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 transform text-vitale-primary"
-                >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
-              </div>
+              </Label>
+              <Input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                inputSize="lg"
+                leftIcon={<Lock className="h-5 w-5" />}
+                rightIcon={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-vitale-primary transition-colors hover:text-vitale-secondary"
+                  >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+                }
+                disabled={isLoading}
+                autoComplete="current-password"
+              />
             </div>
 
             {error && (

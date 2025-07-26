@@ -47,7 +47,7 @@ Um dos nossos vendedores irá finalizar sua compra.
 Nossa equipe está à sua disposição para qualquer esclarecimento.
 
 Atenciosamente,
-Equipe Vytalle Estética
+        Equipe Vytalle Estética & Viscosuplementação
 
 PDF da cotação: ${pdfUrl}`;
 

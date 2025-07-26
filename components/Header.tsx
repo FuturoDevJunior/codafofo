@@ -34,7 +34,7 @@ export default function Header() {
             priority
           />
           <span className="hidden text-lg font-bold text-vitale-primary transition-colors group-hover:text-vitale-secondary sm:block md:text-xl lg:text-2xl">
-            Vytalle Estética
+            Vytalle Estética & Viscosuplementação
           </span>
         </Link>
 
@@ -89,7 +89,9 @@ export default function Header() {
                       height={40}
                       className="h-10 w-10 object-contain"
                     />
-                    <span className="text-xl font-bold text-vitale-primary">Vytalle</span>
+                    <span className="text-xl font-bold text-vitale-primary">
+                      Vytalle Estética & Viscosuplementação
+                    </span>
                   </Link>
                   <button
                     aria-label="Fechar menu"
