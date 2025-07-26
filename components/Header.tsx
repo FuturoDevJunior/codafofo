@@ -39,10 +39,10 @@ export default function Header() {
             <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-vitale-primary/20 to-vitale-secondary/20 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100" />
           </div>
           <div className="hidden sm:block">
-            <span className="block text-xl font-bold text-vitale-primary transition-colors group-hover:text-vitale-secondary md:text-2xl lg:text-3xl">
+            <span className="block font-heading text-xl font-bold tracking-wide text-vitale-primary transition-colors group-hover:text-vitale-secondary md:text-2xl md:tracking-wide lg:text-3xl lg:tracking-wide">
               Vytalle
             </span>
-            <span className="block text-sm font-medium text-vitale-primary/80 transition-colors group-hover:text-vitale-secondary/80 md:text-base">
+            <span className="block text-sm font-medium tracking-wide text-vitale-primary/80 transition-colors group-hover:text-vitale-secondary/80 md:text-base md:tracking-wide">
               Estética & Viscosuplementação
             </span>
           </div>
@@ -57,7 +57,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="hover:text-white relative flex min-h-[48px] items-center rounded-2xl px-5 py-3 text-base font-semibold text-vitale-primary transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r hover:from-vitale-primary hover:to-vitale-secondary hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-vitale-primary focus:ring-offset-2 lg:px-6 lg:text-lg"
+              className="hover:text-white relative flex min-h-[48px] items-center rounded-2xl px-5 py-3 text-base font-semibold tracking-wide text-vitale-primary transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r hover:from-vitale-primary hover:to-vitale-secondary hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-vitale-primary focus:ring-offset-2 lg:px-6 lg:text-lg lg:tracking-wide"
             >
               {link.label}
             </Link>
@@ -66,7 +66,7 @@ export default function Header() {
             href="https://wa.me/5521996192890?text=Olá! Gostaria de informações sobre os produtos da Vytalle."
             target="_blank"
             rel="noopener noreferrer"
-            className="from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 focus:ring-green-600 ml-4 flex min-h-[48px] items-center rounded-2xl bg-gradient-to-r px-6 py-3 text-base font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 lg:px-8 lg:text-lg"
+            className="from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 focus:ring-green-600 ml-4 flex min-h-[48px] items-center rounded-2xl bg-gradient-to-r px-6 py-3 text-base font-bold tracking-wide shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 lg:px-8 lg:text-lg lg:tracking-wide"
           >
             📱 WhatsApp
           </a>
@@ -78,9 +78,10 @@ export default function Header() {
             <Dialog.Trigger asChild>
               <button
                 aria-label="Abrir menu de navegação"
-                className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl p-3 text-vitale-primary transition-all duration-200 hover:bg-vitale-primary/10 focus:outline-none focus:ring-2 focus:ring-vitale-primary focus:ring-offset-2"
+                className="bg-white/80 hover:bg-white relative flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl p-3 text-vitale-primary shadow-lg transition-all duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-vitale-primary focus:ring-offset-2"
               >
                 <MenuIcon className="h-7 w-7" aria-hidden="true" />
+                <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-vitale-primary/10 to-vitale-secondary/10 opacity-0 transition-opacity duration-200 hover:opacity-100" />
               </button>
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -100,7 +101,7 @@ export default function Header() {
                       className="logo-image h-8 w-8 object-contain sm:h-10 sm:w-10"
                       sizes="(max-width: 640px) 32px, 40px"
                     />
-                    <span className="text-xl font-bold text-vitale-primary">
+                    <span className="font-heading text-xl font-bold tracking-wide text-vitale-primary">
                       Vytalle Estética & Viscosuplementação
                     </span>
                   </Link>
@@ -118,7 +119,7 @@ export default function Header() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className="hover:text-white flex min-h-[56px] items-center rounded-xl px-4 py-4 text-xl font-bold text-vitale-primary transition-colors hover:bg-vitale-primary focus:outline-none focus:ring-2 focus:ring-vitale-primary"
+                      className="hover:text-white flex min-h-[56px] items-center rounded-xl px-4 py-4 text-xl font-bold tracking-wide text-vitale-primary transition-colors hover:bg-vitale-primary focus:outline-none focus:ring-2 focus:ring-vitale-primary"
                     >
                       {link.label}
                     </Link>
@@ -127,7 +128,7 @@ export default function Header() {
                     href="https://wa.me/5521996192890?text=Olá! Gostaria de informações sobre os produtos da Vytalle."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-green-600 text-white hover:bg-green-700 focus:ring-green-600 mt-4 flex min-h-[56px] items-center justify-center rounded-xl px-6 py-4 text-xl font-bold shadow-md transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2"
+                    className="bg-green-600 text-white hover:bg-green-700 focus:ring-green-600 mt-4 flex min-h-[56px] items-center justify-center rounded-xl px-6 py-4 text-xl font-bold tracking-wide shadow-md transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2"
                     onClick={() => setMobileOpen(false)}
                   >
                     WhatsApp

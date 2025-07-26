@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+
+import { render, screen } from '@testing-library/react';
 
 import Home from './page';
 
@@ -92,7 +93,8 @@ describe('Página Inicial - Navegação do Catálogo', () => {
 
     // Verifica o título principal
     expect(screen.getByText('Produtos Premium para')).toBeInTheDocument();
-    expect(screen.getByText('Estética Profissional')).toBeInTheDocument();
+    expect(screen.getByText('Estética')).toBeInTheDocument();
+    expect(screen.getByText('Profissional')).toBeInTheDocument();
 
     // Verifica seção de produtos em destaque
     expect(screen.getByText('Produtos em Destaque')).toBeInTheDocument();

@@ -63,16 +63,21 @@ export default function Home() {
 
           {/* Título Principal com Melhor Hierarquia */}
           <div className="max-w-responsive mx-auto space-y-6 md:space-y-8">
-            <h1 className="xl:text-7xl text-high-contrast text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl">
+            <h1 className="text-high-contrast xl:text-7xl font-heading text-4xl font-extrabold leading-tight tracking-tight md:text-5xl md:leading-snug md:tracking-wide lg:text-6xl lg:leading-tight xl:leading-tight">
               Produtos Premium para
-              <span className="text-emphasis mt-2 block">Estética Profissional</span>
+              <span className="mt-2 block">
+                <span className="text-high-contrast">Estética</span>{' '}
+                <span className="text-emphasis font-black tracking-wide drop-shadow-lg">
+                  Profissional
+                </span>
+              </span>
             </h1>
-            <p className="mx-auto max-w-4xl px-4 text-lg font-medium leading-relaxed text-neutral-800 md:text-xl lg:text-2xl">
-              <strong className="text-high-contrast text-xl md:text-2xl lg:text-3xl">
+            <p className="mx-auto max-w-4xl px-4 text-lg font-medium leading-relaxed text-neutral-800 md:text-xl md:leading-relaxed lg:text-2xl lg:leading-relaxed">
+              <strong className="text-high-contrast font-heading text-xl font-bold tracking-wide md:text-2xl md:tracking-wide lg:text-3xl lg:tracking-wide">
                 Sua excelência profissional começa aqui.
               </strong>
               <br className="hidden md:block" />
-              <span className="mt-4 block text-neutral-700 md:mt-2">
+              <span className="mt-4 block leading-relaxed text-neutral-700 md:mt-2 md:leading-relaxed">
                 Produtos originais, certificados ANVISA, com entrega expressa e suporte consultivo
                 especializado para clínicas e profissionais em todo Brasil.
               </span>
@@ -81,26 +86,38 @@ export default function Home() {
             {/* Badges de Confiança */}
             <div className="flex flex-wrap items-center justify-center gap-4 pt-6 md:gap-6 lg:gap-8">
               <div className="bg-white/90 border-green-200/50 flex items-center gap-3 rounded-full border px-4 py-3 shadow-lg md:px-6 md:py-4">
-                <Shield className="text-green-600 h-5 w-5 md:h-6 md:w-6" />
-                <span className="text-sm font-bold text-neutral-800 md:text-base">
+                <Shield
+                  className="text-green-600 h-5 w-5 md:h-6 md:w-6"
+                  aria-label="Escudo de segurança"
+                />
+                <span className="text-sm font-bold tracking-wide text-neutral-800 md:text-base md:tracking-wide">
                   Compra 100% Segura
                 </span>
               </div>
               <div className="bg-white/90 flex items-center gap-3 rounded-full border border-vitale-primary/30 px-4 py-3 shadow-lg md:px-6 md:py-4">
-                <Award className="h-5 w-5 text-vitale-primary md:h-6 md:w-6" />
-                <span className="text-sm font-bold text-neutral-800 md:text-base">
+                <Award
+                  className="h-5 w-5 text-vitale-primary md:h-6 md:w-6"
+                  aria-label="Prêmio de certificação"
+                />
+                <span className="text-sm font-bold tracking-wide text-neutral-800 md:text-base md:tracking-wide">
                   Produtos Certificados
                 </span>
               </div>
               <div className="bg-white/90 border-blue-200/50 flex items-center gap-3 rounded-full border px-4 py-3 shadow-lg md:px-6 md:py-4">
-                <Truck className="text-blue-600 h-5 w-5 md:h-6 md:w-6" />
-                <span className="text-sm font-bold text-neutral-800 md:text-base">
+                <Truck
+                  className="text-blue-600 h-5 w-5 md:h-6 md:w-6"
+                  aria-label="Caminhão de entrega"
+                />
+                <span className="text-sm font-bold tracking-wide text-neutral-800 md:text-base md:tracking-wide">
                   Entrega em 24-48h
                 </span>
               </div>
               <div className="bg-white/90 border-purple-200/50 flex items-center gap-3 rounded-full border px-4 py-3 shadow-lg md:px-6 md:py-4">
-                <Users className="text-purple-600 h-5 w-5 md:h-6 md:w-6" />
-                <span className="text-sm font-bold text-neutral-800 md:text-base">
+                <Users
+                  className="text-purple-600 h-5 w-5 md:h-6 md:w-6"
+                  aria-label="Grupo de profissionais"
+                />
+                <span className="text-sm font-bold tracking-wide text-neutral-800 md:text-base md:tracking-wide">
                   +2000 Profissionais
                 </span>
               </div>
@@ -119,7 +136,7 @@ export default function Home() {
             >
               <Button className="from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 hover:shadow-2xl flex min-h-[56px] w-full transform items-center justify-center gap-3 rounded-xl bg-gradient-to-r px-8 py-4 text-lg font-bold shadow-xl transition-all duration-300 hover:scale-105 sm:w-auto md:min-h-[64px] md:gap-4 md:rounded-2xl md:px-10 md:py-6 md:text-xl">
                 <Instagram className="h-6 w-6 md:h-7 md:w-7" />
-                <span className="font-bold">Siga no Instagram</span>
+                <span className="font-bold tracking-wide">Siga no Instagram</span>
               </Button>
             </a>
 
@@ -131,7 +148,7 @@ export default function Home() {
             >
               <Button className="bg-green-600 text-white hover:bg-green-700 hover:shadow-2xl flex min-h-[56px] w-full transform items-center justify-center gap-3 rounded-xl px-8 py-4 text-lg font-bold shadow-xl transition-all duration-300 hover:scale-105 sm:w-auto md:min-h-[64px] md:gap-4 md:rounded-2xl md:px-10 md:py-6 md:text-xl">
                 <MessageCircle className="h-6 w-6 md:h-7 md:w-7" />
-                <span className="font-bold">Consultor Especializado</span>
+                <span className="font-bold tracking-wide">Consultor Especializado</span>
               </Button>
             </a>
           </div>
@@ -142,10 +159,10 @@ export default function Home() {
       <section className="section-padding via-white bg-gradient-to-br from-vitale-primary/5 to-vitale-secondary/5">
         <div className="max-w-responsive-lg container mx-auto px-4">
           <div className="mb-12 space-y-6 text-center md:mb-16 md:space-y-8">
-            <h2 className="text-3xl font-bold text-vitale-primary md:text-4xl lg:text-5xl xl:text-6xl">
+            <h2 className="font-heading text-3xl font-bold leading-tight tracking-tight text-vitale-primary md:text-4xl md:leading-snug md:tracking-wide lg:text-5xl lg:leading-tight xl:text-6xl xl:leading-tight">
               Produtos em Destaque
             </h2>
-            <p className="mx-auto max-w-4xl px-4 text-lg leading-relaxed text-neutral-700 md:text-xl lg:text-2xl">
+            <p className="mx-auto max-w-4xl px-4 text-lg leading-relaxed text-neutral-700 md:text-xl md:leading-relaxed lg:text-2xl lg:leading-relaxed">
               Conheça nossa seleção premium de produtos mais procurados por profissionais de
               estética
             </p>
@@ -153,7 +170,7 @@ export default function Home() {
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="text-yellow-500 fill-yellow-500 h-6 w-6" />
               ))}
-              <span className="ml-2 text-lg font-semibold text-neutral-700">
+              <span className="ml-2 text-lg font-semibold tracking-wide text-neutral-700">
                 5.0 | +500 Avaliações
               </span>
             </div>

@@ -71,21 +71,39 @@
   --vitale-gradient-dark: linear-gradient(135deg, var(--vitale-primary-800) 0%, var(--vitale-primary-900) 100%);
   --vitale-gradient-accent: linear-gradient(135deg, var(--vitale-accent) 0%, var(--vitale-warning) 100%);
 
-  /* Tipografia */
+  /* Tipografia Avançada */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-secondary: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 
-  /* Tamanhos de Fonte */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
+  /* Sistema de Tipografia Responsiva */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.5rem);
+  --text-4xl: clamp(2.25rem, 1.9rem + 1.75vw, 3rem);
+  --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 4rem);
+  --text-6xl: clamp(3.75rem, 3rem + 3.75vw, 5rem);
+  --text-7xl: clamp(4.5rem, 3.5rem + 5vw, 6rem);
+
+  /* Line Heights Responsivos */
+  --leading-tight: 1.1;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
 
   /* Espaçamentos */
   --space-0: 0;
@@ -327,7 +345,7 @@ body {
 .mb-6 { margin-bottom: var(--space-6); }
 .mb-8 { margin-bottom: var(--space-8); }
 
-/* Tipografia */
+/* Tipografia Avançada */
 .text-xs { font-size: var(--text-xs); }
 .text-sm { font-size: var(--text-sm); }
 .text-base { font-size: var(--text-base); }
@@ -337,17 +355,82 @@ body {
 .text-3xl { font-size: var(--text-3xl); }
 .text-4xl { font-size: var(--text-4xl); }
 .text-5xl { font-size: var(--text-5xl); }
+.text-6xl { font-size: var(--text-6xl); }
+.text-7xl { font-size: var(--text-7xl); }
 
+/* Font Families */
+.font-sans { font-family: var(--font-primary); }
+.font-heading { font-family: var(--font-heading); }
+.font-secondary { font-family: var(--font-secondary); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Font Weights */
 .font-light { font-weight: 300; }
 .font-normal { font-weight: 400; }
 .font-medium { font-weight: 500; }
 .font-semibold { font-weight: 600; }
 .font-bold { font-weight: 700; }
 .font-extrabold { font-weight: 800; }
+.font-black { font-weight: 900; }
 
+/* Line Heights */
+.leading-tight { line-height: var(--leading-tight); }
+.leading-snug { line-height: var(--leading-snug); }
+.leading-normal { line-height: var(--leading-normal); }
+.leading-relaxed { line-height: var(--leading-relaxed); }
+.leading-loose { line-height: var(--leading-loose); }
+
+/* Letter Spacing */
+.tracking-tighter { letter-spacing: var(--tracking-tighter); }
+.tracking-tight { letter-spacing: var(--tracking-tight); }
+.tracking-normal { letter-spacing: var(--tracking-normal); }
+.tracking-wide { letter-spacing: var(--tracking-wide); }
+.tracking-wider { letter-spacing: var(--tracking-wider); }
+.tracking-widest { letter-spacing: var(--tracking-widest); }
+
+/* Text Alignment */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
+/* Text Transform */
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+
+/* Text Decoration */
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+.no-underline { text-decoration: none; }
+
+/* Text Overflow */
+.truncate { 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
 
 /* Cores de Texto */
 .text-primary { color: var(--vitale-primary); }
@@ -491,6 +574,10 @@ body {
   .sm\:text-base { font-size: var(--text-base); }
   .sm\:text-lg { font-size: var(--text-lg); }
   .sm\:text-xl { font-size: var(--text-xl); }
+  .sm\:text-2xl { font-size: var(--text-2xl); }
+  .sm\:font-heading { font-family: var(--font-heading); }
+  .sm\:leading-relaxed { line-height: var(--leading-relaxed); }
+  .sm\:tracking-wide { letter-spacing: var(--tracking-wide); }
   .sm\:px-6 { padding-left: var(--space-6); padding-right: var(--space-6); }
   .sm\:py-4 { padding-top: var(--space-4); padding-bottom: var(--space-4); }
 }
@@ -507,6 +594,10 @@ body {
   .md\:text-lg { font-size: var(--text-lg); }
   .md\:text-xl { font-size: var(--text-xl); }
   .md\:text-2xl { font-size: var(--text-2xl); }
+  .md\:text-3xl { font-size: var(--text-3xl); }
+  .md\:font-heading { font-family: var(--font-heading); }
+  .md\:leading-relaxed { line-height: var(--leading-relaxed); }
+  .md\:tracking-wide { letter-spacing: var(--tracking-wide); }
   .md\:px-8 { padding-left: var(--space-8); padding-right: var(--space-8); }
   .md\:py-6 { padding-top: var(--space-6); padding-bottom: var(--space-6); }
 }
@@ -524,6 +615,10 @@ body {
   .lg\:text-xl { font-size: var(--text-xl); }
   .lg\:text-2xl { font-size: var(--text-2xl); }
   .lg\:text-3xl { font-size: var(--text-3xl); }
+  .lg\:text-4xl { font-size: var(--text-4xl); }
+  .lg\:font-heading { font-family: var(--font-heading); }
+  .lg\:leading-relaxed { line-height: var(--leading-relaxed); }
+  .lg\:tracking-wide { letter-spacing: var(--tracking-wide); }
 }
 
 @media (min-width: 1280px) {
@@ -536,6 +631,11 @@ body {
   .xl\:text-2xl { font-size: var(--text-2xl); }
   .xl\:text-3xl { font-size: var(--text-3xl); }
   .xl\:text-4xl { font-size: var(--text-4xl); }
+  .xl\:text-5xl { font-size: var(--text-5xl); }
+  .xl\:text-6xl { font-size: var(--text-6xl); }
+  .xl\:font-heading { font-family: var(--font-heading); }
+  .xl\:leading-relaxed { line-height: var(--leading-relaxed); }
+  .xl\:tracking-wide { letter-spacing: var(--tracking-wide); }
 }
 
 /* ==============================================
