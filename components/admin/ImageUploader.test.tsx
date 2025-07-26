@@ -1,5 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { fireEvent, render, screen } from '@testing-library/react';
+
 import ImageUploader from './ImageUploader';
 
 // Mock do Supabase
@@ -23,7 +25,6 @@ vi.mock('@/lib/supabase', () => ({
 // Mock do Next/Image
 vi.mock('next/image', () => ({
   default: ({ src, alt, ...props }: any) => (
-    // eslint-disable-next-line @next/next/no-img-element
     <img src={src} alt={alt} {...props} data-testid="optimized-image" />
   ),
 }));
