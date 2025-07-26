@@ -22,6 +22,20 @@ vi.mock('isomorphic-dompurify', () => ({
   },
 }));
 
+// Mock de File para testes
+class MockFile extends File {
+  constructor(name: string, size: number, type: string) {
+    const blob = new Blob([''], { type });
+    super([blob], name, { type, lastModified: Date.now() });
+    Object.defineProperty(this, 'size', { value: size });
+    Object.defineProperty(this, 'name', { value: name });
+    Object.defineProperty(this, 'type', { value: type });
+  }
+}
+
+// Mock global do File
+global.File = MockFile as any;
+
 describe('Validation Library', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -372,10 +386,7 @@ describe('Validation Library', () => {
 
   describe('validateImageFile', () => {
     it('deve validar arquivo de imagem correto', () => {
-      const file = new File(['test'], 'test.jpg', {
-        type: 'image/jpeg',
-      });
-      Object.defineProperty(file, 'size', { value: 1024 * 1024 }); // 1MB
+      const file = new MockFile('test.jpg', 1024 * 1024, 'image/jpeg');
 
       const result = validateImageFile(file);
       expect(result.isValid).toBe(true);
@@ -383,9 +394,7 @@ describe('Validation Library', () => {
     });
 
     it('deve rejeitar tipos de arquivo não permitidos', () => {
-      const file = new File(['test'], 'test.pdf', {
-        type: 'application/pdf',
-      });
+      const file = new MockFile('test.pdf', 1024, 'application/pdf');
 
       const result = validateImageFile(file);
       expect(result.isValid).toBe(false);
@@ -393,10 +402,7 @@ describe('Validation Library', () => {
     });
 
     it('deve rejeitar arquivos muito grandes', () => {
-      const file = new File(['test'], 'test.jpg', {
-        type: 'image/jpeg',
-      });
-      Object.defineProperty(file, 'size', { value: 10 * 1024 * 1024 }); // 10MB
+      const file = new MockFile('test.jpg', 10 * 1024 * 1024, 'image/jpeg');
 
       const result = validateImageFile(file);
       expect(result.isValid).toBe(false);
@@ -405,10 +411,7 @@ describe('Validation Library', () => {
 
     it('deve rejeitar nomes de arquivo muito longos', () => {
       const longName = 'a'.repeat(256) + '.jpg';
-      const file = new File(['test'], longName, {
-        type: 'image/jpeg',
-      });
-      Object.defineProperty(file, 'size', { value: 1024 }); // 1KB
+      const file = new MockFile(longName, 1024, 'image/jpeg');
 
       const result = validateImageFile(file);
       expect(result.isValid).toBe(false);
@@ -419,8 +422,7 @@ describe('Validation Library', () => {
       const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
       validTypes.forEach(type => {
-        const file = new File(['test'], `test.${type.split('/')[1]}`, { type });
-        Object.defineProperty(file, 'size', { value: 1024 });
+        const file = new MockFile(`test.${type.split('/')[1]}`, 1024, type);
 
         const result = validateImageFile(file);
         expect(result.isValid).toBe(true);

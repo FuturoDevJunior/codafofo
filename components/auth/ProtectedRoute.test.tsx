@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 
 import ProtectedRoute from './ProtectedRoute';
 
@@ -14,7 +14,10 @@ vi.mock('next/navigation', () => ({
 vi.mock('@/lib/supabase/browser', () => ({
   createClient: vi.fn(() => ({
     auth: {
-      getUser: vi.fn(),
+      getUser: vi.fn().mockResolvedValue({
+        data: { user: null },
+        error: null,
+      }),
     },
   })),
 }));
@@ -31,11 +34,13 @@ describe('ProtectedRoute', () => {
   });
 
   it('deve renderizar loading inicialmente', () => {
-    render(
-      <ProtectedRoute>
-        <div>Conteúdo protegido</div>
-      </ProtectedRoute>
-    );
+    act(() => {
+      render(
+        <ProtectedRoute>
+          <div>Conteúdo protegido</div>
+        </ProtectedRoute>
+      );
+    });
 
     expect(screen.getByText('Verificando autenticação...')).toBeInTheDocument();
   });
@@ -53,11 +58,13 @@ describe('ProtectedRoute', () => {
     };
     (createClient as any).mockReturnValue(mockSupabase);
 
-    render(
-      <ProtectedRoute>
-        <div>Conteúdo protegido</div>
-      </ProtectedRoute>
-    );
+    await act(async () => {
+      render(
+        <ProtectedRoute>
+          <div>Conteúdo protegido</div>
+        </ProtectedRoute>
+      );
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Conteúdo protegido')).toBeInTheDocument();
@@ -77,11 +84,13 @@ describe('ProtectedRoute', () => {
     };
     (createClient as any).mockReturnValue(mockSupabase);
 
-    render(
-      <ProtectedRoute>
-        <div>Conteúdo protegido</div>
-      </ProtectedRoute>
-    );
+    await act(async () => {
+      render(
+        <ProtectedRoute>
+          <div>Conteúdo protegido</div>
+        </ProtectedRoute>
+      );
+    });
 
     await waitFor(() => {
       expect(mockRouter.push).toHaveBeenCalledWith('/admin/login');
@@ -101,11 +110,13 @@ describe('ProtectedRoute', () => {
     };
     (createClient as any).mockReturnValue(mockSupabase);
 
-    render(
-      <ProtectedRoute>
-        <div>Conteúdo protegido</div>
-      </ProtectedRoute>
-    );
+    await act(async () => {
+      render(
+        <ProtectedRoute>
+          <div>Conteúdo protegido</div>
+        </ProtectedRoute>
+      );
+    });
 
     await waitFor(() => {
       expect(mockRouter.push).toHaveBeenCalledWith('/admin/login');
@@ -125,11 +136,13 @@ describe('ProtectedRoute', () => {
     };
     (createClient as any).mockReturnValue(mockSupabase);
 
-    render(
-      <ProtectedRoute redirectTo="/custom-login">
-        <div>Conteúdo protegido</div>
-      </ProtectedRoute>
-    );
+    await act(async () => {
+      render(
+        <ProtectedRoute redirectTo="/custom-login">
+          <div>Conteúdo protegido</div>
+        </ProtectedRoute>
+      );
+    });
 
     await waitFor(() => {
       expect(mockRouter.push).toHaveBeenCalledWith('/custom-login');
@@ -149,12 +162,14 @@ describe('ProtectedRoute', () => {
     };
     (createClient as any).mockReturnValue(mockSupabase);
 
-    render(
-      <ProtectedRoute>
-        <div>Child 1</div>
-        <div>Child 2</div>
-      </ProtectedRoute>
-    );
+    await act(async () => {
+      render(
+        <ProtectedRoute>
+          <div>Child 1</div>
+          <div>Child 2</div>
+        </ProtectedRoute>
+      );
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Child 1')).toBeInTheDocument();
@@ -183,11 +198,13 @@ describe('ProtectedRoute', () => {
       </div>
     );
 
-    render(
-      <ProtectedRoute>
-        <ComplexComponent />
-      </ProtectedRoute>
-    );
+    await act(async () => {
+      render(
+        <ProtectedRoute>
+          <ComplexComponent />
+        </ProtectedRoute>
+      );
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Título')).toBeInTheDocument();
@@ -197,6 +214,7 @@ describe('ProtectedRoute', () => {
   });
 
   it('deve lidar com erro na verificação de autenticação', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     // Mock do Supabase para retornar erro
     const { createClient } = await import('@/lib/supabase/browser');
     const mockSupabase = {
@@ -206,23 +224,28 @@ describe('ProtectedRoute', () => {
     };
     (createClient as any).mockReturnValue(mockSupabase);
 
-    render(
-      <ProtectedRoute>
-        <div>Conteúdo protegido</div>
-      </ProtectedRoute>
-    );
+    await act(async () => {
+      render(
+        <ProtectedRoute>
+          <div>Conteúdo protegido</div>
+        </ProtectedRoute>
+      );
+    });
 
     await waitFor(() => {
       expect(mockRouter.push).toHaveBeenCalledWith('/admin/login');
     });
+    consoleErrorSpy.mockRestore();
   });
 
   it('deve ter estrutura de loading adequada', () => {
-    render(
-      <ProtectedRoute>
-        <div>Conteúdo protegido</div>
-      </ProtectedRoute>
-    );
+    act(() => {
+      render(
+        <ProtectedRoute>
+          <div>Conteúdo protegido</div>
+        </ProtectedRoute>
+      );
+    });
 
     const loadingContainer = screen.getByText('Verificando autenticação...').closest('div');
     expect(loadingContainer).toHaveClass('text-center');
@@ -235,11 +258,13 @@ describe('ProtectedRoute', () => {
   });
 
   it('deve ter spinner de loading', () => {
-    render(
-      <ProtectedRoute>
-        <div>Conteúdo protegido</div>
-      </ProtectedRoute>
-    );
+    act(() => {
+      render(
+        <ProtectedRoute>
+          <div>Conteúdo protegido</div>
+        </ProtectedRoute>
+      );
+    });
 
     expect(screen.getByText('Verificando autenticação...')).toBeInTheDocument();
   });

@@ -143,7 +143,7 @@ export default function ImageUploader({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="image-uploader">
       {/* Header */}
       <div className="space-y-2">
         <h3 className="flex items-center gap-2 text-xl font-bold text-vitale-primary">
@@ -151,7 +151,7 @@ export default function ImageUploader({
           Gerenciar Imagens do Produto
         </h3>
         <p className="text-neutral-600">
-          <strong>{productName}</strong> - {currentImages.length}/{maxImages} imagens
+          <strong>{productName}</strong> - {(currentImages || []).length}/{maxImages} imagens
         </p>
       </div>
 
@@ -205,7 +205,7 @@ export default function ImageUploader({
             multiple
             accept="image/jpeg,image/jpg,image/png,image/webp"
             onChange={handleFileSelect}
-            disabled={isUploading || currentImages.length >= maxImages}
+            disabled={isUploading || (currentImages || []).length >= maxImages}
             className="hidden"
             id="image-upload"
             data-testid="mock-upload-input"
@@ -233,7 +233,7 @@ export default function ImageUploader({
 
             <Button
               onClick={() => fileInputRef.current?.click()}
-              disabled={isUploading || currentImages.length >= maxImages}
+              disabled={isUploading || (currentImages || []).length >= maxImages}
               className="text-white rounded-xl bg-vitale-primary px-6 py-3 hover:bg-vitale-secondary"
               data-testid="mock-upload-button"
             >

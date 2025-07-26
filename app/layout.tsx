@@ -7,6 +7,7 @@ import Link from 'next/link';
 import AccessibilityProvider from '@/components/AccessibilityProvider';
 import AnalyticsProvider from '@/components/AnalyticsProvider';
 import CartSidebar from '@/components/CartSidebar';
+import CustomizationProvider from '@/components/CustomizationProvider';
 import Header from '@/components/Header';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -99,163 +100,160 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-secondary/5 font-sans text-neutral-800 antialiased">
-        <AccessibilityProvider>
-          <AnalyticsProvider>
-            {/* Header Profissional Otimizado */}
-            <Header />
-            {/* Conteúdo Principal */}
-            <main role="main">{children}</main>
-            {/* Footer Otimizado */}
-            <footer
-              className="bg-white/95 mt-12 w-full border-t border-neutral-200 backdrop-blur-md"
-              role="contentinfo"
-            >
-              <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-                  {/* Informações da Empresa */}
-                  <div className="space-y-6 lg:col-span-2">
-                    <div className="flex items-center gap-4">
-                      <Image
-                        src="/Vytalle_Logo_Gold.png"
-                        alt="Logo Vytalle Estética"
-                        width={64}
-                        height={64}
-                        className="h-16 w-16 object-contain drop-shadow-lg"
-                      />
-                      <div className="flex flex-col justify-center">
-                        <span className="text-xl font-bold text-vitale-primary">
-                          Vytalle Estética & Viscosuplementação
-                        </span>
-                        <span className="text-sm font-medium text-vitale-secondary">
-                          Excelência em Produtos Médicos
-                        </span>
+        <CustomizationProvider>
+          <AccessibilityProvider>
+            <AnalyticsProvider>
+              {/* Header Profissional Otimizado */}
+              <Header />
+              {/* Conteúdo Principal */}
+              <main role="main">{children}</main>
+              {/* Footer Otimizado */}
+              <footer
+                className="bg-white/95 mt-12 w-full border-t border-neutral-200 backdrop-blur-md"
+                role="contentinfo"
+              >
+                <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+                  <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+                    {/* Informações da Empresa */}
+                    <div className="space-y-6 lg:col-span-2">
+                      <div className="flex items-center gap-4">
+                        <Image
+                          src="/Vytalle_Logo_Gold.png"
+                          alt="Logo Vytalle Estética"
+                          width={64}
+                          height={64}
+                          className="h-16 w-16 object-contain drop-shadow-lg"
+                        />
+                        <div className="flex flex-col justify-center">
+                          <span className="text-xl font-bold text-vitale-primary">
+                            Vytalle Estética & Viscosuplementação
+                          </span>
+                          <span className="text-sm font-medium text-vitale-secondary">
+                            Excelência em Produtos Médicos
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3 text-neutral-700">
+                        <p className="max-w-md text-sm leading-relaxed">
+                          <strong className="text-vitale-primary">
+                            Distribuidora especializada
+                          </strong>{' '}
+                          em produtos médicos estéticos premium. Mais de 5 anos servindo
+                          profissionais da área da saúde com produtos certificados ANVISA.
+                        </p>
+
+                        {/* Certificações */}
+                        <div className="flex flex-wrap gap-2">
+                          <span className="bg-green-100 text-green-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
+                            ✓ ANVISA Certificado
+                          </span>
+                          <span className="bg-blue-100 text-blue-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
+                            ✓ LGPD Conforme
+                          </span>
+                          <span className="bg-purple-100 text-purple-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
+                            ✓ ISO 13485
+                          </span>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="space-y-3 text-neutral-700">
-                      <p className="max-w-md text-sm leading-relaxed">
-                        <strong className="text-vitale-primary">Distribuidora especializada</strong>{' '}
-                        em produtos médicos estéticos premium. Mais de 5 anos servindo profissionais
-                        da área da saúde com produtos certificados ANVISA.
-                      </p>
+                    {/* Links Rápidos */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-vitale-primary">Links Rápidos</h3>
+                      <ul className="space-y-2">
+                        <li>
+                          <Link
+                            href="/"
+                            className="text-sm text-neutral-700 transition-colors hover:text-vitale-primary"
+                          >
+                            Início
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="/products"
+                            className="text-sm text-neutral-700 transition-colors hover:text-vitale-primary"
+                          >
+                            Catálogo Completo
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="/cart"
+                            className="text-sm text-neutral-700 transition-colors hover:text-vitale-primary"
+                          >
+                            Carrinho
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
 
-                      {/* Certificações */}
-                      <div className="flex flex-wrap gap-2">
-                        <span className="bg-green-100 text-green-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
-                          ✓ ANVISA Certificado
-                        </span>
-                        <span className="bg-blue-100 text-blue-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
-                          ✓ LGPD Conforme
-                        </span>
-                        <span className="bg-purple-100 text-purple-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
-                          ✓ ISO 13485
-                        </span>
+                    {/* Contato */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-vitale-primary">Contato</h3>
+                      <div className="space-y-3">
+                        <div className="text-sm text-neutral-700">
+                          <strong>WhatsApp:</strong>
+                          <br />
+                          <a
+                            href="https://wa.me/5521996192890"
+                            className="text-green-600 hover:text-green-700 font-medium"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            (21) 99619-2890
+                          </a>
+                        </div>
+                        <div className="text-sm text-neutral-700">
+                          <strong>Instagram:</strong>
+                          <br />
+                          <a
+                            href="https://www.instagram.com/vytalle.estetica/"
+                            className="text-pink-600 hover:text-pink-700 font-medium"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            @vytalle.estetica
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Links Rápidos */}
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-vitale-primary">Links Rápidos</h3>
-                    <ul className="space-y-2">
-                      <li>
-                        <Link
-                          href="/"
-                          className="text-sm text-neutral-700 transition-colors hover:text-vitale-primary"
-                        >
-                          Início
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/products"
-                          className="text-sm text-neutral-700 transition-colors hover:text-vitale-primary"
-                        >
-                          Catálogo Completo
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/cart"
-                          className="text-sm text-neutral-700 transition-colors hover:text-vitale-primary"
-                        >
-                          Carrinho
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Contato */}
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-vitale-primary">Contato</h3>
-                    <div className="space-y-3">
-                      <div className="text-sm text-neutral-700">
-                        <strong>WhatsApp:</strong>
-                        <br />
-                        <a
-                          href="https://wa.me/5521996192890"
-                          className="text-green-600 hover:text-green-700 font-medium"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          (21) 99619-2890
-                        </a>
+                  {/* Rodapé Inferior */}
+                  <div className="mt-8 border-t border-neutral-200 pt-8">
+                    <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
+                      <div className="text-sm text-neutral-600">
+                        © 2024 Vytalle Estética & Viscosuplementação. Todos os direitos reservados.
                       </div>
-                      <div className="text-sm text-neutral-700">
-                        <strong>Instagram:</strong>
-                        <br />
-                        <a
-                          href="https://www.instagram.com/vytalle.estetica/"
-                          className="text-purple-600 hover:text-purple-700 font-medium"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      <div className="flex flex-wrap items-center gap-4 text-sm">
+                        <Link
+                          href="/termos"
+                          className="text-neutral-600 transition-colors hover:text-vitale-primary"
                         >
-                          @vytalle.estetica
-                        </a>
-                      </div>
-                      <div className="text-sm text-neutral-700">
-                        <strong>Atendimento:</strong>
-                        <br />
-                        Segunda a Sexta, 8h às 18h
+                          Termos de Uso
+                        </Link>
+                        <Link
+                          href="/privacidade"
+                          className="text-neutral-600 transition-colors hover:text-vitale-primary"
+                        >
+                          Política de Privacidade
+                        </Link>
                       </div>
                     </div>
                   </div>
                 </div>
+              </footer>
 
-                {/* Linha de Separação */}
-                <div className="mt-8 border-t border-vitale-primary/20 pt-8">
-                  <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-                    <div className="text-center text-sm text-neutral-600 sm:text-left">
-                      © {new Date().getFullYear()}{' '}
-                      <strong className="text-vitale-primary">
-                        Vytalle Estética & Viscosuplementação
-                      </strong>
-                      . Todos os direitos reservados.
-                    </div>
-                    <div className="flex gap-4 text-sm">
-                      <Link
-                        href="/privacidade"
-                        className="text-neutral-600 transition-colors hover:text-vitale-primary"
-                      >
-                        Política de Privacidade
-                      </Link>
-                      <Link
-                        href="/termos"
-                        className="text-neutral-600 transition-colors hover:text-vitale-primary"
-                      >
-                        Termos de Uso
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </footer>
+              {/* Carrinho Lateral */}
+              <CartSidebar />
 
-            {/* Componentes Flutuantes */}
-            <CartSidebar />
-            <Toaster />
-          </AnalyticsProvider>
-        </AccessibilityProvider>
+              {/* Toaster para notificações */}
+              <Toaster />
+            </AnalyticsProvider>
+          </AccessibilityProvider>
+        </CustomizationProvider>
       </body>
     </html>
   );

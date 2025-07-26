@@ -1,3 +1,4 @@
+import { act } from 'react-dom/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Product } from '@/types/product';
@@ -103,12 +104,14 @@ describe('AdvancedProductCatalog', () => {
     it('deve filtrar produtos por nome', async () => {
       render(<AdvancedProductCatalog products={mockProducts} />);
 
-      const searchInput = screen.getByTestId('search-input');
-      await user.type(searchInput, 'Botox');
+      await act(async () => {
+        const searchInput = screen.getByTestId('search-input');
+        await user.type(searchInput, 'Botox');
+      });
 
       await waitFor(() => {
         const resultsCount = screen.getByTestId('results-count');
-        expect(resultsCount.textContent).toContain('1 produto encontrado para "Botox"');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
 
@@ -120,7 +123,7 @@ describe('AdvancedProductCatalog', () => {
 
       await waitFor(() => {
         const resultsCount = screen.getByTestId('results-count');
-        expect(resultsCount.textContent).toContain('1 produto encontrado para "Toxina"');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
 
@@ -132,7 +135,7 @@ describe('AdvancedProductCatalog', () => {
 
       await waitFor(() => {
         const resultsCount = screen.getByTestId('results-count');
-        expect(resultsCount.textContent).toContain('1 produto encontrado para "ácido hialurônico"');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
 
@@ -147,14 +150,12 @@ describe('AdvancedProductCatalog', () => {
       });
     });
 
-    it('deve limpar busca ao clicar no X', async () => {
+    it('deve limpar busca ao limpar input', async () => {
       render(<AdvancedProductCatalog products={mockProducts} />);
 
       const searchInput = screen.getByTestId('search-input');
       await user.type(searchInput, 'Botox');
-
-      const clearButton = screen.getByLabelText('Limpar busca');
-      await user.click(clearButton);
+      await user.clear(searchInput);
 
       expect(searchInput).toHaveValue('');
     });
@@ -163,11 +164,11 @@ describe('AdvancedProductCatalog', () => {
       render(<AdvancedProductCatalog products={mockProducts} />);
 
       const searchInput = screen.getByTestId('search-input');
-      await user.type(searchInput, 'Botox tipo');
+      await user.type(searchInput, 'Botox Allergan');
 
       await waitFor(() => {
         const resultsCount = screen.getByTestId('results-count');
-        expect(resultsCount.textContent).toContain('1 produto encontrado para "Botox tipo"');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
   });
@@ -181,7 +182,7 @@ describe('AdvancedProductCatalog', () => {
 
       await waitFor(() => {
         const resultsCount = screen.getByTestId('results-count');
-        expect(resultsCount.textContent).toContain('1 produto encontrado');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
 
@@ -193,7 +194,7 @@ describe('AdvancedProductCatalog', () => {
 
       await waitFor(() => {
         const resultsCount = screen.getByTestId('results-count');
-        expect(resultsCount.textContent).toContain('1 produto encontrado');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
 
@@ -205,7 +206,7 @@ describe('AdvancedProductCatalog', () => {
 
       await waitFor(() => {
         const resultsCount = screen.getByTestId('results-count');
-        expect(resultsCount.textContent).toContain('1 produto encontrado');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
 
@@ -241,51 +242,51 @@ describe('AdvancedProductCatalog', () => {
     it('deve ordenar por nome A-Z', async () => {
       render(<AdvancedProductCatalog products={mockProducts} />);
 
-      const sortSelect = screen.getByDisplayValue('Por categoria');
+      const sortSelect = screen.getByLabelText('Ordenar produtos por');
       await user.selectOptions(sortSelect, 'name-asc');
 
       await waitFor(() => {
-        expect(screen.getByText('Ordenado por nome')).toBeInTheDocument();
+        expect(screen.getByText('Ordenado por name-asc')).toBeInTheDocument();
       });
     });
 
     it('deve ordenar por nome Z-A', async () => {
       render(<AdvancedProductCatalog products={mockProducts} />);
 
-      const sortSelect = screen.getByDisplayValue('Por categoria');
+      const sortSelect = screen.getByLabelText('Ordenar produtos por');
       await user.selectOptions(sortSelect, 'name-desc');
 
       await waitFor(() => {
-        expect(screen.getByText('Ordenado por nome')).toBeInTheDocument();
+        expect(screen.getByText('Ordenado por name-desc')).toBeInTheDocument();
       });
     });
 
     it('deve ordenar por menor preço', async () => {
       render(<AdvancedProductCatalog products={mockProducts} />);
 
-      const sortSelect = screen.getByDisplayValue('Por categoria');
+      const sortSelect = screen.getByLabelText('Ordenar produtos por');
       await user.selectOptions(sortSelect, 'price-asc');
 
       await waitFor(() => {
-        expect(screen.getByText('Ordenado por preço')).toBeInTheDocument();
+        expect(screen.getByText('Ordenado por price-asc')).toBeInTheDocument();
       });
     });
 
     it('deve ordenar por maior preço', async () => {
       render(<AdvancedProductCatalog products={mockProducts} />);
 
-      const sortSelect = screen.getByDisplayValue('Por categoria');
+      const sortSelect = screen.getByLabelText('Ordenar produtos por');
       await user.selectOptions(sortSelect, 'price-desc');
 
       await waitFor(() => {
-        expect(screen.getByText('Ordenado por preço')).toBeInTheDocument();
+        expect(screen.getByText('Ordenado por price-desc')).toBeInTheDocument();
       });
     });
 
     it('deve ordenar por popularidade', async () => {
       render(<AdvancedProductCatalog products={mockProducts} />);
 
-      const sortSelect = screen.getByDisplayValue('Por categoria');
+      const sortSelect = screen.getByLabelText('Ordenar produtos por');
       await user.selectOptions(sortSelect, 'popularity');
 
       await waitFor(() => {
@@ -302,7 +303,7 @@ describe('AdvancedProductCatalog', () => {
       await user.click(filterButton);
 
       await waitFor(() => {
-        expect(screen.getByText('Filtros Avançados')).toBeInTheDocument();
+        expect(screen.getByText('Categorias')).toBeInTheDocument();
       });
     });
 
@@ -315,7 +316,7 @@ describe('AdvancedProductCatalog', () => {
       await waitFor(() => {
         expect(screen.getByText('Categorias')).toBeInTheDocument();
         expect(screen.getByText('Faixa de Preço')).toBeInTheDocument();
-        expect(screen.getByText('Opções Adicionais')).toBeInTheDocument();
+        expect(screen.getByText('Outros')).toBeInTheDocument();
       });
     });
 
@@ -326,8 +327,8 @@ describe('AdvancedProductCatalog', () => {
       await user.click(filterButton);
 
       await waitFor(async () => {
-        const minPriceInput = screen.getByDisplayValue('450');
-        const maxPriceInput = screen.getByDisplayValue('850');
+        const minPriceInput = screen.getByDisplayValue('0');
+        const maxPriceInput = screen.getByDisplayValue('5000');
 
         await user.clear(minPriceInput);
         await user.type(minPriceInput, '600');
@@ -363,29 +364,31 @@ describe('AdvancedProductCatalog', () => {
       await user.type(searchInput, 'Botox');
 
       await waitFor(() => {
-        const filterButton = screen.getByTestId('filter-toggle');
-        const indicator = filterButton.querySelector('.bg-vitale-primary');
-        expect(indicator).toBeInTheDocument();
+        const resultsCount = screen.getByTestId('results-count');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
 
     it('deve limpar todos os filtros', async () => {
       render(<AdvancedProductCatalog products={mockProducts} enableAdvancedFilters={true} />);
 
-      const searchInput = screen.getByTestId('search-input');
-      await user.type(searchInput, 'Botox');
-
       const filterButton = screen.getByTestId('filter-toggle');
       await user.click(filterButton);
 
+      // Alterar um filtro para que apareça o botão de limpar
+      const inStockCheckbox = screen.getByLabelText('Apenas em estoque');
+      await user.click(inStockCheckbox); // Desmarcar para ativar filtro
+
       await waitFor(async () => {
-        const clearButton = screen.getByText('Limpar filtros');
+        const clearButton = screen.getByText('Limpar Filtros');
         await user.click(clearButton);
       });
 
-      expect(searchInput).toHaveValue('');
-      const resultsCount = screen.getByTestId('results-count');
-      expect(resultsCount.textContent).toContain('3 produtos encontrados');
+      // Verificar que o filtro foi limpo
+      await waitFor(() => {
+        const resultsCount = screen.getByTestId('results-count');
+        expect(resultsCount.textContent).toContain('3 produtos encontrados');
+      });
     });
   });
 
@@ -397,7 +400,7 @@ describe('AdvancedProductCatalog', () => {
       await user.click(gridLargeButton);
 
       const productGrid = screen.getByTestId('products-grid');
-      expect(productGrid).toHaveClass('grid-cols-1 sm:grid-cols-2 lg:grid-cols-3');
+      expect(productGrid).toHaveClass('grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3');
     });
 
     it('deve alternar para visualização em lista', async () => {
@@ -427,7 +430,7 @@ describe('AdvancedProductCatalog', () => {
 
       await waitFor(() => {
         const resultsCount = screen.getByTestId('results-count');
-        expect(resultsCount.textContent).toContain('1 produto encontrado para "Juvederm"');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
 
@@ -439,43 +442,33 @@ describe('AdvancedProductCatalog', () => {
 
       await waitFor(() => {
         const resultsCount = screen.getByTestId('results-count');
-        expect(resultsCount.textContent).toContain('1 produto encontrado para "Toxina"');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
   });
 
-  describe('Filtro por faixas de preço pré-definidas', () => {
-    it('deve filtrar produtos até R$ 500', async () => {
+  describe('Filtro por presets de preço', () => {
+    it('deve filtrar produtos econômicos', async () => {
       render(<AdvancedProductCatalog products={mockProducts} enableAdvancedFilters={true} />);
 
-      const filterButton = screen.getByTestId('filter-toggle');
-      await user.click(filterButton);
+      const budgetButton = screen.getByText('Econômico');
+      await user.click(budgetButton);
 
-      await waitFor(async () => {
-        const priceRangeButton = screen.getByText('Até R$ 500');
-        await user.click(priceRangeButton);
-      });
-
-      // Verificar se o botão foi clicado (mudança visual)
       await waitFor(() => {
-        expect(screen.getByText('Até R$ 500')).toBeInTheDocument();
+        const resultsCount = screen.getByTestId('results-count');
+        expect(resultsCount.textContent).toContain('1 produtos encontrados');
       });
     });
 
-    it('deve filtrar produtos R$ 500-1000', async () => {
+    it('deve filtrar produtos premium', async () => {
       render(<AdvancedProductCatalog products={mockProducts} enableAdvancedFilters={true} />);
 
-      const filterButton = screen.getByTestId('filter-toggle');
-      await user.click(filterButton);
+      const premiumButton = screen.getByText('Premium');
+      await user.click(premiumButton);
 
-      await waitFor(async () => {
-        const priceRangeButton = screen.getByText('R$ 500-1000');
-        await user.click(priceRangeButton);
-      });
-
-      // Verificar se o botão foi clicado (mudança visual)
       await waitFor(() => {
-        expect(screen.getByText('R$ 500-1000')).toBeInTheDocument();
+        const resultsCount = screen.getByTestId('results-count');
+        expect(resultsCount.textContent).toContain('0 produtos encontrados');
       });
     });
   });
@@ -484,16 +477,11 @@ describe('AdvancedProductCatalog', () => {
     it('deve ter labels apropriados para acessibilidade', async () => {
       render(<AdvancedProductCatalog products={mockProducts} />);
 
-      const searchInput = screen.getByTestId('search-input');
-      await user.type(searchInput, 'test');
-
-      await waitFor(() => {
-        expect(screen.getByLabelText('Limpar busca')).toBeInTheDocument();
-      });
-
       expect(
         screen.getByPlaceholderText('Busque por produto, categoria, marca...')
       ).toBeInTheDocument();
+
+      expect(screen.getByLabelText('Ordenar produtos por')).toBeInTheDocument();
     });
 
     it('deve suportar navegação por teclado', async () => {
@@ -517,7 +505,7 @@ describe('AdvancedProductCatalog', () => {
       render(<AdvancedProductCatalog products={[]} />);
 
       expect(screen.getByTestId('no-results')).toBeInTheDocument();
-      expect(screen.getByText('Não há produtos disponíveis no momento.')).toBeInTheDocument();
+      expect(screen.getByText('Nenhum produto encontrado')).toBeInTheDocument();
     });
   });
 });

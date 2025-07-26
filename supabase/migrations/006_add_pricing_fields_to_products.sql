@@ -1,9 +1,6 @@
 -- Adiciona campos de precificação e comissão à tabela PRODUCTS
 ALTER TABLE PRODUCTS
-    ADD COLUMN PIX_PRICE DECIMAL(
-        10,
-        2
-    ), ADD COLUMN CARD_PRICE DECIMAL(
+    ADD COLUMN CARD_PRICE DECIMAL(
         10,
         2
     ), ADD COLUMN COMMISSION_PERCENT DECIMAL(

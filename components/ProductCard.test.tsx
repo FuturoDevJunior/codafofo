@@ -1,9 +1,181 @@
+import React from 'react';
+
 import Image from 'next/image';
 import { describe, expect, it, vi } from 'vitest';
 
 import { render, screen } from '@testing-library/react';
 
 import ProductCard from './ProductCard';
+
+// Mock do Framer Motion
+const mockMotion = {
+  article: ({ children, ...props }: any) => {
+    // Remover props do Framer Motion que não são usadas em teste
+    const {
+      initial: _initial,
+      animate: _animate,
+      exit: _exit,
+      variants: _variants,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      onHoverStart: _onHoverStart,
+      onHoverEnd: _onHoverEnd,
+      transition: _transition,
+      ...rest
+    } = props;
+    return <article {...rest}>{children}</article>;
+  },
+  div: ({ children, ...props }: any) => {
+    const {
+      initial: _initial,
+      animate: _animate,
+      exit: _exit,
+      variants: _variants,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      onHoverStart: _onHoverStart,
+      onHoverEnd: _onHoverEnd,
+      transition: _transition,
+      ...rest
+    } = props;
+    return <div {...rest}>{children}</div>;
+  },
+  span: ({ children, ...props }: any) => {
+    const {
+      initial: _initial,
+      animate: _animate,
+      exit: _exit,
+      variants: _variants,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      onHoverStart: _onHoverStart,
+      onHoverEnd: _onHoverEnd,
+      transition: _transition,
+      ...rest
+    } = props;
+    return <span {...rest}>{children}</span>;
+  },
+};
+
+// Mock do useRouter
+const mockRouter = {
+  push: vi.fn(),
+  prefetch: vi.fn(),
+  back: vi.fn(),
+  refresh: vi.fn(),
+};
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => mockRouter,
+}));
+
+vi.mock('framer-motion', () => ({
+  motion: mockMotion,
+}));
+
+// Mock do useCartStore
+const mockAddToCart = vi.fn();
+vi.mock('@/lib/store', () => ({
+  useCartStore: () => ({
+    addToCart: mockAddToCart,
+  }),
+}));
+
+// Mock do useProductComparison
+const mockAddToComparison = vi.fn();
+const mockRemoveFromComparison = vi.fn();
+const mockIsInComparison = vi.fn(() => false);
+vi.mock('@/hooks/useProductComparison', () => ({
+  useProductComparison: () => ({
+    addToComparison: mockAddToComparison,
+    removeFromComparison: mockRemoveFromComparison,
+    isInComparison: mockIsInComparison,
+  }),
+}));
+
+// Mock do useAnalytics
+const mockTrackAddToCart = vi.fn();
+const mockTrackAddToComparison = vi.fn();
+vi.mock('@/lib/analytics', () => ({
+  useAnalytics: () => ({
+    trackAddToCart: mockTrackAddToCart,
+    trackAddToComparison: mockTrackAddToComparison,
+  }),
+}));
+
+// Mock do SmartImage
+const MockSmartImage = ({ src, alt, ...props }: any) => <img src={src} alt={alt} {...props} />;
+MockSmartImage.displayName = 'MockSmartImage';
+
+vi.mock('@/components/SmartImage', () => ({
+  default: MockSmartImage,
+}));
+
+// Mock do Badge
+const MockBadge = ({ children, ...props }: any) => <span {...props}>{children}</span>;
+MockBadge.displayName = 'MockBadge';
+
+vi.mock('@/components/ui/badge', () => ({
+  Badge: MockBadge,
+}));
+
+// Mock do Button
+const MockButton = ({ children, onClick, ...props }: any) => (
+  <button onClick={onClick} {...props}>
+    {children}
+  </button>
+);
+MockButton.displayName = 'MockButton';
+
+vi.mock('@/components/ui/button', () => ({
+  Button: MockButton,
+}));
+
+// Mock do Card
+const MockCard = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+MockCard.displayName = 'MockCard';
+
+const MockCardHeader = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+MockCardHeader.displayName = 'MockCardHeader';
+
+const MockCardContent = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+MockCardContent.displayName = 'MockCardContent';
+
+const MockCardFooter = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+MockCardFooter.displayName = 'MockCardFooter';
+
+vi.mock('@/components/ui/card', () => ({
+  Card: MockCard,
+  CardHeader: MockCardHeader,
+  CardContent: MockCardContent,
+  CardFooter: MockCardFooter,
+}));
+
+// Mock do Skeleton
+const MockSkeleton = ({ ...props }: any) => <div {...props} />;
+MockSkeleton.displayName = 'MockSkeleton';
+
+vi.mock('@/components/ui/skeleton', () => ({
+  Skeleton: MockSkeleton,
+}));
+
+// Mock do useToast
+const mockToast = vi.fn();
+vi.mock('@/hooks/use-toast', () => ({
+  useToast: () => ({
+    toast: mockToast,
+  }),
+}));
+
+// Mock do logger
+vi.mock('@/lib/logger', () => ({
+  logger: {
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    debug: vi.fn(),
+  },
+}));
 
 // Mocks básicos
 vi.mock('./SmartImage', () => ({
@@ -35,6 +207,29 @@ vi.mock('framer-motion', () => ({
     div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     article: ({ children, ...props }: any) => <article {...props}>{children}</article>,
   },
+}));
+
+vi.mock('@/components/ui/button', () => ({
+  Button: (props: any) => <button {...props}>{props.children}</button>,
+}));
+
+vi.mock('@/components/ui/card', () => ({
+  Card: (props: any) => <div {...props}>{props.children}</div>,
+  CardHeader: (props: any) => <div {...props}>{props.children}</div>,
+  CardContent: (props: any) => <div {...props}>{props.children}</div>,
+  CardFooter: (props: any) => <div {...props}>{props.children}</div>,
+}));
+
+vi.mock('@/components/ui/skeleton', () => ({
+  Skeleton: (props: any) => <div {...props} />,
+}));
+
+vi.mock('@/components/SmartImage', () => ({
+  default: (props: any) => <img {...props} />,
+}));
+
+vi.mock('@/components/ui/badge', () => ({
+  Badge: (props: any) => <span {...props}>{props.children}</span>,
 }));
 
 const mockProduct = {

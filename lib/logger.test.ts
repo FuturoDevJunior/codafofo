@@ -1,21 +1,27 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logger, measureAsyncPerformance, measurePerformance } from './logger';
-
-// Mock do console
-const consoleSpy = {
-  log: vi.spyOn(console, 'log').mockImplementation(() => {}),
-  warn: vi.spyOn(console, 'warn').mockImplementation(() => {}),
-  error: vi.spyOn(console, 'error').mockImplementation(() => {}),
-  debug: vi.spyOn(console, 'debug').mockImplementation(() => {}),
-};
+import { logger, Logger, measureAsyncPerformance, measurePerformance } from './logger';
 
 describe('logger', () => {
+  let consoleSpy: {
+    log: ReturnType<typeof vi.spyOn>;
+    warn: ReturnType<typeof vi.spyOn>;
+    error: ReturnType<typeof vi.spyOn>;
+    debug: ReturnType<typeof vi.spyOn>;
+  };
+
   beforeEach(() => {
-    vi.clearAllMocks();
     // Reset para nível padrão
     vi.stubEnv('NODE_ENV', 'development');
     vi.stubEnv('ENABLE_DEBUG', 'true');
+
+    // Mock do console - criado após configuração do ambiente
+    consoleSpy = {
+      log: vi.spyOn(console, 'log').mockImplementation(() => {}),
+      warn: vi.spyOn(console, 'warn').mockImplementation(() => {}),
+      error: vi.spyOn(console, 'error').mockImplementation(() => {}),
+      debug: vi.spyOn(console, 'debug').mockImplementation(() => {}),
+    };
   });
 
   afterEach(() => {
@@ -174,18 +180,24 @@ describe('logger', () => {
   });
 
   describe('ambiente de produção', () => {
+    let productionLogger: any;
+
     beforeEach(() => {
       vi.stubEnv('NODE_ENV', 'production');
+      vi.stubEnv('ENABLE_DEBUG', 'false');
+
+      // Recriar logger com configuração de produção
+      productionLogger = new Logger();
     });
 
     it('não deve logar info em produção', () => {
-      logger.info('Teste');
+      productionLogger.info('Teste');
 
       expect(consoleSpy.warn).not.toHaveBeenCalled();
     });
 
     it('não deve logar debug em produção', () => {
-      logger.debug('Teste');
+      productionLogger.debug('Teste');
 
       expect(consoleSpy.warn).not.toHaveBeenCalled();
     });

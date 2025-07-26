@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
+import ImageUploader from '@/components/admin/ImageUploader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,7 +21,7 @@ import type { ProductForm } from '@/types/product-form';
 
 // Exportar a função de submit para teste unitário
 export async function adminFormOnSubmit(data: ProductForm, product?: any) {
-  const images = data.images.split(',').map(img => img.trim());
+  const images = data.images ? data.images.split(',').map(img => img.trim()) : [];
   const { error } = product
     ? await supabase
         .from('products')
@@ -31,23 +32,43 @@ export async function adminFormOnSubmit(data: ProductForm, product?: any) {
   else toast({ title: 'Sucesso', description: 'Produto salvo!' });
 }
 
-export default function AdminForm({ product }: { product?: ProductForm }) {
+export default function AdminForm({
+  product,
+  onCancel,
+}: {
+  product?: ProductForm;
+  onCancel?: () => void;
+}) {
   const { register, handleSubmit, setValue } = useForm<ProductForm>({ defaultValues: product });
   const [suppliers, setSuppliers] = useState<{ id: string; name: string }[]>([]);
 
+  // Carregar fornecedores com useCallback para evitar loops
+  const loadSuppliers = useCallback(async () => {
+    try {
+      const { data } = await supabase.from('suppliers').select('id, name');
+      if (data) setSuppliers(data);
+    } catch (error) {
+      console.error('Erro ao carregar fornecedores:', error);
+    }
+  }, []);
+
   useEffect(() => {
-    supabase
-      .from('suppliers')
-      .select('id, name')
-      .then(({ data }) => {
-        if (data) setSuppliers(data);
-      });
-    if (product) {
+    loadSuppliers();
+  }, [loadSuppliers]);
+
+  // Configurar supplier_id quando produto é fornecido
+  useEffect(() => {
+    if (product?.supplier_id) {
       setValue('supplier_id', product.supplier_id);
     }
-  }, [product, setValue]);
+  }, [product?.supplier_id, setValue]);
 
-  const onSubmit = (data: ProductForm) => adminFormOnSubmit(data, product);
+  const onSubmit = useCallback(
+    (data: ProductForm) => {
+      return adminFormOnSubmit(data, product);
+    },
+    [product]
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" data-testid="admin-form">
@@ -70,7 +91,7 @@ export default function AdminForm({ product }: { product?: ProductForm }) {
             Categoria
           </Label>
           <Select defaultValue={product?.category} {...register('category')}>
-            <SelectTrigger>
+            <SelectTrigger id="category">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -130,7 +151,7 @@ export default function AdminForm({ product }: { product?: ProductForm }) {
             Fornecedor
           </Label>
           <Select defaultValue={product?.supplier_id} {...register('supplier_id')}>
-            <SelectTrigger>
+            <SelectTrigger id="supplier_id">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -168,6 +189,16 @@ export default function AdminForm({ product }: { product?: ProductForm }) {
         </span>
       </div>
 
+      {/* ImageUploader */}
+      <ImageUploader
+        productId={product?.id || 'new'}
+        productName={product?.name || 'Novo Produto'}
+        currentImages={Array.isArray(product?.images) ? product.images : []}
+        onImagesUpdate={newImages => {
+          setValue('images', newImages.join(', '));
+        }}
+      />
+
       {/* Status */}
       <div className="flex items-center space-x-2">
         <Input
@@ -182,9 +213,16 @@ export default function AdminForm({ product }: { product?: ProductForm }) {
         </Label>
       </div>
 
-      <Button type="submit" className="w-full sm:w-auto">
-        Salvar
-      </Button>
+      <div className="flex gap-4">
+        <Button type="submit" className="w-full sm:w-auto">
+          Salvar
+        </Button>
+        {onCancel && (
+          <Button type="button" variant="outline" onClick={onCancel} className="w-full sm:w-auto">
+            Cancelar
+          </Button>
+        )}
+      </div>
     </form>
   );
 }

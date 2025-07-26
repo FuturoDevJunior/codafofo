@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useState } from 'react';
 import { getProducts } from '@/lib/mockData';
@@ -8,7 +8,7 @@ import { smartCache } from '@/lib/smartCache';
 /**
  * HOOK DE PRODUTOS COM CACHE INTELIGENTE
  * ====================================
- * 
+ *
  * Hook que combina o melhor dos dois mundos:
  * - Carregamento imediato com dados síncronos
  * - Performance otimizada com cache inteligente
@@ -59,7 +59,7 @@ export function useProductsCache() {
     refreshProducts,
     // Estatísticas úteis
     totalProducts: products.length,
-    activeProducts: products.filter(p => p.active).length,
+    activeProducts: Array.isArray(products) ? products.filter(p => p.active).length : 0,
   };
 }
 

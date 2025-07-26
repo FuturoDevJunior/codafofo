@@ -13,6 +13,7 @@
 - [Webhooks](#webhooks)
 - [SDKs](#sdks)
 - [Troubleshooting](#troubleshooting)
+- [Códigos de Erro](#códigos-de-erro)
 
 ---
 
@@ -38,6 +39,21 @@ https://vytalle-estetica.vercel.app/api
 
 # Desenvolvimento
 http://localhost:3000/api
+```
+
+### Status da API
+
+```bash
+# Health check
+curl https://vytalle-estetica.vercel.app/api/health
+
+# Resposta
+{
+  "status": "healthy",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "version": "1.0.0",
+  "environment": "production"
+}
 ```
 
 ---
@@ -82,6 +98,14 @@ curl -X POST https://vytalle-estetica.vercel.app/api/auth/refresh \
   }'
 ```
 
+### 4. Logout
+
+```bash
+# Invalide o token
+curl -X POST https://vytalle-estetica.vercel.app/api/auth/logout \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
 ---
 
 ## 📡 Endpoints
@@ -98,35 +122,39 @@ curl https://vytalle-estetica.vercel.app/api/products
 
 **Parâmetros de Query:**
 - `category` (string): Filtrar por categoria
-- `active` (boolean): Apenas produtos ativos
+- `search` (string): Busca por nome
 - `limit` (number): Limite de resultados (padrão: 50)
 - `offset` (number): Offset para paginação
+
+**Exemplo com filtros:**
+```bash
+curl "https://vytalle-estetica.vercel.app/api/products?category=Toxina%20Botul%C3%ADnica&limit=10"
+```
 
 **Resposta:**
 ```json
 {
   "products": [
     {
-      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "id": "1",
       "name": "Botox 50U",
-      "slug": "botox-50u",
+      "description": "Toxina botulínica tipo A",
       "price_pix": 530.00,
       "price_card": 580.00,
       "price_prazo": 580.00,
-      "description": "Toxina botulínica premium",
-      "images": ["/images/botox-50u.jpg"],
       "category": "Toxina Botulínica",
+      "images": ["/images/botox-50u.jpg"],
       "active": true,
       "created_at": "2024-01-15T10:30:00Z"
     }
   ],
-  "total": 25,
-  "limit": 50,
+  "total": 1,
+  "limit": 10,
   "offset": 0
 }
 ```
 
-#### GET /api/products/{slug}
+#### GET /api/products/[slug]
 
 Obtém detalhes de um produto específico.
 
@@ -137,43 +165,22 @@ curl https://vytalle-estetica.vercel.app/api/products/botox-50u
 **Resposta:**
 ```json
 {
-  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "id": "1",
   "name": "Botox 50U",
-  "slug": "botox-50u",
+  "description": "Toxina botulínica tipo A para tratamento de rugas",
   "price_pix": 530.00,
   "price_card": 580.00,
   "price_prazo": 580.00,
-  "description": "Toxina botulínica premium da Allergan, indicada para tratamento de rugas dinâmicas...",
-  "images": [
-    "/images/botox-50u.jpg",
-    "/images/botox-50u-2.jpg"
-  ],
   "category": "Toxina Botulínica",
+  "images": ["/images/botox-50u.jpg"],
+  "specifications": {
+    "concentration": "50U",
+    "volume": "2ml",
+    "storage": "Refrigerado"
+  },
   "active": true,
-  "created_at": "2024-01-15T10:30:00Z",
-  "updated_at": "2024-01-15T10:30:00Z"
+  "created_at": "2024-01-15T10:30:00Z"
 }
-```
-
-#### POST /api/products (Admin)
-
-Cria um novo produto (requer autenticação admin).
-
-```bash
-curl -X POST https://vytalle-estetica.vercel.app/api/products \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Novo Produto",
-    "slug": "novo-produto",
-    "price_pix": 100.00,
-    "price_card": 110.00,
-    "price_prazo": 110.00,
-    "description": "Descrição do produto",
-    "images": ["/images/novo-produto.jpg"],
-    "category": "Categoria",
-    "active": true
-  }'
 ```
 
 ### Pedidos
@@ -187,16 +194,21 @@ curl -X POST https://vytalle-estetica.vercel.app/api/checkout \
   -H "Content-Type: application/json" \
   -d '{
     "customer": {
-      "name": "Dra. Ana Paula",
-      
-      "email": "ana@clinica.com",
+      "name": "Dra. Ana Paula Silva",
+      "email": "ana@clinic.com",
+      "phone": "+5511999999999",
       "cep": "21361-020"
     },
-    "items": [
+    "products": [
       {
-        "product_id": "550e8400-e29b-41d4-a716-446655440000",
+        "id": "1",
         "quantity": 2,
-        "unit_price": 530.00
+        "price": 530.00
+      },
+      {
+        "id": "2",
+        "quantity": 1,
+        "price": 1200.00
       }
     ],
     "notes": "Entrega urgente"
@@ -206,18 +218,18 @@ curl -X POST https://vytalle-estetica.vercel.app/api/checkout \
 **Resposta:**
 ```json
 {
-  "order_id": "b1c2d3e4-f5a6-7890-1234-56789abcdef0",
+  "order_id": "ORD-2024-001",
   "status": "created",
-  "pdf_url": "https://supabase.co/storage/v1/object/public/orders/b1c2d3e4.pdf",
+  "total": 2260.00,
+  "pdf_url": "https://vytalle-estetica.vercel.app/api/orders/ORD-2024-001/pdf",
   "whatsapp_message": "PEDIDO VYTALE ESTÉTICA...",
-  "total": 1060.00,
   "created_at": "2024-01-15T10:30:00Z"
 }
 ```
 
-#### GET /api/orders (Admin)
+#### GET /api/orders
 
-Lista todos os pedidos (requer autenticação admin).
+Lista pedidos (apenas admin).
 
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
@@ -226,100 +238,44 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 
 **Parâmetros de Query:**
 - `status` (string): Filtrar por status
-- `date_from` (string): Data inicial (ISO)
-- `date_to` (string): Data final (ISO)
+- `date_from` (string): Data inicial (YYYY-MM-DD)
+- `date_to` (string): Data final (YYYY-MM-DD)
 - `limit` (number): Limite de resultados
 
-#### GET /api/orders/{id} (Admin)
+#### GET /api/orders/[id]
 
 Obtém detalhes de um pedido específico.
 
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-  https://vytalle-estetica.vercel.app/api/orders/b1c2d3e4-f5a6-7890-1234-56789abcdef0
+  https://vytalle-estetica.vercel.app/api/orders/ORD-2024-001
 ```
 
-### Relatórios
+### Admin
 
-#### GET /api/reports/sales (Admin)
+#### GET /api/admin/dashboard
 
-Relatório de vendas.
+Estatísticas do painel admin.
 
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-  "https://vytalle-estetica.vercel.app/api/reports/sales?period=month"
+  https://vytalle-estetica.vercel.app/api/admin/dashboard
 ```
-
-**Parâmetros:**
-- `period`: day, week, month, year
 
 **Resposta:**
 ```json
 {
-  "period": "month",
-  "total_sales": 15000.00,
-  "total_orders": 25,
-  "average_order": 600.00,
+  "total_orders": 150,
+  "total_revenue": 45000.00,
+  "orders_today": 5,
+  "revenue_today": 2500.00,
   "top_products": [
     {
-      "product_id": "550e8400-e29b-41d4-a716-446655440000",
       "name": "Botox 50U",
-      "quantity_sold": 15,
-      "total_revenue": 7950.00
-    }
-  ],
-  "sales_by_day": [
-    {
-      "date": "2024-01-15",
-      "sales": 1200.00,
-      "orders": 2
+      "quantity": 45,
+      "revenue": 23850.00
     }
   ]
-}
-```
-
-### Autenticação
-
-#### POST /api/auth/login
-
-Login de administrador.
-
-```bash
-curl -X POST https://vytalle-estetica.vercel.app/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "admin",
-    "password": "senha123"
-  }'
-```
-
-#### POST /api/auth/logout
-
-Logout (invalida token).
-
-```bash
-curl -X POST https://vytalle-estetica.vercel.app/api/auth/logout \
-  -H "Authorization: Bearer YOUR_TOKEN"
-```
-
-### Health Check
-
-#### GET /api/health
-
-Verifica status da API.
-
-```bash
-curl https://vytalle-estetica.vercel.app/api/health
-```
-
-**Resposta:**
-```json
-{
-  "status": "healthy",
-  "timestamp": "2024-01-15T10:30:00Z",
-  "version": "1.0.0",
-  "database": "connected",
-  "uptime": 3600
 }
 ```
 
@@ -333,13 +289,13 @@ curl https://vytalle-estetica.vercel.app/api/health
 interface Product {
   id: string;
   name: string;
-  slug: string;
+  description: string;
   price_pix: number;
   price_card: number;
   price_prazo: number;
-  description?: string;
-  images: string[];
   category: string;
+  images: string[];
+  specifications?: Record<string, any>;
   active: boolean;
   created_at: string;
   updated_at: string;
@@ -353,25 +309,20 @@ interface Order {
   id: string;
   customer: {
     name: string;
+    email: string;
     phone: string;
-    email?: string;
-    cep?: string;
+    cep: string;
   };
-  items: OrderItem[];
+  products: Array<{
+    id: string;
+    quantity: number;
+    price: number;
+  }>;
   total: number;
   status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
-  pdf_url?: string;
   notes?: string;
   created_at: string;
   updated_at: string;
-}
-
-interface OrderItem {
-  product_id: string;
-  product_name: string;
-  quantity: number;
-  unit_price: number;
-  total: number;
 }
 ```
 
@@ -380,9 +331,9 @@ interface OrderItem {
 ```typescript
 interface Customer {
   name: string;
+  email: string;
   phone: string;
-  email?: string;
-  cep?: string;
+  cep: string;
   address?: string;
   city?: string;
   state?: string;
@@ -391,124 +342,176 @@ interface Customer {
 
 ---
 
-## 💡 Exemplos de Uso
+## 💻 Exemplos de Uso
 
-### 1. Integração com ERP
+### JavaScript/Node.js
 
 ```javascript
-// Exemplo: Node.js
-const axios = require('axios');
-
 class VytalleAPI {
   constructor(baseURL, token) {
-    this.api = axios.create({
-      baseURL,
+    this.baseURL = baseURL;
+    this.token = token;
+  }
+
+  async request(endpoint, options = {}) {
+    const response = await fetch(`${this.baseURL}${endpoint}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+        ...options.headers
+      },
+      ...options
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    return response.json();
   }
 
   async getProducts(category = null) {
-    const params = category ? { category } : {};
-    const response = await this.api.get('/products', { params });
-    return response.data.products;
+    const params = category ? `?category=${encodeURIComponent(category)}` : '';
+    return this.request(`/products${params}`);
   }
 
   async createOrder(orderData) {
-    const response = await this.api.post('/checkout', orderData);
-    return response.data;
+    return this.request('/checkout', {
+      method: 'POST',
+      body: JSON.stringify(orderData)
+    });
   }
 
-  async getSalesReport(period = 'month') {
-    const response = await this.api.get(`/reports/sales?period=${period}`);
-    return response.data;
+  async getOrders(filters = {}) {
+    const params = new URLSearchParams(filters);
+    return this.request(`/orders?${params}`);
   }
 }
 
 // Uso
-const vytalle = new VytalleAPI(
+const api = new VytalleAPI(
   'https://vytalle-estetica.vercel.app/api',
   'YOUR_TOKEN'
 );
 
-// Buscar produtos
-const products = await vytalle.getProducts('Toxina Botulínica');
+// Listar produtos
+const products = await api.getProducts('Toxina Botulínica');
 
 // Criar pedido
-const order = await vytalle.createOrder({
+const order = await api.createOrder({
   customer: {
-    name: 'Dra. Ana Paula',
-    
+    name: 'Dr. Silva',
+    email: 'dr@clinic.com',
+    phone: '+5511999999999',
+    cep: '21361-020'
   },
-  items: [
-    {
-      product_id: '550e8400-e29b-41d4-a716-446655440000',
-      quantity: 2,
-      unit_price: 530.00
-    }
+  products: [
+    { id: '1', quantity: 2, price: 530.00 }
   ]
 });
 ```
 
-### 2. Integração com WhatsApp Business
+### Python
 
-```javascript
-// Exemplo: Envio automático para WhatsApp
-async function sendOrderToWhatsApp(order) {
-  const message = `*PEDIDO VYTALE ESTÉTICA*
+```python
+import requests
+import json
 
-*Cliente:* ${order.customer.name}
-*Telefone:* ${order.customer.phone}
-*Total:* R$ ${order.total.toFixed(2)}
+class VytalleAPI:
+    def __init__(self, base_url, token):
+        self.base_url = base_url
+        self.token = token
+        self.headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        }
 
-*Itens:*
-${order.items.map(item => 
-  `• ${item.product_name} - ${item.quantity}x R$ ${item.unit_price.toFixed(2)}`
-).join('\n')}
+    def get_products(self, category=None):
+        params = {'category': category} if category else {}
+        response = requests.get(
+            f'{self.base_url}/products',
+            headers=self.headers,
+            params=params
+        )
+        response.raise_for_status()
+        return response.json()
 
-*PDF:* ${order.pdf_url}
+    def create_order(self, order_data):
+        response = requests.post(
+            f'{self.base_url}/checkout',
+            headers=self.headers,
+            json=order_data
+        )
+        response.raise_for_status()
+        return response.json()
 
-_Vytalle Estética - Produtos Premium_`;
+# Uso
+api = VytalleAPI(
+    'https://vytalle-estetica.vercel.app/api',
+    'YOUR_TOKEN'
+)
 
-  // Integração com WhatsApp Business API
-  await whatsappAPI.sendMessage(order.customer.phone, message);
-}
+products = api.get_products('Toxina Botulínica')
 ```
 
-### 3. Dashboard de Vendas
+### PHP
 
-```javascript
-// Exemplo: Dashboard React
-import { useState, useEffect } from 'react';
+```php
+<?php
 
-function SalesDashboard() {
-  const [salesData, setSalesData] = useState(null);
+class VytalleAPI {
+    private $baseUrl;
+    private $token;
 
-  useEffect(() => {
-    async function fetchSalesData() {
-      const response = await fetch('/api/reports/sales?period=month', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      const data = await response.json();
-      setSalesData(data);
+    public function __construct($baseUrl, $token) {
+        $this->baseUrl = $baseUrl;
+        $this->token = $token;
     }
 
-    fetchSalesData();
-  }, []);
+    private function request($endpoint, $method = 'GET', $data = null) {
+        $headers = [
+            'Authorization: Bearer ' . $this->token,
+            'Content-Type: application/json'
+        ];
 
-  return (
-    <div>
-      <h2>Relatório de Vendas</h2>
-      <p>Total: R$ {salesData?.total_sales.toFixed(2)}</p>
-      <p>Pedidos: {salesData?.total_orders}</p>
-      {/* Mais componentes... */}
-    </div>
-  );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        if ($method === 'POST') {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        }
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode >= 400) {
+            throw new Exception("HTTP $httpCode: $response");
+        }
+
+        return json_decode($response, true);
+    }
+
+    public function getProducts($category = null) {
+        $params = $category ? "?category=" . urlencode($category) : "";
+        return $this->request("/products$params");
+    }
+
+    public function createOrder($orderData) {
+        return $this->request('/checkout', 'POST', $orderData);
+    }
 }
+
+// Uso
+$api = new VytalleAPI(
+    'https://vytalle-estetica.vercel.app/api',
+    'YOUR_TOKEN'
+);
+
+$products = $api->getProducts('Toxina Botulínica');
 ```
 
 ---
@@ -518,22 +521,17 @@ function SalesDashboard() {
 A API implementa rate limiting para proteger contra abuso:
 
 - **Limite**: 100 requests por minuto por IP
-- **Headers de resposta:**
+- **Headers de resposta**:
   - `X-RateLimit-Limit`: Limite total
   - `X-RateLimit-Remaining`: Requests restantes
   - `X-RateLimit-Reset`: Timestamp de reset
 
-```bash
-# Exemplo de resposta com rate limiting
-HTTP/1.1 429 Too Many Requests
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 0
-X-RateLimit-Reset: 1642248600
-Retry-After: 60
-
+**Exemplo de resposta quando excede o limite:**
+```json
 {
   "error": "Rate limit exceeded",
-  "message": "Too many requests, please try again later"
+  "message": "Too many requests. Try again in 60 seconds.",
+  "retry_after": 60
 }
 ```
 
@@ -541,27 +539,27 @@ Retry-After: 60
 
 ## 🔔 Webhooks
 
-A API suporta webhooks para notificações em tempo real:
-
-### Configuração
-
-```bash
-# Configure webhook URL
-curl -X POST https://vytalle-estetica.vercel.app/api/webhooks \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://your-app.com/webhooks/vytalle",
-    "events": ["order.created", "order.updated"]
-  }'
-```
+Configure webhooks para receber notificações em tempo real:
 
 ### Eventos Disponíveis
 
 - `order.created`: Novo pedido criado
-- `order.updated`: Pedido atualizado
+- `order.updated`: Status do pedido alterado
 - `order.cancelled`: Pedido cancelado
 - `product.updated`: Produto atualizado
+
+### Configuração
+
+```bash
+curl -X POST https://vytalle-estetica.vercel.app/api/webhooks \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://your-app.com/webhooks",
+    "events": ["order.created", "order.updated"],
+    "secret": "your-webhook-secret"
+  }'
+```
 
 ### Payload do Webhook
 
@@ -570,12 +568,12 @@ curl -X POST https://vytalle-estetica.vercel.app/api/webhooks \
   "event": "order.created",
   "timestamp": "2024-01-15T10:30:00Z",
   "data": {
-    "order_id": "b1c2d3e4-f5a6-7890-1234-56789abcdef0",
+    "order_id": "ORD-2024-001",
     "customer": {
-      "name": "Dra. Ana Paula",
-      
+      "name": "Dra. Ana Paula Silva",
+      "email": "ana@clinic.com"
     },
-    "total": 1060.00
+    "total": 2260.00
   }
 }
 ```
@@ -584,7 +582,7 @@ curl -X POST https://vytalle-estetica.vercel.app/api/webhooks \
 
 ## 📚 SDKs
 
-### JavaScript/TypeScript
+### TypeScript/JavaScript
 
 ```bash
 npm install vytalle-api
@@ -598,8 +596,7 @@ const api = new VytalleAPI({
   token: 'YOUR_TOKEN'
 });
 
-// Usar métodos tipados
-const products = await api.products.list();
+const products = await api.products.list({ category: 'Toxina Botulínica' });
 const order = await api.orders.create(orderData);
 ```
 
@@ -613,11 +610,11 @@ pip install vytalle-api
 from vytalle_api import VytalleAPI
 
 api = VytalleAPI(
-    base_url="https://vytalle-estetica.vercel.app/api",
-    token="YOUR_TOKEN"
+    base_url='https://vytalle-estetica.vercel.app/api',
+    token='YOUR_TOKEN'
 )
 
-products = api.products.list()
+products = api.products.list(category='Toxina Botulínica')
 order = api.orders.create(order_data)
 ```
 
@@ -625,42 +622,101 @@ order = api.orders.create(order_data)
 
 ## 🔧 Troubleshooting
 
-### Códigos de Erro Comuns
+### Problemas Comuns
 
-| Código | Descrição | Solução |
-|--------|-----------|---------|
-| `400` | Bad Request | Verifique formato dos dados |
-| `401` | Unauthorized | Token inválido ou expirado |
-| `403` | Forbidden | Sem permissão para recurso |
-| `404` | Not Found | Endpoint ou recurso não existe |
-| `429` | Too Many Requests | Rate limit excedido |
-| `500` | Internal Server Error | Erro interno do servidor |
+| Problema | Causa | Solução |
+|----------|-------|---------|
+| **401 Unauthorized** | Token inválido/expirado | Renovar token via `/auth/refresh` |
+| **403 Forbidden** | Sem permissão | Verificar role do usuário |
+| **429 Too Many Requests** | Rate limit excedido | Aguardar 60 segundos |
+| **500 Internal Server Error** | Erro interno | Verificar logs, contatar suporte |
+| **422 Validation Error** | Dados inválidos | Verificar schema da requisição |
 
-### Logs de Debug
+### Debug de Requests
 
 ```bash
-# Ative logs detalhados
-curl -H "X-Debug: true" \
+# Verbose curl
+curl -v -H "Authorization: Bearer YOUR_TOKEN" \
+  https://vytalle-estetica.vercel.app/api/products
+
+# Com headers detalhados
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Accept: application/json" \
+  -H "User-Agent: VytalleAPI/1.0" \
   https://vytalle-estetica.vercel.app/api/products
 ```
 
-### Validação de Dados
+### Logs de Erro
 
-```typescript
-// Exemplo de validação
-interface CreateOrderRequest {
-  customer: {
-    name: string; // obrigatório, 2-100 chars
-    phone: string; // obrigatório, formato brasileiro
-    email?: string; // opcional, formato email
-    cep?: string; // opcional, formato CEP
-  };
-  items: {
-    product_id: string; // obrigatório, UUID válido
-    quantity: number; // obrigatório, > 0
-    unit_price: number; // obrigatório, > 0
-  }[];
-  notes?: string; // opcional, max 500 chars
+```javascript
+// Interceptar erros
+try {
+  const response = await api.getProducts();
+} catch (error) {
+  console.error('API Error:', {
+    status: error.status,
+    message: error.message,
+    response: error.response
+  });
+}
+```
+
+---
+
+## ❌ Códigos de Erro
+
+### HTTP Status Codes
+
+| Código | Descrição | Ação |
+|--------|-----------|------|
+| **200** | OK | Sucesso |
+| **201** | Created | Recurso criado |
+| **400** | Bad Request | Dados inválidos |
+| **401** | Unauthorized | Token inválido |
+| **403** | Forbidden | Sem permissão |
+| **404** | Not Found | Recurso não encontrado |
+| **422** | Unprocessable Entity | Validação falhou |
+| **429** | Too Many Requests | Rate limit |
+| **500** | Internal Server Error | Erro do servidor |
+
+### Erros de Validação
+
+```json
+{
+  "error": "Validation failed",
+  "message": "Invalid input data",
+  "details": [
+    {
+      "field": "customer.email",
+      "message": "Invalid email format"
+    },
+    {
+      "field": "products",
+      "message": "At least one product is required"
+    }
+  ]
+}
+```
+
+### Erros de Autenticação
+
+```json
+{
+  "error": "Unauthorized",
+  "message": "Invalid or expired token",
+  "code": "AUTH_TOKEN_INVALID"
+}
+```
+
+### Erros de Rate Limiting
+
+```json
+{
+  "error": "Rate limit exceeded",
+  "message": "Too many requests. Try again in 60 seconds.",
+  "retry_after": 60,
+  "limit": 100,
+  "remaining": 0
 }
 ```
 
@@ -670,16 +726,17 @@ interface CreateOrderRequest {
 
 ### Contatos
 
-- **E-mail**: contato.ferreirag@outlook.com
-
-- **Documentação**: https://vytalle-estetica.vercel.app/docs/api
+- **📧 E-mail**: [contato.ferreirag@outlook.com](mailto:contato.ferreirag@outlook.com)
+- **🐛 Issues**: [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
+- **📖 Docs**: [Documentação Completa](./docs/)
 
 ### Recursos
 
-- [Postman Collection](./postman/Vytalle_API.postman_collection.json)
-- [OpenAPI Spec](./openapi.yaml)
-- [SDK Examples](./examples/)
+- **[🔧 Troubleshooting](./docs/TROUBLESHOOTING.md)** - Problemas comuns
+- **[🚀 Deploy](./docs/DEPLOYMENT.md)** - Guia de deploy
+- **[🌐 Demo](https://vytalle-estetica.vercel.app)** - Aplicação em produção
+- **[📊 Status](https://vytalle-estetica.vercel.app/api/health)** - Health check
 
 ---
 
-**API profissional para integrações robustas! 🚀** 
+**Vytalle Estética API - Integração profissional para seu negócio! 🚀** 

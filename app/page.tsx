@@ -24,24 +24,39 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section Otimizado */}
-      <section className="from-vitale-primary/8 via-white relative flex min-h-[85vh] items-center justify-center bg-gradient-to-br to-vitale-secondary/5">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
+      {/* Hero Section Redesign - Maior destaque para logo */}
+      <section className="via-white relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10">
+        {/* Background Pattern Melhorado */}
+        <div className="absolute inset-0 opacity-[0.03]">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iIzg5NzQ2NiIvPgo8L3N2Zz4K')] bg-repeat"></div>
         </div>
 
-        <div className="max-w-responsive-lg container relative z-10 mx-auto space-y-8 px-4 text-center md:space-y-12">
-          {/* Logo Principal Otimizado */}
-          <div className="mb-8 flex justify-center">
-            <SmartImage
-              src="/Vytalle_Logo_Gold.png"
-              alt="Vytalle Estética & Viscosuplementação - Logo Oficial"
-              width={160}
-              height={160}
-              className="h-32 w-32 object-contain transition-all duration-500 ease-out sm:h-40 sm:w-40 lg:h-44 lg:w-44"
-              priority={true}
-            />
+        {/* Elementos decorativos */}
+        <div className="absolute left-10 top-20 h-72 w-72 rounded-full bg-vitale-primary/5 blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 h-96 w-96 rounded-full bg-vitale-secondary/5 blur-3xl"></div>
+
+        <div className="max-w-responsive-lg container relative z-10 mx-auto space-y-12 px-4 text-center md:space-y-16">
+          {/* Logo Principal REDESIGN - Muito maior destaque */}
+          <div className="mb-12 flex justify-center">
+            <div className="group relative">
+              {/* Glow effect */}
+              <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-vitale-primary/20 via-vitale-secondary/20 to-vitale-primary/20 opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-100"></div>
+
+              {/* Logo container */}
+              <div className="bg-white/80 shadow-2xl relative rounded-full border-2 border-vitale-primary/10 p-8 backdrop-blur-lg transition-all duration-500 group-hover:border-vitale-primary/30">
+                <SmartImage
+                  src="/Vytalle_Logo_Gold.png"
+                  alt="Vytalle Estética & Viscosuplementação - Logo Oficial"
+                  width={200}
+                  height={200}
+                  className="h-40 w-40 object-contain transition-all duration-700 ease-out group-hover:scale-110 sm:h-48 sm:w-48 lg:h-56 lg:w-56 xl:h-64 xl:w-64"
+                  priority={true}
+                />
+              </div>
+
+              {/* Shine effect */}
+              <div className="from-transparent via-white/20 to-transparent absolute inset-0 -skew-x-12 transform rounded-full bg-gradient-to-r opacity-0 transition-opacity duration-1000 group-hover:opacity-100"></div>
+            </div>
           </div>
 
           {/* Título Principal com Melhor Hierarquia */}

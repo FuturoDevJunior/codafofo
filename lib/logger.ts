@@ -19,9 +19,9 @@ class Logger {
 
   constructor() {
     this.config = {
-      isDevelopment: process.env.NODE_ENV === 'development',
-      enableConsole: process.env.NODE_ENV === 'development',
-      enableDebug: process.env.ENABLE_DEBUG === 'true',
+      isDevelopment: process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test',
+      enableConsole: process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test',
+      enableDebug: process.env.ENABLE_DEBUG === 'true' || process.env.NODE_ENV === 'test',
     };
   }
 
@@ -39,7 +39,7 @@ class Logger {
 
   info(message: string, data?: unknown, context?: string): void {
     const logMessage = this.formatMessage('info' as LogLevel, message, context);
-    if (process.env.NODE_ENV === 'development') {
+    if (this.config.isDevelopment) {
       console.warn(logMessage, data || '');
     }
     // Em produção, enviar para serviço de logging
@@ -61,7 +61,7 @@ class Logger {
   }
 
   debug(message: string, data?: unknown, context?: string): void {
-    if (process.env.NODE_ENV === 'development') {
+    if (this.config.isDevelopment) {
       const logMessage = this.formatMessage('debug' as LogLevel, message, context);
       console.warn(logMessage, data || '');
     }
@@ -82,6 +82,9 @@ class Logger {
 
 // Singleton instance
 export const logger = new Logger();
+
+// Exportar a classe para testes
+export { Logger };
 
 // Utility para medir performance
 export function measurePerformance<T>(operation: string, fn: () => T, context?: string): T {

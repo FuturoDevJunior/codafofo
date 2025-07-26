@@ -1,294 +1,95 @@
 # 🤝 Guia de Contribuição - Vytalle Estética
 
-> **Para desenvolvedores que buscam excelência e qualidade profissional**
+> **Como contribuir de forma eficiente, segura e padronizada**
 
 ## 📋 Índice
 
-- [Antes de Começar](#antes-de-começar)
-- [Configuração do Ambiente](#configuração-do-ambiente)
-- [Padrões de Código](#padrões-de-código)
-- [Fluxo de Desenvolvimento](#fluxo-de-desenvolvimento)
-- [Testes](#testes)
-- [Commits e Versionamento](#commits-e-versionamento)
-- [Pull Requests](#pull-requests)
-- [Code Review](#code-review)
-- [Deploy e Release](#deploy-e-release)
-- [Troubleshooting](#troubleshooting)
+- [Fluxo de Contribuição](#fluxo-de-contribuição)
+- [Checklist de Pull Request](#checklist-de-pull-request)
+- [Padrão de Branches](#padrão-de-branches)
+- [Padrão de Commits](#padrão-de-commits)
+- [Como Rodar Testes](#como-rodar-testes)
+- [Como Rodar Lint e Type-Check](#como-rodar-lint-e-type-check)
+- [Como Sugerir Features](#como-sugerir-features)
+- [Como Reportar Bugs](#como-reportar-bugs)
+- [Código de Conduta](#código-de-conduta)
 
 ---
 
-## 🚀 Antes de Começar
+## 🚀 Fluxo de Contribuição
 
-### Pré-requisitos
-
-- **Node.js** >= 18.0.0
-- **npm** >= 9.0.0
-- **Git** >= 2.30.0
-- **Supabase CLI** >= 1.0.0
-- **Conhecimento em:**
-  - React 18 + TypeScript
-  - Next.js 15 (App Router)
-  - Tailwind CSS
-  - Supabase/PostgreSQL
-  - Testes (Vitest, RTL, Playwright)
-
-### Configuração Inicial
-
-```bash
-# Clone o repositório
-git clone https://github.com/FuturoDevJunior/codafofo.git
-cd codafofo
-
-# Instale dependências
-npm install
-
-# Configure variáveis de ambiente
-cp .env.example .env.local
-# Edite .env.local com suas credenciais
-
-# Inicialize o banco de dados
-npm run db:init
-
-# Inicie o servidor de desenvolvimento
-npm run dev
-```
+1. **Fork** o repositório
+2. **Clone** seu fork localmente
+3. **Crie** uma branch descritiva
+   - Exemplo: `feat/admin-dashboard`, `fix/product-image-upload`
+4. **Desenvolva** seguindo os padrões do projeto
+5. **Rode todos os testes** localmente
+6. **Rode lint e type-check**
+7. **Commit** seguindo Conventional Commits
+8. **Push** para seu fork
+9. **Abra um Pull Request** para `main` com descrição clara
+10. **Aguarde revisão** e faça ajustes se necessário
 
 ---
 
-## ⚙️ Configuração do Ambiente
+## ✅ Checklist de Pull Request
 
-### 1. Editor e Extensões Recomendadas
-
-**VS Code Extensions:**
-```json
-{
-  "recommendations": [
-    "bradlc.vscode-tailwindcss",
-    "esbenp.prettier-vscode",
-    "ms-vscode.vscode-typescript-next",
-    "formulahendry.auto-rename-tag",
-    "christian-kohler.path-intellisense",
-    "ms-vscode.vscode-json",
-    "ms-vscode.vscode-eslint"
-  ]
-}
-```
-
-### 2. Configurações do VS Code
-
-```json
-{
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "typescript.preferences.importModuleSpecifier": "relative",
-  "tailwindCSS.includeLanguages": {
-    "typescript": "javascript",
-    "typescriptreact": "javascript"
-  }
-}
-```
-
-### 3. Git Hooks
-
-O projeto usa Husky para hooks automáticos:
-
-```bash
-# Pre-commit: roda lint, type-check e testes
-git commit -m "feat: nova funcionalidade"
-
-# Pre-push: valida build de produção
-git push origin main
-```
+- [ ] Código segue padrões do projeto
+- [ ] Documentação atualizada
+- [ ] Testes adicionados/atualizados
+- [ ] Build de produção sem warnings
+- [ ] Variáveis de ambiente documentadas
+- [ ] Cobertura de testes mantida >95%
+- [ ] PR com descrição clara do que foi feito
+- [ ] Não há arquivos desnecessários (ex: .env, node_modules)
 
 ---
 
-## 📝 Padrões de Código
+## 🌱 Padrão de Branches
 
-### 1. TypeScript
-
-```typescript
-// ✅ Bom
-interface Product {
-  id: string;
-  name: string;
-  price_pix: number;
-  price_card: number;
-  images: string[];
-  category: ProductCategory;
-  active: boolean;
-}
-
-// ❌ Evite
-interface Product {
-  id: any;
-  name: string;
-  price: number; // vago
-  images: any[];
-}
-```
-
-### 2. React Components
-
-```typescript
-// ✅ Componente funcional com TypeScript
-interface ProductCardProps {
-  product: Product;
-  onAddToCart: (product: Product) => void;
-  className?: string;
-}
-
-export function ProductCard({ 
-  product, 
-  onAddToCart, 
-  className 
-}: ProductCardProps) {
-  const handleAddToCart = useCallback(() => {
-    onAddToCart(product);
-  }, [product, onAddToCart]);
-
-  return (
-    <div className={cn("product-card", className)}>
-      {/* JSX */}
-    </div>
-  );
-}
-```
-
-### 3. Hooks Customizados
-
-```typescript
-// ✅ Hook customizado
-export function useProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchProducts()
-      .then(setProducts)
-      .catch(setError)
-      .finally(() => setLoading(false));
-  }, []);
-
-  return { products, loading, error };
-}
-```
-
-### 4. Styling (Tailwind CSS)
-
-```typescript
-// ✅ Classes organizadas
-const buttonClasses = cn(
-  "inline-flex items-center justify-center",
-  "px-4 py-2 text-sm font-medium",
-  "rounded-md shadow-sm",
-  "focus:outline-none focus:ring-2 focus:ring-offset-2",
-  "disabled:opacity-50 disabled:cursor-not-allowed",
-  {
-    "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500": variant === "primary",
-    "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500": variant === "secondary",
-  }
-);
-```
+- `main`: Produção
+- `dev`: Desenvolvimento (opcional)
+- `feat/<feature>`: Novas features
+- `fix/<bug>`: Correções
+- `docs/<doc>`: Documentação
+- `test/<test>`: Testes
+- `refactor/<refatoração>`: Refatoração
 
 ---
 
-## 🔄 Fluxo de Desenvolvimento
-
-### 1. Criação de Branch
+## 📝 Padrão de Commits
 
 ```bash
-# Sempre crie branch a partir da main
-git checkout main
-git pull origin main
+# Estrutura: <tipo>(<escopo>): <descrição>
 
-# Crie branch com nome descritivo
-git checkout -b feat/nova-funcionalidade
-git checkout -b fix/correcao-bug
-git checkout -b refactor/melhoria-codigo
+# Funcionalidades
+feat: adiciona sistema de carrinho
+feat(admin): implementa painel de relatórios
+
+# Correções
+fix: corrige validação de formulário
+fix(auth): resolve problema de login
+
+# Refatoração
+refactor: melhora performance do carrinho
+refactor(api): simplifica endpoints
+
+# Documentação
+docs: atualiza README
+docs(api): adiciona exemplos de uso
+
+# Testes
+test: adiciona testes para checkout
+test(unit): cobre cenários de erro
 ```
 
-### 2. Desenvolvimento
-
-```bash
-# Desenvolva sua funcionalidade
-npm run dev
-
-# Rode testes durante desenvolvimento
-npm run test:watch
-
-# Verifique qualidade do código
-npm run lint
-npm run type-check
-```
-
-### 3. Commit Frequente
-
-```bash
-# Commits pequenos e frequentes
-git add .
-git commit -m "feat: adiciona validação de formulário"
-
-git add .
-git commit -m "test: adiciona testes para validação"
-
-git add .
-git commit -m "refactor: melhora performance do componente"
-```
+- Use sempre o português nos commits.
+- Commits pequenos e atômicos.
+- Referencie issues quando aplicável: `fix: corrige bug no checkout (closes #12)`
 
 ---
 
-## 🧪 Testes
-
-### 1. Estrutura de Testes
-
-```
-tests/
-├── unit/           # Testes unitários
-├── integration/    # Testes de integração
-├── e2e/           # Testes end-to-end
-└── fixtures/      # Dados de teste
-```
-
-### 2. Padrões de Teste
-
-```typescript
-// ✅ Teste bem estruturado
-describe('ProductCard', () => {
-  const mockProduct: Product = {
-    id: '1',
-    name: 'Botox 50U',
-    price_pix: 530,
-    price_card: 580,
-    images: ['/images/botox.jpg'],
-    category: 'Toxina Botulínica',
-    active: true
-  };
-
-  it('deve renderizar produto corretamente', () => {
-    render(<ProductCard product={mockProduct} />);
-    
-    expect(screen.getByText('Botox 50U')).toBeInTheDocument();
-    expect(screen.getByText('R$ 530,00')).toBeInTheDocument();
-  });
-
-  it('deve chamar onAddToCart ao clicar no botão', async () => {
-    const onAddToCart = vi.fn();
-    const user = userEvent.setup();
-    
-    render(<ProductCard product={mockProduct} onAddToCart={onAddToCart} />);
-    
-    await user.click(screen.getByRole('button', { name: /adicionar/i }));
-    
-    expect(onAddToCart).toHaveBeenCalledWith(mockProduct);
-  });
-});
-```
-
-### 3. Comandos de Teste
+## 🧪 Como Rodar Testes
 
 ```bash
 # Todos os testes
@@ -309,269 +110,43 @@ npm run test ProductCard
 
 ---
 
-## 📝 Commits e Versionamento
-
-### 1. Conventional Commits
+## 🧹 Como Rodar Lint e Type-Check
 
 ```bash
-# Estrutura: <tipo>(<escopo>): <descrição>
-
-# Funcionalidades
-git commit -m "feat: adiciona sistema de carrinho"
-git commit -m "feat(admin): implementa painel de relatórios"
-
-# Correções
-git commit -m "fix: corrige validação de formulário"
-git commit -m "fix(auth): resolve problema de login"
-
-# Refatoração
-git commit -m "refactor: melhora performance do carrinho"
-git commit -m "refactor(api): simplifica endpoints"
-
-# Documentação
-git commit -m "docs: atualiza README"
-git commit -m "docs(api): adiciona exemplos de uso"
-
-# Testes
-git commit -m "test: adiciona testes para checkout"
-git commit -m "test(unit): cobre cenários de erro"
-
-# Build/Deploy
-git commit -m "build: atualiza dependências"
-git commit -m "ci: adiciona teste de segurança"
-```
-
-### 2. Tipos de Commit
-
-| Tipo | Descrição | Exemplo |
-|------|-----------|---------|
-| `feat` | Nova funcionalidade | `feat: adiciona checkout WhatsApp` |
-| `fix` | Correção de bug | `fix: corrige cálculo de desconto` |
-| `refactor` | Refatoração | `refactor: otimiza queries do banco` |
-| `docs` | Documentação | `docs: atualiza guia de deploy` |
-| `test` | Testes | `test: adiciona testes E2E` |
-| `build` | Build/Deploy | `build: atualiza Next.js` |
-| `ci` | CI/CD | `ci: adiciona teste de segurança` |
-| `perf` | Performance | `perf: otimiza carregamento de imagens` |
-| `style` | Formatação | `style: aplica Prettier` |
-| `chore` | Manutenção | `chore: atualiza dependências` |
-
----
-
-## 🔄 Pull Requests
-
-### 1. Template de PR
-
-```markdown
-## 📋 Descrição
-Breve descrição das mudanças implementadas.
-
-## 🎯 Tipo de Mudança
-- [ ] Bug fix
-- [ ] Nova funcionalidade
-- [ ] Refatoração
-- [ ] Documentação
-- [ ] Testes
-
-## 🧪 Testes
-- [ ] Testes unitários passando
-- [ ] Testes de integração passando
-- [ ] Testes E2E passando
-- [ ] Cobertura mantida >95%
-
-## 📸 Screenshots (se aplicável)
-Adicione screenshots das mudanças visuais.
-
-## ✅ Checklist
-- [ ] Código segue padrões do projeto
-- [ ] Documentação atualizada
-- [ ] Testes adicionados/atualizados
-- [ ] Build de produção sem warnings
-- [ ] Variáveis de ambiente documentadas
-
-## 🔗 Issues Relacionadas
-Closes #123
-```
-
-### 2. Processo de Review
-
-1. **Auto-review**: Revise seu próprio código antes de submeter
-2. **Testes**: Certifique-se que todos os testes passam
-3. **Documentação**: Atualize documentação se necessário
-4. **Submissão**: Crie PR com descrição clara
-5. **Review**: Aguarde feedback e responda comentários
-6. **Merge**: Após aprovação, merge na main
-
----
-
-## 👀 Code Review
-
-### 1. Checklist de Review
-
-- [ ] **Funcionalidade**: O código faz o que deveria?
-- [ ] **Performance**: Há impactos de performance?
-- [ ] **Segurança**: Há vulnerabilidades?
-- [ ] **Testes**: Cobertura adequada?
-- [ ] **Documentação**: Comentários claros?
-- [ ] **Padrões**: Segue convenções do projeto?
-- [ ] **Acessibilidade**: WCAG 2.1 AA?
-- [ ] **Mobile**: Responsivo?
-
-### 2. Comentários Construtivos
-
-```markdown
-✅ Bom comentário:
-"Consider using useCallback here to prevent unnecessary re-renders of child components."
-
-❌ Comentário ruim:
-"This is wrong."
-```
-
----
-
-## 🚀 Deploy e Release
-
-### 1. Deploy Automático
-
-```bash
-# Push na main dispara deploy automático
-git push origin main
-
-# Verifique status no Vercel
-# https://vercel.com/dashboard
-```
-
-### 2. Release Manual
-
-```bash
-# Crie tag de release
-git tag -a v1.2.0 -m "Release v1.2.0"
-git push origin v1.2.0
-
-# Ou use GitHub Releases
-# https://github.com/FuturoDevJunior/codafofo/releases
-```
-
-### 3. Rollback
-
-```bash
-# Rollback para versão anterior
-git revert HEAD
-git push origin main
-
-# Ou via Vercel Dashboard
-# https://vercel.com/dashboard
-```
-
----
-
-## 🔧 Troubleshooting
-
-### Problemas Comuns
-
-#### 1. Build Falha
-
-```bash
-# Limpe cache
-rm -rf .next
-rm -rf node_modules/.cache
-npm install
-
-# Verifique TypeScript
-npm run type-check
-
-# Verifique lint
+# Lint
 npm run lint
-```
 
-#### 2. Testes Falham
+# Corrigir automaticamente
+npm run lint:fix
 
-```bash
-# Limpe cache dos testes
-npm run test -- --clearCache
-
-# Rode testes específicos
-npm run test ProductCard
-
-# Verifique cobertura
-npm run test:coverage
-```
-
-#### 3. Banco de Dados
-
-```bash
-# Reset completo
-npx supabase db reset --linked --yes
-
-# Aplique migrations
-npx supabase db push
-
-# Verifique status
-npx supabase status
-```
-
-#### 4. Variáveis de Ambiente
-
-```bash
-# Verifique arquivo .env.local
-cat .env.local
-
-# Teste conexão Supabase
-npx supabase status
+# Type-check
+npm run type-check
 ```
 
 ---
 
-## 📞 Suporte
+## 💡 Como Sugerir Features
 
-- **Issues**: [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
-- **E-mail**: contato.ferreirag@outlook.com
-
-
----
-
-## 🏆 Boas Práticas
-
-### 1. Código Limpo
-
-- Funções pequenas e focadas
-- Nomes descritivos
-- Comentários quando necessário
-- DRY (Don't Repeat Yourself)
-
-### 2. Performance
-
-- Lazy loading de componentes
-- Otimização de imagens
-- Bundle size < 350kB
-- Core Web Vitals
-
-### 3. Segurança
-
-- Validação de inputs
-- Sanitização de dados
-- HTTPS sempre
-- Headers de segurança
-
-### 4. Acessibilidade
-
-- WCAG 2.1 AA
-- Navegação por teclado
-- Screen readers
-- Contraste adequado
+- Abra uma issue com o título `[Feature] <descrição>`
+- Descreva o problema, a motivação e a solução proposta
+- Se possível, adicione exemplos de uso
 
 ---
 
-## 📚 Recursos Adicionais
+## 🐞 Como Reportar Bugs
 
-- [Next.js Docs](https://nextjs.org/docs)
-- [React Docs](https://react.dev)
-- [TypeScript Docs](https://www.typescriptlang.org/docs)
-- [Tailwind CSS](https://tailwindcss.com/docs)
-- [Supabase Docs](https://supabase.com/docs)
-- [Vitest Docs](https://vitest.dev)
-- [Testing Library](https://testing-library.com/docs)
+- Abra uma issue com o título `[Bug] <descrição>`
+- Descreva o erro, passos para reproduzir, comportamento esperado e prints/logs
+- Informe ambiente (SO, navegador, versão do Node)
 
 ---
 
-**Obrigado por contribuir para o Vytalle Estética! 🚀** 
+## 🤝 Código de Conduta
+
+- Seja respeitoso e colaborativo
+- Não serão tolerados comportamentos abusivos
+- Siga o [Código de Conduta do projeto](./CODE_OF_CONDUCT.md) (se existir)
+
+---
+
+**Contribua para a excelência!** 

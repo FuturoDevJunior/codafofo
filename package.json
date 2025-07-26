@@ -1,8 +1,9 @@
 {
   "name": "vytalle-catalog",
   "version": "1.0.0",
+  "description": "Catálogo profissional de produtos estéticos e viscosuplementação Vytalle",
+  "private": true,
   "scripts": {
-    "db:init": "node scripts/db-init.js",
     "dev": "npm run db:init && next dev -p 5174",
     "dev:fast": "next dev -p 5174",
     "dev:turbo": "npm run db:init && next dev -p 5174 --turbo",
@@ -12,18 +13,63 @@
     "start": "next start",
     "preview": "next start -p 4000",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:e2e": "echo 'E2E tests not configured yet'",
     "test:ci": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:install": "playwright install",
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:codegen": "playwright codegen",
     "type-check": "tsc --noEmit",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "lint:fix": "next lint --fix",
     "quality:check": "npm run type-check && npm run lint && npm run format:check",
     "quality:fix": "npm run type-check && npm run lint:fix && npm run format",
-    "prepare": "husky",
+    "ci:full": "npm run quality:check && npm test && npm run test:e2e",
+    "ci:fast": "npm run lint && npm run test:ci",
+    "ci:e2e": "npm run test:e2e -- --reporter=html",
+    "ci:coverage": "npm run test:coverage && npm run test:e2e",
     "analyze": "ANALYZE=true next build",
+    "prepare": "husky",
+    "db:init": "node scripts/db-init.js",
+    "db:migrate": "npx supabase db push",
+    "db:reset": "npx supabase db reset",
+    "db:seed": "npx supabase db seed",
+    "db:backup": "npx supabase db dump --data-only > backup-$(date +%Y%m%d_%H%M%S).sql",
+    "db:restore": "echo 'Usage: npx supabase db reset && psql -d postgres -f backup-file.sql'",
+    "sync:products": "node scripts/sync-products.js",
+    "image:optimize": "node scripts/organize-product-images.js",
+    "image:download": "node scripts/download-product-images.js",
+    "backup": "bash scripts/backup.sh",
+    "backup:manual": "bash scripts/backup.sh",
+    "backup:schedule": "echo 'Configure cron job: 0 2 * * * cd /path/to/project && npm run backup'",
+    "monitor:health": "curl -f http://localhost:3000/api/health || echo 'Health check failed'",
+    "monitor:performance": "npm run test:e2e -- --project=chromium --grep='performance'",
+    "monitor:accessibility": "npm run test:e2e -- --project=chromium --grep='accessibility'",
+    "security:audit": "npm audit --audit-level=moderate",
+    "security:fix": "npm audit fix",
+    "security:update": "npm update",
+    "performance:lighthouse": "npx lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",
+    "performance:budget": "npx lighthouse http://localhost:3000 --only-categories=performance --output=json --output-path=./lighthouse-performance.json",
+    "seo:check": "npx lighthouse http://localhost:3000 --only-categories=seo --output=html --output-path=./lighthouse-seo.html",
+    "seo:sitemap": "curl -f http://localhost:3000/sitemap.xml || echo 'Sitemap not found'",
+    "seo:robots": "curl -f http://localhost:3000/robots.txt || echo 'Robots.txt not found'",
+    "logs:view": "tail -f logs/app.log",
+    "logs:clear": "rm -rf logs/*.log",
+    "logs:analyze": "grep -i error logs/*.log | tail -20",
+    "maintenance:cleanup": "npm run logs:clear && npm run backup && npm run security:audit",
+    "maintenance:full": "npm run maintenance:cleanup && npm run db:backup && npm run image:optimize",
+    "automation:setup": "npm run test:e2e:install && npm run backup:schedule",
+    "automation:test": "npm run ci:full && npm run performance:lighthouse && npm run seo:check",
+    "automation:deploy": "npm run ci:fast && npm run deploy:staging && npm run test:e2e -- --project=chromium",
+    "automation:production": "npm run ci:full && npm run deploy:production && npm run monitor:health",
+    "deploy:staging": "vercel --prod",
+    "deploy:production": "vercel --prod",
+    "deploy:rollback": "vercel --prod --rollback",
     "tunnel": "ngrok http 5174 --config ngrok.yml",
     "tunnel:dev": "ngrok start vytalle-dev --config ngrok.yml",
     "tunnel:prod": "ngrok start vytalle-prod --config ngrok.yml",
@@ -64,22 +110,11 @@
     "uploadthing": "^7.7.3",
     "zustand": "^5.0.6"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md}": [
-      "prettier --write"
-    ]
-  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.32.0",
     "@next/bundle-analyzer": "^15.4.2",
+    "@playwright/test": "^1.48.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -96,7 +131,7 @@
     "eslint-config-next": "^15.4.2",
     "fake-indexeddb": "^6.0.1",
     "husky": "^9.1.7",
-    "jsdom": "^26.1.0",
+    "jsdom": "^24.0.0",
     "lint-staged": "^16.1.2",
     "postcss": "^8.4.40",
     "prettier": "^3.6.2",
@@ -105,5 +140,18 @@
     "typescript": "^5.8.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

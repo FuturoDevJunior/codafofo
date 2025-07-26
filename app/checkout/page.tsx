@@ -56,6 +56,25 @@ interface OrderStep {
   completed: boolean;
 }
 
+// Função utilitária para gerar mensagem WhatsApp
+function generateWhatsappMessage({
+  customerData,
+  items,
+  selectedPayment,
+  upsellProduct,
+}: {
+  customerData?: CustomerData;
+  items?: Product[];
+  selectedPayment?: PaymentMethod | null;
+  upsellProduct?: Product;
+}) {
+  if (upsellProduct) {
+    return `🎯 OFERTA ESPECIAL APROVEITADA!\n\n📦 **${upsellProduct.name}**\n• Valor: ${formatCurrency(upsellProduct.price_pix)}\n• Categoria: ${upsellProduct.category}\n• Descrição: ${upsellProduct.description || 'Sem descrição'}\n\n🛒 **Adicionado ao carrinho!**\n• Quantidade: 1 unidade\n• Total: ${formatCurrency(upsellProduct.price_pix)}\n\n💳 **Formas de pagamento:**\n• PIX: ${formatCurrency(upsellProduct.price_pix)}\n• Cartão: ${formatCurrency(upsellProduct.price_card)}\n• Prazo: ${formatCurrency(upsellProduct.price_prazo)}\n\n🚀 **Próximo passo:** Finalizar compra no WhatsApp!`;
+  }
+  // Mensagem de pedido completo
+  return `*PEDIDO VYTALE ESTÉTICA & VISCOSUPLEMENTAÇÃO*\n\n*DADOS DO CLIENTE*\nNome: ${customerData?.name}\nTelefone: ${customerData?.phone}\nEmail: ${customerData?.email}\nCRM: ${customerData?.crm}\nClínica: ${customerData?.clinicName}\nCNPJ: ${customerData?.cnpj || '-'}\nCEP: ${customerData?.cep}\nEndereço: ${customerData?.address}, ${customerData?.city} - ${customerData?.state}\n\n*PRODUTOS SOLICITADOS*\n${items?.map((p, i) => `${i + 1}. ${p.name}\n   Quantidade: ${(p as any).quantity || 1}x\n   Valor unit.: ${formatCurrency((p as any).price || p.price_pix)}\n   Subtotal: ${formatCurrency(((p as any).price || p.price_pix) * ((p as any).quantity || 1))}`).join('\n')}\n\n*FORMA DE PAGAMENTO:* ${selectedPayment?.name}\n*VALOR TOTAL:* ${formatCurrency(items?.reduce((sum, p) => sum + ((p as any).price || p.price_pix) * ((p as any).quantity || 1), 0) || 0)}\n\n*PRÓXIMOS PASSOS*\n- Confirmar disponibilidade\n- Calcular frete para o CEP\n- Definir forma de pagamento\n- Agendar entrega\n\n_Vytalle Estética & Viscosuplementação - Produtos Premium para Profissionais_\n_Pedido via Catálogo Digital_`;
+}
+
 export default function Checkout() {
   const router = useRouter();
   const { items, clearCart } = useCartStore();
@@ -183,37 +202,15 @@ export default function Checkout() {
   };
 
   const handleUpsellPurchase = async (product: Product) => {
-    const message = `🎯 OFERTA ESPECIAL APROVEITADA!
-
-📦 **${product.name}**
-• Valor: ${formatCurrency(product.price_pix)}
-• Categoria: ${product.category}
-• Descrição: ${product.description || 'Sem descrição'}
-
-🛒 **Adicionado ao carrinho!**
-• Quantidade: 1 unidade
-• Total: ${formatCurrency(product.price_pix)}
-
-💳 **Formas de pagamento:**
-• PIX: ${formatCurrency(product.price_pix)}
-• Cartão: ${formatCurrency(product.price_card)}
-• Prazo: ${formatCurrency(product.price_prazo)}
-
-🚀 **Próximo passo:** Finalizar compra no WhatsApp!
-    `;
-
+    const message = generateWhatsappMessage({ upsellProduct: product });
     const whatsappNumber = '5521996192890';
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
     window.open(whatsappUrl, '_blank');
-
     toast({
       title: '🎯 Oferta adicionada!',
       description: 'Produto enviado via WhatsApp',
     });
-
-    // Redirecionar para success após o upsell
     setTimeout(() => {
       router.push('/success');
     }, 2000);
@@ -228,72 +225,25 @@ export default function Checkout() {
       });
       return;
     }
-
     setIsLoading(true);
     try {
-      // Preparar mensagem profissional para WhatsApp
-      const whatsappMessage = `
-
-PROCESSO DE FINALIZAÇÃO:
-1. Dados profissionais confirmados
-2. Forma de pagamento: ${selectedPayment?.name}
-3. Envio dos dados de pagamento (próximo passo)
-4. Confirmação do pagamento
-5. Emissão da nota fiscal
-6. Despacho via transportadora refrigerada
-7. Código de rastreamento enviado
-
-INFORMAÇÕES DE ENTREGA:
-• Prazo: 1-3 dias úteis (após confirmação do pagamento)
-• Transporte: Refrigerado especializado
-• Horário: 8h às 18h (dias úteis)
-• Embalagem: Lacrada e com lacre de segurança
-
-CERTIFICAÇÕES E GARANTIAS:
-• Produtos 100% originais
-• Registro ANVISA ativo
-• Armazenamento controlado (2-8°C)
-• Nota fiscal médica
-• Certificado de análise incluso
-• Prazo de validade mínimo 12 meses
-• Atendimento médico especializado
-
-CONFORMIDADE MÉDICA:
-• Produtos de uso exclusivo profissional
-• Exige comprovação de registro ativo
-• Armazenamento em ambiente controlado
-• Transporte conforme RDC 430/2020
-
-PEDIDO PRONTO PARA PROCESSAMENTO:
-- Todos os dados coletados
-- Forma de pagamento definida
-- Endereço de entrega confirmado
-- Dados para nota fiscal completos
-
-PRÓXIMO PASSO: Aguardando envio dos dados de pagamento
-
-Vytalle Estética & Viscosuplementação - Excelência em Produtos Médicos
-WhatsApp: +55 21 99619-2890
-Rio de Janeiro, RJ
-
-Pedido completo e pronto para processamento!`;
-
-      // Enviar para WhatsApp
-      const whatsappNumber = '5521996192890'; // Número correto da Vytalle
-      const encodedMessage = encodeURIComponent(whatsappMessage);
+      // (Opcional) Registrar pedido no backend para auditoria
+      // await fetch('/api/orders', { method: 'POST', body: JSON.stringify({ customerData, items, selectedPayment }) });
+      // Gerar mensagem WhatsApp
+      const message = generateWhatsappMessage({
+        customerData,
+        items: items as any,
+        selectedPayment,
+      });
+      const whatsappNumber = '5521996192890';
+      const encodedMessage = encodeURIComponent(message);
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
       window.open(whatsappUrl, '_blank');
-
-      // Limpar carrinho e mostrar sucesso
       clearCart();
-
       toast({
         title: '✅ Pedido enviado com sucesso!',
         description: 'Abrindo WhatsApp para finalizar...',
       });
-
-      // Mostrar modal de upsell após um breve delay
       setTimeout(() => {
         setShowUpsellModal(true);
       }, 1500);

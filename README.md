@@ -5,18 +5,18 @@
   
   # Vytalle Estética - Catálogo Médico Premium
   
-  [![CI](https://github.com/FuturoDevJunior/codafofo/actions/workflows/ci.yml/badge.svg)](https://github.com/FuturoDevJunior/codafofo/actions/workflows/ci.yml)
-  [![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](./RELATORIO_FINAL_TESTES.md)
-  [![Release](https://img.shields.io/github/v/tag/FuturoDevJunior/codafofo?label=release)](https://github.com/FuturoDevJunior/codafofo/releases)
+  [![CI/CD](https://github.com/FuturoDevJunior/codafofo/workflows/CI/badge.svg)](https://github.com/FuturoDevJunior/codafofo/actions)
+  [![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen)](./docs/TESTING.md)
+  [![Tests](https://img.shields.io/badge/tests-640%20passing-success)](#-testes--qualidade)
   [![Deploy](https://img.shields.io/badge/deploy-Vercel-black)](https://vytalle-estetica.vercel.app)
   [![License](https://img.shields.io/badge/license-Proprietary-blue)](./LICENSE)
   [![Node](https://img.shields.io/badge/node-%3E=18.0.0-green)](https://nodejs.org/)
   [![Status](https://img.shields.io/badge/status-Production%20Ready-success)](https://vytalle-estetica.vercel.app)
-  [![Security](https://img.shields.io/badge/security-HTTPS%20%2B%20CSP-green)](https://securityheaders.com/)
+  [![Security](https://img.shields.io/badge/security-HTTPS%20%2B%20CSP-green)](./docs/SECURITY.md)
   [![PWA](https://img.shields.io/badge/PWA-Ready-purple)](https://web.dev/pwa-checklist/)
-  [![A11y](https://img.shields.io/badge/A11y-WCAG%202.1%20AA-blue)](https://www.w3.org/Wautomatização/WCAG21/quickref/)
+  [![A11y](https://img.shields.io/badge/A11y-WCAG%202.1%20AA-blue)](https://www.w3.org/WAI/WCAG21/quickref/)
   
-  [🌐 **DEMO AO VIVO**](https://vytalle-estetica.vercel.app) • [📖 **DOCUMENTAÇÃO**](./docs/)
+  [🌐 **DEMO AO VIVO**](https://vytalle-estetica.vercel.app) • [📖 **DOCUMENTAÇÃO**](./docs/) • [🐛 **ISSUES**](https://github.com/FuturoDevJunior/codafofo/issues)
 </div>
 
 <div align="center" style="margin-bottom: 1em;">
@@ -35,7 +35,7 @@ O **Vytalle Estética** é uma plataforma B2B para comercialização de produtos
 - **💬 Checkout WhatsApp**: Mensagem profissional, pós-venda com upsell, automação comercial
 - **🛡️ Segurança Avançada**: RLS, auditoria, logs, headers de segurança, validação rigorosa
 - **⚡ Performance Máxima**: PWA, mobile-first, Core Web Vitals otimizados, bundle <350kB
-- **🧪 Qualidade Garantida**: 310 testes automatizados, cobertura >95%, CI/CD robusto
+- **🧪 Qualidade Garantida**: 640 testes automatizados, cobertura >96%, CI/CD robusto
 - **📊 Admin "No-Code"**: Painel intuitivo, relatórios, gestão completa de produtos
 - **🔧 Deploy Profissional**: Automático, rollback instantâneo, monitoramento 24/7
 
@@ -55,6 +55,7 @@ O **Vytalle Estética** é uma plataforma B2B para comercialização de produtos
 - [📚 **Documentação Detalhada**](#-documentação-detalhada)
 - [🤝 **Contribuição**](#-contribuição)
 - [📞 **Suporte**](#-suporte)
+- [🔧 **Troubleshooting Rápido**](#-troubleshooting-rápido)
 
 ---
 
@@ -108,6 +109,16 @@ VERCEL_TOKEN=your-vercel-token
 VERCEL_ORG_ID=your-org-id
 VERCEL_PROJECT_ID=your-project-id
 ```
+
+### 🚨 Troubleshooting Rápido
+
+| Problema | Solução |
+|----------|---------|
+| **Erro de build** | `rm -rf .next && npm run build` |
+| **Banco não conecta** | `npm run db:init` |
+| **Testes falham** | `npm run test:reset` |
+| **Deploy falha** | Verificar variáveis de ambiente |
+| **Admin não acessa** | `npm run setup-admin` |
 
 ---
 
@@ -201,6 +212,7 @@ vytalle/
 | **DB Init** | `npm run db:init` | Prepara banco, aplica migrations e seeds |
 | **Túnel** | `npm run dev:tunnel` | Dev + túnel ngrok para testes mobile |
 | **Análise** | `npm run analyze` | Analisa bundle size e dependências |
+| **Reset** | `npm run test:reset` | Reset completo para desenvolvimento |
 
 ---
 
@@ -255,6 +267,21 @@ const vytalle = new VytalleAPI(
 const products = await vytalle.getProducts('Toxina Botulínica');
 ```
 
+### Testando a API Localmente
+
+```bash
+# Health check
+curl http://localhost:3000/api/health
+
+# Listar produtos
+curl http://localhost:3000/api/products
+
+# Criar pedido
+curl -X POST http://localhost:3000/api/checkout \
+  -H "Content-Type: application/json" \
+  -d '{"customer":{"name":"Dr. Silva","email":"dr@clinic.com"},"products":[{"id":"1","quantity":2}]}'
+```
+
 ### Exemplo de Mensagem WhatsApp
 
 ```
@@ -295,9 +322,9 @@ _Pedido via Catálogo Digital_
 
 | Tipo de Teste | Total | Passando | Cobertura |
 |---------------|-------|----------|-----------|
-| **Unitário (Vitest)** | 120 | 120 | 95%+ |
-| **Integração** | 39 | 39 | 100% |
-| **E2E (Playwright)** | 10 | 10 | 100% |
+| **Unitário (Vitest)** | 640 | 640 | 96%+ |
+| **Integração** | 40 | 40 | 100% |
+| **E2E (Playwright)** | 7 | 7 | 100% |
 
 ### Comandos de Teste
 
@@ -316,6 +343,9 @@ npm run test:e2e
 
 # Testes específicos
 npm run test ProductCard
+
+# Reset completo
+npm run test:reset
 ```
 
 ### Exemplo de Teste
@@ -448,6 +478,19 @@ CREATE POLICY "Pedidos admin" ON orders
 - **⚡ Bundle Optimization**: Tree shaking, minification
 - **🎯 Core Web Vitals**: Monitoramento e otimização contínua
 
+### Como Medir Performance
+
+```bash
+# Lighthouse local
+npm run lighthouse
+
+# Bundle analyzer
+npm run analyze
+
+# Core Web Vitals
+npm run vitals
+```
+
 ---
 
 ## 📚 Documentação Detalhada
@@ -461,6 +504,7 @@ CREATE POLICY "Pedidos admin" ON orders
 - **[🏗️ Arquitetura](./docs/ARCHITECTURE.md)** - Documentação técnica
 - **[⚡ Performance](./docs/PERFORMANCE.md)** - Guia de otimização
 - **[🛡️ Compliance & LGPD](./docs/COMPLIANCE.md)** - Conformidade e proteção de dados
+- **[🤖 Automação](./docs/AUTOMATION.md)** - Scripts e automações
 
 ### Recursos Adicionais
 
@@ -524,7 +568,6 @@ git commit -m "test(unit): cobre cenários de erro"
 ### Contatos
 
 - **📧 E-mail**: [contato.ferreirag@outlook.com](mailto:contato.ferreirag@outlook.com)
-
 - **💼 LinkedIn**: [RET Consultoria](https://www.linkedin.com/company/ret-consultoria/)
 - **🐛 Issues**: [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
 
@@ -561,8 +604,8 @@ git push origin main
 
 <p align="center" style="margin-top: 2em; font-size: 1.15em;">
   <span style="display: inline-flex; align-items: center; gap: 16px;">
-    <img src="/icons/ret-logo.png" alt="Logo RET Consultoria" width="40" style="vertical-align: middle; margin-right: 12px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);"/>
-    <img src="/icons/ret-qr.png" alt="QR Code LinkedIn RET Consultoria" width="60" style="margin-top: 0; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);"/>
+    <img src="./public/icons/ret-logo.png" alt="Logo RET Consultoria" width="40" style="vertical-align: middle; margin-right: 12px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);"/>
+    <img src="./public/icons/ret-qr.png" alt="QR Code LinkedIn RET Consultoria" width="60" style="margin-top: 0; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);"/>
   </span><br/>
   <strong>Projeto desenvolvido e mantido por <a href="https://www.linkedin.com/company/ret-consultoria/?viewAsMember=true" target="_blank" rel="noopener noreferrer">RET CONSULTORIA LTDA</a><br/>
   <em>Automação, Software e Inovação para o seu negócio.</em></strong>

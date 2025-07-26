@@ -171,27 +171,28 @@ describe('Analytics', () => {
 
   describe('Error handling', () => {
     it('deve lidar com erro no localStorage gracefully', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       mockLocalStorage.setItem.mockImplementation(() => {
         throw new Error('Storage full');
       });
-
-      // Limpar o mock após o teste
-      const originalSetItem = mockLocalStorage.setItem;
 
       expect(() => {
         analytics.trackPageView('/test');
       }).not.toThrow();
 
-      // Restaurar o mock original
-      mockLocalStorage.setItem = originalSetItem;
+      consoleSpy.mockRestore();
+      mockLocalStorage.setItem.mockImplementation(() => {});
     });
 
     it('deve lidar com erro na busca do IP', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       mockFetch.mockRejectedValue(new Error('Network error'));
 
       const { result } = renderHook(() => useAnalytics());
 
       await expect(result.current.trackPageView('/test')).resolves.not.toThrow();
+
+      consoleSpy.mockRestore();
     });
 
     it('deve funcionar em ambiente SSR', () => {
@@ -206,6 +207,8 @@ describe('Analytics', () => {
 
   describe('Data management', () => {
     it('deve limitar número de registros no storage', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
       // Mock 1200 registros existentes
       const existingData = Array(1200).fill({ test: 'data', timestamp: new Date() });
       mockLocalStorage.getItem.mockReturnValue(JSON.stringify(existingData));
@@ -220,8 +223,7 @@ describe('Analytics', () => {
       // Deve ter chamado setItem para limitar a 1000 registros
       expect(mockLocalStorage.setItem).toHaveBeenCalled();
 
-      // Limpar o mock após o teste
-      mockLocalStorage.getItem.mockRestore();
+      consoleSpy.mockRestore();
     });
 
     it('deve gerar sessionId único', () => {

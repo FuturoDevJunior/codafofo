@@ -1,4 +1,5 @@
 export interface ProductForm {
+  id?: string;
   name: string;
   slug: string;
   price: number;
@@ -11,4 +12,4 @@ export interface ProductForm {
   discount_percent: number;
   supplier_id: string;
   currency: string;
-} 
+}

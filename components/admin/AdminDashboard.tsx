@@ -11,6 +11,7 @@ import {
   Image as ImageIcon,
   LogOut,
   Package,
+  Palette,
   Plus,
   Search,
   Settings,
@@ -46,17 +47,19 @@ import { formatCurrency } from '@/lib/utils';
 import type { Product, User } from '@/types';
 
 interface DashboardProps {
-  products: Product[];
-  suppliers: any[]; // TODO: Criar interface Supplier
+  products?: Product[];
+  suppliers?: any[]; // TODO: Criar interface Supplier
   user: User;
 }
 
 export default function AdminDashboard({
-  products: initialProducts,
-  suppliers,
+  products: initialProducts = [],
+  suppliers = [],
   user,
 }: DashboardProps) {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSupplier, setSelectedSupplier] = useState('');
@@ -153,9 +156,13 @@ export default function AdminDashboard({
       const link = document.createElement('a');
       link.href = url;
       link.download = `vytalle-produtos-${new Date().toISOString().split('T')[0]}.csv`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+
+      // Verificar se document.body existe e se link é um Node válido
+      if (document.body && link instanceof Node) {
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
       URL.revokeObjectURL(url);
     }
   };
@@ -199,6 +206,18 @@ export default function AdminDashboard({
                   <AdminForm />
                 </DialogContent>
               </Dialog>
+
+              <Button
+                onClick={() => (window.location.href = '/admin/customization')}
+                variant="outline"
+                className="flex w-full min-w-[100px] items-center gap-2 rounded-xl border-vitale-primary/30 px-3 py-2 text-vitale-primary hover:bg-vitale-primary/10 sm:w-auto lg:min-w-[120px] lg:px-4"
+                aria-label="Personalizar site"
+              >
+                <Palette className="h-4 w-4 lg:h-5 lg:w-5" />
+                <span className="hidden sm:inline">Personalizar</span>
+                <span className="sm:hidden">Personalizar</span>
+              </Button>
+
               <Button
                 onClick={handleLogout}
                 variant="outline"
