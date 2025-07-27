@@ -1,18 +1,8 @@
 'use client';
 
-import {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import {
-  ChevronDown,
-  ChevronUp,
-  Filter,
-  Search,
-  X,
-} from 'lucide-react';
+import { ChevronDown, ChevronUp, Filter, Search, X } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -53,10 +43,12 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
       // Filtro por termo de busca
       if (searchTerm.trim()) {
         const term = searchTerm.toLowerCase();
-        _results = _results.filter(product =>
-          product.name.toLowerCase().includes(term) ||
-          (product.description?.toLowerCase().includes(term) || false) ||
-          product.category.toLowerCase().includes(term)
+        _results = _results.filter(
+          product =>
+            product.name.toLowerCase().includes(term) ||
+            product.description?.toLowerCase().includes(term) ||
+            false ||
+            product.category.toLowerCase().includes(term)
         );
       }
 
@@ -98,7 +90,7 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
       if (selectedCategory) newActiveFilters.push(`Categoria: ${selectedCategory}`);
       if (priceRange) newActiveFilters.push(`Preço: ${priceRange}`);
       if (sortBy) newActiveFilters.push(`Ordenar: ${getSortLabel(sortBy)}`);
-      
+
       setActiveFilters(newActiveFilters);
       onSearchResults(_results);
     };
@@ -112,12 +104,18 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
   // Função para obter label da ordenação
   const getSortLabel = (sort: string) => {
     switch (sort) {
-      case 'price-asc': return 'Menor Preço';
-      case 'price-desc': return 'Maior Preço';
-      case 'name-asc': return 'A-Z';
-      case 'name-desc': return 'Z-A';
-      case 'rating': return 'Melhor Avaliados';
-      default: return '';
+      case 'price-asc':
+        return 'Menor Preço';
+      case 'price-desc':
+        return 'Maior Preço';
+      case 'name-asc':
+        return 'A-Z';
+      case 'name-desc':
+        return 'Z-A';
+      case 'rating':
+        return 'Melhor Avaliados';
+      default:
+        return '';
     }
   };
 
@@ -137,7 +135,7 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
     if (filter.includes('Categoria:')) setSelectedCategory('');
     if (filter.includes('Preço:')) setPriceRange('');
     if (filter.includes('Ordenar:')) setSortBy('');
-    
+
     const newFilters = activeFilters.filter((_, index) => index !== filterIndex);
     setActiveFilters(newFilters);
   };
@@ -151,8 +149,8 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
           type="text"
           placeholder="Buscar produtos por nome, categoria ou marca..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10 pr-4 h-12 text-base"
+          onChange={e => setSearchTerm(e.target.value)}
+          className="h-12 pl-10 pr-4 text-base"
         />
       </div>
 
@@ -167,7 +165,7 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
           Filtros
           {showFilters ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
         </Button>
-        
+
         {activeFilters.length > 0 && (
           <Button variant="ghost" onClick={clearFilters} className="text-sm">
             Limpar
@@ -179,15 +177,11 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
       {activeFilters.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {activeFilters.map((filter, index) => (
-            <Badge
-              key={index}
-              variant="secondary"
-              className="flex items-center gap-1 px-3 py-1"
-            >
+            <Badge key={index} variant="secondary" className="flex items-center gap-1 px-3 py-1">
               <span className="text-xs">{filter}</span>
               <button
                 onClick={() => removeFilter(index)}
-                className="ml-1 hover:text-red-500 transition-colors"
+                className="hover:text-red-500 ml-1 transition-colors"
                 aria-label={`Remover filtro: ${filter}`}
                 title={`Remover filtro: ${filter}`}
               >
@@ -200,7 +194,7 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
 
       {/* Painel de filtros */}
       <div className={`space-y-4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {/* Filtro por categoria */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-neutral-700">Categoria</label>
@@ -210,7 +204,7 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">Todas as categorias</SelectItem>
-                {categories.map((category) => (
+                {categories.map(category => (
                   <SelectItem key={category} value={category}>
                     {category}
                   </SelectItem>
@@ -218,8 +212,6 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
               </SelectContent>
             </Select>
           </div>
-
-
 
           {/* Filtro por faixa de preço */}
           <div className="space-y-2">
@@ -258,11 +250,11 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
         </div>
 
         {/* Botões de ação para desktop */}
-        <div className="hidden lg:flex items-center justify-between">
+        <div className="hidden items-center justify-between lg:flex">
           <div className="text-sm text-neutral-600">
             {activeFilters.length > 0 && `${activeFilters.length} filtro(s) ativo(s)`}
           </div>
-          
+
           {activeFilters.length > 0 && (
             <Button variant="ghost" onClick={clearFilters} className="text-sm">
               Limpar todos os filtros
@@ -272,4 +264,4 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
       </div>
     </div>
   );
-} 
+}

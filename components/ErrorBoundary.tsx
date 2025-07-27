@@ -104,8 +104,8 @@ export class ErrorBoundary extends Component<Props, State> {
         severity: 'high',
         context: {
           props: this.props,
-          state: this.state
-        }
+          state: this.state,
+        },
       };
 
       const res = await fetch('/api/error-report', {
@@ -125,9 +125,10 @@ export class ErrorBoundary extends Component<Props, State> {
     } catch (reportingError) {
       console.error('Erro ao reportar erro:', reportingError);
       if (typeof window !== 'undefined') {
-        this.setState({ 
-          reporting: false, 
-          reportError: reportingError instanceof Error ? reportingError.message : 'Falha ao reportar erro' 
+        this.setState({
+          reporting: false,
+          reportError:
+            reportingError instanceof Error ? reportingError.message : 'Falha ao reportar erro',
         });
       }
     }

@@ -1,20 +1,11 @@
 import { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import {
-  Minus,
-  Package,
-  Plus,
-  Tag,
-  Trash2,
-} from 'lucide-react';
+import { Minus, Package, Plus, Tag, Trash2 } from 'lucide-react';
 
 import SmartImage from '@/components/SmartImage';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tooltip } from '@/components/ui/tooltip';
 import { toast } from '@/components/ui/use-toast';

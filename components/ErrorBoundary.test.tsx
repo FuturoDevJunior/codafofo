@@ -1,16 +1,6 @@
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import ErrorBoundary from './ErrorBoundary';
@@ -254,7 +244,7 @@ describe('ErrorBoundary', () => {
 
       // Verificar se o botão voltou ao estado normal (não mais disabled)
       expect(reportButton).not.toBeDisabled();
-      
+
       // Verificar se o mock foi chamado
       expect(mockFetch).toHaveBeenCalled();
     });

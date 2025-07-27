@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import CategoryCard from './CategoryCard';
 
@@ -16,7 +9,7 @@ describe('CategoryCard', () => {
     title: 'Toxina Botulínica',
     description: 'Produtos premium para harmonização facial',
     brands: 'Allergan, Dysport, Xeomin',
-    category: 'toxina' as const
+    category: 'toxina' as const,
   };
 
   it('deve renderizar com props básicas', () => {
@@ -142,4 +135,4 @@ describe('CategoryCard', () => {
     const iconContainer = screen.getByText('Toxina Botulínica').previousElementSibling;
     expect(iconContainer).toHaveClass('group-hover:scale-110');
   });
-}); 
+});

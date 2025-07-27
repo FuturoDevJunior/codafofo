@@ -10,23 +10,23 @@ interface StarRatingProps {
   className?: string;
 }
 
-export default function StarRating({ 
-  rating, 
-  maxRating = 5, 
-  size = 'md', 
+export default function StarRating({
+  rating,
+  maxRating = 5,
+  size = 'md',
   showText = true,
-  className = '' 
+  className = '',
 }: StarRatingProps) {
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-5 w-5',
-    lg: 'h-6 w-6'
+    lg: 'h-6 w-6',
   };
 
   const textSizes = {
     sm: 'text-sm',
     md: 'text-base',
-    lg: 'text-lg'
+    lg: 'text-lg',
   };
 
   return (
@@ -36,19 +36,17 @@ export default function StarRating({
           <Star
             key={index}
             className={`${sizeClasses[size]} ${
-              index < rating 
-                ? 'text-yellow-500 fill-yellow-500' 
-                : 'text-gray-300 fill-gray-300'
+              index < rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300 fill-gray-300'
             }`}
             aria-label={`Estrela ${index + 1} de ${maxRating}`}
           />
         ))}
       </div>
       {showText && (
-        <span className={`font-semibold text-gray-700 ${textSizes[size]}`}>
+        <span className={`text-gray-700 font-semibold ${textSizes[size]}`}>
           {rating.toFixed(1)} | +500 Avaliações
         </span>
       )}
     </div>
   );
-} 
+}

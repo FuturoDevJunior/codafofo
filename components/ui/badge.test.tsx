@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import { Badge } from './badge';
 
@@ -51,4 +44,4 @@ describe('Badge', () => {
     render(<Badge data-testid="test-badge">Test Badge</Badge>);
     expect(screen.getByTestId('test-badge')).toBeInTheDocument();
   });
-}); 
+});

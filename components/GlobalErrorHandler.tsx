@@ -6,7 +6,7 @@ import { ErrorHandler } from '@/lib/errorHandling';
 /**
  * SISTEMA DE CAPTURA GLOBAL DE ERROS
  * ===================================
- * 
+ *
  * Captura erros não tratados e promessas rejeitadas
  * para monitoramento e debugging completo
  */
@@ -22,7 +22,7 @@ export function GlobalErrorHandler({ children }: GlobalErrorHandlerProps) {
     // Capturar erros JavaScript não tratados
     const handleUnhandledError = (event: ErrorEvent) => {
       const appError = errorHandler.createError(event.error, 'Unhandled JavaScript Error');
-      
+
       console.error('Erro JavaScript não tratado:', appError);
 
       // Reportar erro para API
@@ -49,7 +49,7 @@ export function GlobalErrorHandler({ children }: GlobalErrorHandlerProps) {
     // Capturar promessas rejeitadas não tratadas
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
       const appError = errorHandler.createError(event.reason, 'Unhandled Promise Rejection');
-      
+
       console.error('Promise rejeitada não tratada:', appError);
 
       // Reportar erro para API

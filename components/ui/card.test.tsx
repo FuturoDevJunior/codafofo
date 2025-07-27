@@ -1,20 +1,8 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from './card';
+import { Card, CardContent, CardHeader, CardTitle } from './card';
 
 describe('Card Components', () => {
   describe('Card', () => {
@@ -119,4 +107,4 @@ describe('Card Components', () => {
       expect(screen.getByText('Card Content')).toBeInTheDocument();
     });
   });
-}); 
+});

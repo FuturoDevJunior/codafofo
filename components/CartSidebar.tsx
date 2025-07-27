@@ -1,22 +1,9 @@
 'use client';
 
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  AnimatePresence,
-  motion,
-} from 'framer-motion';
-import {
-  MessageCircle,
-  Minus,
-  Plus,
-  ShoppingCart,
-  Trash2,
-  X,
-} from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { MessageCircle, Minus, Plus, ShoppingCart, Trash2, X } from 'lucide-react';
 
 import SmartImage from '@/components/SmartImage';
 import { Button } from '@/components/ui/button';
@@ -169,7 +156,7 @@ export default function CartSidebar() {
                                 alt={item.name}
                                 width={80}
                                 height={80}
-                                className="h-full w-full object-cover rounded-xl"
+                                className="h-full w-full rounded-xl object-cover"
                                 productName={item.name}
                               />
                             ) : (
@@ -178,7 +165,7 @@ export default function CartSidebar() {
                                 alt={item.name}
                                 width={80}
                                 height={80}
-                                className="h-full w-full object-cover rounded-xl"
+                                className="h-full w-full rounded-xl object-cover"
                                 productName={item.name}
                               />
                             )}

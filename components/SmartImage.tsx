@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -101,8 +97,8 @@ export default function SmartImage({
     >
       {/* Loading skeleton */}
       {isLoading && (
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-100 to-neutral-200 animate-pulse">
-          <div className="absolute inset-0 bg-neutral-300 animate-pulse-soft" />
+        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-neutral-100 to-neutral-200">
+          <div className="absolute inset-0 animate-pulse-soft bg-neutral-300" />
         </div>
       )}
 
@@ -134,10 +130,10 @@ export default function SmartImage({
       {/* Fallback image */}
       {hasError && (
         <div className="absolute inset-0 flex items-center justify-center bg-neutral-100">
-          <div className="text-center p-4">
-            <div className="w-16 h-16 mx-auto mb-2 bg-neutral-200 rounded-lg flex items-center justify-center">
+          <div className="p-4 text-center">
+            <div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-lg bg-neutral-200">
               <svg
-                className="w-8 h-8 text-neutral-400"
+                className="h-8 w-8 text-neutral-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -151,23 +147,21 @@ export default function SmartImage({
                 />
               </svg>
             </div>
-            <p className="text-sm text-neutral-500 sr-only">
-              Imagem não disponível
-            </p>
+            <p className="sr-only text-sm text-neutral-500">Imagem não disponível</p>
           </div>
         </div>
       )}
 
       {/* Overlay de loading */}
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/50">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-vitale-primary" />
+        <div className="bg-white/50 absolute inset-0 flex items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-vitale-primary" />
         </div>
       )}
 
       {/* Indicador de produto médico */}
       {productName && (
-        <div className="absolute top-2 right-2 bg-vitale-primary/90 text-white text-xs px-2 py-1 rounded-full font-medium">
+        <div className="text-white absolute right-2 top-2 rounded-full bg-vitale-primary/90 px-2 py-1 text-xs font-medium">
           Médico
         </div>
       )}

@@ -13,14 +13,16 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'Vytalle Estética & Viscosuplementação - Catálogo Premium de Produtos Médicos Estéticos',
-    template: '%s | Vytalle Estética'
+    default:
+      'Vytalle Estética & Viscosuplementação - Catálogo Premium de Produtos Médicos Estéticos',
+    template: '%s | Vytalle Estética',
   },
-  description: 'Catálogo premium de produtos médicos estéticos certificados ANVISA: Toxinas botulínicas (Botox, Dysport, Xeomin), preenchedores de ácido hialurônico, bioestimuladores. Venda exclusiva para profissionais licenciados. Entrega expressa em todo Brasil.',
+  description:
+    'Catálogo premium de produtos médicos estéticos certificados ANVISA: Toxinas botulínicas (Botox, Dysport, Xeomin), preenchedores de ácido hialurônico, bioestimuladores. Venda exclusiva para profissionais licenciados. Entrega expressa em todo Brasil.',
   keywords: [
     'toxina botulínica',
     'botox',
-    'dysport', 
+    'dysport',
     'xeomin',
     'preenchedores',
     'ácido hialurônico',
@@ -35,7 +37,7 @@ export const metadata: Metadata = {
     'distribuidor estética',
     'toxina botulínica ANVISA',
     'botox certificado',
-    'produtos estéticos profissionais'
+    'produtos estéticos profissionais',
   ],
   authors: [{ name: 'Vytalle Estética & Viscosuplementação' }],
   creator: 'Vytalle Estética & Viscosuplementação',
@@ -68,7 +70,8 @@ export const metadata: Metadata = {
     locale: 'pt_BR',
     url: 'https://vytalle-estetica.vercel.app',
     title: 'Vytalle Estética - Catálogo Premium de Produtos Médicos Estéticos',
-    description: 'Toxinas botulínicas, preenchedores e bioestimuladores certificados ANVISA. Venda exclusiva para profissionais licenciados. Entrega expressa, suporte especializado.',
+    description:
+      'Toxinas botulínicas, preenchedores e bioestimuladores certificados ANVISA. Venda exclusiva para profissionais licenciados. Entrega expressa, suporte especializado.',
     siteName: 'Vytalle Estética & Viscosuplementação',
     images: [
       {
@@ -90,17 +93,13 @@ export const metadata: Metadata = {
   other: {
     'medical-specialty': 'Estética Médica',
     'target-audience': 'Profissionais de Saúde',
-    'compliance': 'ANVISA, ISO 13485, LGPD',
-    'delivery': '24-48h',
-    'support': 'WhatsApp 24/7',
+    compliance: 'ANVISA, ISO 13485, LGPD',
+    delivery: '24-48h',
+    support: 'WhatsApp 24/7',
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className="scroll-smooth">
       <head>
@@ -109,104 +108,103 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "MedicalBusiness",
-              "name": "Vytalle Estética & Viscosuplementação",
-              "description": "Distribuidora especializada em produtos médicos estéticos premium para profissionais licenciados",
-              "url": "https://vytalle-estetica.vercel.app",
-              "logo": "https://vytalle-estetica.vercel.app/Vytalle_Logo_Gold.png",
-              "image": "https://vytalle-estetica.vercel.app/Vytalle_Logo_Gold.png",
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+55-21-99619-2890",
-                "contactType": "Atendimento ao Cliente",
-                "availableLanguage": "Portuguese",
-                "areaServed": "BR"
+              '@context': 'https://schema.org',
+              '@type': 'MedicalBusiness',
+              name: 'Vytalle Estética & Viscosuplementação',
+              description:
+                'Distribuidora especializada em produtos médicos estéticos premium para profissionais licenciados',
+              url: 'https://vytalle-estetica.vercel.app',
+              logo: 'https://vytalle-estetica.vercel.app/Vytalle_Logo_Gold.png',
+              image: 'https://vytalle-estetica.vercel.app/Vytalle_Logo_Gold.png',
+              contactPoint: {
+                '@type': 'ContactPoint',
+                telephone: '+55-21-99619-2890',
+                contactType: 'Atendimento ao Cliente',
+                availableLanguage: 'Portuguese',
+                areaServed: 'BR',
               },
-              "address": {
-                "@type": "PostalAddress",
-                "addressCountry": "BR"
+              address: {
+                '@type': 'PostalAddress',
+                addressCountry: 'BR',
               },
-              "areaServed": {
-                "@type": "Country",
-                "name": "Brasil"
+              areaServed: {
+                '@type': 'Country',
+                name: 'Brasil',
               },
-              "serviceType": "Distribuição de Produtos Médicos Estéticos",
-              "medicalSpecialty": "Estética Médica",
-              "availableService": {
-                "@type": "MedicalService",
-                "name": "Distribuição de Toxinas Botulínicas",
-                "description": "Produtos certificados ANVISA para profissionais licenciados"
+              serviceType: 'Distribuição de Produtos Médicos Estéticos',
+              medicalSpecialty: 'Estética Médica',
+              availableService: {
+                '@type': 'MedicalService',
+                name: 'Distribuição de Toxinas Botulínicas',
+                description: 'Produtos certificados ANVISA para profissionais licenciados',
               },
-              "sameAs": [
-                "https://www.instagram.com/vytalle.estetica/"
-              ],
-              "hasOfferCatalog": {
-                "@type": "OfferCatalog",
-                "name": "Catálogo de Produtos Médicos Estéticos",
-                "itemListElement": [
+              sameAs: ['https://www.instagram.com/vytalle.estetica/'],
+              hasOfferCatalog: {
+                '@type': 'OfferCatalog',
+                name: 'Catálogo de Produtos Médicos Estéticos',
+                itemListElement: [
                   {
-                    "@type": "Offer",
-                    "itemOffered": {
-                      "@type": "Product",
-                      "name": "Toxina Botulínica",
-                      "description": "Produtos certificados ANVISA"
-                    }
-                  }
-                ]
+                    '@type': 'Offer',
+                    itemOffered: {
+                      '@type': 'Product',
+                      name: 'Toxina Botulínica',
+                      description: 'Produtos certificados ANVISA',
+                    },
+                  },
+                ],
               },
-              "priceRange": "R$ 199 - R$ 2.349",
-              "paymentAccepted": "PIX, Cartão de Crédito"
-            })
+              priceRange: 'R$ 199 - R$ 2.349',
+              paymentAccepted: 'PIX, Cartão de Crédito',
+            }),
           }}
         />
-        
+
         {/* Product List Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ItemList",
-              "name": "Catálogo de Produtos Médicos Estéticos Vytalle",
-              "description": "Produtos premium para profissionais de estética",
-              "url": "https://vytalle-estetica.vercel.app/products",
-              "numberOfItems": 93,
-              "itemListElement": [
+              '@context': 'https://schema.org',
+              '@type': 'ItemList',
+              name: 'Catálogo de Produtos Médicos Estéticos Vytalle',
+              description: 'Produtos premium para profissionais de estética',
+              url: 'https://vytalle-estetica.vercel.app/products',
+              numberOfItems: 93,
+              itemListElement: [
                 {
-                  "@type": "Product",
-                  "position": 1,
-                  "name": "DL BOTOX 100UI",
-                  "description": "Toxina botulínica tipo A para tratamentos estéticos",
-                  "brand": {
-                    "@type": "Brand",
-                    "name": "Allergan"
+                  '@type': 'Product',
+                  position: 1,
+                  name: 'DL BOTOX 100UI',
+                  description: 'Toxina botulínica tipo A para tratamentos estéticos',
+                  brand: {
+                    '@type': 'Brand',
+                    name: 'Allergan',
                   },
-                  "category": "Toxina Botulínica",
-                  "offers": {
-                    "@type": "Offer",
-                    "price": "745.00",
-                    "priceCurrency": "BRL",
-                    "availability": "https://schema.org/InStock",
-                    "seller": {
-                      "@type": "Organization",
-                      "name": "Vytalle Estética & Viscosuplementação"
-                    }
-                  }
-                }
-              ]
-            })
+                  category: 'Toxina Botulínica',
+                  offers: {
+                    '@type': 'Offer',
+                    price: '745.00',
+                    priceCurrency: 'BRL',
+                    availability: 'https://schema.org/InStock',
+                    seller: {
+                      '@type': 'Organization',
+                      name: 'Vytalle Estética & Viscosuplementação',
+                    },
+                  },
+                },
+              ],
+            }),
           }}
         />
       </head>
-      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-secondary/5 font-sans text-neutral-800 antialiased`}>
+      <body
+        className={`${inter.className} min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-secondary/5 font-sans text-neutral-800 antialiased`}
+      >
         <GlobalErrorHandler>
           <ErrorBoundary>
             <CustomizationProvider>
               <AnalyticsProvider>
-                <main role="main">
-                  {children}
-                </main>
+                <main role="main">{children}</main>
                 <Toaster />
               </AnalyticsProvider>
             </CustomizationProvider>

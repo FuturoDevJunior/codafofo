@@ -18,47 +18,49 @@ function renderIcon(name: keyof typeof LucideIcons, size: number, className: str
   return <Icon size={size} className={className} />;
 }
 
-export default function StatsCard({ 
-  iconName, 
-  value, 
-  label, 
+export default function StatsCard({
+  iconName,
+  value,
+  label,
   color = 'primary',
-  className = '' 
+  className = '',
 }: StatsCardProps) {
   const colorClasses = {
     primary: {
       bg: 'bg-white/95',
       border: 'border-vitale-primary/20',
       text: 'text-vitale-primary',
-      icon: 'text-vitale-primary'
+      icon: 'text-vitale-primary',
     },
     secondary: {
       bg: 'bg-white/95',
       border: 'border-vitale-secondary/20',
       text: 'text-vitale-secondary',
-      icon: 'text-vitale-secondary'
+      icon: 'text-vitale-secondary',
     },
     accent: {
       bg: 'bg-white/95',
       border: 'border-orange-200/50',
       text: 'text-orange-600',
-      icon: 'text-orange-600'
-    }
+      icon: 'text-orange-600',
+    },
   };
 
   const colors = colorClasses[color];
 
   return (
-    <div className={`${colors.bg} ${colors.border} rounded-2xl border-2 p-6 text-center shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${className}`}>
-      <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10`}>
+    <div
+      className={`${colors.bg} ${colors.border} hover:shadow-2xl rounded-2xl border-2 p-6 text-center shadow-xl transition-all duration-300 hover:-translate-y-1 ${className}`}
+    >
+      <div
+        className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10`}
+      >
         {renderIcon(iconName, 24, `h-6 w-6 ${colors.icon}`)}
       </div>
       <div className={`mb-2 text-3xl font-bold ${colors.text} md:text-4xl lg:text-5xl`}>
         {value}
       </div>
-      <p className={`font-medium text-gray-800 text-sm md:text-base`}>
-        {label}
-      </p>
+      <p className={`text-gray-800 text-sm font-medium md:text-base`}>{label}</p>
     </div>
   );
-} 
+}

@@ -118,12 +118,13 @@ class SmartCache {
   getStats() {
     const now = Date.now();
     const items = Array.from(this.cache.values());
-    
+
     return {
       size: this.cache.size,
       maxSize: this.config.maxSize,
       hitRate: this.calculateHitRate(),
-      averageAccessCount: items.reduce((sum, item) => sum + item.accessCount, 0) / items.length || 0,
+      averageAccessCount:
+        items.reduce((sum, item) => sum + item.accessCount, 0) / items.length || 0,
       oldestItem: items.length > 0 ? Math.min(...items.map(item => item.timestamp)) : 0,
       newestItem: items.length > 0 ? Math.max(...items.map(item => item.timestamp)) : 0,
     };
@@ -154,8 +155,10 @@ class SmartCache {
     let oldestTimestamp = Infinity;
 
     for (const [key, item] of this.cache.entries()) {
-      if (item.accessCount < minAccessCount || 
-          (item.accessCount === minAccessCount && item.timestamp < oldestTimestamp)) {
+      if (
+        item.accessCount < minAccessCount ||
+        (item.accessCount === minAccessCount && item.timestamp < oldestTimestamp)
+      ) {
         minAccessCount = item.accessCount;
         oldestTimestamp = item.timestamp;
         leastUsedKey = key;

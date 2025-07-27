@@ -2,24 +2,14 @@
 
 import { useState } from 'react';
 
-import {
-  ArrowLeft,
-  Grid,
-  List,
-  MessageCircle,
-} from 'lucide-react';
+import { ArrowLeft, Grid, List, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
 import AdvancedSearch from '@/components/AdvancedSearch';
 import ComplianceDisclaimer from '@/components/ComplianceDisclaimer';
 import SmartImage from '@/components/SmartImage';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockProducts } from '@/lib/mockData';
 
 export default function ProductsPage() {
@@ -41,15 +31,15 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-vitale-primary/5 via-white to-vitale-secondary/5">
+    <div className="via-white min-h-screen bg-gradient-to-br from-vitale-primary/5 to-vitale-secondary/5">
       {/* Header da página */}
       <section className="bg-white/95 border-b border-vitale-primary/20 py-8 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div>
-              <Link 
-                href="/" 
-                className="inline-flex items-center gap-2 text-vitale-primary hover:text-vitale-secondary transition-colors mb-2"
+              <Link
+                href="/"
+                className="mb-2 inline-flex items-center gap-2 text-vitale-primary transition-colors hover:text-vitale-secondary"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Voltar ao Início
@@ -57,11 +47,9 @@ export default function ProductsPage() {
               <h1 className="text-3xl font-bold text-vitale-primary md:text-4xl">
                 Catálogo Completo
               </h1>
-              <p className="text-gray-600 mt-2">
-                {searchResults.length} produtos encontrados
-              </p>
+              <p className="text-gray-600 mt-2">{searchResults.length} produtos encontrados</p>
             </div>
-            
+
             {/* Controles de visualização */}
             <div className="flex items-center gap-2">
               <Button
@@ -97,10 +85,7 @@ export default function ProductsPage() {
       {/* Busca Avançada */}
       <section className="py-8">
         <div className="container mx-auto px-4">
-          <AdvancedSearch 
-            onSearchResults={setSearchResults}
-            className="mb-8"
-          />
+          <AdvancedSearch onSearchResults={setSearchResults} className="mb-8" />
         </div>
       </section>
 
@@ -108,29 +93,26 @@ export default function ProductsPage() {
       <section className="py-8">
         <div className="container mx-auto px-4">
           {currentProducts.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+            <div className="py-12 text-center">
+              <div className="mb-4 text-6xl">🔍</div>
+              <h3 className="text-gray-700 mb-2 text-xl font-semibold">
                 Nenhum produto encontrado
               </h3>
-              <p className="text-gray-500 mb-6">
-                Tente ajustar os filtros ou termos de busca
-              </p>
-              <Button 
-                onClick={() => setSearchResults(mockProducts)}
-                variant="outline"
-              >
+              <p className="text-gray-500 mb-6">Tente ajustar os filtros ou termos de busca</p>
+              <Button onClick={() => setSearchResults(mockProducts)} variant="outline">
                 Limpar Filtros
               </Button>
             </div>
           ) : (
             <>
               {/* Grid/Lista de Produtos */}
-              <div className={
-                viewMode === 'grid' 
-                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-                  : 'space-y-4'
-              }>
+              <div
+                className={
+                  viewMode === 'grid'
+                    ? 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                    : 'space-y-4'
+                }
+              >
                 {currentProducts.map((product, index) => (
                   <Card
                     key={product.id}
@@ -138,19 +120,24 @@ export default function ProductsPage() {
                       viewMode === 'list' ? 'flex flex-row' : ''
                     }`}
                   >
-                    <CardHeader className={`relative overflow-hidden rounded-t-lg ${viewMode === 'list' ? 'w-1/3' : ''}`}>
-                      <div className={`relative bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10 ${
-                        viewMode === 'list' ? 'aspect-square' : 'aspect-square'
-                      } rounded-lg`}>
+                    <CardHeader
+                      className={`relative overflow-hidden rounded-t-lg ${viewMode === 'list' ? 'w-1/3' : ''}`}
+                    >
+                      <div
+                        className={`relative bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10 ${
+                          viewMode === 'list' ? 'aspect-square' : 'aspect-square'
+                        } rounded-lg`}
+                      >
                         <SmartImage
                           src={product.images[0]}
                           alt={product.name}
                           fill
                           className="rounded-lg object-cover transition-transform duration-500 group-hover:scale-110"
                           productName={product.name}
-                          sizes={viewMode === 'list' 
-                            ? "(max-width: 768px) 100vw, 33vw"
-                            : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                          sizes={
+                            viewMode === 'list'
+                              ? '(max-width: 768px) 100vw, 33vw'
+                              : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
                           }
                           priority={index < 4}
                         />
@@ -171,17 +158,21 @@ export default function ProductsPage() {
                         <CardTitle className="text-xl font-bold text-vitale-primary transition-colors group-hover:text-vitale-secondary">
                           {product.name}
                         </CardTitle>
-                        <p className={`text-sm text-neutral-600 ${
-                          viewMode === 'list' ? 'line-clamp-3' : 'line-clamp-2'
-                        }`}>
+                        <p
+                          className={`text-sm text-neutral-600 ${
+                            viewMode === 'list' ? 'line-clamp-3' : 'line-clamp-2'
+                          }`}
+                        >
                           {product.description}
                         </p>
                       </div>
 
                       {/* Preço e CTA */}
-                      <div className={`flex items-center justify-between border-t border-vitale-primary/20 pt-4 ${
-                        viewMode === 'list' ? 'flex-col items-start gap-4' : ''
-                      }`}>
+                      <div
+                        className={`flex items-center justify-between border-t border-vitale-primary/20 pt-4 ${
+                          viewMode === 'list' ? 'flex-col items-start gap-4' : ''
+                        }`}
+                      >
                         <div className="space-y-1">
                           <div className="text-2xl font-bold text-vitale-primary">
                             R${' '}
@@ -205,7 +196,7 @@ export default function ProductsPage() {
 
               {/* Paginação */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-12">
+                <div className="mt-12 flex items-center justify-center gap-2">
                   <Button
                     variant="outline"
                     onClick={() => goToPage(currentPage - 1)}
@@ -215,13 +206,13 @@ export default function ProductsPage() {
                     <ArrowLeft className="h-4 w-4" />
                     Anterior
                   </Button>
-                  
+
                   <div className="flex items-center gap-1">
                     {[...Array(totalPages)].map((_, index) => {
                       const page = index + 1;
                       const isCurrentPage = page === currentPage;
                       const isNearCurrent = Math.abs(page - currentPage) <= 2;
-                      
+
                       if (isCurrentPage || isNearCurrent || page === 1 || page === totalPages) {
                         return (
                           <Button
@@ -235,14 +226,22 @@ export default function ProductsPage() {
                           </Button>
                         );
                       } else if (page === 2 && currentPage > 4) {
-                        return <span key={page} className="px-2">...</span>;
+                        return (
+                          <span key={page} className="px-2">
+                            ...
+                          </span>
+                        );
                       } else if (page === totalPages - 1 && currentPage < totalPages - 3) {
-                        return <span key={page} className="px-2">...</span>;
+                        return (
+                          <span key={page} className="px-2">
+                            ...
+                          </span>
+                        );
                       }
                       return null;
                     })}
                   </div>
-                  
+
                   <Button
                     variant="outline"
                     onClick={() => goToPage(currentPage + 1)}
@@ -261,26 +260,27 @@ export default function ProductsPage() {
 
       {/* CTA Final */}
       <section className="bg-gradient-to-br from-vitale-primary/10 via-vitale-secondary/5 to-vitale-primary/10 py-16">
-        <div className="container mx-auto text-center px-4">
-          <h2 className="text-3xl font-bold text-vitale-primary mb-4">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-vitale-primary">
             Precisa de Ajuda para Escolher?
           </h2>
-          <p className="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
-            Nossa equipe especializada está pronta para ajudar você a encontrar os produtos ideais para sua clínica.
+          <p className="text-gray-700 mx-auto mb-8 max-w-2xl text-lg">
+            Nossa equipe especializada está pronta para ajudar você a encontrar os produtos ideais
+            para sua clínica.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <a
               href="https://wa.me/5521996192890?text=Olá! Gostaria de ajuda para escolher produtos da Vytalle."
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-3 bg-green-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-green-700 transition-colors"
+              className="bg-green-600 text-white hover:bg-green-700 inline-flex items-center justify-center gap-3 rounded-xl px-8 py-4 font-semibold transition-colors"
             >
               <MessageCircle className="h-5 w-5" />
               Consultor Especializado
             </a>
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-3 bg-vitale-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-vitale-secondary transition-colors"
+              className="text-white inline-flex items-center justify-center gap-3 rounded-xl bg-vitale-primary px-8 py-4 font-semibold transition-colors hover:bg-vitale-secondary"
             >
               Voltar ao Início
             </Link>

@@ -19,12 +19,7 @@ import SmartImage from '@/components/SmartImage';
 import StarRating from '@/components/StarRating';
 import StatsCard from '@/components/StatsCard';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mockProducts } from '@/lib/mockData';
 
 export default function Home() {
@@ -34,10 +29,10 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Header />
-      
+
       <main id="main-content" role="main">
         {/* Hero Section Redesign - Sem logo gigante, foco no conteúdo */}
-        <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-vitale-primary/10 via-white to-vitale-secondary/10">
+        <section className="via-white relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10">
           {/* Background Pattern Melhorado */}
           <div className="absolute inset-0 opacity-[0.03]">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iIzg5NzQ2NiIvPgo8L3N2Zz4K')] bg-repeat"></div>
@@ -153,7 +148,8 @@ export default function Home() {
                 Produtos em Destaque
               </h2>
               <p className="mx-auto max-w-4xl px-4 text-lg leading-relaxed text-neutral-700 md:text-xl md:leading-relaxed lg:text-2xl lg:leading-relaxed">
-                Conheça nossa seleção premium de produtos mais procurados por profissionais de estética
+                Conheça nossa seleção premium de produtos mais procurados por profissionais de
+                estética
               </p>
               <StarRating rating={5} size="lg" />
             </div>
@@ -165,11 +161,14 @@ export default function Home() {
                   data-testid="card"
                   className="hover:shadow-2xl bg-white/95 group transform rounded-xl border-2 border-vitale-primary/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-3 hover:border-vitale-primary/50 md:rounded-2xl"
                 >
-                  <CardHeader data-testid="card-header" className="relative overflow-hidden rounded-t-lg">
+                  <CardHeader
+                    data-testid="card-header"
+                    className="relative overflow-hidden rounded-t-lg"
+                  >
                     <div className="relative aspect-square rounded-lg bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10">
-                                             <SmartImage
-                         src={product.images[0]}
-                         alt={product.name}
+                      <SmartImage
+                        src={product.images[0]}
+                        alt={product.name}
                         fill
                         className="rounded-lg object-cover transition-transform duration-500 group-hover:scale-110"
                         productName={product.name}
@@ -189,7 +188,10 @@ export default function Home() {
 
                   <CardContent data-testid="card-content" className="space-y-4 p-6">
                     <div>
-                      <CardTitle data-testid="card-title" className="text-xl font-bold text-vitale-primary transition-colors group-hover:text-vitale-secondary">
+                      <CardTitle
+                        data-testid="card-title"
+                        className="text-xl font-bold text-vitale-primary transition-colors group-hover:text-vitale-secondary"
+                      >
                         {product.name}
                       </CardTitle>
                       <p className="mt-2 line-clamp-2 text-sm text-neutral-600">
@@ -199,15 +201,14 @@ export default function Home() {
 
                     <div className="flex items-center justify-between border-t border-vitale-primary/20 pt-4">
                       <div className="space-y-1">
-                                                 <div className="text-2xl font-bold text-vitale-primary">
-                           R$ {product.price_pix?.toLocaleString('pt-BR', {
-                             minimumFractionDigits: 2,
-                             maximumFractionDigits: 2,
-                           }) || '0,00'}
-                         </div>
-                        <div className="text-sm text-neutral-500">
-                          À vista no PIX
+                        <div className="text-2xl font-bold text-vitale-primary">
+                          R${' '}
+                          {product.price_pix?.toLocaleString('pt-BR', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }) || '0,00'}
                         </div>
+                        <div className="text-sm text-neutral-500">À vista no PIX</div>
                       </div>
                       <Link href={`/products/${product.slug}`}>
                         <Button className="text-white transform rounded-xl bg-vitale-primary px-6 py-3 transition-all duration-300 hover:scale-105 hover:bg-vitale-secondary">
@@ -256,7 +257,9 @@ export default function Home() {
                       <strong className="text-vitale-primary">
                         Seu diferencial profissional começa com o produto certo.
                       </strong>
-                      Distribuímos produtos estéticos e de viscosuplementação de altíssima qualidade, garantindo procedência internacional, autenticidade certificada e excelência comprovada para profissionais da área da saúde em todo o Brasil.
+                      Distribuímos produtos estéticos e de viscosuplementação de altíssima
+                      qualidade, garantindo procedência internacional, autenticidade certificada e
+                      excelência comprovada para profissionais da área da saúde em todo o Brasil.
                     </p>
                   </div>
 
@@ -266,7 +269,9 @@ export default function Home() {
                       Nossa Visão
                     </h3>
                     <p className="text-lg leading-relaxed text-neutral-700">
-                      Ser a principal referência nacional na distribuição de produtos médicos estéticos premium, reconhecida pela qualidade incomparável, confiabilidade absoluta e excelência no atendimento consultivo personalizado.
+                      Ser a principal referência nacional na distribuição de produtos médicos
+                      estéticos premium, reconhecida pela qualidade incomparável, confiabilidade
+                      absoluta e excelência no atendimento consultivo personalizado.
                     </p>
                   </div>
 
@@ -379,14 +384,10 @@ export default function Home() {
                 Pronto para Elevar sua Prática Profissional?
               </h2>
               <p className="mx-auto max-w-3xl text-xl leading-relaxed text-neutral-700">
-                <strong className="text-vitale-primary">
-                  Catálogo premium completo
-                </strong>
+                <strong className="text-vitale-primary">Catálogo premium completo</strong>
                 , entrega expressa em 24-48h e suporte consultivo especializado para sua clínica.
                 <br />
-                <span className="text-lg">
-                  Mais de 2.000 profissionais já confiam na Vytalle.
-                </span>
+                <span className="text-lg">Mais de 2.000 profissionais já confiam na Vytalle.</span>
               </p>
             </div>
 
@@ -419,30 +420,22 @@ export default function Home() {
             <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 pt-12 sm:grid-cols-3">
               <div className="space-y-3 text-center">
                 <Shield className="text-green-600 mx-auto h-12 w-12" aria-hidden="true" />
-                <h4 className="text-lg font-bold text-vitale-primary">
-                  Garantia Total
-                </h4>
+                <h4 className="text-lg font-bold text-vitale-primary">Garantia Total</h4>
                 <p className="text-sm text-neutral-700">
                   100% produtos originais ou seu dinheiro de volta
                 </p>
               </div>
               <div className="space-y-3 text-center">
                 <Truck className="text-blue-600 mx-auto h-12 w-12" aria-hidden="true" />
-                <h4 className="text-lg font-bold text-vitale-primary">
-                  Entrega Expressa
-                </h4>
+                <h4 className="text-lg font-bold text-vitale-primary">Entrega Expressa</h4>
                 <p className="text-sm text-neutral-700">
                   Logística especializada para produtos médicos
                 </p>
               </div>
               <div className="space-y-3 text-center">
                 <MessageCircle className="text-green-600 mx-auto h-12 w-12" aria-hidden="true" />
-                <h4 className="text-lg font-bold text-vitale-primary">
-                  Suporte 24/7
-                </h4>
-                <p className="text-sm text-neutral-700">
-                  Consultoria especializada via WhatsApp
-                </p>
+                <h4 className="text-lg font-bold text-vitale-primary">Suporte 24/7</h4>
+                <p className="text-sm text-neutral-700">Consultoria especializada via WhatsApp</p>
               </div>
             </div>
           </div>
@@ -478,11 +471,9 @@ export default function Home() {
 
               <div className="space-y-3 text-neutral-700">
                 <p className="max-w-md text-sm leading-relaxed">
-                  <strong className="text-vitale-primary">
-                    Distribuidora especializada
-                  </strong>{' '}
-                  em produtos médicos estéticos premium. Mais de 5 anos servindo
-                  profissionais da área da saúde com produtos certificados ANVISA.
+                  <strong className="text-vitale-primary">Distribuidora especializada</strong> em
+                  produtos médicos estéticos premium. Mais de 5 anos servindo profissionais da área
+                  da saúde com produtos certificados ANVISA.
                 </p>
 
                 {/* Certificações */}

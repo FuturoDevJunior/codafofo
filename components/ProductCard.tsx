@@ -3,19 +3,10 @@
 import { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import {
-  Eye,
-  Heart,
-  Scale,
-  ShoppingCart,
-  Star,
-} from 'lucide-react';
+import { Eye, Heart, Scale, ShoppingCart, Star } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip } from '@/components/ui/tooltip';
 import { toast } from '@/components/ui/use-toast';
 import { useAnalytics } from '@/lib/analytics';
@@ -229,7 +220,7 @@ export default function ProductCard({
                     size="sm"
                     onClick={handleAddToCart}
                     disabled={isLoading}
-                    className="text-white relative overflow-hidden rounded-full bg-gradient-to-r from-vitale-primary to-vitale-secondary p-3 shadow-vitale transition-all duration-300 hover:from-vitale-secondary hover:to-vitale-primary hover:shadow-xl focus-ring"
+                    className="text-white relative overflow-hidden rounded-full bg-gradient-to-r from-vitale-primary to-vitale-secondary p-3 shadow-vitale transition-all duration-300 focus-ring hover:from-vitale-secondary hover:to-vitale-primary hover:shadow-xl"
                   >
                     <MotionDiv
                       animate={isLoading ? { rotate: 360 } : { rotate: 0 }}
@@ -249,7 +240,7 @@ export default function ProductCard({
                     size="sm"
                     variant="outline"
                     asChild
-                    className="bg-white/95 hover:bg-white rounded-full border-vitale-primary/30 p-3 text-vitale-primary shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:border-vitale-primary focus-ring"
+                    className="bg-white/95 hover:bg-white rounded-full border-vitale-primary/30 p-3 text-vitale-primary shadow-lg backdrop-blur-sm transition-all duration-300 focus-ring hover:border-vitale-primary hover:shadow-xl"
                   >
                     <a href={`/products/${_product.slug}`} aria-label="Ver detalhes completos">
                       <MotionDiv whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
@@ -267,7 +258,7 @@ export default function ProductCard({
                       size="sm"
                       variant="outline"
                       onClick={() => _onCompare?.(_product)}
-                      className="bg-white/95 hover:bg-white rounded-full border-vitale-primary/30 p-3 text-vitale-primary shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:border-vitale-primary focus-ring"
+                      className="bg-white/95 hover:bg-white rounded-full border-vitale-primary/30 p-3 text-vitale-primary shadow-lg backdrop-blur-sm transition-all duration-300 focus-ring hover:border-vitale-primary hover:shadow-xl"
                     >
                       <MotionDiv
                         whileHover={{ rotate: [0, -10, 10, 0] }}
@@ -288,7 +279,7 @@ export default function ProductCard({
               <Button
                 size="sm"
                 variant="ghost"
-                className="bg-white/90 hover:bg-white text-red-500 hover:text-red-600 rounded-full p-2 shadow-md backdrop-blur-sm transition-all duration-300 hover:shadow-lg focus-ring"
+                className="bg-white/90 hover:bg-white text-red-500 hover:text-red-600 rounded-full p-2 shadow-md backdrop-blur-sm transition-all duration-300 focus-ring hover:shadow-lg"
               >
                 <MotionDiv
                   whileHover={{
@@ -315,7 +306,7 @@ export default function ProductCard({
             }}
           >
             <MotionSpan
-              className="text-white rounded-full bg-gradient-to-r from-vitale-primary to-vitale-secondary px-3 py-1.5 text-xs font-bold shadow-lg border border-white/20 backdrop-blur-sm"
+              className="text-white border-white/20 rounded-full border bg-gradient-to-r from-vitale-primary to-vitale-secondary px-3 py-1.5 text-xs font-bold shadow-lg backdrop-blur-sm"
               whileHover={{
                 background: 'linear-gradient(135deg, #d8a75b 0%, #e79632 100%)',
                 textShadow: '0 1px 2px rgba(0,0,0,0.4)',
@@ -354,7 +345,7 @@ export default function ProductCard({
                 <Star className="fill-yellow-400 text-yellow-400 h-3 w-3" />
               </MotionDiv>
               <MotionSpan
-                className="text-neutral-700 text-xs font-semibold"
+                className="text-xs font-semibold text-neutral-700"
                 whileHover={{
                   color: '#d8a75b',
                   fontWeight: '700',
@@ -370,7 +361,7 @@ export default function ProductCard({
         <CardContent className="p-4">
           <MotionDiv variants={contentVariants}>
             {/* Nome do produto */}
-            <h3 className="text-neutral-800 mb-2 line-clamp-2 font-semibold font-heading text-high-contrast transition-colors group-hover:text-vitale-primary leading-tight">
+            <h3 className="text-high-contrast mb-2 line-clamp-2 font-heading font-semibold leading-tight text-neutral-800 transition-colors group-hover:text-vitale-primary">
               {_product.name}
             </h3>
 
@@ -382,7 +373,7 @@ export default function ProductCard({
                 whileHover="hover"
               >
                 <MotionSpan
-                  className="text-2xl font-bold text-vitale-primary font-heading price-text"
+                  className="price-text font-heading text-2xl font-bold text-vitale-primary"
                   whileHover={{
                     textShadow: '0 0 8px rgba(216, 167, 91, 0.4)',
                     scale: 1.05,
@@ -392,7 +383,7 @@ export default function ProductCard({
                   {formatCurrency(_product.price_pix || 0)}
                 </MotionSpan>
                 <MotionSpan
-                  className="text-success-600 bg-success-50 border border-success-200 rounded-full px-3 py-1 text-sm font-semibold shadow-sm"
+                  className="border-success-200 rounded-full border bg-success-50 px-3 py-1 text-sm font-semibold text-success-600 shadow-sm"
                   whileHover={{ scale: 1.05, boxShadow: '0 2px 8px rgba(34, 197, 94, 0.15)' }}
                 >
                   💳 no PIX
@@ -406,15 +397,18 @@ export default function ProductCard({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.1 }}
                 >
-                  <MotionSpan className="text-neutral-700 text-lg font-semibold price-text" whileHover={{ scale: 1.02 }}>
+                  <MotionSpan
+                    className="price-text text-lg font-semibold text-neutral-700"
+                    whileHover={{ scale: 1.02 }}
+                  >
                     {formatCurrency(_product.price_card)}
                   </MotionSpan>
-                  <span className="text-info-600 bg-info-50 border border-info-200 rounded-full px-3 py-1 text-sm font-semibold shadow-sm">
+                  <span className="border-info-200 rounded-full border bg-info-50 px-3 py-1 text-sm font-semibold text-info-600 shadow-sm">
                     💳 cartão
                   </span>
                   {_product.price_card > 0 && (
                     <MotionDiv
-                      className="text-neutral-600 bg-neutral-100 border border-neutral-200 rounded-full px-3 py-1 text-xs font-medium shadow-sm"
+                      className="rounded-full border border-neutral-200 bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600 shadow-sm"
                       whileHover={{ scale: 1.05, backgroundColor: 'rgb(var(--vitale-neutral-50))' }}
                     >
                       ou {formatCurrency(_product.price_card / 4)} em 4x
@@ -433,7 +427,7 @@ export default function ProductCard({
               <Button
                 onClick={handleAddToCart}
                 disabled={isLoading}
-                className="text-white group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-vitale-primary to-vitale-secondary py-3 font-semibold font-heading shadow-vitale touch-friendly transition-all duration-300 hover:from-vitale-secondary hover:to-vitale-primary hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
+                className="text-white touch-friendly group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-vitale-primary to-vitale-secondary py-3 font-heading font-semibold shadow-vitale transition-all duration-300 hover:from-vitale-secondary hover:to-vitale-primary hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {/* Background pulse effect durante loading */}
                 {isLoading && (

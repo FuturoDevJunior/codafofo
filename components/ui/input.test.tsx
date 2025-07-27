@@ -1,14 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Input } from './input';
@@ -95,13 +87,7 @@ describe('Input', () => {
   });
 
   it('deve aplicar padding correto com ambos os ícones', () => {
-    render(
-      <Input 
-        leftIcon={<span>🔍</span>} 
-        rightIcon={<span>📧</span>} 
-        placeholder="teste" 
-      />
-    );
+    render(<Input leftIcon={<span>🔍</span>} rightIcon={<span>📧</span>} placeholder="teste" />);
     const input = screen.getByPlaceholderText('teste');
     expect(input).toHaveClass('pl-10', 'pr-10');
   });
@@ -109,9 +95,9 @@ describe('Input', () => {
   it('deve chamar onChange quando valor muda', async () => {
     const handleChange = vi.fn();
     const user = userEvent.setup();
-    
+
     render(<Input onChange={handleChange} placeholder="teste" />);
-    
+
     await user.type(screen.getByPlaceholderText('teste'), 'a');
     expect(handleChange).toHaveBeenCalled();
   });
@@ -170,20 +156,26 @@ describe('Input', () => {
   });
 
   it('deve aplicar tamanho correto do ícone para sm', () => {
-    render(<Input inputSize="sm" leftIcon={<span data-testid="icon">🔍</span>} placeholder="teste" />);
+    render(
+      <Input inputSize="sm" leftIcon={<span data-testid="icon">🔍</span>} placeholder="teste" />
+    );
     const iconContainer = screen.getByTestId('icon').parentElement;
     expect(iconContainer).toHaveClass('h-4', 'w-4');
   });
 
   it('deve aplicar tamanho correto do ícone para lg', () => {
-    render(<Input inputSize="lg" leftIcon={<span data-testid="icon">🔍</span>} placeholder="teste" />);
+    render(
+      <Input inputSize="lg" leftIcon={<span data-testid="icon">🔍</span>} placeholder="teste" />
+    );
     const iconContainer = screen.getByTestId('icon').parentElement;
     expect(iconContainer).toHaveClass('h-6', 'w-6');
   });
 
   it('deve aplicar tamanho correto do ícone para md', () => {
-    render(<Input inputSize="md" leftIcon={<span data-testid="icon">🔍</span>} placeholder="teste" />);
+    render(
+      <Input inputSize="md" leftIcon={<span data-testid="icon">🔍</span>} placeholder="teste" />
+    );
     const iconContainer = screen.getByTestId('icon').parentElement;
     expect(iconContainer).toHaveClass('h-5', 'w-5');
   });
-}); 
+});

@@ -1,18 +1,8 @@
 'use client';
 
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  Instagram,
-  Menu,
-  Phone,
-  Search,
-  ShoppingCart,
-  X,
-} from 'lucide-react';
+import { Instagram, Menu, Phone, Search, ShoppingCart, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -60,10 +50,10 @@ export default function Header() {
   };
 
   return (
-    <header 
+    <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-neutral-200' 
+        isScrolled
+          ? 'bg-white/95 border-b border-neutral-200 shadow-lg backdrop-blur-md'
           : 'bg-white/90 backdrop-blur-sm'
       }`}
       role="banner"
@@ -75,11 +65,11 @@ export default function Header() {
 
       <div className="container mx-auto px-4">
         {/* Header superior - Contatos */}
-        <div className="hidden lg:flex items-center justify-between py-3 border-b border-neutral-200/80 bg-gradient-to-r from-vitale-neutral/30 via-white to-vitale-neutral/30">
+        <div className="via-white hidden items-center justify-between border-b border-neutral-200/80 bg-gradient-to-r from-vitale-neutral/30 to-vitale-neutral/30 py-3 lg:flex">
           <div className="flex items-center gap-6 text-sm text-neutral-700">
-            <a 
-              href="https://wa.me/5521996192890" 
-              className="flex items-center gap-2 hover:text-green-600 transition-all duration-200 hover:scale-105 focus-ring rounded-md px-2 py-1"
+            <a
+              href="https://wa.me/5521996192890"
+              className="hover:text-green-600 flex items-center gap-2 rounded-md px-2 py-1 transition-all duration-200 focus-ring hover:scale-105"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp (21) 99619-2890"
@@ -87,9 +77,9 @@ export default function Header() {
               <Phone className="h-4 w-4 flex-shrink-0" />
               <span className="font-medium">(21) 99619-2890</span>
             </a>
-            <a 
-              href="https://www.instagram.com/vytalle.estetica/" 
-              className="flex items-center gap-2 hover:text-pink-600 transition-all duration-200 hover:scale-105 focus-ring rounded-md px-2 py-1"
+            <a
+              href="https://www.instagram.com/vytalle.estetica/"
+              className="hover:text-pink-600 flex items-center gap-2 rounded-md px-2 py-1 transition-all duration-200 focus-ring hover:scale-105"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram @vytalle.estetica"
@@ -98,12 +88,18 @@ export default function Header() {
               <span className="font-medium">@vytalle.estetica</span>
             </a>
           </div>
-          
+
           <div className="flex items-center gap-3">
-            <Badge variant="secondary" className="bg-success-50 text-success-700 border-success-200 shadow-sm hover:shadow-md transition-shadow">
+            <Badge
+              variant="secondary"
+              className="border-success-200 bg-success-50 text-success-700 shadow-sm transition-shadow hover:shadow-md"
+            >
               ✓ ANVISA Certificado
             </Badge>
-            <Badge variant="secondary" className="bg-info-50 text-info-700 border-info-200 shadow-sm hover:shadow-md transition-shadow">
+            <Badge
+              variant="secondary"
+              className="border-info-200 bg-info-50 text-info-700 shadow-sm transition-shadow hover:shadow-md"
+            >
               ✓ Entrega 24-48h
             </Badge>
           </div>
@@ -112,95 +108,97 @@ export default function Header() {
         {/* Header principal */}
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group logo-container">
-            <div className="relative h-12 w-12 flex items-center justify-center">
+          <Link href="/" className="logo-container group flex items-center gap-3">
+            <div className="relative flex h-12 w-12 items-center justify-center">
               <Image
                 src="/Vytalle_Logo_Gold.png"
                 alt="Vytalle Estética & Viscosuplementação"
                 width={48}
                 height={48}
-                className="h-auto w-auto max-h-12 max-w-12 object-contain transition-all duration-300 group-hover:scale-110 logo-image"
+                className="logo-image h-auto max-h-12 w-auto max-w-12 object-contain transition-all duration-300 group-hover:scale-110"
                 priority
-                style={{ 
+                style={{
                   objectPosition: 'center',
-                  transform: 'rotate(0deg)' // Garantir que não está torta
+                  transform: 'rotate(0deg)', // Garantir que não está torta
                 }}
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg font-bold text-vitale-primary leading-tight font-heading tracking-tight">
+              <h1 className="font-heading text-lg font-bold leading-tight tracking-tight text-vitale-primary">
                 Vytalle Estética
               </h1>
-              <p className="text-xs text-vitale-secondary font-medium">
-                & Viscosuplementação
-              </p>
+              <p className="text-xs font-medium text-vitale-secondary">& Viscosuplementação</p>
             </div>
           </Link>
 
           {/* Busca desktop */}
-          <div className="hidden md:flex flex-1 max-w-lg mx-8">
-            <form onSubmit={handleSearch} className="relative w-full group">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 group-focus-within:text-vitale-primary transition-colors" />
+          <div className="mx-8 hidden max-w-lg flex-1 md:flex">
+            <form onSubmit={handleSearch} className="group relative w-full">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 transition-colors group-focus-within:text-vitale-primary" />
               <Input
                 type="text"
                 placeholder="Buscar produtos, marcas ou categorias..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 h-11 bg-neutral-50 border-neutral-200 focus:border-vitale-primary focus:bg-white transition-all duration-200 rounded-lg shadow-sm focus:shadow-md text-neutral-800 placeholder:text-neutral-500"
+                onChange={e => setSearchQuery(e.target.value)}
+                className="focus:bg-white h-11 rounded-lg border-neutral-200 bg-neutral-50 pl-10 pr-4 text-neutral-800 shadow-sm transition-all duration-200 placeholder:text-neutral-500 focus:border-vitale-primary focus:shadow-md"
                 aria-label="Buscar produtos no catálogo"
               />
             </form>
           </div>
 
           {/* Navegação desktop */}
-          <nav className="hidden lg:flex items-center gap-6" role="navigation" aria-label="Navegação principal">
-            <Link 
-              href="/" 
-              className="text-sm font-semibold text-neutral-700 hover:text-vitale-primary transition-all duration-200 hover:scale-105 focus-ring rounded-md px-3 py-2 relative group"
+          <nav
+            className="hidden items-center gap-6 lg:flex"
+            role="navigation"
+            aria-label="Navegação principal"
+          >
+            <Link
+              href="/"
+              className="group relative rounded-md px-3 py-2 text-sm font-semibold text-neutral-700 transition-all duration-200 focus-ring hover:scale-105 hover:text-vitale-primary"
             >
               Início
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-vitale-primary transition-all duration-200 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-vitale-primary transition-all duration-200 group-hover:w-full"></span>
             </Link>
-            <Link 
-              href="/products" 
-              className="text-sm font-semibold text-neutral-700 hover:text-vitale-primary transition-all duration-200 hover:scale-105 focus-ring rounded-md px-3 py-2 relative group"
+            <Link
+              href="/products"
+              className="group relative rounded-md px-3 py-2 text-sm font-semibold text-neutral-700 transition-all duration-200 focus-ring hover:scale-105 hover:text-vitale-primary"
             >
               Catálogo
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-vitale-primary transition-all duration-200 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-vitale-primary transition-all duration-200 group-hover:w-full"></span>
             </Link>
-            <Link 
-              href="/cart" 
-              className="relative text-sm font-semibold text-neutral-700 hover:text-vitale-primary transition-all duration-200 hover:scale-105 focus-ring rounded-md p-2 group"
+            <Link
+              href="/cart"
+              className="group relative rounded-md p-2 text-sm font-semibold text-neutral-700 transition-all duration-200 focus-ring hover:scale-105 hover:text-vitale-primary"
               aria-label="Ir para o carrinho de compras"
             >
               <ShoppingCart className="h-5 w-5" />
               <span className="sr-only">Carrinho</span>
               {/* Badge de quantidade futura */}
-              <span className="absolute -top-1 -right-1 h-4 w-4 bg-vitale-accent text-white text-xs rounded-full flex items-center justify-center font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="text-white absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-vitale-accent text-xs font-bold opacity-0 transition-opacity group-hover:opacity-100">
                 0
               </span>
             </Link>
-            <Button 
+            <Button
               asChild
-              className="bg-gradient-to-r from-vitale-primary to-vitale-secondary hover:from-vitale-secondary hover:to-vitale-primary text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 focus-ring"
+              className="text-white bg-gradient-to-r from-vitale-primary to-vitale-secondary shadow-md transition-all duration-300 focus-ring hover:scale-105 hover:from-vitale-secondary hover:to-vitale-primary hover:shadow-lg"
             >
-              <a 
+              <a
                 href="https://wa.me/5521996192890?text=Olá! Gostaria de conhecer os produtos da Vytalle Estética."
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Contatar via WhatsApp"
               >
-                <Phone className="h-4 w-4 mr-2" />
+                <Phone className="mr-2 h-4 w-4" />
                 Contato
               </a>
             </Button>
           </nav>
 
           {/* Menu mobile */}
-          <div className="lg:hidden flex items-center gap-2">
-            <Link 
-              href="/cart" 
-              className="relative p-2 text-neutral-700 hover:text-vitale-primary transition-all duration-200 hover:scale-105 focus-ring rounded-md"
+          <div className="flex items-center gap-2 lg:hidden">
+            <Link
+              href="/cart"
+              className="relative rounded-md p-2 text-neutral-700 transition-all duration-200 focus-ring hover:scale-105 hover:text-vitale-primary"
               aria-label="Ir para o carrinho"
             >
               <ShoppingCart className="h-5 w-5" />
@@ -209,15 +207,16 @@ export default function Header() {
               variant="ghost"
               size="sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 hover:bg-vitale-neutral/50 transition-all duration-200"
+              className="p-2 transition-all duration-200 hover:bg-vitale-neutral/50"
               aria-label={isMenuOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação'}
               aria-expanded={isMenuOpen}
             >
               <div className="relative">
-                {isMenuOpen ? 
-                  <X className="h-5 w-5 text-neutral-700" /> : 
+                {isMenuOpen ? (
+                  <X className="h-5 w-5 text-neutral-700" />
+                ) : (
                   <Menu className="h-5 w-5 text-neutral-700" />
-                }
+                )}
               </div>
             </Button>
           </div>
@@ -225,98 +224,106 @@ export default function Header() {
 
         {/* Menu mobile expandido */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-neutral-200/80 py-6 header-menu animate-slide-down bg-gradient-to-b from-white to-vitale-neutral/20">
+          <div className="header-menu from-white animate-slide-down border-t border-neutral-200/80 bg-gradient-to-b to-vitale-neutral/20 py-6 lg:hidden">
             {/* Busca mobile */}
-            <form onSubmit={handleSearch} className="relative mb-6 group">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 group-focus-within:text-vitale-primary transition-colors" />
+            <form onSubmit={handleSearch} className="group relative mb-6">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 transition-colors group-focus-within:text-vitale-primary" />
               <Input
                 type="text"
                 placeholder="Buscar produtos, marcas..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 h-11 bg-neutral-50 border-neutral-200 focus:border-vitale-primary focus:bg-white transition-all duration-200 rounded-lg shadow-sm focus:shadow-md text-neutral-800 placeholder:text-neutral-500"
+                onChange={e => setSearchQuery(e.target.value)}
+                className="focus:bg-white h-11 rounded-lg border-neutral-200 bg-neutral-50 pl-10 pr-4 text-neutral-800 shadow-sm transition-all duration-200 placeholder:text-neutral-500 focus:border-vitale-primary focus:shadow-md"
                 aria-label="Buscar produtos no catálogo"
               />
             </form>
 
             {/* Navegação mobile */}
-            <nav className="space-y-1 mb-6" role="navigation" aria-label="Navegação mobile">
-              <Link 
-                href="/" 
-                className="flex items-center py-3 px-4 text-sm font-semibold text-neutral-700 hover:text-vitale-primary hover:bg-vitale-neutral/30 transition-all duration-200 rounded-lg focus-ring"
+            <nav className="mb-6 space-y-1" role="navigation" aria-label="Navegação mobile">
+              <Link
+                href="/"
+                className="flex items-center rounded-lg px-4 py-3 text-sm font-semibold text-neutral-700 transition-all duration-200 focus-ring hover:bg-vitale-neutral/30 hover:text-vitale-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="w-2 h-2 bg-vitale-primary rounded-full mr-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
+                <span className="mr-3 h-2 w-2 rounded-full bg-vitale-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
                 Início
               </Link>
-              <Link 
-                href="/products" 
-                className="flex items-center py-3 px-4 text-sm font-semibold text-neutral-700 hover:text-vitale-primary hover:bg-vitale-neutral/30 transition-all duration-200 rounded-lg focus-ring group"
+              <Link
+                href="/products"
+                className="group flex items-center rounded-lg px-4 py-3 text-sm font-semibold text-neutral-700 transition-all duration-200 focus-ring hover:bg-vitale-neutral/30 hover:text-vitale-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="w-2 h-2 bg-vitale-primary rounded-full mr-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
+                <span className="mr-3 h-2 w-2 rounded-full bg-vitale-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
                 Catálogo Completo
               </Link>
-              <Link 
-                href="/cart" 
-                className="flex items-center py-3 px-4 text-sm font-semibold text-neutral-700 hover:text-vitale-primary hover:bg-vitale-neutral/30 transition-all duration-200 rounded-lg focus-ring group"
+              <Link
+                href="/cart"
+                className="group flex items-center rounded-lg px-4 py-3 text-sm font-semibold text-neutral-700 transition-all duration-200 focus-ring hover:bg-vitale-neutral/30 hover:text-vitale-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="w-2 h-2 bg-vitale-primary rounded-full mr-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
+                <span className="mr-3 h-2 w-2 rounded-full bg-vitale-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
                 Carrinho de Compras
               </Link>
             </nav>
 
             {/* Contatos mobile */}
-            <div className="pt-4 border-t border-neutral-200/60 space-y-2">
-              <h3 className="text-xs font-semibold text-neutral-600 uppercase tracking-wider mb-3">Contatos</h3>
-              <a 
-                href="https://wa.me/5521996192890" 
-                className="flex items-center gap-3 py-3 px-4 text-sm font-medium text-neutral-700 hover:text-green-600 hover:bg-green-50 transition-all duration-200 rounded-lg focus-ring group"
+            <div className="space-y-2 border-t border-neutral-200/60 pt-4">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-600">
+                Contatos
+              </h3>
+              <a
+                href="https://wa.me/5521996192890"
+                className="hover:text-green-600 hover:bg-green-50 group flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-neutral-700 transition-all duration-200 focus-ring"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Phone className="h-4 w-4 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <Phone className="h-4 w-4 flex-shrink-0 transition-transform group-hover:scale-110" />
                 <span>(21) 99619-2890</span>
               </a>
-              <a 
-                href="https://www.instagram.com/vytalle.estetica/" 
-                className="flex items-center gap-3 py-3 px-4 text-sm font-medium text-neutral-700 hover:text-pink-600 hover:bg-pink-50 transition-all duration-200 rounded-lg focus-ring group"
+              <a
+                href="https://www.instagram.com/vytalle.estetica/"
+                className="hover:text-pink-600 hover:bg-pink-50 group flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-neutral-700 transition-all duration-200 focus-ring"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Instagram className="h-4 w-4 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <Instagram className="h-4 w-4 flex-shrink-0 transition-transform group-hover:scale-110" />
                 <span>@vytalle.estetica</span>
               </a>
             </div>
 
             {/* CTA Button mobile */}
             <div className="pt-4">
-              <Button 
+              <Button
                 asChild
-                className="w-full bg-gradient-to-r from-vitale-primary to-vitale-secondary hover:from-vitale-secondary hover:to-vitale-primary text-white shadow-md hover:shadow-lg transition-all duration-300 h-12"
+                className="text-white h-12 w-full bg-gradient-to-r from-vitale-primary to-vitale-secondary shadow-md transition-all duration-300 hover:from-vitale-secondary hover:to-vitale-primary hover:shadow-lg"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <a 
+                <a
                   href="https://wa.me/5521996192890?text=Olá! Gostaria de conhecer os produtos da Vytalle Estética."
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Contatar via WhatsApp"
                 >
-                  <Phone className="h-4 w-4 mr-2" />
+                  <Phone className="mr-2 h-4 w-4" />
                   Contato Direto
                 </a>
               </Button>
             </div>
 
             {/* Badges mobile */}
-            <div className="pt-4 flex flex-wrap gap-2 justify-center">
-              <Badge variant="secondary" className="bg-success-50 text-success-700 border-success-200 text-xs shadow-sm">
+            <div className="flex flex-wrap justify-center gap-2 pt-4">
+              <Badge
+                variant="secondary"
+                className="border-success-200 bg-success-50 text-xs text-success-700 shadow-sm"
+              >
                 ✓ ANVISA Certificado
               </Badge>
-              <Badge variant="secondary" className="bg-info-50 text-info-700 border-info-200 text-xs shadow-sm">
+              <Badge
+                variant="secondary"
+                className="border-info-200 bg-info-50 text-xs text-info-700 shadow-sm"
+              >
                 ✓ Entrega 24-48h
               </Badge>
             </div>

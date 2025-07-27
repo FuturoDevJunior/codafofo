@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import StatsCard from './StatsCard';
 
@@ -15,7 +8,7 @@ describe('StatsCard', () => {
   const defaultProps = {
     iconName: 'Users' as keyof typeof import('lucide-react'),
     value: '1,234',
-    label: 'Usuários Ativos'
+    label: 'Usuários Ativos',
   };
 
   it('deve renderizar com props básicas', () => {
@@ -88,7 +81,11 @@ describe('StatsCard', () => {
   it('deve renderizar container do ícone com gradiente', () => {
     render(<StatsCard {...defaultProps} />);
     const iconContainer = screen.getByText('1,234').previousElementSibling;
-    expect(iconContainer).toHaveClass('bg-gradient-to-br', 'from-vitale-primary/10', 'to-vitale-secondary/10');
+    expect(iconContainer).toHaveClass(
+      'bg-gradient-to-br',
+      'from-vitale-primary/10',
+      'to-vitale-secondary/10'
+    );
   });
 
   it('deve lidar com ícone inválido graciosamente', () => {
@@ -125,4 +122,4 @@ describe('StatsCard', () => {
     expect(screen.getByText('1,234,567')).toBeInTheDocument();
     expect(screen.getByText('Usuários Muito Ativos')).toBeInTheDocument();
   });
-}); 
+});

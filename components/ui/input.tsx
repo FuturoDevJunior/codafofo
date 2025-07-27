@@ -38,7 +38,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         'border-2 border-transparent bg-neutral-50 focus:border-vitale-primary focus:ring-2 focus:ring-vitale-primary/20 focus:bg-white hover:bg-neutral-100',
     };
 
-    const errorClasses = error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50' : '';
+    const errorClasses = error
+      ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50'
+      : '';
 
     const baseClasses = cn(
       'flex w-full items-center rounded-lg transition-all duration-200 font-medium',

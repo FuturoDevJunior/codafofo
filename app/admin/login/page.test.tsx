@@ -1,14 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import AdminLogin from './page';
 
@@ -83,32 +75,32 @@ vi.mock('react', async () => {
 describe('AdminLogin Page', () => {
   it('deve renderizar página de login admin', () => {
     render(<AdminLogin />);
-    
+
     expect(screen.getByText('Painel Admin')).toBeInTheDocument();
   });
 
   it('deve renderizar formulário de login', () => {
     render(<AdminLogin />);
-    
+
     expect(screen.getByText('Email Administrativo')).toBeInTheDocument();
     expect(screen.getByText('Senha')).toBeInTheDocument();
   });
 
   it('deve ter botão de login', () => {
     render(<AdminLogin />);
-    
+
     expect(screen.getByRole('button', { name: /entrar com supabase/i })).toBeInTheDocument();
   });
 
   it('deve ter estrutura de layout correta', () => {
     render(<AdminLogin />);
-    
+
     expect(screen.getByText('Painel Admin')).toBeInTheDocument();
   });
 
   it('deve mostrar mensagem de segurança', () => {
     render(<AdminLogin />);
-    
+
     expect(screen.getByText(/autenticação 100% segura via supabase/i)).toBeInTheDocument();
   });
-}); 
+});

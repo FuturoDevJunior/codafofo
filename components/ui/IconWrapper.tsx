@@ -13,4 +13,4 @@ export function IconWrapper({ name, size = 24, className }: IconWrapperProps) {
   const Icon = LucideIcons[name] as LucideIcon;
   if (!Icon) return null;
   return <Icon size={size} className={className} />;
-} 
+}

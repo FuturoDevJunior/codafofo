@@ -1,14 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Button } from './button';
@@ -64,9 +56,9 @@ describe('Button', () => {
   it('deve chamar onClick quando clicado', async () => {
     const handleClick = vi.fn();
     const user = userEvent.setup();
-    
+
     render(<Button onClick={handleClick}>Clickable Button</Button>);
-    
+
     await user.click(screen.getByRole('button'));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -89,7 +81,7 @@ describe('Button', () => {
         <a href="/test">Link Button</a>
       </Button>
     );
-    
+
     const link = screen.getByRole('link');
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/test');
@@ -99,4 +91,4 @@ describe('Button', () => {
     render(<Button data-testid="test-button">Test Button</Button>);
     expect(screen.getByTestId('test-button')).toBeInTheDocument();
   });
-}); 
+});

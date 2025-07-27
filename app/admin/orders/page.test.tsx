@@ -1,15 +1,6 @@
-import {
-  beforeAll,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import OrdersPage from './page';
 
@@ -22,53 +13,57 @@ vi.mock('next/navigation', () => ({
 vi.mock('@/lib/supabaseServer', () => ({
   createServerSupabaseClient: vi.fn(() => ({
     auth: {
-      getSession: vi.fn(() => Promise.resolve({
-        data: {
-          session: {
-            user: { id: '1', email: 'admin@test.com' }
-          }
-        }
-      }))
+      getSession: vi.fn(() =>
+        Promise.resolve({
+          data: {
+            session: {
+              user: { id: '1', email: 'admin@test.com' },
+            },
+          },
+        })
+      ),
     },
     from: vi.fn(() => ({
       select: vi.fn(() => ({
         order: vi.fn(() => ({
-          limit: vi.fn(() => Promise.resolve({
-            data: [
-              {
-                id: '1',
-                customer_name: 'Dr. João Silva',
-                total: 1500,
-                status: 'pending',
-                payment_status: 'paid',
-                created_at: '2025-01-25'
-              }
-            ]
-          }))
-        }))
-      }))
-    }))
-  }))
+          limit: vi.fn(() =>
+            Promise.resolve({
+              data: [
+                {
+                  id: '1',
+                  customer_name: 'Dr. João Silva',
+                  total: 1500,
+                  status: 'pending',
+                  payment_status: 'paid',
+                  created_at: '2025-01-25',
+                },
+              ],
+            })
+          ),
+        })),
+      })),
+    })),
+  })),
 }));
 
 // Mock dos componentes UI
 vi.mock('@/components/ui/button', () => ({
-  Button: ({ children, ...props }: any) => <button {...props}>{children}</button>
+  Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
 }));
 
 vi.mock('@/components/ui/card', () => ({
   Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   CardHeader: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  CardTitle: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>
+  CardTitle: ({ children, ...props }: any) => <h3 {...props}>{children}</h3>,
 }));
 
 vi.mock('@/components/ui/input', () => ({
-  Input: (props: any) => <input {...props} />
+  Input: (props: any) => <input {...props} />,
 }));
 
 vi.mock('@/components/ui/label', () => ({
-  Label: ({ children, ...props }: any) => <label {...props}>{children}</label>
+  Label: ({ children, ...props }: any) => <label {...props}>{children}</label>,
 }));
 
 vi.mock('@/components/ui/select', () => ({
@@ -76,7 +71,7 @@ vi.mock('@/components/ui/select', () => ({
   SelectContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   SelectItem: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   SelectTrigger: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  SelectValue: ({ children, ...props }: any) => <div {...props}>{children}</div>
+  SelectValue: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 vi.mock('@/components/ui/table', () => ({
@@ -89,14 +84,14 @@ vi.mock('@/components/ui/table', () => ({
   TableCell: ({ children, ...props }: any) => <td {...props}>{children}</td>,
   TableHead: ({ children, ...props }: any) => <th {...props}>{children}</th>,
   TableHeader: ({ children, ...props }: any) => <thead {...props}>{children}</thead>,
-  TableRow: ({ children, ...props }: any) => <tr {...props}>{children}</tr>
+  TableRow: ({ children, ...props }: any) => <tr {...props}>{children}</tr>,
 }));
 
 vi.mock('@/components/ui/tabs', () => ({
   Tabs: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   TabsContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   TabsList: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  TabsTrigger: ({ children, ...props }: any) => <div {...props}>{children}</div>
+  TabsTrigger: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 // Mock dos ícones Lucide
@@ -110,7 +105,7 @@ vi.mock('lucide-react', () => ({
   Package: () => <span data-testid="package-icon">Package</span>,
   Phone: () => <span data-testid="phone-icon">Phone</span>,
   Truck: () => <span data-testid="truck-icon">Truck</span>,
-  User: () => <span data-testid="user-icon">User</span>
+  User: () => <span data-testid="user-icon">User</span>,
 }));
 
 describe('OrdersPage', () => {
@@ -121,14 +116,14 @@ describe('OrdersPage', () => {
   it('deve renderizar página de pedidos', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     expect(screen.getByText('Gestão de Pedidos')).toBeInTheDocument();
   });
 
   it('deve ter estrutura de layout correta', async () => {
     const page = await OrdersPage();
     const { container } = render(page);
-    
+
     const mainDiv = container.querySelector('.min-h-screen');
     expect(mainDiv).toHaveClass('min-h-screen', 'bg-gradient-to-br');
   });
@@ -136,7 +131,7 @@ describe('OrdersPage', () => {
   it('deve ter gradiente de fundo', async () => {
     const page = await OrdersPage();
     const { container } = render(page);
-    
+
     const mainDiv = container.querySelector('.min-h-screen');
     expect(mainDiv).toHaveClass('from-vitale-neutral', 'to-vitale-light');
   });
@@ -144,21 +139,21 @@ describe('OrdersPage', () => {
   it('deve ter título da página', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     expect(screen.getByText('Gestão de Pedidos')).toBeInTheDocument();
   });
 
   it('deve ter descrição da página', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     expect(screen.getByText(/gerencie todos os pedidos do sistema/i)).toBeInTheDocument();
   });
 
   it('deve ter ícones de funcionalidade', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     expect(screen.getByTestId('badge-icon')).toBeInTheDocument();
     expect(screen.getByTestId('dollar-sign-icon')).toBeInTheDocument();
     expect(screen.getByTestId('download-icon')).toBeInTheDocument();
@@ -169,7 +164,7 @@ describe('OrdersPage', () => {
   it('deve ter estrutura de tabs', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     // Verificar se os tabs estão presentes
     expect(screen.getByText('Gestão de Pedidos')).toBeInTheDocument();
   });
@@ -177,7 +172,7 @@ describe('OrdersPage', () => {
   it('deve ter cards de estatísticas', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     // Verificar se os cards estão presentes
     expect(screen.getByText('Gestão de Pedidos')).toBeInTheDocument();
   });
@@ -185,7 +180,7 @@ describe('OrdersPage', () => {
   it('deve ter tabela de pedidos', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     // Verificar se a tabela está presente
     expect(screen.getByText('Gestão de Pedidos')).toBeInTheDocument();
   });
@@ -193,7 +188,7 @@ describe('OrdersPage', () => {
   it('deve ter filtros de busca', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     // Verificar se os filtros estão presentes
     expect(screen.getByText('Gestão de Pedidos')).toBeInTheDocument();
   });
@@ -201,7 +196,7 @@ describe('OrdersPage', () => {
   it('deve ter botões de ação', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     // Verificar se os botões estão presentes
     expect(screen.getByText('Gestão de Pedidos')).toBeInTheDocument();
   });
@@ -209,8 +204,8 @@ describe('OrdersPage', () => {
   it('deve ter badges de status', async () => {
     const page = await OrdersPage();
     render(page);
-    
+
     // Verificar se os badges estão presentes
     expect(screen.getByText('Gestão de Pedidos')).toBeInTheDocument();
   });
-}); 
+});

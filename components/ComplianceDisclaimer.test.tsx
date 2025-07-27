@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import ComplianceDisclaimer from './ComplianceDisclaimer';
 
@@ -28,7 +21,9 @@ describe('ComplianceDisclaimer', () => {
   it('deve renderizar variante card', () => {
     render(<ComplianceDisclaimer variant="card" />);
     expect(screen.getByText('Venda restrita a profissionais licenciados')).toBeInTheDocument();
-    expect(screen.getByText('Produtos certificados ANVISA. Documentação obrigatória.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Produtos certificados ANVISA. Documentação obrigatória.')
+    ).toBeInTheDocument();
   });
 
   it('deve renderizar variante inline', () => {
@@ -44,7 +39,8 @@ describe('ComplianceDisclaimer', () => {
 
   it('deve aplicar className customizada na variante card', () => {
     render(<ComplianceDisclaimer variant="card" className="custom-card" />);
-    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')?.parentElement?.parentElement;
+    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')
+      ?.parentElement?.parentElement;
     expect(container).toHaveClass('custom-card');
   });
 
@@ -56,13 +52,19 @@ describe('ComplianceDisclaimer', () => {
 
   it('deve renderizar ícones corretamente na variante banner', () => {
     render(<ComplianceDisclaimer variant="banner" />);
-    const icons = screen.getByText('Venda Restrita').closest('div')?.parentElement?.querySelectorAll('svg');
+    const icons = screen
+      .getByText('Venda Restrita')
+      .closest('div')
+      ?.parentElement?.querySelectorAll('svg');
     expect(icons?.length).toBeGreaterThan(0);
   });
 
   it('deve renderizar ícones corretamente na variante card', () => {
     render(<ComplianceDisclaimer variant="card" />);
-    const icons = screen.getByText('Venda restrita a profissionais licenciados').closest('div')?.parentElement?.querySelectorAll('svg');
+    const icons = screen
+      .getByText('Venda restrita a profissionais licenciados')
+      .closest('div')
+      ?.parentElement?.querySelectorAll('svg');
     expect(icons?.length).toBeGreaterThan(0);
   });
 
@@ -81,7 +83,8 @@ describe('ComplianceDisclaimer', () => {
 
   it('deve aplicar classes de cor corretas na variante card', () => {
     render(<ComplianceDisclaimer variant="card" />);
-    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')?.parentElement?.parentElement;
+    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')
+      ?.parentElement?.parentElement;
     expect(container).toHaveClass('border-amber-200');
   });
 
@@ -100,7 +103,9 @@ describe('ComplianceDisclaimer', () => {
   it('deve renderizar texto de descrição na variante banner', () => {
     render(<ComplianceDisclaimer variant="banner" />);
     expect(screen.getByText(/Produtos de uso restrito/)).toBeInTheDocument();
-    expect(screen.getByText(/Venda exclusiva para profissionais de saúde licenciados/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Venda exclusiva para profissionais de saúde licenciados/)
+    ).toBeInTheDocument();
   });
 
   it('deve renderizar informações adicionais na variante banner', () => {
@@ -117,7 +122,8 @@ describe('ComplianceDisclaimer', () => {
 
   it('deve aplicar classes de borda na variante card', () => {
     render(<ComplianceDisclaimer variant="card" />);
-    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')?.parentElement?.parentElement;
+    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')
+      ?.parentElement?.parentElement;
     expect(container).toHaveClass('border-2', 'border-amber-200');
   });
 
@@ -130,7 +136,8 @@ describe('ComplianceDisclaimer', () => {
 
   it('deve aplicar classes de fundo na variante card', () => {
     render(<ComplianceDisclaimer variant="card" />);
-    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')?.parentElement?.parentElement;
+    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')
+      ?.parentElement?.parentElement;
     expect(container).toHaveClass('bg-white');
   });
 
@@ -143,7 +150,8 @@ describe('ComplianceDisclaimer', () => {
 
   it('deve aplicar classes de arredondamento na variante card', () => {
     render(<ComplianceDisclaimer variant="card" />);
-    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')?.parentElement?.parentElement;
+    const container = screen.getByText('Venda restrita a profissionais licenciados').closest('div')
+      ?.parentElement?.parentElement;
     expect(container).toHaveClass('rounded-lg');
   });
-}); 
+});

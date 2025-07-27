@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import StarRating from './StarRating';
 
@@ -26,12 +19,12 @@ describe('StarRating', () => {
   it('deve renderizar estrelas preenchidas baseado no rating', () => {
     render(<StarRating rating={3} />);
     const stars = screen.getAllByLabelText(/Estrela \d+ de 5/);
-    
+
     // Primeiras 3 estrelas devem estar preenchidas
     expect(stars[0]).toHaveClass('text-yellow-500', 'fill-yellow-500');
     expect(stars[1]).toHaveClass('text-yellow-500', 'fill-yellow-500');
     expect(stars[2]).toHaveClass('text-yellow-500', 'fill-yellow-500');
-    
+
     // Últimas 2 estrelas devem estar vazias
     expect(stars[3]).toHaveClass('text-gray-300', 'fill-gray-300');
     expect(stars[4]).toHaveClass('text-gray-300', 'fill-gray-300');
@@ -120,4 +113,4 @@ describe('StarRating', () => {
     render(<StarRating rating={3.7} />);
     expect(screen.getByText('3.7 | +500 Avaliações')).toBeInTheDocument();
   });
-}); 
+});

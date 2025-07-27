@@ -1,13 +1,6 @@
-import {
-  describe,
-  expect,
-  it,
-} from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import {
-  render,
-  screen,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import { Label } from './label';
 
@@ -183,4 +176,4 @@ describe('Label', () => {
     const label = screen.getByText('Label Element');
     expect(label.tagName).toBe('LABEL');
   });
-}); 
+});

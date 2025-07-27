@@ -18,26 +18,26 @@ interface IconProps {
 
 /**
  * Componente Icon dinâmico para resolver problema Server/Client Components
- * 
+ *
  * Este componente permite usar ícones do Lucide React de forma segura
  * entre Server e Client Components, passando apenas o nome do ícone
  * como string em vez da função/componente do ícone.
- * 
+ *
  * @example
  * // Em Server Component: passe name="User"
  * <Icon name="User" size={24} className="text-blue-500" />
- * 
+ *
  * // Em Client Component: funciona normalmente
  * <Icon name="ShoppingCart" size={20} color="red" />
  */
-export const Icon: React.FC<IconProps> = ({ 
-  name, 
-  size = 24, 
-  color = 'currentColor', 
+export const Icon: React.FC<IconProps> = ({
+  name,
+  size = 24,
+  color = 'currentColor',
   className = '',
   strokeWidth = 2,
   'data-testid': testId,
-  onClick
+  onClick,
 }) => {
   // Resolve o componente do ícone pelo nome
   const IconComponent = Lucide[name] as React.ComponentType<{
@@ -53,7 +53,7 @@ export const Icon: React.FC<IconProps> = ({
   if (!IconComponent) {
     console.warn(`Ícone "${name}" não encontrado no Lucide React`);
     return (
-      <div 
+      <div
         className={`inline-block ${className}`}
         style={{ width: size, height: size }}
         data-testid={testId}
@@ -64,7 +64,7 @@ export const Icon: React.FC<IconProps> = ({
   }
 
   return (
-    <IconComponent 
+    <IconComponent
       size={size}
       color={color}
       className={className}
@@ -90,7 +90,7 @@ export const useIconExists = (name: string): boolean => {
  */
 export const commonIcons = [
   'User',
-  'ShoppingCart', 
+  'ShoppingCart',
   'Search',
   'Menu',
   'X',
@@ -130,4 +130,4 @@ export const commonIcons = [
   'Info',
 ] as const;
 
-export type CommonIconName = typeof commonIcons[number];
+export type CommonIconName = (typeof commonIcons)[number];
