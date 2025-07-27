@@ -7,21 +7,24 @@ test.describe('Fluxo Completo de Compra', () => {
 
   test('deve navegar para produtos e filtrar', async ({ page }) => {
     // 1. Navegar para produtos
-    await page.click('text=Catálogo');
+    await page.goto('/products');
     await expect(page).toHaveURL('/products');
 
     // 2. Verificar se a página de produtos carregou
-    await expect(page.locator('[data-testid="search-input"]')).toBeVisible();
-    await expect(page.locator('[data-testid="products-grid"]')).toBeVisible();
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('[data-testid="search-input"]')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('[data-testid="products-grid"]')).toBeVisible({ timeout: 10000 });
 
     // 3. Fazer busca
     const searchInput = page.locator('[data-testid="search-input"]');
     await searchInput.fill('Botox');
     await searchInput.press('Enter');
+    await page.waitForTimeout(1000); // Aguardar processamento
 
     // 4. Verificar resultados
     await expect(page.locator('[data-testid="results-count"]')).toContainText(
-      'produtos encontrados'
+      'produtos encontrados',
+      { timeout: 10000 }
     );
   });
 

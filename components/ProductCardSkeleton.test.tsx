@@ -9,14 +9,14 @@ describe('ProductCardSkeleton', () => {
     render(<ProductCardSkeleton />);
 
     // Verificar se o card principal está presente
-    const card = screen.getByTestId('card');
+    const card = screen.getByTestId('loading-skeleton');
     expect(card).toBeInTheDocument();
   });
 
   it('deve ter estrutura de card skeleton', () => {
     render(<ProductCardSkeleton />);
 
-    const card = screen.getByTestId('card');
+    const card = screen.getByTestId('loading-skeleton');
     expect(card).toHaveClass('bg-white', 'rounded-2xl', 'border', 'border-neutral-200');
   });
 
@@ -66,14 +66,14 @@ describe('ProductCardSkeleton', () => {
   it('deve ter altura consistente', () => {
     render(<ProductCardSkeleton />);
 
-    const card = screen.getByTestId('card');
+    const card = screen.getByTestId('loading-skeleton');
     expect(card).toHaveClass('flex', 'flex-col', 'h-full');
   });
 
   it('deve ter espaçamento adequado', () => {
     render(<ProductCardSkeleton />);
 
-    const card = screen.getByTestId('card');
+    const card = screen.getByTestId('loading-skeleton');
     expect(card).toBeInTheDocument();
   });
 });
@@ -82,14 +82,14 @@ describe('ProductGridSkeleton', () => {
   it('deve renderizar grid com número padrão de skeletons', () => {
     render(<ProductGridSkeleton />);
 
-    const cards = screen.getAllByTestId('card');
+    const cards = screen.getAllByTestId('loading-skeleton');
     expect(cards.length).toBeGreaterThan(0);
   });
 
   it('deve renderizar grid com número personalizado de skeletons', () => {
     render(<ProductGridSkeleton count={3} />);
 
-    const cards = screen.getAllByTestId('card');
+    const cards = screen.getAllByTestId('loading-skeleton');
     expect(cards.length).toBeGreaterThan(0);
   });
 

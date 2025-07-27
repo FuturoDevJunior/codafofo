@@ -278,6 +278,9 @@ export default function Checkout() {
                 placeholder='Dr(a). João Silva'
                 inputSize='md'
                 autoComplete='name'
+                aria-label='Nome completo'
+                aria-required='true'
+                required
               />
             </div>
 
@@ -293,6 +296,9 @@ export default function Checkout() {
                 placeholder='(11) 99999-9999'
                 inputSize='md'
                 autoComplete='tel'
+                aria-label='Telefone'
+                aria-required='true'
+                required
               />
             </div>
 
@@ -309,6 +315,9 @@ export default function Checkout() {
                 placeholder='dr.joao@clinica.com.br'
                 inputSize='md'
                 autoComplete='email'
+                aria-label='Email'
+                aria-required='true'
+                required
               />
             </div>
           </div>

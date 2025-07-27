@@ -157,7 +157,11 @@ export default function ImageUploader({
 
       {/* Mensagens de feedback */}
       {error && (
-        <div className='bg-red-50 border-red-200 flex items-start gap-3 rounded-xl border-2 p-4'>
+        <div
+          className='bg-red-50 border-red-200 flex items-start gap-3 rounded-xl border-2 p-4'
+          role='alert'
+          aria-live='assertive'
+        >
           <AlertCircle className='text-red-600 mt-0.5 h-5 w-5 flex-shrink-0' />
           <div>
             <p className='text-red-800 font-medium'>Erro</p>
@@ -174,7 +178,11 @@ export default function ImageUploader({
       )}
 
       {success && (
-        <div className='bg-green-50 border-green-200 flex items-start gap-3 rounded-xl border-2 p-4'>
+        <div
+          className='bg-green-50 border-green-200 flex items-start gap-3 rounded-xl border-2 p-4'
+          role='status'
+          aria-live='polite'
+        >
           <Check className='text-green-600 mt-0.5 h-5 w-5 flex-shrink-0' />
           <div>
             <p className='text-green-800 font-medium'>Sucesso</p>
@@ -210,6 +218,8 @@ export default function ImageUploader({
             id='image-upload'
             data-testid='mock-upload-input'
             title='Upload de imagem'
+            aria-label='Selecionar imagens para upload'
+            aria-describedby='upload-help'
           />
 
           <div className='space-y-4'>
@@ -226,7 +236,7 @@ export default function ImageUploader({
                 {isUploading ? 'Enviando imagens...' : 'Adicionar Novas Imagens'}
               </h4>
               <p className='text-neutral-600'>Clique para selecionar ou arraste as imagens aqui</p>
-              <p className='text-sm text-neutral-500'>
+              <p className='text-sm text-neutral-500' id='upload-help'>
                 JPG, PNG, WEBP até 5MB cada • Máximo {maxImages} imagens
               </p>
             </div>
@@ -234,8 +244,10 @@ export default function ImageUploader({
             <Button
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading || (currentImages || []).length >= maxImages}
-              className='text-white rounded-xl bg-vitale-primary px-6 py-3 hover:bg-vitale-secondary'
+              className='text-white rounded-xl bg-vitale-primary px-6 py-3 hover:bg-vitale-secondary focus-ring'
               data-testid='mock-upload-button'
+              aria-label='Selecionar imagens para upload'
+              type='button'
             >
               {isUploading ? 'Enviando...' : 'Selecionar Imagens'}
             </Button>
@@ -244,7 +256,12 @@ export default function ImageUploader({
 
         {/* Progress bars */}
         {Object.keys(uploadProgress).length > 0 && (
-          <div className='space-y-2'>
+          <div
+            className='space-y-2'
+            role='status'
+            aria-live='polite'
+            aria-label='Progresso do upload'
+          >
             {Object.entries(uploadProgress).map(([fileName, progress]) => (
               <div key={fileName} className='space-y-1'>
                 <div className='flex justify-between text-sm'>
@@ -283,6 +300,7 @@ export default function ImageUploader({
                     fill
                     className='object-cover'
                     sizes='(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw'
+                    data-testid='image-preview'
                   />
 
                   {/* Overlay com botão remover */}

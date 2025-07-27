@@ -148,6 +148,91 @@
     color: var(--text-medium-contrast) !important;
   }
   
+  /* Skip Link para acessibilidade */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    z-index: 9999;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: top 0.3s;
+  }
+  
+  .skip-link:focus {
+    top: 6px;
+  }
+  
+  /* Focus Ring para acessibilidade */
+  .focus-ring:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  
+  /* Focus visível para todos os elementos interativos */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  
+  /* Estilo para elementos com redução de movimento */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* Garantir tamanho mínimo de fonte */
+  body {
+    font-size: max(16px, 1rem);
+    line-height: 1.5;
+  }
+  
+  /* Melhor contraste para textos */
+  .text-emphasis {
+    color: #b8860b;
+    font-weight: 700;
+  }
+  
+  /* Estados de loading acessíveis */
+  [aria-busy="true"] {
+    cursor: progress;
+  }
+  
+  /* Estados de erro */
+  [role="alert"] {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 8px 0;
+  }
+  
+  /* Estados de sucesso */
+  [role="status"] {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 8px 0;
+  }
+  
   .text-low-contrast {
     color: var(--text-low-contrast) !important;
   }

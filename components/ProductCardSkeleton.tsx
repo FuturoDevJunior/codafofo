@@ -7,7 +7,9 @@ export default function ProductCardSkeleton() {
   return (
     <Card
       className='bg-white flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200'
-      data-testid='card'
+      data-testid='loading-skeleton'
+      aria-live='polite'
+      aria-label='Carregando produtos'
     >
       <div data-testid='skeleton'>
         {/* Image Skeleton */}

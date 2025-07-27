@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import Breadcrumbs from '@/components/Breadcrumbs';
 import ProductCarousel from '@/components/Carousel';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +32,13 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
   return (
     <div>
+      <Breadcrumbs
+        items={[
+          { href: '/products', label: 'Produtos' },
+          { label: product.name, current: true },
+        ]}
+        className='mb-6'
+      />
       <ProductCarousel images={product.images} />
       <h1 className='mb-2 text-2xl font-bold'>{product.name}</h1>
       <p className='mb-2'>Categoria: {product.category}</p>

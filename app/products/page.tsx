@@ -47,7 +47,9 @@ export default function ProductsPage() {
               <h1 className='text-3xl font-bold text-vitale-primary md:text-4xl'>
                 Catálogo Completo
               </h1>
-              <p className='text-gray-600 mt-2'>{searchResults.length} produtos encontrados</p>
+              <p className='text-gray-600 mt-2' data-testid='results-count'>
+                {searchResults.length} produtos encontrados
+              </p>
             </div>
 
             {/* Controles de visualização */}
@@ -93,8 +95,10 @@ export default function ProductsPage() {
       <section className='py-8'>
         <div className='container mx-auto px-4'>
           {currentProducts.length === 0 ? (
-            <div className='py-12 text-center'>
-              <div className='mb-4 text-6xl'>🔍</div>
+            <div className='py-12 text-center' role='status' aria-live='polite'>
+              <div className='mb-4 text-6xl' aria-hidden='true'>
+                🔍
+              </div>
               <h3 className='text-gray-700 mb-2 text-xl font-semibold'>
                 Nenhum produto encontrado
               </h3>
@@ -112,6 +116,9 @@ export default function ProductsPage() {
                     ? 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                     : 'space-y-4'
                 }
+                role='list'
+                data-testid='products-grid'
+                aria-label={`Lista de produtos em modo ${viewMode === 'grid' ? 'grade' : 'lista'}`}
               >
                 {currentProducts.map((product, index) => (
                   <Card
@@ -119,6 +126,16 @@ export default function ProductsPage() {
                     className={`hover:shadow-2xl bg-white/95 group transform border-2 border-vitale-primary/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-vitale-primary/50 ${
                       viewMode === 'list' ? 'flex flex-row' : ''
                     }`}
+                    role='listitem'
+                    data-testid='product-card'
+                    tabIndex={0}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        window.location.href = `/products/${product.slug}`;
+                      }
+                    }}
+                    aria-label={`Produto: ${product.name} - R$ ${product.price_pix?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
                   >
                     <CardHeader
                       className={`relative overflow-hidden rounded-t-lg ${viewMode === 'list' ? 'w-1/3' : ''}`}
@@ -183,8 +200,11 @@ export default function ProductsPage() {
                           </div>
                           <div className='text-sm text-neutral-500'>À vista no PIX</div>
                         </div>
-                        <Link href={`/products/${product.slug}`}>
-                          <Button className='text-white transform rounded-xl bg-vitale-primary px-6 py-3 transition-all duration-300 hover:scale-105 hover:bg-vitale-secondary'>
+                        <Link
+                          href={`/products/${product.slug}`}
+                          aria-label={`Ver detalhes do produto ${product.name}`}
+                        >
+                          <Button className='text-white transform rounded-xl bg-vitale-primary px-6 py-3 transition-all duration-300 hover:scale-105 hover:bg-vitale-secondary focus-ring'>
                             Ver Detalhes
                           </Button>
                         </Link>
@@ -196,12 +216,19 @@ export default function ProductsPage() {
 
               {/* Paginação */}
               {totalPages > 1 && (
-                <div className='mt-12 flex items-center justify-center gap-2'>
+                <nav
+                  className='mt-12 flex items-center justify-center gap-2'
+                  role='navigation'
+                  aria-label='Navegação de páginas'
+                  data-testid='pagination'
+                >
                   <Button
                     variant='outline'
                     onClick={() => goToPage(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className='flex items-center gap-2'
+                    className='flex items-center gap-2 focus-ring'
+                    data-testid='prev-page'
+                    aria-label='Página anterior'
                   >
                     <ArrowLeft className='h-4 w-4' />
                     Anterior
@@ -220,7 +247,11 @@ export default function ProductsPage() {
                             variant={isCurrentPage ? 'default' : 'outline'}
                             size='sm'
                             onClick={() => goToPage(page)}
-                            className='min-w-[40px]'
+                            className='min-w-[40px] focus-ring'
+                            aria-label={
+                              isCurrentPage ? `Página atual: ${page}` : `Ir para página ${page}`
+                            }
+                            aria-current={isCurrentPage ? 'page' : undefined}
                           >
                             {page}
                           </Button>
@@ -246,12 +277,14 @@ export default function ProductsPage() {
                     variant='outline'
                     onClick={() => goToPage(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className='flex items-center gap-2'
+                    className='flex items-center gap-2 focus-ring'
+                    data-testid='next-page'
+                    aria-label='Próxima página'
                   >
                     Próxima
                     <ArrowLeft className='h-4 w-4 rotate-180' />
                   </Button>
-                </div>
+                </nav>
               )}
             </>
           )}

@@ -141,16 +141,18 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
   };
 
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={`space-y-4 ${className}`} role='search' aria-label='Busca avançada de produtos'>
       {/* Barra de busca principal */}
       <div className='relative'>
         <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400' />
         <Input
-          type='text'
+          type='search'
           placeholder='Buscar produtos por nome, categoria ou marca...'
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
           className='h-12 pl-10 pr-4 text-base'
+          aria-label='Buscar produtos'
+          data-testid='search-input'
         />
       </div>
 
@@ -160,6 +162,10 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
           variant='outline'
           onClick={() => setShowFilters(!showFilters)}
           className='flex items-center gap-2'
+          data-testid='filter-toggle'
+          aria-expanded={showFilters}
+          aria-controls='filters-panel'
+          aria-label={showFilters ? 'Ocultar filtros' : 'Mostrar filtros'}
         >
           <Filter className='h-4 w-4' />
           Filtros
@@ -167,7 +173,13 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
         </Button>
 
         {activeFilters.length > 0 && (
-          <Button variant='ghost' onClick={clearFilters} className='text-sm'>
+          <Button
+            variant='ghost'
+            onClick={clearFilters}
+            className='text-sm'
+            data-testid='clear-filters'
+            aria-label='Limpar todos os filtros'
+          >
             Limpar
           </Button>
         )}
@@ -193,7 +205,13 @@ export default function AdvancedSearch({ onSearchResults, className = '' }: Adva
       )}
 
       {/* Painel de filtros */}
-      <div className={`space-y-4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+      <div
+        className={`space-y-4 ${showFilters ? 'block' : 'hidden lg:block'}`}
+        id='filters-panel'
+        data-testid='filters'
+        role='group'
+        aria-label='Filtros de produtos'
+      >
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
           {/* Filtro por categoria */}
           <div className='space-y-2'>
