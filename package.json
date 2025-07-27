@@ -85,7 +85,16 @@
     "admin:test:simple": "npx tsx scripts/test-admin-login.ts",
     "admin:auto": "npx tsx scripts/admin-complete-automation.ts",
     "admin:create": "npm run admin:setup",
-    "install:deps": "bash scripts/install-deps.sh"
+    "install:deps": "bash scripts/install-deps.sh",
+    "test:ultra": "bash scripts/test-ultra.sh",
+    "deploy:ultra": "bash scripts/deploy-ultra.sh",
+    "monitor:ultra": "bash scripts/monitor-ultra.sh",
+    "health:check": "curl -f https://vytalle-estetica.vercel.app/api/health || echo 'Health check failed'",
+    "coverage:report": "npm run test:ci -- --coverage --coverageReporters=text --coverageReporters=lcov",
+    "performance:full": "npm run performance:lighthouse && npm run performance:lighthouse -- --output=html --output-path=lighthouse-report.html",
+    "ci:ultra": "npm run lint && npm run type-check && npm run test:ci && npm run test:e2e && npm run performance:lighthouse",
+    "pre-deploy": "npm run ci:ultra && npm run security:audit",
+    "post-deploy": "npm run health:check && npm run monitor:ultra"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
