@@ -32,38 +32,38 @@ export default function ProductDetailClient({ product }: { product: Product }) {
   return (
     <div>
       <ProductCarousel images={product.images} />
-      <h1 className="mb-2 text-2xl font-bold">{product.name}</h1>
-      <p className="mb-2">Categoria: {product.category}</p>
-      <p className="mb-2">{product.description}</p>
-      <div className="mb-4">
+      <h1 className='mb-2 text-2xl font-bold'>{product.name}</h1>
+      <p className='mb-2'>Categoria: {product.category}</p>
+      <p className='mb-2'>{product.description}</p>
+      <div className='mb-4'>
         <label>
           <input
-            type="radio"
-            name="payment"
-            value="pix"
+            type='radio'
+            name='payment'
+            value='pix'
             checked={payment === 'pix'}
             onChange={() => setPayment('pix')}
           />{' '}
           PIX ({formatCurrency(product.price_pix)})
         </label>
-        <label className="ml-4">
+        <label className='ml-4'>
           <input
-            type="radio"
-            name="payment"
-            value="prazo"
+            type='radio'
+            name='payment'
+            value='prazo'
             checked={payment === 'prazo'}
             onChange={() => setPayment('prazo')}
           />{' '}
           Cartão ({formatCurrency(product.price_prazo)})
         </label>
       </div>
-      <div className="mb-4 flex items-center gap-2">
+      <div className='mb-4 flex items-center gap-2'>
         <Input
-          type="number"
+          type='number'
           min={1}
           value={quantity}
           onChange={e => setQuantity(Number(e.target.value))}
-          className="w-20"
+          className='w-20'
         />
         <Button onClick={handleAdd}>Adicionar ao Carrinho</Button>
       </div>

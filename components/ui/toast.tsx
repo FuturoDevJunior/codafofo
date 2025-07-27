@@ -79,10 +79,10 @@ const ToastClose = React.forwardRef<
       'group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600 absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100',
       className
     )}
-    toast-close=""
+    toast-close=''
     {...props}
   >
-    <X className="h-4 w-4" />
+    <X className='h-4 w-4' />
   </ToastPrimitives.Close>
 ));
 ToastClose.displayName = ToastPrimitives.Close.displayName;
@@ -97,16 +97,16 @@ const ToastTitle = React.forwardRef<
     {...props}
   >
     {variant === 'destructive' ? (
-      <X className="text-white h-5 w-5" />
+      <X className='text-white h-5 w-5' />
     ) : (
       <svg
-        className="text-white h-5 w-5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        viewBox="0 0 24 24"
+        className='text-white h-5 w-5'
+        fill='none'
+        stroke='currentColor'
+        strokeWidth='2'
+        viewBox='0 0 24 24'
       >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
       </svg>
     )}
     {children}

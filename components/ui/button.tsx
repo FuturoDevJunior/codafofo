@@ -48,7 +48,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {props.children}
         {/* Shimmer effect para feedback visual */}
-        <div className="from-transparent via-white/20 to-transparent absolute inset-0 -left-4 w-6 skew-x-12 bg-gradient-to-r opacity-0 group-hover:animate-[shimmer_0.8s_ease-in-out] group-hover:opacity-100" />
+        <div className='from-transparent via-white/20 to-transparent absolute inset-0 -left-4 w-6 skew-x-12 bg-gradient-to-r opacity-0 group-hover:animate-[shimmer_0.8s_ease-in-out] group-hover:opacity-100' />
       </button>
     );
   }

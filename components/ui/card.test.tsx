@@ -17,13 +17,13 @@ describe('Card Components', () => {
     });
 
     it('deve aplicar className customizada', () => {
-      render(<Card className="custom-card">Custom Card</Card>);
+      render(<Card className='custom-card'>Custom Card</Card>);
       const card = screen.getByTestId('card');
       expect(card).toHaveClass('custom-card');
     });
 
     it('deve passar props HTML adicionais', () => {
-      render(<Card data-testid="test-card">Test Card</Card>);
+      render(<Card data-testid='test-card'>Test Card</Card>);
       expect(screen.getByTestId('test-card')).toBeInTheDocument();
     });
   });
@@ -40,7 +40,7 @@ describe('Card Components', () => {
     });
 
     it('deve aplicar className customizada', () => {
-      render(<CardContent className="custom-content">Custom Content</CardContent>);
+      render(<CardContent className='custom-content'>Custom Content</CardContent>);
       const content = screen.getByTestId('card-content');
       expect(content).toHaveClass('custom-content');
     });
@@ -58,7 +58,7 @@ describe('Card Components', () => {
     });
 
     it('deve aplicar className customizada', () => {
-      render(<CardHeader className="custom-header">Custom Header</CardHeader>);
+      render(<CardHeader className='custom-header'>Custom Header</CardHeader>);
       const header = screen.getByTestId('card-header');
       expect(header).toHaveClass('custom-header');
     });
@@ -82,7 +82,7 @@ describe('Card Components', () => {
     });
 
     it('deve aplicar className customizada', () => {
-      render(<CardTitle className="custom-title">Custom Title</CardTitle>);
+      render(<CardTitle className='custom-title'>Custom Title</CardTitle>);
       const title = screen.getByTestId('card-title');
       expect(title).toHaveClass('custom-title');
     });

@@ -264,21 +264,21 @@
 
 ### ✅ Desenvolvimento
 
-| Métrica | Meta | Atual | Status |
-|---------|------|-------|--------|
-| **Cobertura de Testes** | > 60% | 59.9% | ⚠️ |
-| **Build Time** | < 5min | 3.2min | ✅ |
-| **Deploy Time** | < 10min | 8.5min | ✅ |
-| **Bug Rate** | < 5% | 2.1% | ✅ |
+| Métrica                 | Meta    | Atual  | Status |
+| ----------------------- | ------- | ------ | ------ |
+| **Cobertura de Testes** | > 60%   | 59.9%  | ⚠️     |
+| **Build Time**          | < 5min  | 3.2min | ✅     |
+| **Deploy Time**         | < 10min | 8.5min | ✅     |
+| **Bug Rate**            | < 5%    | 2.1%   | ✅     |
 
 ### ✅ Produção
 
-| Métrica | Meta | Atual | Status |
-|---------|------|-------|--------|
-| **Uptime** | > 99.9% | 99.95% | ✅ |
-| **Response Time** | < 500ms | 350ms | ✅ |
-| **Error Rate** | < 1% | 0.3% | ✅ |
-| **User Satisfaction** | > 4.5/5 | 4.7/5 | ✅ |
+| Métrica               | Meta    | Atual  | Status |
+| --------------------- | ------- | ------ | ------ |
+| **Uptime**            | > 99.9% | 99.95% | ✅     |
+| **Response Time**     | < 500ms | 350ms  | ✅     |
+| **Error Rate**        | < 1%    | 0.3%   | ✅     |
+| **User Satisfaction** | > 4.5/5 | 4.7/5  | ✅     |
 
 ---
 
@@ -359,4 +359,4 @@ git commit -m "test(product): adiciona testes para cenários de erro"
 
 ---
 
-**Qualidade é um processo contínuo! 🚀** 
+**Qualidade é um processo contínuo! 🚀**

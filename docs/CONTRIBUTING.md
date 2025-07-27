@@ -149,4 +149,4 @@ npm run type-check
 
 ---
 
-**Contribua para a excelência!** 
+**Contribua para a excelência!**

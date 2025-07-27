@@ -53,6 +53,7 @@ npm run dev
 ### IDEs Recomendadas
 
 #### VS Code (Recomendado)
+
 ```json
 {
   "extensions": [
@@ -72,6 +73,7 @@ npm run dev
 ```
 
 #### WebStorm
+
 - Ativar ESLint e Prettier
 - Configurar Tailwind CSS IntelliSense
 - Habilitar TypeScript strict mode
@@ -177,7 +179,7 @@ function processData(data: unknown): string {
 
 // ✅ Usar const assertions
 const PRODUCT_CATEGORIES = ['toxina', 'preenchedor', 'bioestimulador'] as const;
-type ProductCategory = typeof PRODUCT_CATEGORIES[number];
+type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 ```
 
 ---
@@ -232,12 +234,12 @@ export const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
           <h3 className="text-lg font-semibold text-gray-900">
             {product.name}
           </h3>
-          
+
           <div className="flex items-center justify-between">
             <span className="text-2xl font-bold text-primary">
               R$ {product.price_pix.toFixed(2)}
             </span>
-            
+
             <div className="flex gap-2">
               <Button
                 size="sm"
@@ -247,7 +249,7 @@ export const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
                 <ShoppingCart className="h-4 w-4" />
                 Adicionar
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="sm"
@@ -302,34 +304,40 @@ export function useCart(): UseCartReturn {
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = useCallback((product: Product) => {
-    setItems(prev => {
-      const exists = prev.find(item => item.id === product.id);
-      if (exists) {
-        toast({
-          title: 'Produto já no carrinho',
-          description: 'Este produto já foi adicionado ao carrinho.',
-          variant: 'destructive',
-        });
-        return prev;
-      }
-      
-      toast({
-        title: 'Produto adicionado',
-        description: `${product.name} foi adicionado ao carrinho.`,
-      });
-      
-      return [...prev, product];
-    });
-  }, [toast]);
+  const addItem = useCallback(
+    (product: Product) => {
+      setItems(prev => {
+        const exists = prev.find(item => item.id === product.id);
+        if (exists) {
+          toast({
+            title: 'Produto já no carrinho',
+            description: 'Este produto já foi adicionado ao carrinho.',
+            variant: 'destructive',
+          });
+          return prev;
+        }
 
-  const removeItem = useCallback((productId: string) => {
-    setItems(prev => prev.filter(item => item.id !== productId));
-    toast({
-      title: 'Produto removido',
-      description: 'Produto foi removido do carrinho.',
-    });
-  }, [toast]);
+        toast({
+          title: 'Produto adicionado',
+          description: `${product.name} foi adicionado ao carrinho.`,
+        });
+
+        return [...prev, product];
+      });
+    },
+    [toast]
+  );
+
+  const removeItem = useCallback(
+    (productId: string) => {
+      setItems(prev => prev.filter(item => item.id !== productId));
+      toast({
+        title: 'Produto removido',
+        description: 'Produto foi removido do carrinho.',
+      });
+    },
+    [toast]
+  );
 
   const clearCart = useCallback(() => {
     setItems([]);
@@ -364,10 +372,7 @@ class ProductService {
 
   async getProducts(category?: string): Promise<Product[]> {
     try {
-      let query = this.supabase
-        .from('products')
-        .select('*')
-        .eq('active', true);
+      let query = this.supabase.from('products').select('*').eq('active', true);
 
       if (category) {
         query = query.eq('category', category);
@@ -456,9 +461,9 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
-      
+
       addItem: (product: Product) => {
-        set((state) => {
+        set(state => {
           const exists = state.items.find(item => item.id === product.id);
           if (exists) {
             return state; // Não adiciona duplicatas
@@ -466,28 +471,28 @@ export const useCartStore = create<CartState>()(
           return { items: [...state.items, product] };
         });
       },
-      
+
       removeItem: (productId: string) => {
-        set((state) => ({
-          items: state.items.filter(item => item.id !== productId)
+        set(state => ({
+          items: state.items.filter(item => item.id !== productId),
         }));
       },
-      
+
       clearCart: () => {
         set({ items: [] });
       },
-      
+
       get total() {
         return get().items.reduce((sum, item) => sum + item.price_pix, 0);
       },
-      
+
       get itemCount() {
         return get().items.length;
       },
     }),
     {
       name: 'cart-storage',
-      partialize: (state) => ({ items: state.items }),
+      partialize: state => ({ items: state.items }),
     }
   )
 );
@@ -792,9 +797,9 @@ export function ProductList({ products, onAddToCart }) {
   return (
     <div className="product-grid">
       {products.map(product => (
-        <ProductCard 
-          key={product.id} 
-          product={product} 
+        <ProductCard
+          key={product.id}
+          product={product}
           onAddToCart={handleAddToCart}
         />
       ))}
@@ -1048,7 +1053,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Erro capturado pelo ErrorBoundary:', error, errorInfo);
-    
+
     // Enviar para serviço de monitoramento
     if (process.env.NODE_ENV === 'production') {
       // Sentry.captureException(error, { extra: errorInfo });
@@ -1184,6 +1189,7 @@ export async function GET() {
 ### Problemas Comuns
 
 #### 1. Build Falha
+
 ```bash
 # ✅ Limpar cache
 rm -rf .next node_modules
@@ -1198,6 +1204,7 @@ npm run lint
 ```
 
 #### 2. Testes Falham
+
 ```bash
 # ✅ Reset completo
 npm run test:reset
@@ -1211,6 +1218,7 @@ rm -rf coverage .vitest
 ```
 
 #### 3. Performance Degradada
+
 ```bash
 # ✅ Analisar bundle
 npm run analyze
@@ -1263,4 +1271,4 @@ npm run backup
 
 ---
 
-**Desenvolvimento com qualidade e excelência! 🚀** 
+**Desenvolvimento com qualidade e excelência! 🚀**

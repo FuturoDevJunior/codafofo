@@ -37,13 +37,13 @@ describe('StarRating', () => {
   });
 
   it('deve aplicar tamanho sm', () => {
-    render(<StarRating rating={4} size="sm" />);
+    render(<StarRating rating={4} size='sm' />);
     const stars = screen.getAllByLabelText(/Estrela \d+ de 5/);
     expect(stars[0]).toHaveClass('h-4', 'w-4');
   });
 
   it('deve aplicar tamanho lg', () => {
-    render(<StarRating rating={4} size="lg" />);
+    render(<StarRating rating={4} size='lg' />);
     const stars = screen.getAllByLabelText(/Estrela \d+ de 5/);
     expect(stars[0]).toHaveClass('h-6', 'w-6');
   });
@@ -70,25 +70,25 @@ describe('StarRating', () => {
   });
 
   it('deve aplicar className customizada', () => {
-    render(<StarRating rating={4} className="custom-rating" />);
+    render(<StarRating rating={4} className='custom-rating' />);
     const container = screen.getByText('4.0 | +500 Avaliações').parentElement;
     expect(container).toHaveClass('custom-rating');
   });
 
   it('deve aplicar tamanho de texto correto para sm', () => {
-    render(<StarRating rating={4} size="sm" />);
+    render(<StarRating rating={4} size='sm' />);
     const text = screen.getByText('4.0 | +500 Avaliações');
     expect(text).toHaveClass('text-sm');
   });
 
   it('deve aplicar tamanho de texto correto para lg', () => {
-    render(<StarRating rating={4} size="lg" />);
+    render(<StarRating rating={4} size='lg' />);
     const text = screen.getByText('4.0 | +500 Avaliações');
     expect(text).toHaveClass('text-lg');
   });
 
   it('deve aplicar tamanho de texto correto para md', () => {
-    render(<StarRating rating={4} size="md" />);
+    render(<StarRating rating={4} size='md' />);
     const text = screen.getByText('4.0 | +500 Avaliações');
     expect(text).toHaveClass('text-base');
   });

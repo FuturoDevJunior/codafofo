@@ -56,17 +56,17 @@ export default function CategoryCard({
     <Card
       className={`hover:shadow-2xl from-white group transform border-2 border-vitale-primary/20 bg-gradient-to-br to-vitale-primary/5 text-center transition-all duration-300 hover:-translate-y-2 hover:border-vitale-primary/50 ${className}`}
     >
-      <CardHeader className="pb-4">
+      <CardHeader className='pb-4'>
         <div
           className={`mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br ${config.bgColor} transition-transform duration-300 group-hover:scale-110`}
         >
           {renderIcon(config.iconName, 40, `h-10 w-10 ${config.color}`)}
         </div>
-        <CardTitle className="text-2xl font-bold text-vitale-primary">{title}</CardTitle>
+        <CardTitle className='text-2xl font-bold text-vitale-primary'>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <p className="leading-relaxed text-neutral-700">{description}</p>
-        <div className="text-sm font-semibold text-vitale-primary">{brands}</div>
+      <CardContent className='space-y-4'>
+        <p className='leading-relaxed text-neutral-700'>{description}</p>
+        <div className='text-sm font-semibold text-vitale-primary'>{brands}</div>
       </CardContent>
     </Card>
   );

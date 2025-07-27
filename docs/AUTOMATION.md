@@ -20,6 +20,7 @@ Este documento descreve todas as automações implementadas no projeto Vytalle p
 ### `scripts/sync-products.js`
 
 **Funcionalidades:**
+
 - ✅ Sincronização automática com Supabase
 - ✅ Atualização de preços em tempo real
 - ✅ Geração automática de slugs
@@ -27,11 +28,13 @@ Este documento descreve todas as automações implementadas no projeto Vytalle p
 - ✅ Validação automática de produtos
 
 **Como usar:**
+
 ```bash
 npm run sync:products
 ```
 
 **Recursos:**
+
 - Validação de produtos (nome, descrição, preços, categorias)
 - Geração automática de slugs únicos
 - Verificação de desconto PIX
@@ -43,6 +46,7 @@ npm run sync:products
 ### `scripts/backup.sh`
 
 **Funcionalidades:**
+
 - ✅ Backup automático do Supabase (diário)
 - ✅ Backup de imagens (semanal)
 - ✅ Rotação de logs (automático)
@@ -50,18 +54,21 @@ npm run sync:products
 - ✅ Backup de configurações
 
 **Como usar:**
+
 ```bash
 npm run backup
 npm run backup:manual
 ```
 
 **Agendamento:**
+
 ```bash
 # Configurar cron job para backup diário às 2h da manhã
 0 2 * * * cd /path/to/project && npm run backup
 ```
 
 **Recursos:**
+
 - Retenção configurável (30 dias para backups diários, 12 semanas para imagens)
 - Verificação de espaço em disco
 - Compressão automática
@@ -73,6 +80,7 @@ npm run backup:manual
 ### `.github/workflows/ci-cd.yml`
 
 **Funcionalidades:**
+
 - ✅ Testes automáticos em cada PR
 - ✅ Deploy automático em staging
 - ✅ Deploy em produção após merge
@@ -80,6 +88,7 @@ npm run backup:manual
 - ✅ Rollback automático em caso de erro
 
 **Jobs:**
+
 1. **Testes Automáticos**
    - Linting
    - Type checking
@@ -114,6 +123,7 @@ npm run backup:manual
 ### Configuração Playwright
 
 **Arquivos:**
+
 - `playwright.config.ts` - Configuração principal
 - `tests/e2e/global-setup.ts` - Setup global
 - `tests/e2e/global-teardown.ts` - Teardown global
@@ -121,6 +131,7 @@ npm run backup:manual
 ### Testes Implementados
 
 #### 1. Fluxo Completo de Compra (`tests/e2e/purchase-flow.test.ts`)
+
 - ✅ Navegação para produtos
 - ✅ Filtros e busca
 - ✅ Adição ao carrinho
@@ -134,6 +145,7 @@ npm run backup:manual
 - ✅ Tratamento de erros
 
 #### 2. Login Admin (`tests/e2e/admin-login.test.ts`)
+
 - ✅ Login com credenciais válidas
 - ✅ Validação de credenciais inválidas
 - ✅ Campos obrigatórios
@@ -147,6 +159,7 @@ npm run backup:manual
 - ✅ Rate limiting
 
 #### 3. Upload de Imagens (`tests/e2e/image-upload.test.ts`)
+
 - ✅ Upload de imagem única
 - ✅ Validação de tipos de arquivo
 - ✅ Validação de tamanho
@@ -161,6 +174,7 @@ npm run backup:manual
 - ✅ Tratamento de erros
 
 #### 4. Responsividade (`tests/e2e/responsiveness.test.ts`)
+
 - ✅ Mobile (375x667)
 - ✅ Tablet (768x1024)
 - ✅ Desktop (1920x1080)
@@ -177,6 +191,7 @@ npm run backup:manual
 - ✅ Orientação landscape
 
 #### 5. Acessibilidade (`tests/e2e/accessibility.test.ts`)
+
 - ✅ Navegação por teclado
 - ✅ Labels e descrições
 - ✅ Contraste adequado
@@ -229,16 +244,19 @@ npm run test:e2e:codegen
 ## 📊 Monitoramento
 
 ### Health Checks
+
 ```bash
 npm run monitor:health
 ```
 
 ### Performance
+
 ```bash
 npm run monitor:performance
 ```
 
 ### Acessibilidade
+
 ```bash
 npm run monitor:accessibility
 ```
@@ -246,16 +264,19 @@ npm run monitor:accessibility
 ## 🔒 Segurança
 
 ### Auditoria
+
 ```bash
 npm run security:audit
 ```
 
 ### Correção Automática
+
 ```bash
 npm run security:fix
 ```
 
 ### Atualizações
+
 ```bash
 npm run security:update
 ```
@@ -263,11 +284,13 @@ npm run security:update
 ## ⚡ Performance
 
 ### Lighthouse
+
 ```bash
 npm run performance:lighthouse
 ```
 
 ### Budget de Performance
+
 ```bash
 npm run performance:budget
 ```
@@ -275,16 +298,19 @@ npm run performance:budget
 ## 🔍 SEO
 
 ### Verificação SEO
+
 ```bash
 npm run seo:check
 ```
 
 ### Sitemap
+
 ```bash
 npm run seo:sitemap
 ```
 
 ### Robots.txt
+
 ```bash
 npm run seo:robots
 ```
@@ -292,16 +318,19 @@ npm run seo:robots
 ## 🛠️ Manutenção
 
 ### Limpeza
+
 ```bash
 npm run maintenance:cleanup
 ```
 
 ### Manutenção Completa
+
 ```bash
 npm run maintenance:full
 ```
 
 ### Logs
+
 ```bash
 npm run logs:view
 npm run logs:clear
@@ -311,21 +340,25 @@ npm run logs:analyze
 ## 🗄️ Banco de Dados
 
 ### Migrações
+
 ```bash
 npm run db:migrate
 ```
 
 ### Reset
+
 ```bash
 npm run db:reset
 ```
 
 ### Seed
+
 ```bash
 npm run db:seed
 ```
 
 ### Backup
+
 ```bash
 npm run db:backup
 ```
@@ -333,11 +366,13 @@ npm run db:backup
 ## 🖼️ Imagens
 
 ### Otimização
+
 ```bash
 npm run image:optimize
 ```
 
 ### Download
+
 ```bash
 npm run image:download
 ```
@@ -345,16 +380,19 @@ npm run image:download
 ## 🚀 Deploy
 
 ### Staging
+
 ```bash
 npm run deploy:staging
 ```
 
 ### Produção
+
 ```bash
 npm run deploy:production
 ```
 
 ### Rollback
+
 ```bash
 npm run deploy:rollback
 ```
@@ -362,21 +400,25 @@ npm run deploy:rollback
 ## 🔄 CI/CD
 
 ### Pipeline Completo
+
 ```bash
 npm run ci:full
 ```
 
 ### Pipeline Rápido
+
 ```bash
 npm run ci:fast
 ```
 
 ### Pipeline E2E
+
 ```bash
 npm run ci:e2e
 ```
 
 ### Pipeline com Cobertura
+
 ```bash
 npm run ci:coverage
 ```
@@ -384,21 +426,25 @@ npm run ci:coverage
 ## 🤖 Automação
 
 ### Setup
+
 ```bash
 npm run automation:setup
 ```
 
 ### Testes Automatizados
+
 ```bash
 npm run automation:test
 ```
 
 ### Deploy Automatizado
+
 ```bash
 npm run automation:deploy
 ```
 
 ### Produção Automatizada
+
 ```bash
 npm run automation:production
 ```
@@ -501,12 +547,14 @@ SENTRY_DSN=your_sentry_dsn
 ## 📈 Métricas e Relatórios
 
 ### Cobertura de Testes
+
 - Testes unitários: 100%
 - Testes E2E: Cobertura completa dos fluxos críticos
 - Testes de acessibilidade: WCAG 2.1 AA
 - Testes de responsividade: Mobile, Tablet, Desktop
 
 ### Performance
+
 - Lighthouse Score: >90
 - Core Web Vitals: Pass
 - First Contentful Paint: <1.5s
@@ -514,6 +562,7 @@ SENTRY_DSN=your_sentry_dsn
 - Cumulative Layout Shift: <0.1
 
 ### Segurança
+
 - Vulnerabilidades: 0 críticas
 - Auditoria de dependências: Pass
 - Headers de segurança: Configurados
@@ -522,6 +571,7 @@ SENTRY_DSN=your_sentry_dsn
 ## 🚨 Alertas e Notificações
 
 ### Slack/Discord
+
 - Deploy de staging/produção
 - Falhas de teste
 - Rollbacks
@@ -529,6 +579,7 @@ SENTRY_DSN=your_sentry_dsn
 - Alertas de segurança
 
 ### Email
+
 - Relatórios diários de backup
 - Alertas de vulnerabilidades
 - Relatórios de performance
@@ -565,4 +616,4 @@ Para dúvidas sobre as automações:
 
 **Última atualização:** Dezembro de 2024
 **Versão:** 1.0.0
-**Status:** ✅ Implementado e Funcionando 
+**Status:** ✅ Implementado e Funcionando

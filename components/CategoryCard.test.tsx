@@ -20,31 +20,31 @@ describe('CategoryCard', () => {
   });
 
   it('deve aplicar configuração para categoria toxina', () => {
-    render(<CategoryCard {...defaultProps} category="toxina" />);
+    render(<CategoryCard {...defaultProps} category='toxina' />);
     const card = screen.getByText('Toxina Botulínica').closest('[data-testid="card"]');
     expect(card).toBeInTheDocument();
   });
 
   it('deve aplicar configuração para categoria preenchedor', () => {
-    render(<CategoryCard {...defaultProps} category="preenchedor" />);
+    render(<CategoryCard {...defaultProps} category='preenchedor' />);
     const card = screen.getByText('Toxina Botulínica').closest('[data-testid="card"]');
     expect(card).toBeInTheDocument();
   });
 
   it('deve aplicar configuração para categoria bioestimulador', () => {
-    render(<CategoryCard {...defaultProps} category="bioestimulador" />);
+    render(<CategoryCard {...defaultProps} category='bioestimulador' />);
     const card = screen.getByText('Toxina Botulínica').closest('[data-testid="card"]');
     expect(card).toBeInTheDocument();
   });
 
   it('deve aplicar configuração para categoria acessorio', () => {
-    render(<CategoryCard {...defaultProps} category="acessorio" />);
+    render(<CategoryCard {...defaultProps} category='acessorio' />);
     const card = screen.getByText('Toxina Botulínica').closest('[data-testid="card"]');
     expect(card).toBeInTheDocument();
   });
 
   it('deve aplicar className customizada', () => {
-    render(<CategoryCard {...defaultProps} className="custom-category" />);
+    render(<CategoryCard {...defaultProps} className='custom-category' />);
     const card = screen.getByText('Toxina Botulínica').closest('[data-testid="card"]');
     expect(card).toHaveClass('custom-category');
   });
@@ -92,17 +92,17 @@ describe('CategoryCard', () => {
   });
 
   it('deve renderizar com diferentes títulos', () => {
-    render(<CategoryCard {...defaultProps} title="Preenchedores Premium" />);
+    render(<CategoryCard {...defaultProps} title='Preenchedores Premium' />);
     expect(screen.getByText('Preenchedores Premium')).toBeInTheDocument();
   });
 
   it('deve renderizar com diferentes descrições', () => {
-    render(<CategoryCard {...defaultProps} description="Produtos avançados para volumização" />);
+    render(<CategoryCard {...defaultProps} description='Produtos avançados para volumização' />);
     expect(screen.getByText('Produtos avançados para volumização')).toBeInTheDocument();
   });
 
   it('deve renderizar com diferentes brands', () => {
-    render(<CategoryCard {...defaultProps} brands="Juvederm, Restylane, Belotero" />);
+    render(<CategoryCard {...defaultProps} brands='Juvederm, Restylane, Belotero' />);
     expect(screen.getByText('Juvederm, Restylane, Belotero')).toBeInTheDocument();
   });
 

@@ -20,7 +20,7 @@ vi.mock('next/navigation', () => ({
 vi.mock('./globals.css', () => ({}));
 
 describe('RootLayout', () => {
-  const mockChildren = <div data-testid="test-content">Test Content</div>;
+  const mockChildren = <div data-testid='test-content'>Test Content</div>;
 
   it('deve renderizar estrutura HTML básica', () => {
     render(<RootLayout>{mockChildren}</RootLayout>);
@@ -59,9 +59,9 @@ describe('RootLayout', () => {
   it('deve suportar múltiplos children', () => {
     const multipleChildren = (
       <>
-        <div data-testid="child-1">Child 1</div>
-        <div data-testid="child-2">Child 2</div>
-        <div data-testid="child-3">Child 3</div>
+        <div data-testid='child-1'>Child 1</div>
+        <div data-testid='child-2'>Child 2</div>
+        <div data-testid='child-3'>Child 3</div>
       </>
     );
 

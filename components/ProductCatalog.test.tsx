@@ -19,22 +19,22 @@ vi.mock('./ProductCard', () => ({
 
 // Mock do ProductCardSkeleton
 vi.mock('./ProductCardSkeleton', () => ({
-  default: () => <div data-testid="product-skeleton">Loading...</div>,
+  default: () => <div data-testid='product-skeleton'>Loading...</div>,
 }));
 
 // Mock dos ícones Lucide
 vi.mock('lucide-react', () => ({
-  Search: () => <div data-testid="search-icon">Search</div>,
-  Filter: () => <div data-testid="filter-icon">Filter</div>,
-  X: () => <div data-testid="x-icon">X</div>,
-  Grid3X3: () => <div data-testid="grid-icon">Grid3X3</div>,
-  Grid2X2: () => <div data-testid="grid-large-icon">Grid2X2</div>,
-  List: () => <div data-testid="list-icon">List</div>,
-  SortAsc: () => <div data-testid="sort-asc-icon">SortAsc</div>,
-  SortDesc: () => <div data-testid="sort-desc-icon">SortDesc</div>,
-  Package: () => <div data-testid="package-icon">Package</div>,
-  Eye: () => <div data-testid="eye-icon">Eye</div>,
-  EyeOff: () => <div data-testid="eye-off-icon">EyeOff</div>,
+  Search: () => <div data-testid='search-icon'>Search</div>,
+  Filter: () => <div data-testid='filter-icon'>Filter</div>,
+  X: () => <div data-testid='x-icon'>X</div>,
+  Grid3X3: () => <div data-testid='grid-icon'>Grid3X3</div>,
+  Grid2X2: () => <div data-testid='grid-large-icon'>Grid2X2</div>,
+  List: () => <div data-testid='list-icon'>List</div>,
+  SortAsc: () => <div data-testid='sort-asc-icon'>SortAsc</div>,
+  SortDesc: () => <div data-testid='sort-desc-icon'>SortDesc</div>,
+  Package: () => <div data-testid='package-icon'>Package</div>,
+  Eye: () => <div data-testid='eye-icon'>Eye</div>,
+  EyeOff: () => <div data-testid='eye-off-icon'>EyeOff</div>,
 }));
 
 // Mock do Button

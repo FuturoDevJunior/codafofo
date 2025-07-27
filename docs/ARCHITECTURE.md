@@ -39,25 +39,25 @@ graph TB
         Pages[Pages/Routes]
         Hooks[Custom Hooks]
     end
-    
+
     subgraph "Business Layer"
         Services[Services]
         Store[State Management]
         Utils[Utilities]
     end
-    
+
     subgraph "Data Layer"
         API[API Routes]
         DB[Database]
         Cache[Cache Layer]
     end
-    
+
     subgraph "Infrastructure"
         CDN[CDN/Vercel Edge]
         Auth[Authentication]
         Storage[File Storage]
     end
-    
+
     UI --> Pages
     Pages --> Hooks
     Hooks --> Services
@@ -75,35 +75,35 @@ graph TB
 
 ### Frontend
 
-| Tecnologia | Versão | Propósito |
-|------------|--------|-----------|
-| **Next.js** | 15.4.2 | Framework React com SSR/SSG |
-| **React** | 18.3.1 | Biblioteca de UI |
-| **TypeScript** | 5.4.2 | Type safety e DX |
-| **Tailwind CSS** | 3.4.1 | Utility-first CSS |
-| **Radix UI** | 1.0.4 | Headless components |
-| **Framer Motion** | 11.0.8 | Animações |
-| **Zustand** | 4.5.2 | State management |
+| Tecnologia        | Versão | Propósito                   |
+| ----------------- | ------ | --------------------------- |
+| **Next.js**       | 15.4.2 | Framework React com SSR/SSG |
+| **React**         | 18.3.1 | Biblioteca de UI            |
+| **TypeScript**    | 5.4.2  | Type safety e DX            |
+| **Tailwind CSS**  | 3.4.1  | Utility-first CSS           |
+| **Radix UI**      | 1.0.4  | Headless components         |
+| **Framer Motion** | 11.0.8 | Animações                   |
+| **Zustand**       | 4.5.2  | State management            |
 
 ### Backend
 
-| Tecnologia | Versão | Propósito |
-|------------|--------|-----------|
-| **Supabase** | Latest | Backend-as-a-Service |
-| **PostgreSQL** | 15 | Database principal |
-| **Edge Functions** | Latest | Serverless functions |
-| **Row Level Security** | Built-in | Security policies |
+| Tecnologia             | Versão   | Propósito            |
+| ---------------------- | -------- | -------------------- |
+| **Supabase**           | Latest   | Backend-as-a-Service |
+| **PostgreSQL**         | 15       | Database principal   |
+| **Edge Functions**     | Latest   | Serverless functions |
+| **Row Level Security** | Built-in | Security policies    |
 
 ### DevOps & Quality
 
-| Tecnologia | Versão | Propósito |
-|------------|--------|-----------|
-| **Vercel** | Latest | Deploy e hosting |
-| **GitHub Actions** | Latest | CI/CD |
-| **Vitest** | 3.2.4 | Unit testing |
-| **Playwright** | 1.42.1 | E2E testing |
-| **ESLint** | 8.57.0 | Code linting |
-| **Prettier** | 3.2.5 | Code formatting |
+| Tecnologia         | Versão | Propósito        |
+| ------------------ | ------ | ---------------- |
+| **Vercel**         | Latest | Deploy e hosting |
+| **GitHub Actions** | Latest | CI/CD            |
+| **Vitest**         | 3.2.4  | Unit testing     |
+| **Playwright**     | 1.42.1 | E2E testing      |
+| **ESLint**         | 8.57.0 | Code linting     |
+| **Prettier**       | 3.2.5  | Code formatting  |
 
 ---
 
@@ -235,7 +235,7 @@ export class ProductService {
 
   async getProducts(category?: string): Promise<Product[]> {
     const cacheKey = category || 'all';
-    
+
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey)!;
     }
@@ -273,21 +273,14 @@ export interface ProductRepository {
 
 export class SupabaseProductRepository implements ProductRepository {
   async findAll(): Promise<Product[]> {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('active', true);
+    const { data, error } = await supabase.from('products').select('*').eq('active', true);
 
     if (error) throw new Error(error.message);
     return data;
   }
 
   async findById(id: string): Promise<Product | null> {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
 
     if (error) return null;
     return data;
@@ -384,14 +377,14 @@ CREATE POLICY "Produtos públicos" ON products
 -- Política para pedidos (apenas admin)
 CREATE POLICY "Pedidos admin" ON orders
   FOR ALL USING (
-    auth.role() = 'authenticated' AND 
+    auth.role() = 'authenticated' AND
     auth.jwt() ->> 'role' = 'admin'
   );
 
 -- Política para auditoria
 CREATE POLICY "Auditoria admin" ON audits
   FOR ALL USING (
-    auth.role() = 'authenticated' AND 
+    auth.role() = 'authenticated' AND
     auth.jwt() ->> 'role' = 'admin'
   );
 ```
@@ -403,20 +396,20 @@ CREATE POLICY "Auditoria admin" ON audits
 import { z } from 'zod';
 
 const productSchema = z.object({
-  name: z.string()
+  name: z
+    .string()
     .min(2, 'Nome deve ter pelo menos 2 caracteres')
     .max(100, 'Nome deve ter no máximo 100 caracteres')
     .regex(/^[a-zA-Z0-9\s\-\.]+$/, 'Nome contém caracteres inválidos'),
-  
-  price_pix: z.number()
-    .positive('Preço deve ser positivo')
-    .max(10000, 'Preço muito alto'),
-  
+
+  price_pix: z.number().positive('Preço deve ser positivo').max(10000, 'Preço muito alto'),
+
   category: z.enum(['Toxina Botulínica', 'Preenchedor', 'Bioestimulador']),
-  
-  images: z.array(z.string().url())
+
+  images: z
+    .array(z.string().url())
     .min(1, 'Pelo menos uma imagem é obrigatória')
-    .max(10, 'Máximo 10 imagens')
+    .max(10, 'Máximo 10 imagens'),
 });
 
 export function validateProduct(data: unknown): Product {
@@ -433,7 +426,7 @@ const rateLimit = new Map<string, { count: number; resetTime: number }>();
 export function rateLimitMiddleware(req: NextApiRequest, res: NextApiResponse) {
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   const limit = 100; // requests per minute
-  
+
   if (!ip) return res.status(400).json({ error: 'IP não identificado' });
 
   const now = Date.now();
@@ -442,9 +435,9 @@ export function rateLimitMiddleware(req: NextApiRequest, res: NextApiResponse) {
   if (!userLimit || now > userLimit.resetTime) {
     rateLimit.set(ip as string, { count: 1, resetTime: now + 60000 });
   } else if (userLimit.count >= limit) {
-    return res.status(429).json({ 
+    return res.status(429).json({
       error: 'Rate limit exceeded',
-      retryAfter: Math.ceil((userLimit.resetTime - now) / 1000)
+      retryAfter: Math.ceil((userLimit.resetTime - now) / 1000),
     });
   } else {
     userLimit.count++;
@@ -459,20 +452,21 @@ export function rateLimitMiddleware(req: NextApiRequest, res: NextApiResponse) {
 const securityHeaders = [
   {
     key: 'X-Frame-Options',
-    value: 'DENY'
+    value: 'DENY',
   },
   {
     key: 'X-Content-Type-Options',
-    value: 'nosniff'
+    value: 'nosniff',
   },
   {
     key: 'Referrer-Policy',
-    value: 'origin-when-cross-origin'
+    value: 'origin-when-cross-origin',
   },
   {
     key: 'Content-Security-Policy',
-    value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"
-  }
+    value:
+      "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;",
+  },
 ];
 
 // next.config.js
@@ -538,7 +532,7 @@ export class CacheManager {
 
   async get<T>(key: string): Promise<T | null> {
     const cached = this.memoryCache.get(key);
-    
+
     if (cached && Date.now() < cached.expires) {
       return cached.data;
     }
@@ -549,7 +543,7 @@ export class CacheManager {
   set(key: string, data: any): void {
     this.memoryCache.set(key, {
       data,
-      expires: Date.now() + this.TTL
+      expires: Date.now() + this.TTL,
     });
   }
 
@@ -570,7 +564,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer({
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['@radix-ui/react-icons', 'framer-motion']
+    optimizePackageImports: ['@radix-ui/react-icons', 'framer-motion'],
   },
   webpack: (config, { dev, isServer }) => {
     if (!dev && !isServer) {
@@ -627,12 +621,12 @@ const cdnConfig = {
     domain: 'vytalle-cdn.vercel.app',
     path: '/images',
     formats: ['webp', 'avif', 'jpg'],
-    sizes: [1920, 1280, 768, 480]
+    sizes: [1920, 1280, 768, 480],
   },
   static: {
     domain: 'vytalle-static.vercel.app',
-    cache: 'public, max-age=31536000, immutable'
-  }
+    cache: 'public, max-age=31536000, immutable',
+  },
 };
 ```
 
@@ -647,14 +641,17 @@ const cdnConfig = {
 export class PerformanceMonitor {
   static trackPageView(page: string) {
     if (typeof window !== 'undefined') {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-      
+      const navigation = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
+
       analytics.track('page_view', {
         page,
         loadTime: navigation.loadEventEnd - navigation.loadEventStart,
-        domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
+        domContentLoaded:
+          navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
         firstPaint: performance.getEntriesByName('first-paint')[0]?.startTime,
-        firstContentfulPaint: performance.getEntriesByName('first-contentful-paint')[0]?.startTime
+        firstContentfulPaint: performance.getEntriesByName('first-contentful-paint')[0]?.startTime,
       });
     }
   }
@@ -663,7 +660,7 @@ export class PerformanceMonitor {
     analytics.track('error', {
       message: error.message,
       stack: error.stack,
-      context
+      context,
     });
   }
 }
@@ -674,22 +671,22 @@ export class PerformanceMonitor {
 ```sql
 -- Queries para monitoramento
 -- Performance de queries
-SELECT 
+SELECT
   query,
   calls,
   total_time,
   mean_time,
   rows
-FROM pg_stat_statements 
-ORDER BY total_time DESC 
+FROM pg_stat_statements
+ORDER BY total_time DESC
 LIMIT 10;
 
 -- Tamanho das tabelas
-SELECT 
+SELECT
   schemaname,
   tablename,
   pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as size
-FROM pg_tables 
+FROM pg_tables
 WHERE schemaname = 'public'
 ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 ```
@@ -713,7 +710,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
     analytics.track('error_boundary', {
       error: error.message,
       stack: error.stack,
-      componentStack: errorInfo.componentStack
+      componentStack: errorInfo.componentStack,
     });
 
     // Send to external service
@@ -725,7 +722,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
       await fetch('/api/errors', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error, errorInfo })
+        body: JSON.stringify({ error, errorInfo }),
       });
     } catch (e) {
       console.error('Failed to report error:', e);
@@ -781,4 +778,4 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
 ---
 
-**Arquitetura profissional para escalabilidade! 🚀** 
+**Arquitetura profissional para escalabilidade! 🚀**

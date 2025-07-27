@@ -263,52 +263,52 @@ export default function Checkout() {
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-4">
-            <h3 className="mb-4 text-lg font-semibold text-vitale-primary">Dados Pessoais</h3>
+          <div className='space-y-4'>
+            <h3 className='mb-4 text-lg font-semibold text-vitale-primary'>Dados Pessoais</h3>
 
-            <div className="space-y-2">
-              <Label htmlFor="name" variant="required" size="md">
+            <div className='space-y-2'>
+              <Label htmlFor='name' variant='required' size='md'>
                 Nome Completo
               </Label>
               <Input
-                id="name"
-                name="name"
+                id='name'
+                name='name'
                 value={customerData.name}
                 onChange={e => handleInputChange('name', e.target.value)}
-                placeholder="Dr(a). João Silva"
-                inputSize="md"
-                autoComplete="name"
+                placeholder='Dr(a). João Silva'
+                inputSize='md'
+                autoComplete='name'
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="phone" variant="required" size="md">
+            <div className='space-y-2'>
+              <Label htmlFor='phone' variant='required' size='md'>
                 WhatsApp
               </Label>
               <Input
-                id="phone"
-                name="phone"
+                id='phone'
+                name='phone'
                 value={customerData.phone}
                 onChange={e => handleInputChange('phone', e.target.value)}
-                placeholder="(11) 99999-9999"
-                inputSize="md"
-                autoComplete="tel"
+                placeholder='(11) 99999-9999'
+                inputSize='md'
+                autoComplete='tel'
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email" variant="required" size="md">
+            <div className='space-y-2'>
+              <Label htmlFor='email' variant='required' size='md'>
                 E-mail Profissional
               </Label>
               <Input
-                id="email"
-                name="email"
-                type="email"
+                id='email'
+                name='email'
+                type='email'
                 value={customerData.email}
                 onChange={e => handleInputChange('email', e.target.value)}
-                placeholder="dr.joao@clinica.com.br"
-                inputSize="md"
-                autoComplete="email"
+                placeholder='dr.joao@clinica.com.br'
+                inputSize='md'
+                autoComplete='email'
               />
             </div>
           </div>
@@ -316,60 +316,60 @@ export default function Checkout() {
 
       case 2:
         return (
-          <div className="space-y-4">
-            <h3 className="mb-4 text-lg font-semibold text-vitale-primary">Dados Profissionais</h3>
+          <div className='space-y-4'>
+            <h3 className='mb-4 text-lg font-semibold text-vitale-primary'>Dados Profissionais</h3>
 
-            <div className="bg-amber-50 border-amber-200 mb-4 rounded-lg border p-4">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="text-amber-600 h-5 w-5" />
-                <p className="text-amber-700 text-sm">
+            <div className='bg-amber-50 border-amber-200 mb-4 rounded-lg border p-4'>
+              <div className='flex items-center gap-2'>
+                <ShieldCheck className='text-amber-600 h-5 w-5' />
+                <p className='text-amber-700 text-sm'>
                   <strong>Produtos de uso exclusivo profissional.</strong> Exigimos CRM ativo.
                 </p>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="crm" variant="required" size="md">
+            <div className='space-y-2'>
+              <Label htmlFor='crm' variant='required' size='md'>
                 CRM (Registro Profissional)
               </Label>
               <Input
-                id="crm"
-                name="crm"
+                id='crm'
+                name='crm'
                 value={customerData.crm}
                 onChange={e => handleInputChange('crm', e.target.value)}
-                placeholder="123456/SP"
-                inputSize="md"
-                autoComplete="off"
+                placeholder='123456/SP'
+                inputSize='md'
+                autoComplete='off'
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="clinicName" variant="required" size="md">
+            <div className='space-y-2'>
+              <Label htmlFor='clinicName' variant='required' size='md'>
                 Nome da Clínica/Consultório
               </Label>
               <Input
-                id="clinicName"
-                name="clinicName"
+                id='clinicName'
+                name='clinicName'
                 value={customerData.clinicName}
                 onChange={e => handleInputChange('clinicName', e.target.value)}
-                placeholder="Clínica de Estética Avançada"
-                inputSize="md"
-                autoComplete="organization"
+                placeholder='Clínica de Estética Avançada'
+                inputSize='md'
+                autoComplete='organization'
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="cnpj" variant="optional" size="md">
+            <div className='space-y-2'>
+              <Label htmlFor='cnpj' variant='optional' size='md'>
                 CNPJ
               </Label>
               <Input
-                id="cnpj"
-                name="cnpj"
+                id='cnpj'
+                name='cnpj'
                 value={customerData.cnpj}
                 onChange={e => handleInputChange('cnpj', e.target.value)}
-                placeholder="00.000.000/0001-00"
-                inputSize="md"
-                autoComplete="off"
+                placeholder='00.000.000/0001-00'
+                inputSize='md'
+                autoComplete='off'
               />
             </div>
           </div>
@@ -377,78 +377,78 @@ export default function Checkout() {
 
       case 3:
         return (
-          <div className="space-y-4">
-            <h3 className="mb-4 text-lg font-semibold text-vitale-primary">Endereço de Entrega</h3>
+          <div className='space-y-4'>
+            <h3 className='mb-4 text-lg font-semibold text-vitale-primary'>Endereço de Entrega</h3>
 
-            <div className="bg-blue-50 border-blue-200 mb-4 rounded-lg border p-4">
-              <div className="flex items-center gap-2">
-                <Truck className="text-blue-600 h-5 w-5" />
-                <p className="text-blue-700 text-sm">
+            <div className='bg-blue-50 border-blue-200 mb-4 rounded-lg border p-4'>
+              <div className='flex items-center gap-2'>
+                <Truck className='text-blue-600 h-5 w-5' />
+                <p className='text-blue-700 text-sm'>
                   <strong>Entrega refrigerada especializada.</strong> Produtos chegam nas condições
                   ideais.
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="cep" variant="required" size="md">
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+              <div className='space-y-2'>
+                <Label htmlFor='cep' variant='required' size='md'>
                   CEP
                 </Label>
                 <Input
-                  id="cep"
-                  name="cep"
+                  id='cep'
+                  name='cep'
                   value={customerData.cep}
                   onChange={e => handleInputChange('cep', e.target.value)}
-                  placeholder="00000-000"
-                  inputSize="md"
-                  autoComplete="postal-code"
+                  placeholder='00000-000'
+                  inputSize='md'
+                  autoComplete='postal-code'
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="city" variant="required" size="md">
+              <div className='space-y-2'>
+                <Label htmlFor='city' variant='required' size='md'>
                   Cidade
                 </Label>
                 <Input
-                  id="city"
-                  name="city"
+                  id='city'
+                  name='city'
                   value={customerData.city}
                   onChange={e => handleInputChange('city', e.target.value)}
-                  placeholder="São Paulo"
-                  inputSize="md"
-                  autoComplete="address-level2"
+                  placeholder='São Paulo'
+                  inputSize='md'
+                  autoComplete='address-level2'
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="state" variant="required" size="md">
+            <div className='space-y-2'>
+              <Label htmlFor='state' variant='required' size='md'>
                 Estado
               </Label>
               <Input
-                id="state"
-                name="state"
+                id='state'
+                name='state'
                 value={customerData.state}
                 onChange={e => handleInputChange('state', e.target.value)}
-                placeholder="SP"
-                inputSize="md"
-                autoComplete="address-level1"
+                placeholder='SP'
+                inputSize='md'
+                autoComplete='address-level1'
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="address" variant="required" size="md">
+            <div className='space-y-2'>
+              <Label htmlFor='address' variant='required' size='md'>
                 Endereço Completo
               </Label>
               <Input
-                id="address"
-                name="address"
+                id='address'
+                name='address'
                 value={customerData.address}
                 onChange={e => handleInputChange('address', e.target.value)}
-                placeholder="Rua Example, 123 - Centro"
-                inputSize="md"
-                autoComplete="street-address"
+                placeholder='Rua Example, 123 - Centro'
+                inputSize='md'
+                autoComplete='street-address'
               />
             </div>
           </div>
@@ -456,12 +456,12 @@ export default function Checkout() {
 
       case 4:
         return (
-          <div className="space-y-6">
-            <h3 className="mb-4 text-lg font-semibold text-vitale-primary">
+          <div className='space-y-6'>
+            <h3 className='mb-4 text-lg font-semibold text-vitale-primary'>
               Escolha a Forma de Pagamento
             </h3>
 
-            <div className="space-y-4">
+            <div className='space-y-4'>
               {paymentMethods.map(method => (
                 <div
                   key={method.id}
@@ -472,20 +472,20 @@ export default function Checkout() {
                       : 'border-neutral-200 hover:border-neutral-300'
                   } `}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="text-2xl">{method.icon}</div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <h4 className="text-base font-semibold">{method.name}</h4>
+                  <div className='flex items-center gap-3'>
+                    <div className='text-2xl'>{method.icon}</div>
+                    <div className='flex-1'>
+                      <div className='flex items-center gap-2'>
+                        <h4 className='text-base font-semibold'>{method.name}</h4>
                         {method.discount && (
-                          <span className="bg-green-500 text-white rounded px-2 py-1 text-xs">
+                          <span className='bg-green-500 text-white rounded px-2 py-1 text-xs'>
                             -{method.discount}% OFF
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-neutral-600">{method.description}</p>
+                      <p className='text-sm text-neutral-600'>{method.description}</p>
                       {method.discount && (
-                        <p className="text-green-600 text-sm font-medium">
+                        <p className='text-green-600 text-sm font-medium'>
                           Economia de {formatCurrency((total * method.discount) / 100)}
                         </p>
                       )}
@@ -498,7 +498,7 @@ export default function Checkout() {
                       } `}
                     >
                       {selectedPayment?.id === method.id && (
-                        <CheckCircle className="text-white h-3 w-3" />
+                        <CheckCircle className='text-white h-3 w-3' />
                       )}
                     </div>
                   </div>
@@ -543,20 +543,20 @@ export default function Checkout() {
 
       case 5:
         return (
-          <div className="space-y-6">
-            <h3 className="mb-4 text-lg font-semibold text-vitale-primary">
+          <div className='space-y-6'>
+            <h3 className='mb-4 text-lg font-semibold text-vitale-primary'>
               Confirmação do Pedido
             </h3>
 
             {/* Resumo do Cliente */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base">
-                  <User className="h-4 w-4" />
+                <CardTitle className='flex items-center gap-2 text-base'>
+                  <User className='h-4 w-4' />
                   Dados do Profissional
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-1 text-sm">
+              <CardContent className='space-y-1 text-sm'>
                 <p>
                   <strong>Nome:</strong> {customerData.name}
                 </p>
@@ -578,12 +578,12 @@ export default function Checkout() {
             {/* Resumo de Entrega */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base">
-                  <MapPin className="h-4 w-4" />
+                <CardTitle className='flex items-center gap-2 text-base'>
+                  <MapPin className='h-4 w-4' />
                   Endereço de Entrega
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-1 text-sm">
+              <CardContent className='space-y-1 text-sm'>
                 <p>{customerData.address}</p>
                 <p>
                   {customerData.city} - {customerData.state}
@@ -596,24 +596,24 @@ export default function Checkout() {
             {selectedPayment && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base">
-                    <CreditCard className="h-4 w-4" />
+                  <CardTitle className='flex items-center gap-2 text-base'>
+                    <CreditCard className='h-4 w-4' />
                     Forma de Pagamento
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm">
-                  <div className="mb-2 flex items-center gap-2">
-                    <span className="text-lg">{selectedPayment.icon}</span>
-                    <span className="font-semibold">{selectedPayment.name}</span>
+                <CardContent className='text-sm'>
+                  <div className='mb-2 flex items-center gap-2'>
+                    <span className='text-lg'>{selectedPayment.icon}</span>
+                    <span className='font-semibold'>{selectedPayment.name}</span>
                     {selectedPayment.discount && (
-                      <span className="bg-green-500 text-white rounded px-2 py-1 text-xs">
+                      <span className='bg-green-500 text-white rounded px-2 py-1 text-xs'>
                         -{selectedPayment.discount}% OFF
                       </span>
                     )}
                   </div>
-                  <p className="text-neutral-600">{selectedPayment.description}</p>
+                  <p className='text-neutral-600'>{selectedPayment.description}</p>
                   {selectedPayment.discount && (
-                    <p className="text-green-600 mt-1 font-medium">
+                    <p className='text-green-600 mt-1 font-medium'>
                       Desconto: -{formatCurrency(discountAmount)}
                     </p>
                   )}
@@ -622,9 +622,9 @@ export default function Checkout() {
             )}
 
             {/* Garantias */}
-            <div className="bg-green-50 border-green-200 rounded-lg border p-4">
-              <h4 className="text-green-800 mb-2 font-semibold">🔒 Suas Garantias:</h4>
-              <div className="text-green-700 space-y-1 text-sm">
+            <div className='bg-green-50 border-green-200 rounded-lg border p-4'>
+              <h4 className='text-green-800 mb-2 font-semibold'>🔒 Suas Garantias:</h4>
+              <div className='text-green-700 space-y-1 text-sm'>
                 <p>✅ Produtos originais e lacrados</p>
                 <p>✅ Transporte refrigerado especializado</p>
                 <p>✅ Entrega em 1-3 dias úteis</p>
@@ -642,10 +642,10 @@ export default function Checkout() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h1 className="mb-4 text-2xl font-bold text-neutral-600">Carrinho vazio</h1>
+      <div className='min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light'>
+        <div className='container mx-auto px-4 py-8'>
+          <div className='text-center'>
+            <h1 className='mb-4 text-2xl font-bold text-neutral-600'>Carrinho vazio</h1>
             <Button onClick={() => router.push('/products')}>Explorar Produtos</Button>
           </div>
         </div>
@@ -654,30 +654,30 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light">
-      <div className="container mx-auto max-w-6xl px-4 py-8">
+    <div className='min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light'>
+      <div className='container mx-auto max-w-6xl px-4 py-8'>
         {/* Header */}
-        <div className="mb-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+        <div className='mb-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center'>
           <Button
-            variant="ghost"
+            variant='ghost'
             onClick={() => router.push('/cart')}
-            className="flex w-full items-center gap-2 sm:w-auto"
+            className='flex w-full items-center gap-2 sm:w-auto'
           >
-            <ArrowLeft className="h-4 w-4" />
-            <span className="hidden sm:inline">Voltar ao Carrinho</span>
-            <span className="sm:hidden">Voltar</span>
+            <ArrowLeft className='h-4 w-4' />
+            <span className='hidden sm:inline'>Voltar ao Carrinho</span>
+            <span className='sm:hidden'>Voltar</span>
           </Button>
-          <h1 className="text-2xl font-bold text-vitale-primary sm:text-3xl">Finalizar Pedido</h1>
+          <h1 className='text-2xl font-bold text-vitale-primary sm:text-3xl'>Finalizar Pedido</h1>
         </div>
 
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-2 lg:grid-cols-3 lg:gap-8">
+        <div className='mx-auto grid max-w-7xl grid-cols-1 gap-6 px-2 lg:grid-cols-3 lg:gap-8'>
           {/* Formulário Principal */}
-          <div className="lg:col-span-2">
+          <div className='lg:col-span-2'>
             {/* Progress Steps */}
-            <div className="mb-8">
-              <div className="mb-4 flex items-center justify-between overflow-x-auto pb-2">
+            <div className='mb-8'>
+              <div className='mb-4 flex items-center justify-between overflow-x-auto pb-2'>
                 {steps.map((step, index) => (
-                  <div key={step.step} className="flex flex-shrink-0 items-center">
+                  <div key={step.step} className='flex flex-shrink-0 items-center'>
                     <div
                       className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold sm:h-10 sm:w-10 sm:text-sm ${
                         currentStep >= step.step
@@ -686,7 +686,7 @@ export default function Checkout() {
                       } `}
                     >
                       {step.completed ? (
-                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <CheckCircle className='h-4 w-4 sm:h-5 sm:w-5' />
                       ) : (
                         step.step
                       )}
@@ -699,8 +699,8 @@ export default function Checkout() {
                   </div>
                 ))}
               </div>
-              <div className="text-center">
-                <p className="text-xs text-neutral-600 sm:text-sm">
+              <div className='text-center'>
+                <p className='text-xs text-neutral-600 sm:text-sm'>
                   Etapa {currentStep} de {steps.length}: {steps[currentStep - 1]?.title}
                 </p>
               </div>
@@ -708,16 +708,16 @@ export default function Checkout() {
 
             {/* Formulário */}
             <Card>
-              <CardContent className="p-6">
+              <CardContent className='p-6'>
                 {renderStepContent()}
 
                 {/* Navigation Buttons */}
-                <div className="mt-6 flex flex-col justify-between gap-4 border-t pt-6 sm:flex-row">
+                <div className='mt-6 flex flex-col justify-between gap-4 border-t pt-6 sm:flex-row'>
                   <Button
-                    variant="outline"
+                    variant='outline'
                     onClick={prevStep}
                     disabled={currentStep === 1}
-                    className="order-2 w-full sm:order-1 sm:w-auto"
+                    className='order-2 w-full sm:order-1 sm:w-auto'
                   >
                     Voltar
                   </Button>
@@ -725,7 +725,7 @@ export default function Checkout() {
                   {currentStep < 5 ? (
                     <Button
                       onClick={nextStep}
-                      className="order-1 w-full bg-vitale-primary hover:bg-vitale-secondary sm:order-2 sm:w-auto"
+                      className='order-1 w-full bg-vitale-primary hover:bg-vitale-secondary sm:order-2 sm:w-auto'
                       disabled={!validateCurrentStep()}
                     >
                       {currentStep === 4 ? 'Revisar Pedido' : 'Próximo'}
@@ -734,7 +734,7 @@ export default function Checkout() {
                     <Button
                       onClick={handleCheckout}
                       disabled={isLoading || !selectedPayment}
-                      className="order-1 w-full bg-vitale-primary hover:bg-vitale-secondary sm:order-2 sm:w-auto"
+                      className='order-1 w-full bg-vitale-primary hover:bg-vitale-secondary sm:order-2 sm:w-auto'
                     >
                       {isLoading ? 'Enviando...' : 'Finalizar via WhatsApp'}
                     </Button>
@@ -745,62 +745,62 @@ export default function Checkout() {
           </div>
 
           {/* Resumo do Pedido */}
-          <div className="space-y-6 lg:col-span-1">
+          <div className='space-y-6 lg:col-span-1'>
             {/* Resumo de Produtos */}
-            <Card className="sticky top-4">
+            <Card className='sticky top-4'>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                  <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
+                <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
+                  <FileText className='h-4 w-4 sm:h-5 sm:w-5' />
                   Resumo do Pedido
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className='space-y-4'>
                 {items.map(item => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between border-b py-2 last:border-b-0"
+                    className='flex items-center justify-between border-b py-2 last:border-b-0'
                   >
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">{item.name}</p>
-                      <p className="text-xs text-neutral-500">Qtd: {item.quantity}</p>
+                    <div className='min-w-0 flex-1'>
+                      <p className='truncate text-sm font-medium'>{item.name}</p>
+                      <p className='text-xs text-neutral-500'>Qtd: {item.quantity}</p>
                     </div>
-                    <p className="ml-2 text-sm font-semibold sm:text-base">
+                    <p className='ml-2 text-sm font-semibold sm:text-base'>
                       {formatCurrency(item.price * item.quantity)}
                     </p>
                   </div>
                 ))}
 
-                <div className="space-y-2 border-t pt-4">
-                  <div className="flex justify-between text-sm sm:text-base">
+                <div className='space-y-2 border-t pt-4'>
+                  <div className='flex justify-between text-sm sm:text-base'>
                     <span>Subtotal:</span>
                     <span>{formatCurrency(total)}</span>
                   </div>
                   {discountAmount > 0 && (
-                    <div className="text-green-600 flex justify-between text-sm sm:text-base">
+                    <div className='text-green-600 flex justify-between text-sm sm:text-base'>
                       <span>Desconto {selectedPayment?.name}:</span>
                       <span>-{formatCurrency(discountAmount)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between text-sm sm:text-base">
+                  <div className='flex justify-between text-sm sm:text-base'>
                     <span>Frete:</span>
                     <span className={shipping === 0 ? 'text-green-600 font-semibold' : ''}>
                       {shipping === 0 ? 'GRÁTIS' : formatCurrency(shipping)}
                     </span>
                   </div>
-                  <div className="flex justify-between border-t pt-2 text-base font-bold sm:text-lg">
+                  <div className='flex justify-between border-t pt-2 text-base font-bold sm:text-lg'>
                     <span>Total:</span>
-                    <span className="text-vitale-primary">{formatCurrency(finalTotal)}</span>
+                    <span className='text-vitale-primary'>{formatCurrency(finalTotal)}</span>
                   </div>
                   {selectedPayment && (
-                    <div className="pt-2 text-center text-xs text-neutral-500">
+                    <div className='pt-2 text-center text-xs text-neutral-500'>
                       {selectedPayment.icon} Pagamento via {selectedPayment.name}
                     </div>
                   )}
                 </div>
 
                 {total < 1000 && (
-                  <div className="bg-amber-50 border-amber-200 text-amber-700 rounded border p-3 text-xs sm:text-sm">
-                    <p className="font-semibold">💡 Dica:</p>
+                  <div className='bg-amber-50 border-amber-200 text-amber-700 rounded border p-3 text-xs sm:text-sm'>
+                    <p className='font-semibold'>💡 Dica:</p>
                     <p>Adicione mais {formatCurrency(1000 - total)} para ganhar frete grátis!</p>
                   </div>
                 )}
@@ -810,22 +810,22 @@ export default function Checkout() {
             {/* Informações de Entrega */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                  <Truck className="h-4 w-4" />
+                <CardTitle className='flex items-center gap-2 text-sm sm:text-base'>
+                  <Truck className='h-4 w-4' />
                   Informações de Entrega
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3 text-xs sm:text-sm">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-vitale-primary" />
+              <CardContent className='space-y-3 text-xs sm:text-sm'>
+                <div className='flex items-center gap-2'>
+                  <Clock className='h-4 w-4 text-vitale-primary' />
                   <span>Entrega em 1-3 dias úteis</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-vitale-primary" />
+                <div className='flex items-center gap-2'>
+                  <Shield className='h-4 w-4 text-vitale-primary' />
                   <span>Transporte refrigerado</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className="text-amber-500 h-4 w-4" />
+                <div className='flex items-center gap-2'>
+                  <AlertTriangle className='text-amber-500 h-4 w-4' />
                   <span>Produtos de uso profissional</span>
                 </div>
               </CardContent>
@@ -834,44 +834,44 @@ export default function Checkout() {
             {/* Formas de Pagamento */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                  <CreditCard className="h-4 w-4" />
+                <CardTitle className='flex items-center gap-2 text-sm sm:text-base'>
+                  <CreditCard className='h-4 w-4' />
                   Opções de Pagamento
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3 text-xs sm:space-y-4 sm:text-sm">
-                <div className="bg-green-50 border-green-200 rounded-lg border p-2 sm:p-3">
-                  <p className="text-green-800 flex items-center gap-2 text-xs font-semibold sm:text-sm">
-                    <CheckCircle className="text-green-600 h-3 w-3 sm:h-4 sm:w-4" />
+              <CardContent className='space-y-3 text-xs sm:space-y-4 sm:text-sm'>
+                <div className='bg-green-50 border-green-200 rounded-lg border p-2 sm:p-3'>
+                  <p className='text-green-800 flex items-center gap-2 text-xs font-semibold sm:text-sm'>
+                    <CheckCircle className='text-green-600 h-3 w-3 sm:h-4 sm:w-4' />
                     PIX (Recomendado)
                   </p>
-                  <p className="text-green-700 mt-1 text-xs">
+                  <p className='text-green-700 mt-1 text-xs'>
                     • 5% desconto adicional • Aprovação instantânea • Processamento imediato
                   </p>
                 </div>
 
-                <div className="bg-blue-50 border-blue-200 rounded-lg border p-2 sm:p-3">
-                  <p className="text-blue-800 flex items-center gap-2 text-xs font-semibold sm:text-sm">
-                    <CheckCircle className="text-blue-600 h-3 w-3 sm:h-4 sm:w-4" />
+                <div className='bg-blue-50 border-blue-200 rounded-lg border p-2 sm:p-3'>
+                  <p className='text-blue-800 flex items-center gap-2 text-xs font-semibold sm:text-sm'>
+                    <CheckCircle className='text-blue-600 h-3 w-3 sm:h-4 sm:w-4' />
                     Link de Pagamento
                   </p>
-                  <p className="text-blue-700 mt-1 text-xs">
+                  <p className='text-blue-700 mt-1 text-xs'>
                     • Cartão até 12x sem juros • Débito e crédito • Processamento seguro
                   </p>
                 </div>
 
-                <div className="bg-amber-50 border-amber-200 rounded-lg border p-2 sm:p-3">
-                  <p className="text-amber-800 flex items-center gap-2 text-xs font-semibold sm:text-sm">
-                    <CheckCircle className="text-amber-600 h-3 w-3 sm:h-4 sm:w-4" />
+                <div className='bg-amber-50 border-amber-200 rounded-lg border p-2 sm:p-3'>
+                  <p className='text-amber-800 flex items-center gap-2 text-xs font-semibold sm:text-sm'>
+                    <CheckCircle className='text-amber-600 h-3 w-3 sm:h-4 sm:w-4' />
                     Boleto Bancário
                   </p>
-                  <p className="text-amber-700 mt-1 text-xs">
+                  <p className='text-amber-700 mt-1 text-xs'>
                     • Vencimento em 3 dias úteis • Para empresas/PJ • Sem taxas adicionais
                   </p>
                 </div>
 
-                <div className="border-t pt-2 text-center">
-                  <p className="text-xs text-neutral-500">
+                <div className='border-t pt-2 text-center'>
+                  <p className='text-xs text-neutral-500'>
                     ⚡ Pagamento processado via WhatsApp Business
                   </p>
                 </div>

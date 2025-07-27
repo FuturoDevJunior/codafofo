@@ -54,7 +54,7 @@ describe('CatalogButton', () => {
   });
 
   it('deve aplicar classes CSS corretas para variant primary', () => {
-    render(<CatalogButton variant="primary" />);
+    render(<CatalogButton variant='primary' />);
 
     const button = screen.getByTestId('catalog-button');
     expect(button).toHaveClass('bg-gradient-to-r');
@@ -63,7 +63,7 @@ describe('CatalogButton', () => {
   });
 
   it('deve aplicar classes CSS corretas para variant secondary', () => {
-    render(<CatalogButton variant="secondary" />);
+    render(<CatalogButton variant='secondary' />);
 
     const button = screen.getByTestId('catalog-button');
     expect(button).toHaveClass('bg-vitale-primary');
@@ -71,7 +71,7 @@ describe('CatalogButton', () => {
   });
 
   it('deve aplicar classes CSS corretas para size large', () => {
-    render(<CatalogButton size="large" />);
+    render(<CatalogButton size='large' />);
 
     const button = screen.getByTestId('catalog-button');
     expect(button).toHaveClass('group');
@@ -100,7 +100,7 @@ describe('CatalogButton', () => {
   });
 
   it('deve aplicar className customizado', () => {
-    render(<CatalogButton className="minha-classe-custom" />);
+    render(<CatalogButton className='minha-classe-custom' />);
 
     const button = screen.getByTestId('catalog-button');
     expect(button).toHaveClass('minha-classe-custom');
@@ -130,11 +130,11 @@ describe('CatalogButton', () => {
   });
 
   it('deve renderizar com todas as variações de props', () => {
-    const { rerender } = render(<CatalogButton variant="primary" size="default" />);
+    const { rerender } = render(<CatalogButton variant='primary' size='default' />);
 
     expect(screen.getByTestId('catalog-button')).toBeInTheDocument();
 
-    rerender(<CatalogButton variant="secondary" size="large" />);
+    rerender(<CatalogButton variant='secondary' size='large' />);
     expect(screen.getByTestId('catalog-button')).toBeInTheDocument();
   });
 });

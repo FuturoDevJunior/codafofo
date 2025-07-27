@@ -39,7 +39,7 @@ vi.mock('@/components/ui/use-toast', () => ({
 
 // Mock do ImageUploader
 vi.mock('./admin/ImageUploader', () => ({
-  default: () => <div data-testid="image-uploader">Image Uploader</div>,
+  default: () => <div data-testid='image-uploader'>Image Uploader</div>,
 }));
 
 // Mock do next/navigation

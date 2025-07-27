@@ -77,7 +77,7 @@ function RoleBadge({ role }: { role: string }) {
     <span
       className={`flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${config.className}`}
     >
-      <Icon className="h-3 w-3" />
+      <Icon className='h-3 w-3' />
       {config.label}
     </span>
   );
@@ -122,25 +122,25 @@ export default async function UsersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light">
+    <div className='min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light'>
       {/* Header */}
-      <header className="bg-white sticky top-0 z-30 border-b-2 border-vitale-primary/20 shadow-lg">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-vitale-primary">
-                <Users className="text-white h-6 w-6" />
+      <header className='bg-white sticky top-0 z-30 border-b-2 border-vitale-primary/20 shadow-lg'>
+        <div className='container mx-auto px-4 py-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-3'>
+              <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-vitale-primary'>
+                <Users className='text-white h-6 w-6' />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-vitale-primary">Gestão de Usuários</h1>
-                <p className="text-neutral-600">Gerencie usuários e permissões do sistema</p>
+                <h1 className='text-2xl font-bold text-vitale-primary'>Gestão de Usuários</h1>
+                <p className='text-neutral-600'>Gerencie usuários e permissões do sistema</p>
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className='flex gap-3'>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="bg-green-600 hover:bg-green-700 text-white">
-                    <Plus className="mr-2 h-4 w-4" />
+                  <Button className='bg-green-600 hover:bg-green-700 text-white'>
+                    <Plus className='mr-2 h-4 w-4' />
                     Novo Usuário
                   </Button>
                 </DialogTrigger>
@@ -149,40 +149,40 @@ export default async function UsersPage() {
                     <DialogTitle>Adicionar Novo Usuário</DialogTitle>
                     <DialogDescription>Crie um novo usuário no sistema</DialogDescription>
                   </DialogHeader>
-                  <div className="space-y-4">
+                  <div className='space-y-4'>
                     <div>
-                      <Label htmlFor="name">Nome</Label>
-                      <Input id="name" placeholder="Nome completo" />
+                      <Label htmlFor='name'>Nome</Label>
+                      <Input id='name' placeholder='Nome completo' />
                     </div>
                     <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" placeholder="email@exemplo.com" />
+                      <Label htmlFor='email'>Email</Label>
+                      <Input id='email' type='email' placeholder='email@exemplo.com' />
                     </div>
                     <div>
-                      <Label htmlFor="password">Senha Temporária</Label>
-                      <Input id="password" type="password" placeholder="Senha temporária" />
+                      <Label htmlFor='password'>Senha Temporária</Label>
+                      <Input id='password' type='password' placeholder='Senha temporária' />
                     </div>
                     <div>
-                      <Label htmlFor="role">Função</Label>
+                      <Label htmlFor='role'>Função</Label>
                       <Select>
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecione a função" />
+                          <SelectValue placeholder='Selecione a função' />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="user">Usuário</SelectItem>
-                          <SelectItem value="manager">Gerente</SelectItem>
-                          <SelectItem value="admin">Administrador</SelectItem>
+                          <SelectItem value='user'>Usuário</SelectItem>
+                          <SelectItem value='manager'>Gerente</SelectItem>
+                          <SelectItem value='admin'>Administrador</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
-                    <Button className="w-full">Criar Usuário</Button>
+                    <Button className='w-full'>Criar Usuário</Button>
                   </div>
                 </DialogContent>
               </Dialog>
               <Button
                 onClick={() => window.history.back()}
-                variant="outline"
-                className="border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary/10"
+                variant='outline'
+                className='border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary/10'
               >
                 Voltar ao Dashboard
               </Button>
@@ -191,101 +191,101 @@ export default async function UsersPage() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className='container mx-auto px-4 py-8'>
         {/* Estatísticas */}
-        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className='mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4'>
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>Total de Usuários</CardTitle>
+              <Users className='h-4 w-4 text-muted-foreground' />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-vitale-primary">{stats.total}</div>
-              <p className="text-xs text-muted-foreground">Usuários cadastrados</p>
+              <div className='text-2xl font-bold text-vitale-primary'>{stats.total}</div>
+              <p className='text-xs text-muted-foreground'>Usuários cadastrados</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Administradores</CardTitle>
-              <Crown className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>Administradores</CardTitle>
+              <Crown className='h-4 w-4 text-muted-foreground' />
             </CardHeader>
             <CardContent>
-              <div className="text-red-600 text-2xl font-bold">{stats.admins}</div>
-              <p className="text-xs text-muted-foreground">Acesso total ao sistema</p>
+              <div className='text-red-600 text-2xl font-bold'>{stats.admins}</div>
+              <p className='text-xs text-muted-foreground'>Acesso total ao sistema</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Gerentes</CardTitle>
-              <Shield className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>Gerentes</CardTitle>
+              <Shield className='h-4 w-4 text-muted-foreground' />
             </CardHeader>
             <CardContent>
-              <div className="text-purple-600 text-2xl font-bold">{stats.managers}</div>
-              <p className="text-xs text-muted-foreground">Acesso gerencial</p>
+              <div className='text-purple-600 text-2xl font-bold'>{stats.managers}</div>
+              <p className='text-xs text-muted-foreground'>Acesso gerencial</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Logins Recentes</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>Logins Recentes</CardTitle>
+              <Calendar className='h-4 w-4 text-muted-foreground' />
             </CardHeader>
             <CardContent>
-              <div className="text-green-600 text-2xl font-bold">{stats.recentSignIns}</div>
-              <p className="text-xs text-muted-foreground">Últimos 7 dias</p>
+              <div className='text-green-600 text-2xl font-bold'>{stats.recentSignIns}</div>
+              <p className='text-xs text-muted-foreground'>Últimos 7 dias</p>
             </CardContent>
           </Card>
         </div>
 
-        <Tabs defaultValue="list" className="space-y-6">
+        <Tabs defaultValue='list' className='space-y-6'>
           <TabsList>
-            <TabsTrigger value="list">Lista de Usuários</TabsTrigger>
-            <TabsTrigger value="roles">Gestão de Funções</TabsTrigger>
-            <TabsTrigger value="activity">Atividade</TabsTrigger>
+            <TabsTrigger value='list'>Lista de Usuários</TabsTrigger>
+            <TabsTrigger value='roles'>Gestão de Funções</TabsTrigger>
+            <TabsTrigger value='activity'>Atividade</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="list" className="space-y-6">
+          <TabsContent value='list' className='space-y-6'>
             {/* Filtros */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Search className="h-5 w-5" />
+                <CardTitle className='flex items-center gap-2'>
+                  <Search className='h-5 w-5' />
                   Buscar e Filtrar
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
                   <div>
-                    <Label htmlFor="search">Buscar usuário</Label>
-                    <Input id="search" placeholder="Nome, email..." className="w-full" />
+                    <Label htmlFor='search'>Buscar usuário</Label>
+                    <Input id='search' placeholder='Nome, email...' className='w-full' />
                   </div>
                   <div>
-                    <Label htmlFor="role-filter">Função</Label>
+                    <Label htmlFor='role-filter'>Função</Label>
                     <Select>
                       <SelectTrigger>
-                        <SelectValue placeholder="Todas as funções" />
+                        <SelectValue placeholder='Todas as funções' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todas</SelectItem>
-                        <SelectItem value="admin">Administrador</SelectItem>
-                        <SelectItem value="manager">Gerente</SelectItem>
-                        <SelectItem value="user">Usuário</SelectItem>
+                        <SelectItem value='all'>Todas</SelectItem>
+                        <SelectItem value='admin'>Administrador</SelectItem>
+                        <SelectItem value='manager'>Gerente</SelectItem>
+                        <SelectItem value='user'>Usuário</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="status-filter">Status</Label>
+                    <Label htmlFor='status-filter'>Status</Label>
                     <Select>
                       <SelectTrigger>
-                        <SelectValue placeholder="Todos os status" />
+                        <SelectValue placeholder='Todos os status' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todos</SelectItem>
-                        <SelectItem value="active">Ativos</SelectItem>
-                        <SelectItem value="inactive">Inativos</SelectItem>
-                        <SelectItem value="recent">Login recente</SelectItem>
+                        <SelectItem value='all'>Todos</SelectItem>
+                        <SelectItem value='active'>Ativos</SelectItem>
+                        <SelectItem value='inactive'>Inativos</SelectItem>
+                        <SelectItem value='recent'>Login recente</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -298,8 +298,8 @@ export default async function UsersPage() {
               <CardHeader>
                 <CardTitle>Usuários ({users.length})</CardTitle>
               </CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
+              <CardContent className='p-0'>
+                <div className='overflow-x-auto'>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -316,45 +316,45 @@ export default async function UsersPage() {
                       {users.map(user => (
                         <TableRow key={user.id}>
                           <TableCell>
-                            <div className="flex items-center gap-3">
-                              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-vitale-primary/10">
-                                <User className="h-4 w-4 text-vitale-primary" />
+                            <div className='flex items-center gap-3'>
+                              <div className='flex h-8 w-8 items-center justify-center rounded-full bg-vitale-primary/10'>
+                                <User className='h-4 w-4 text-vitale-primary' />
                               </div>
                               <div>
-                                <div className="font-medium">{user.name}</div>
-                                <div className="text-xs text-muted-foreground">
+                                <div className='font-medium'>{user.name}</div>
+                                <div className='text-xs text-muted-foreground'>
                                   ID: {user.id.slice(-6)}
                                 </div>
                               </div>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-1">
-                              <Mail className="h-3 w-3" />
-                              <span className="text-sm">{user.email}</span>
+                            <div className='flex items-center gap-1'>
+                              <Mail className='h-3 w-3' />
+                              <span className='text-sm'>{user.email}</span>
                             </div>
                           </TableCell>
                           <TableCell>
                             <RoleBadge role={user.role} />
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              <span className="text-xs">
+                            <div className='flex items-center gap-1'>
+                              <Calendar className='h-3 w-3' />
+                              <span className='text-xs'>
                                 {new Date(user.created_at).toLocaleDateString('pt-BR')}
                               </span>
                             </div>
                           </TableCell>
                           <TableCell>
                             {user.last_sign_in_at ? (
-                              <div className="flex items-center gap-1">
-                                <Calendar className="h-3 w-3" />
-                                <span className="text-xs">
+                              <div className='flex items-center gap-1'>
+                                <Calendar className='h-3 w-3' />
+                                <span className='text-xs'>
                                   {new Date(user.last_sign_in_at).toLocaleDateString('pt-BR')}
                                 </span>
                               </div>
                             ) : (
-                              <span className="text-xs text-muted-foreground">Nunca</span>
+                              <span className='text-xs text-muted-foreground'>Nunca</span>
                             )}
                           </TableCell>
                           <TableCell>
@@ -365,21 +365,21 @@ export default async function UsersPage() {
                           <TableCell>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
-                                  <MoreHorizontal className="h-4 w-4" />
+                                <Button variant='ghost' size='sm'>
+                                  <MoreHorizontal className='h-4 w-4' />
                                 </Button>
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
+                              <DropdownMenuContent align='end'>
                                 <DropdownMenuItem>
-                                  <Edit className="mr-2 h-4 w-4" />
+                                  <Edit className='mr-2 h-4 w-4' />
                                   Editar
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                  <Shield className="mr-2 h-4 w-4" />
+                                  <Shield className='mr-2 h-4 w-4' />
                                   Alterar Função
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="text-red-600">
-                                  <Trash2 className="mr-2 h-4 w-4" />
+                                <DropdownMenuItem className='text-red-600'>
+                                  <Trash2 className='mr-2 h-4 w-4' />
                                   Excluir
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
@@ -389,11 +389,11 @@ export default async function UsersPage() {
                       ))}
                       {users.length === 0 && (
                         <TableRow>
-                          <TableCell colSpan={7} className="py-8 text-center">
-                            <div className="text-muted-foreground">
-                              <Users className="mx-auto mb-4 h-12 w-12 opacity-50" />
+                          <TableCell colSpan={7} className='py-8 text-center'>
+                            <div className='text-muted-foreground'>
+                              <Users className='mx-auto mb-4 h-12 w-12 opacity-50' />
                               <p>Nenhum usuário encontrado</p>
-                              <p className="text-xs">Adicione usuários para gerenciar o sistema</p>
+                              <p className='text-xs'>Adicione usuários para gerenciar o sistema</p>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -405,71 +405,71 @@ export default async function UsersPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="roles">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <TabsContent value='roles'>
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Crown className="text-red-600 h-5 w-5" />
+                  <CardTitle className='flex items-center gap-2'>
+                    <Crown className='text-red-600 h-5 w-5' />
                     Administrador
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="mb-4 text-sm text-muted-foreground">
+                  <p className='mb-4 text-sm text-muted-foreground'>
                     Acesso total ao sistema, pode gerenciar usuários, produtos e configurações.
                   </p>
-                  <div className="space-y-2">
-                    <div className="text-red-600 text-2xl font-bold">{stats.admins}</div>
-                    <p className="text-xs">usuários com esta função</p>
+                  <div className='space-y-2'>
+                    <div className='text-red-600 text-2xl font-bold'>{stats.admins}</div>
+                    <p className='text-xs'>usuários com esta função</p>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Shield className="text-purple-600 h-5 w-5" />
+                  <CardTitle className='flex items-center gap-2'>
+                    <Shield className='text-purple-600 h-5 w-5' />
                     Gerente
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="mb-4 text-sm text-muted-foreground">
+                  <p className='mb-4 text-sm text-muted-foreground'>
                     Pode gerenciar produtos, pedidos e visualizar relatórios.
                   </p>
-                  <div className="space-y-2">
-                    <div className="text-purple-600 text-2xl font-bold">{stats.managers}</div>
-                    <p className="text-xs">usuários com esta função</p>
+                  <div className='space-y-2'>
+                    <div className='text-purple-600 text-2xl font-bold'>{stats.managers}</div>
+                    <p className='text-xs'>usuários com esta função</p>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="text-blue-600 h-5 w-5" />
+                  <CardTitle className='flex items-center gap-2'>
+                    <User className='text-blue-600 h-5 w-5' />
                     Usuário
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="mb-4 text-sm text-muted-foreground">
+                  <p className='mb-4 text-sm text-muted-foreground'>
                     Acesso básico ao sistema, pode visualizar produtos e fazer pedidos.
                   </p>
-                  <div className="space-y-2">
-                    <div className="text-blue-600 text-2xl font-bold">{stats.users}</div>
-                    <p className="text-xs">usuários com esta função</p>
+                  <div className='space-y-2'>
+                    <div className='text-blue-600 text-2xl font-bold'>{stats.users}</div>
+                    <p className='text-xs'>usuários com esta função</p>
                   </div>
                 </CardContent>
               </Card>
             </div>
           </TabsContent>
 
-          <TabsContent value="activity">
+          <TabsContent value='activity'>
             <Card>
               <CardHeader>
                 <CardTitle>Atividade Recente</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className='space-y-4'>
                   {users
                     .filter(u => u.last_sign_in_at)
                     .sort(
@@ -481,23 +481,23 @@ export default async function UsersPage() {
                     .map(user => (
                       <div
                         key={user.id}
-                        className="flex items-center justify-between rounded-lg border p-3"
+                        className='flex items-center justify-between rounded-lg border p-3'
                       >
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-vitale-primary/10">
-                            <User className="h-4 w-4 text-vitale-primary" />
+                        <div className='flex items-center gap-3'>
+                          <div className='flex h-8 w-8 items-center justify-center rounded-full bg-vitale-primary/10'>
+                            <User className='h-4 w-4 text-vitale-primary' />
                           </div>
                           <div>
-                            <div className="font-medium">{user.name}</div>
-                            <div className="text-xs text-muted-foreground">{user.email}</div>
+                            <div className='font-medium'>{user.name}</div>
+                            <div className='text-xs text-muted-foreground'>{user.email}</div>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-sm font-medium">
+                        <div className='text-right'>
+                          <div className='text-sm font-medium'>
                             {user.last_sign_in_at &&
                               new Date(user.last_sign_in_at).toLocaleDateString('pt-BR')}
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className='text-xs text-muted-foreground'>
                             {user.last_sign_in_at &&
                               new Date(user.last_sign_in_at).toLocaleTimeString('pt-BR')}
                           </div>

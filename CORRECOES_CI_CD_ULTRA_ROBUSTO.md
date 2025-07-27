@@ -97,7 +97,7 @@ HEAD /api/health # Verificação rápida
     },
     {
       "name": "supabase",
-      "status": "healthy", 
+      "status": "healthy",
       "message": "Conexão Supabase OK"
     }
   ]
@@ -172,7 +172,7 @@ npm run test:ultra  # Execução completa de todos os testes
 ```json
 {
   "test:ultra": "bash scripts/test-ultra.sh",
-  "deploy:ultra": "bash scripts/deploy-ultra.sh", 
+  "deploy:ultra": "bash scripts/deploy-ultra.sh",
   "monitor:ultra": "bash scripts/monitor-ultra.sh",
   "health:check": "curl -f https://vytalle-estetica.vercel.app/api/health",
   "coverage:report": "npm run test:ci -- --coverage",
@@ -338,4 +338,4 @@ O sistema CI/CD ultra-robusto implementado garante:
 
 **Documento gerado automaticamente pelo sistema Vytalle**
 **Data**: $(date '+%Y-%m-%d %H:%M:%S')
-**Versão**: 1.0.0 Ultra-Robusto 
+**Versão**: 1.0.0 Ultra-Robusto

@@ -27,25 +27,25 @@ graph TB
         Hooks[Custom Hooks<br/>Zustand]
         PWA[PWA<br/>Service Worker]
     end
-    
+
     subgraph "Backend (Supabase)"
         API[API Routes<br/>Edge Functions]
         DB[(PostgreSQL 15<br/>RLS Enabled)]
         Auth[Authentication<br/>JWT Tokens]
         Storage[File Storage<br/>Images/PDFs]
     end
-    
+
     subgraph "Infrastructure"
         Vercel[Vercel<br/>Edge Network]
         CDN[CDN<br/>Global Distribution]
         Analytics[Analytics<br/>User Tracking]
     end
-    
+
     subgraph "External Services"
         WhatsApp[WhatsApp Business<br/>Checkout Integration]
         PDF[PDF Generation<br/>Order Documents]
     end
-    
+
     UI --> Pages
     Pages --> Hooks
     Hooks --> API
@@ -54,10 +54,10 @@ graph TB
     API --> Storage
     API --> WhatsApp
     API --> PDF
-    
+
     Vercel --> CDN
     CDN --> Analytics
-    
+
     PWA --> Storage
     PWA --> Analytics
 ```
@@ -75,14 +75,14 @@ graph LR
         Framer[Framer Motion]
         Zustand[Zustand 4.5.2]
     end
-    
+
     subgraph "Backend Stack"
         Supabase[Supabase]
         PostgreSQL[PostgreSQL 15]
         EdgeFunc[Edge Functions]
         RLS[Row Level Security]
     end
-    
+
     subgraph "DevOps Stack"
         Vercel[Vercel]
         GitHub[GitHub Actions]
@@ -90,18 +90,18 @@ graph LR
         Playwright[Playwright]
         Husky[Husky]
     end
-    
+
     NextJS --> React
     React --> TS
     TS --> Tailwind
     Tailwind --> Radix
     Radix --> Framer
     Framer --> Zustand
-    
+
     Supabase --> PostgreSQL
     PostgreSQL --> RLS
     RLS --> EdgeFunc
-    
+
     Vercel --> GitHub
     GitHub --> Vitest
     Vitest --> Playwright
@@ -122,18 +122,18 @@ sequenceDiagram
     participant DB as Supabase
     participant WA as WhatsApp
     participant PDF as PDF Gen
-    
+
     U->>UI: Acessa catálogo
     UI->>API: GET /api/products
     API->>DB: SELECT products
     DB-->>API: Lista de produtos
     API-->>UI: JSON response
     UI-->>U: Renderiza produtos
-    
+
     U->>UI: Adiciona ao carrinho
     UI->>UI: Zustand store update
     UI-->>U: Carrinho atualizado
-    
+
     U->>UI: Finaliza compra
     UI->>API: POST /api/checkout
     API->>DB: INSERT order
@@ -157,31 +157,31 @@ graph TD
         UpdateQty[updateQuantity]
         ClearCart[clearCart]
     end
-    
+
     subgraph "Persistence Layer"
         IDB[IndexedDB]
         LocalStorage[Local Storage]
     end
-    
+
     subgraph "UI Components"
         ProductCard[ProductCard]
         CartSidebar[CartSidebar]
         Checkout[Checkout]
     end
-    
+
     ProductCard --> AddItem
     CartSidebar --> RemoveItem
     CartSidebar --> UpdateQty
     Checkout --> ClearCart
-    
+
     AddItem --> CartState
     RemoveItem --> CartState
     UpdateQty --> CartState
     ClearCart --> CartState
-    
+
     CartState --> IDB
     CartState --> LocalStorage
-    
+
     CartState --> ProductCard
     CartState --> CartSidebar
     CartState --> Checkout
@@ -201,13 +201,13 @@ graph TD
         CartSidebar[CartSidebar]
         Toaster[Toaster]
     end
-    
+
     subgraph "Providers"
         AccessibilityProvider[AccessibilityProvider]
         AnalyticsProvider[AnalyticsProvider]
         CustomizationProvider[CustomizationProvider]
     end
-    
+
     subgraph "Pages"
         HomePage[HomePage]
         ProductsPage[ProductsPage]
@@ -216,7 +216,7 @@ graph TD
         CheckoutPage[CheckoutPage]
         AdminPage[AdminPage]
     end
-    
+
     subgraph "UI Components"
         ProductCard[ProductCard]
         ProductCatalog[ProductCatalog]
@@ -224,31 +224,31 @@ graph TD
         SmartImage[SmartImage]
         LoadingButton[LoadingButton]
     end
-    
+
     subgraph "Admin Components"
         AdminDashboard[AdminDashboard]
         AdminForm[AdminForm]
         AdminFormComplete[AdminFormComplete]
         ImageUploader[ImageUploader]
     end
-    
+
     RootLayout --> Header
     RootLayout --> CartSidebar
     RootLayout --> Toaster
-    
+
     RootLayout --> AccessibilityProvider
     RootLayout --> AnalyticsProvider
     RootLayout --> CustomizationProvider
-    
+
     HomePage --> ProductCatalog
     ProductsPage --> ProductCatalog
     ProductDetail --> ProductCard
     CartPage --> CartItem
     CheckoutPage --> LoadingButton
-    
+
     ProductCatalog --> ProductCard
     CartSidebar --> CartItem
-    
+
     AdminPage --> AdminDashboard
     AdminDashboard --> AdminForm
     AdminDashboard --> AdminFormComplete
@@ -265,23 +265,23 @@ graph LR
         Props[Component Props]
         State[Local State]
     end
-    
+
     subgraph "Components"
         Parent[Parent Component]
         Child[Child Component]
         GrandChild[Grand Child]
     end
-    
+
     API --> Store
     Store --> Props
     Props --> Parent
     Parent --> Child
     Child --> GrandChild
-    
+
     Parent --> State
     Child --> State
     GrandChild --> State
-    
+
     State --> Props
     Props --> Child
     Props --> GrandChild
@@ -300,10 +300,10 @@ sequenceDiagram
     participant API as Auth API
     participant Supabase as Supabase Auth
     participant DB as Database
-    
+
     U->>UI: Acessa /admin/login
     UI-->>U: Formulário de login
-    
+
     U->>UI: Insere credenciais
     UI->>API: POST /api/auth/login
     API->>Supabase: signInWithPassword
@@ -312,7 +312,7 @@ sequenceDiagram
     Supabase-->>API: JWT token
     API-->>UI: Auth success
     UI-->>U: Redireciona para /admin
-    
+
     Note over U,DB: Sessão autenticada
     U->>UI: Acessa área admin
     UI->>API: GET /api/admin/data
@@ -333,7 +333,7 @@ graph TD
         Orders[Orders Table]
         Users[Users Table]
     end
-    
+
     subgraph "RLS Policies"
         PublicRead[Public Read<br/>Products.active = true]
         AuthInsert[Auth Insert<br/>auth.role() = 'authenticated']
@@ -341,21 +341,21 @@ graph TD
         AuthDelete[Auth Delete<br/>auth.role() = 'authenticated']
         AdminOnly[Admin Only<br/>auth.jwt() ->> 'role' = 'admin']
     end
-    
+
     subgraph "Access Control"
         Anonymous[Anonymous Users]
         Authenticated[Authenticated Users]
         Admin[Admin Users]
     end
-    
+
     Anonymous --> PublicRead
     PublicRead --> Products
-    
+
     Authenticated --> AuthInsert
     Authenticated --> AuthUpdate
     AuthInsert --> Orders
     AuthUpdate --> Products
-    
+
     Admin --> AdminOnly
     AdminOnly --> Users
     AdminOnly --> Orders
@@ -374,26 +374,26 @@ graph TD
         B[Adiciona produtos]
         C[Acessa carrinho]
     end
-    
+
     subgraph "Checkout"
         D[Revisa itens]
         E[Insere dados]
         F[Confirma pedido]
     end
-    
+
     subgraph "Processamento"
         G[Valida dados]
         H[Calcula total]
         I[Gera PDF]
         J[Salva no banco]
     end
-    
+
     subgraph "Integração"
         K[Envia WhatsApp]
         L[Confirma envio]
         M[Redireciona]
     end
-    
+
     A --> B
     B --> C
     C --> D
@@ -406,7 +406,7 @@ graph TD
     J --> K
     K --> L
     L --> M
-    
+
     style A fill:#e1f5fe
     style M fill:#c8e6c9
     style G fill:#fff3e0
@@ -425,20 +425,20 @@ graph TD
         NextSteps[Next Steps<br/>Confirmação, Frete, Pagamento]
         Footer[Footer<br/>Assinatura da empresa]
     end
-    
+
     subgraph "Formatação"
         Bold[Bold Text<br/>**texto**]
         Italic[Italic Text<br/>_texto_]
         LineBreak[Line Break<br/>\n]
         Emoji[Emojis<br/>📦 💉 🏥]
     end
-    
+
     Header --> CustomerInfo
     CustomerInfo --> ProductsList
     ProductsList --> Summary
     Summary --> NextSteps
     NextSteps --> Footer
-    
+
     Bold --> Header
     Bold --> Summary
     Italic --> Footer
@@ -468,7 +468,7 @@ erDiagram
         boolean active
         timestamp created_at
     }
-    
+
     ORDERS {
         uuid id PK
         text customer_name
@@ -478,14 +478,14 @@ erDiagram
         text pdf_url
         timestamp created_at
     }
-    
+
     USERS {
         uuid id PK
         text email
         text role
         timestamp created_at
     }
-    
+
     AUDIT_LOGS {
         uuid id PK
         text action
@@ -495,7 +495,7 @@ erDiagram
         uuid user_id FK
         timestamp created_at
     }
-    
+
     PRODUCTS ||--o{ ORDERS : "contains"
     USERS ||--o{ AUDIT_LOGS : "performs"
     ORDERS ||--o{ AUDIT_LOGS : "tracked"
@@ -510,33 +510,33 @@ graph TD
         PK2[Orders.id<br/>UUID PRIMARY KEY]
         PK3[Users.id<br/>UUID PRIMARY KEY]
     end
-    
+
     subgraph "Foreign Keys"
         FK1[AuditLogs.user_id<br/>REFERENCES Users.id]
         FK2[AuditLogs.order_id<br/>REFERENCES Orders.id]
     end
-    
+
     subgraph "Unique Constraints"
         UK1[Products.slug<br/>UNIQUE NOT NULL]
         UK2[Users.email<br/>UNIQUE NOT NULL]
     end
-    
+
     subgraph "Check Constraints"
         CC1[Products.category<br/>IN ('Toxina Botulínica', 'Bioestimulador', ...)]
         CC2[Products.price_pix<br/>> 0]
         CC3[Products.price_prazo<br/>> 0]
     end
-    
+
     subgraph "Default Values"
         DV1[Products.active<br/>DEFAULT TRUE]
         DV2[Products.created_at<br/>DEFAULT NOW()]
         DV3[Orders.created_at<br/>DEFAULT NOW()]
     end
-    
+
     PK1 --> FK1
     PK2 --> FK2
     PK3 --> FK1
-    
+
     UK1 --> CC1
     UK2 --> CC2
     CC3 --> DV1
@@ -557,14 +557,14 @@ graph TD
         E2E[E2E Tests<br/>Playwright]
         Visual[Visual Tests<br/>Playwright]
     end
-    
+
     subgraph "Test Coverage"
         Components[Components<br/>95%+]
         Hooks[Hooks<br/>90%+]
         Utils[Utils<br/>85%+]
         API[API Routes<br/>80%+]
     end
-    
+
     subgraph "Test Categories"
         Rendering[Rendering Tests]
         Interactions[Interaction Tests]
@@ -573,20 +573,20 @@ graph TD
         Accessibility[Accessibility Tests]
         Performance[Performance Tests]
     end
-    
+
     Unit --> Components
     Unit --> Hooks
     Unit --> Utils
-    
+
     Integration --> API
     Integration --> State
-    
+
     E2E --> Interactions
     E2E --> API
-    
+
     Visual --> Rendering
     Visual --> Accessibility
-    
+
     Components --> Rendering
     Components --> Interactions
     Hooks --> State
@@ -604,7 +604,7 @@ graph LR
         UnitTests[Unit Tests]
         Format[Prettier]
     end
-    
+
     subgraph "CI/CD (GitHub Actions)"
         Install[Install Dependencies]
         Build[Build Project]
@@ -613,24 +613,24 @@ graph LR
         E2E[E2E Tests]
         Deploy[Deploy to Vercel]
     end
-    
+
     subgraph "Quality Gates"
         CoverageGate[Coverage > 60%]
         TestGate[All Tests Pass]
         BuildGate[Build Success]
         SecurityGate[Security Scan]
     end
-    
+
     Lint --> TypeCheck
     TypeCheck --> UnitTests
     UnitTests --> Format
-    
+
     Install --> Build
     Build --> TestAll
     TestAll --> Coverage
     Coverage --> E2E
     E2E --> Deploy
-    
+
     Coverage --> CoverageGate
     TestAll --> TestGate
     Build --> BuildGate
@@ -650,7 +650,7 @@ graph TD
         Commit[Git Commit]
         Push[Push to GitHub]
     end
-    
+
     subgraph "GitHub Actions"
         Trigger[Workflow Trigger]
         Install[Install Dependencies]
@@ -659,36 +659,36 @@ graph TD
         Build[Build Project]
         Deploy[Deploy to Vercel]
     end
-    
+
     subgraph "Vercel"
         Preview[Preview Deployment]
         Production[Production Deployment]
         CDN[CDN Distribution]
         Analytics[Analytics]
     end
-    
+
     subgraph "Monitoring"
         Health[Health Checks]
         Performance[Performance Monitoring]
         Errors[Error Tracking]
         Uptime[Uptime Monitoring]
     end
-    
+
     Dev --> Commit
     Commit --> Push
     Push --> Trigger
-    
+
     Trigger --> Install
     Install --> Lint
     Lint --> Test
     Test --> Build
     Build --> Deploy
-    
+
     Deploy --> Preview
     Preview --> Production
     Production --> CDN
     CDN --> Analytics
-    
+
     Production --> Health
     Production --> Performance
     Production --> Errors
@@ -705,31 +705,31 @@ graph TD
         Staging[Staging<br/>staging.vytalle.com]
         Production[Production<br/>vytalle-estetica.vercel.app]
     end
-    
+
     subgraph "Database"
         LocalDB[Local Supabase<br/>Development]
         StagingDB[Staging Supabase<br/>Testing]
         ProdDB[Production Supabase<br/>Live Data]
     end
-    
+
     subgraph "Services"
         LocalAPI[Local API<br/>Edge Functions]
         StagingAPI[Staging API<br/>Edge Functions]
         ProdAPI[Production API<br/>Edge Functions]
     end
-    
+
     Local --> LocalDB
     Local --> LocalAPI
-    
+
     Preview --> StagingDB
     Preview --> StagingAPI
-    
+
     Staging --> StagingDB
     Staging --> StagingAPI
-    
+
     Production --> ProdDB
     Production --> ProdAPI
-    
+
     LocalDB --> StagingDB
     StagingDB --> ProdDB
 ```
@@ -747,36 +747,36 @@ graph TD
         FID[FID<br/>First Input Delay<br/>Target: < 100ms]
         CLS[CLS<br/>Cumulative Layout Shift<br/>Target: < 0.1]
     end
-    
+
     subgraph "Performance Metrics"
         TTFB[TTFB<br/>Time to First Byte<br/>Target: < 600ms]
         BundleSize[Bundle Size<br/>Target: < 350kB]
         LoadTime[Load Time<br/>Target: < 3s]
     end
-    
+
     subgraph "Business Metrics"
         Conversion[Conversion Rate<br/>Checkout Completion]
         Engagement[User Engagement<br/>Time on Site]
         Retention[User Retention<br/>Return Visits]
     end
-    
+
     subgraph "Technical Metrics"
         Uptime[Uptime<br/>Target: 99.9%]
         ErrorRate[Error Rate<br/>Target: < 0.1%]
         ResponseTime[API Response Time<br/>Target: < 200ms]
     end
-    
+
     LCP --> TTFB
     FID --> ResponseTime
     CLS --> BundleSize
-    
+
     TTFB --> LoadTime
     BundleSize --> LoadTime
-    
+
     LoadTime --> Conversion
     ResponseTime --> Engagement
     Uptime --> Retention
-    
+
     Conversion --> ErrorRate
     Engagement --> ErrorRate
     Retention --> ErrorRate
@@ -798,35 +798,35 @@ graph TD
         AdminUser[ADMIN_USERNAME]
         AdminPass[ADMIN_PASSWORD]
     end
-    
+
     subgraph "Optional Environment Variables"
         VercelToken[VERCEL_TOKEN]
         VercelOrg[VERCEL_ORG_ID]
         VercelProject[VERCEL_PROJECT_ID]
         SiteURL[NEXT_PUBLIC_SITE_URL]
     end
-    
+
     subgraph "Development"
         DevPort[PORT<br/>Default: 5174]
         DevHost[HOST<br/>Default: localhost]
     end
-    
+
     subgraph "Production"
         ProdURL[Production URL]
         ProdCDN[CDN Configuration]
         ProdSSL[SSL Certificate]
     end
-    
+
     SupabaseURL --> SupabaseKey
     SupabaseKey --> ServiceKey
     ServiceKey --> DBPassword
     DBPassword --> AdminUser
     AdminUser --> AdminPass
-    
+
     VercelToken --> VercelOrg
     VercelOrg --> VercelProject
     VercelProject --> SiteURL
-    
+
     DevPort --> DevHost
     DevHost --> ProdURL
     ProdURL --> ProdCDN
@@ -847,30 +847,30 @@ graph TD
         Icons[App Icons<br/>192x192, 512x512]
         Splash[Splash Screen<br/>Loading Screen]
     end
-    
+
     subgraph "PWA Features"
         Offline[Offline Support<br/>Cache Strategy]
         Install[Install Prompt<br/>Add to Home Screen]
         Push[Push Notifications<br/>Future Feature]
         Background[Background Sync<br/>Future Feature]
     end
-    
+
     subgraph "Mobile Optimization"
         Responsive[Responsive Design<br/>Mobile First]
         Touch[Touch Interactions<br/>Gesture Support]
         Performance[Mobile Performance<br/>Optimized Loading]
         Accessibility[Mobile Accessibility<br/>Screen Readers]
     end
-    
+
     Manifest --> Install
     ServiceWorker --> Offline
     Icons --> Install
     Splash --> Install
-    
+
     Offline --> Performance
     Install --> Touch
     Push --> Background
-    
+
     Responsive --> Touch
     Touch --> Performance
     Performance --> Accessibility
@@ -890,40 +890,40 @@ graph TD
         XSS[XSS Protection<br/>Input Sanitization]
         CSRF[CSRF Protection<br/>Token Validation]
     end
-    
+
     subgraph "Backend Security"
         RLS[Row Level Security<br/>Database Policies]
         Auth[JWT Authentication<br/>Token Management]
         RateLimit[Rate Limiting<br/>Request Throttling]
         Validation[Input Validation<br/>Data Sanitization]
     end
-    
+
     subgraph "Infrastructure Security"
         Headers[Security Headers<br/>HSTS, X-Frame-Options]
         WAF[Web Application Firewall<br/>DDoS Protection]
         Monitoring[Security Monitoring<br/>Threat Detection]
         Backup[Data Backup<br/>Disaster Recovery]
     end
-    
+
     subgraph "Compliance"
         LGPD[LGPD Compliance<br/>Data Protection]
         GDPR[GDPR Ready<br/>Privacy Controls]
         Audit[Audit Logging<br/>Activity Tracking]
         Encryption[Data Encryption<br/>At Rest & In Transit]
     end
-    
+
     CSP --> HTTPS
     HTTPS --> XSS
     XSS --> CSRF
-    
+
     RLS --> Auth
     Auth --> RateLimit
     RateLimit --> Validation
-    
+
     Headers --> WAF
     WAF --> Monitoring
     Monitoring --> Backup
-    
+
     LGPD --> GDPR
     GDPR --> Audit
     Audit --> Encryption
@@ -942,29 +942,29 @@ graph TD
         SingleDB[Single Supabase Instance]
         SingleCDN[Vercel CDN]
     end
-    
+
     subgraph "Scalability Path"
         Microservices[Microservices<br/>API Separation]
         Sharding[Database Sharding<br/>Horizontal Partitioning]
         LoadBalancer[Load Balancer<br/>Traffic Distribution]
         Caching[Redis Caching<br/>Session & Data]
     end
-    
+
     subgraph "Future Scaling"
         MultiRegion[Multi-Region Deployment<br/>Global Distribution]
         AutoScaling[Auto Scaling<br/>Dynamic Resources]
         EventDriven[Event-Driven Architecture<br/>Message Queues]
         Containerization[Container Orchestration<br/>Kubernetes]
     end
-    
+
     SingleApp --> Microservices
     SingleDB --> Sharding
     SingleCDN --> LoadBalancer
-    
+
     Microservices --> Caching
     Sharding --> MultiRegion
     LoadBalancer --> AutoScaling
-    
+
     Caching --> EventDriven
     MultiRegion --> Containerization
     AutoScaling --> Containerization
@@ -983,4 +983,4 @@ Estes diagramas representam fielmente a arquitetura atual do projeto Vytalle Est
 - **Medidas de segurança** em múltiplas camadas
 - **Estratégias de escalabilidade** para crescimento futuro
 
-Todos os diagramas são baseados no código real do projeto e refletem as decisões arquiteturais implementadas. 
+Todos os diagramas são baseados no código real do projeto e refletem as decisões arquiteturais implementadas.

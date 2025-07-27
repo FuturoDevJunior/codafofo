@@ -21,12 +21,14 @@
 ### ❌ Erro: "Cannot find module"
 
 **Sintomas:**
+
 ```bash
 Error: Cannot find module 'next'
 Error: Cannot find module '@supabase/supabase-js'
 ```
 
 **Solução:**
+
 ```bash
 # 1. Limpar cache e reinstalar
 rm -rf node_modules package-lock.json
@@ -45,12 +47,14 @@ npm install
 ### ❌ Erro: "Environment variables not found"
 
 **Sintomas:**
+
 ```bash
 Error: NEXT_PUBLIC_SUPABASE_URL is not defined
 Error: SUPABASE_SERVICE_ROLE_KEY is missing
 ```
 
 **Solução:**
+
 ```bash
 # 1. Verificar arquivo .env.local
 ls -la .env.local
@@ -68,6 +72,7 @@ grep -E "NEXT_PUBLIC_SUPABASE|SUPABASE_SERVICE|ADMIN_" .env.local
 ### ❌ Erro: "Port 3000 is already in use"
 
 **Solução:**
+
 ```bash
 # 1. Encontrar processo
 lsof -ti:3000
@@ -86,6 +91,7 @@ npm run dev -- -p 3001
 ### ❌ Erro: "Build failed"
 
 **Sintomas:**
+
 ```bash
 Error: Build failed
 Error: TypeScript compilation failed
@@ -93,6 +99,7 @@ Error: ESLint errors found
 ```
 
 **Solução:**
+
 ```bash
 # 1. Verificar TypeScript
 npm run type-check
@@ -116,12 +123,14 @@ npm run build
 ### ❌ Erro: "Module not found"
 
 **Sintomas:**
+
 ```bash
 Module not found: Can't resolve '@/components/ProductCard'
 Module not found: Can't resolve '@/lib/supabase'
 ```
 
 **Solução:**
+
 ```bash
 # 1. Verificar imports
 grep -r "import.*@/" src/
@@ -141,11 +150,13 @@ find . -name "supabase.ts"
 ### ❌ Erro: "Bundle size too large"
 
 **Sintomas:**
+
 ```bash
 Warning: Bundle size is 500KB (limit: 350KB)
 ```
 
 **Solução:**
+
 ```bash
 # 1. Analisar bundle
 npm run analyze
@@ -169,6 +180,7 @@ npm ls --depth=0
 ### ❌ Erro: "Database connection failed"
 
 **Sintomas:**
+
 ```bash
 Error: connect ECONNREFUSED
 Error: Invalid API key
@@ -176,6 +188,7 @@ Error: Database not found
 ```
 
 **Solução:**
+
 ```bash
 # 1. Verificar credenciais
 echo $NEXT_PUBLIC_SUPABASE_URL
@@ -194,12 +207,14 @@ npx supabase db reset --linked --yes
 ### ❌ Erro: "Migration failed"
 
 **Sintomas:**
+
 ```bash
 Error: Migration 001_products.sql failed
 Error: Table already exists
 ```
 
 **Solução:**
+
 ```bash
 # 1. Verificar migrations
 ls -la supabase/migrations/
@@ -218,12 +233,14 @@ npm run db:init
 ### ❌ Erro: "RLS policy error"
 
 **Sintomas:**
+
 ```bash
 Error: Row Level Security policy violation
 Error: Access denied to table
 ```
 
 **Solução:**
+
 ```bash
 # 1. Verificar policies
 npx supabase db diff --schema public
@@ -243,12 +260,14 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ### ❌ Erro: "Tests failing"
 
 **Sintomas:**
+
 ```bash
 FAIL  src/components/ProductCard.test.tsx
 Error: expect(received).toBe(expected)
 ```
 
 **Solução:**
+
 ```bash
 # 1. Rodar testes específicos
 npm run test ProductCard
@@ -266,11 +285,13 @@ npm run test:coverage
 ### ❌ Erro: "act() warnings"
 
 **Sintomas:**
+
 ```bash
 Warning: An update to Component inside a test was not wrapped in act(...)
 ```
 
 **Solução:**
+
 ```typescript
 // 1. Importar act
 import { act } from '@testing-library/react';
@@ -291,12 +312,14 @@ await waitFor(() => {
 ### ❌ Erro: "Mock not working"
 
 **Sintomas:**
+
 ```bash
 Error: Cannot find module 'framer-motion'
 Error: Mock not hoisted
 ```
 
 **Solução:**
+
 ```typescript
 // 1. Mover mocks para topo do arquivo
 vi.mock('framer-motion', () => ({
@@ -322,6 +345,7 @@ vi.mock('@/components/Component', () => ({
 ### ❌ Erro: "Deploy failed on Vercel"
 
 **Sintomas:**
+
 ```bash
 Error: Build failed
 Error: Environment variables missing
@@ -329,6 +353,7 @@ Error: TypeScript compilation failed
 ```
 
 **Solução:**
+
 ```bash
 # 1. Verificar build local
 npm run build
@@ -350,12 +375,14 @@ vercel rollback
 ### ❌ Erro: "Domain not working"
 
 **Sintomas:**
+
 ```bash
 Error: Domain not configured
 Error: SSL certificate failed
 ```
 
 **Solução:**
+
 ```bash
 # 1. Verificar domínio
 vercel domains ls
@@ -373,12 +400,14 @@ curl -I https://your-domain.com
 ### ❌ Erro: "Function timeout"
 
 **Sintomas:**
+
 ```bash
 Error: Function execution timeout
 Error: 504 Gateway Timeout
 ```
 
 **Solução:**
+
 ```typescript
 // 1. Otimizar queries
 const products = await supabase
@@ -405,6 +434,7 @@ const products = await supabase
 ### ❌ Erro: "Core Web Vitals poor"
 
 **Sintomas:**
+
 ```bash
 LCP: 4.2s (should be < 2.5s)
 FID: 150ms (should be < 100ms)
@@ -412,6 +442,7 @@ CLS: 0.15 (should be < 0.1)
 ```
 
 **Solução:**
+
 ```bash
 # 1. Analisar performance
 npm run lighthouse
@@ -433,18 +464,20 @@ npm run analyze
 ### ❌ Erro: "Memory leak"
 
 **Sintomas:**
+
 ```bash
 Warning: Can't perform a React state update on an unmounted component
 Error: Maximum call stack size exceeded
 ```
 
 **Solução:**
+
 ```typescript
 // 1. Limpar event listeners
 useEffect(() => {
   const handler = () => {};
   window.addEventListener('resize', handler);
-  
+
   return () => {
     window.removeEventListener('resize', handler);
   };
@@ -453,9 +486,9 @@ useEffect(() => {
 // 2. Usar AbortController
 useEffect(() => {
   const abortController = new AbortController();
-  
+
   fetch('/api/data', { signal: abortController.signal });
-  
+
   return () => {
     abortController.abort();
   };
@@ -469,12 +502,14 @@ useEffect(() => {
 ### ❌ Erro: "CSP violation"
 
 **Sintomas:**
+
 ```bash
 Error: Content Security Policy violation
 Error: Refused to load script
 ```
 
 **Solução:**
+
 ```typescript
 // 1. Configurar CSP no next.config.js
 const securityHeaders = [
@@ -494,12 +529,14 @@ npx csp-checker https://your-domain.com
 ### ❌ Erro: "Authentication failed"
 
 **Sintomas:**
+
 ```bash
 Error: Invalid JWT token
 Error: User not authenticated
 ```
 
 **Solução:**
+
 ```bash
 # 1. Verificar token
 jwt.io  # Decodificar token
@@ -714,4 +751,4 @@ uptime
 
 ---
 
-**Vytalle Estética - Troubleshooting profissional para seu negócio! 🚀** 
+**Vytalle Estética - Troubleshooting profissional para seu negócio! 🚀**

@@ -7,10 +7,10 @@ import ErrorBoundary from './ErrorBoundary';
 
 // Mock dos ícones Lucide
 vi.mock('lucide-react', () => ({
-  AlertTriangle: () => <div data-testid="alert-triangle-icon">AlertTriangle</div>,
-  RefreshCw: () => <div data-testid="refresh-icon">RefreshCw</div>,
-  Home: () => <div data-testid="home-icon">Home</div>,
-  Bug: () => <div data-testid="bug-icon">Bug</div>,
+  AlertTriangle: () => <div data-testid='alert-triangle-icon'>AlertTriangle</div>,
+  RefreshCw: () => <div data-testid='refresh-icon'>RefreshCw</div>,
+  Home: () => <div data-testid='home-icon'>Home</div>,
+  Bug: () => <div data-testid='bug-icon'>Bug</div>,
 }));
 
 // Mock do Button
@@ -33,7 +33,7 @@ const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {
   if (shouldThrow) {
     throw new Error('Erro de teste');
   }
-  return <div data-testid="success-component">Componente funcionando</div>;
+  return <div data-testid='success-component'>Componente funcionando</div>;
 };
 
 // Componente com erro de renderização
@@ -62,7 +62,7 @@ describe('ErrorBoundary', () => {
     it('deve renderizar children quando não há erro', () => {
       render(
         <ErrorBoundary>
-          <div data-testid="normal-content">Conteúdo normal</div>
+          <div data-testid='normal-content'>Conteúdo normal</div>
         </ErrorBoundary>
       );
 
@@ -73,9 +73,9 @@ describe('ErrorBoundary', () => {
     it('deve renderizar múltiplos children sem erro', () => {
       render(
         <ErrorBoundary>
-          <div data-testid="child1">Child 1</div>
-          <div data-testid="child2">Child 2</div>
-          <span data-testid="child3">Child 3</span>
+          <div data-testid='child1'>Child 1</div>
+          <div data-testid='child2'>Child 2</div>
+          <span data-testid='child3'>Child 3</span>
         </ErrorBoundary>
       );
 
@@ -110,7 +110,7 @@ describe('ErrorBoundary', () => {
     });
 
     it('deve exibir mensagem de erro personalizada quando fornecida', () => {
-      const customFallback = <div data-testid="custom-fallback">Erro customizado</div>;
+      const customFallback = <div data-testid='custom-fallback'>Erro customizado</div>;
 
       render(
         <ErrorBoundary fallback={customFallback}>

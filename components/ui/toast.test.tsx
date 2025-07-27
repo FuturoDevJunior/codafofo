@@ -19,7 +19,7 @@ describe('Toast UI', () => {
         <Toast open>
           <ToastTitle>Alerta</ToastTitle>
           <ToastDescription>Mensagem</ToastDescription>
-          <ToastAction altText="Desfazer">Desfazer</ToastAction>
+          <ToastAction altText='Desfazer'>Desfazer</ToastAction>
           <ToastClose>Fechar</ToastClose>
         </Toast>
         <ToastViewport />

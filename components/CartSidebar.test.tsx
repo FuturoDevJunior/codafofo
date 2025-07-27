@@ -20,7 +20,7 @@ vi.mock('framer-motion', () => ({
 // Mock do SmartImage
 vi.mock('@/components/SmartImage', () => ({
   default: ({ src, alt, className }: any) => (
-    <div className={className} data-testid="smart-image" aria-label={alt}>
+    <div className={className} data-testid='smart-image' aria-label={alt}>
       Mock: {src}
     </div>
   ),

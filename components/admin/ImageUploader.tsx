@@ -143,55 +143,55 @@ export default function ImageUploader({
   };
 
   return (
-    <div className="space-y-6" data-testid="image-uploader">
+    <div className='space-y-6' data-testid='image-uploader'>
       {/* Header */}
-      <div className="space-y-2">
-        <h3 className="flex items-center gap-2 text-xl font-bold text-vitale-primary">
-          <ImageIcon className="h-6 w-6" />
+      <div className='space-y-2'>
+        <h3 className='flex items-center gap-2 text-xl font-bold text-vitale-primary'>
+          <ImageIcon className='h-6 w-6' />
           Gerenciar Imagens do Produto
         </h3>
-        <p className="text-neutral-600">
+        <p className='text-neutral-600'>
           <strong>{productName}</strong> - {(currentImages || []).length}/{maxImages} imagens
         </p>
       </div>
 
       {/* Mensagens de feedback */}
       {error && (
-        <div className="bg-red-50 border-red-200 flex items-start gap-3 rounded-xl border-2 p-4">
-          <AlertCircle className="text-red-600 mt-0.5 h-5 w-5 flex-shrink-0" />
+        <div className='bg-red-50 border-red-200 flex items-start gap-3 rounded-xl border-2 p-4'>
+          <AlertCircle className='text-red-600 mt-0.5 h-5 w-5 flex-shrink-0' />
           <div>
-            <p className="text-red-800 font-medium">Erro</p>
-            <p className="text-red-700 text-sm">{error}</p>
+            <p className='text-red-800 font-medium'>Erro</p>
+            <p className='text-red-700 text-sm'>{error}</p>
           </div>
           <button
             onClick={() => setError(null)}
-            className="text-red-600 hover:text-red-800 ml-auto"
-            title="Fechar mensagem de erro"
+            className='text-red-600 hover:text-red-800 ml-auto'
+            title='Fechar mensagem de erro'
           >
-            <X className="h-4 w-4" />
+            <X className='h-4 w-4' />
           </button>
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 border-green-200 flex items-start gap-3 rounded-xl border-2 p-4">
-          <Check className="text-green-600 mt-0.5 h-5 w-5 flex-shrink-0" />
+        <div className='bg-green-50 border-green-200 flex items-start gap-3 rounded-xl border-2 p-4'>
+          <Check className='text-green-600 mt-0.5 h-5 w-5 flex-shrink-0' />
           <div>
-            <p className="text-green-800 font-medium">Sucesso</p>
-            <p className="text-green-700 text-sm">{success}</p>
+            <p className='text-green-800 font-medium'>Sucesso</p>
+            <p className='text-green-700 text-sm'>{success}</p>
           </div>
           <button
             onClick={() => setSuccess(null)}
-            className="text-green-600 hover:text-green-800 ml-auto"
-            title="Fechar mensagem de sucesso"
+            className='text-green-600 hover:text-green-800 ml-auto'
+            title='Fechar mensagem de sucesso'
           >
-            <X className="h-4 w-4" />
+            <X className='h-4 w-4' />
           </button>
         </div>
       )}
 
       {/* Upload Area */}
-      <div className="space-y-4">
+      <div className='space-y-4'>
         <div
           className={`rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
             isUploading
@@ -201,32 +201,32 @@ export default function ImageUploader({
         >
           <input
             ref={fileInputRef}
-            type="file"
+            type='file'
             multiple
-            accept="image/jpeg,image/jpg,image/png,image/webp"
+            accept='image/jpeg,image/jpg,image/png,image/webp'
             onChange={handleFileSelect}
             disabled={isUploading || (currentImages || []).length >= maxImages}
-            className="hidden"
-            id="image-upload"
-            data-testid="mock-upload-input"
-            title="Upload de imagem"
+            className='hidden'
+            id='image-upload'
+            data-testid='mock-upload-input'
+            title='Upload de imagem'
           />
 
-          <div className="space-y-4">
-            <div className="flex justify-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-vitale-primary/10">
+          <div className='space-y-4'>
+            <div className='flex justify-center'>
+              <div className='flex h-16 w-16 items-center justify-center rounded-full bg-vitale-primary/10'>
                 <Upload
                   className={`h-8 w-8 text-vitale-primary ${isUploading ? 'animate-bounce' : ''}`}
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <h4 className="text-lg font-semibold text-vitale-primary">
+            <div className='space-y-2'>
+              <h4 className='text-lg font-semibold text-vitale-primary'>
                 {isUploading ? 'Enviando imagens...' : 'Adicionar Novas Imagens'}
               </h4>
-              <p className="text-neutral-600">Clique para selecionar ou arraste as imagens aqui</p>
-              <p className="text-sm text-neutral-500">
+              <p className='text-neutral-600'>Clique para selecionar ou arraste as imagens aqui</p>
+              <p className='text-sm text-neutral-500'>
                 JPG, PNG, WEBP até 5MB cada • Máximo {maxImages} imagens
               </p>
             </div>
@@ -234,8 +234,8 @@ export default function ImageUploader({
             <Button
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading || (currentImages || []).length >= maxImages}
-              className="text-white rounded-xl bg-vitale-primary px-6 py-3 hover:bg-vitale-secondary"
-              data-testid="mock-upload-button"
+              className='text-white rounded-xl bg-vitale-primary px-6 py-3 hover:bg-vitale-secondary'
+              data-testid='mock-upload-button'
             >
               {isUploading ? 'Enviando...' : 'Selecionar Imagens'}
             </Button>
@@ -244,16 +244,16 @@ export default function ImageUploader({
 
         {/* Progress bars */}
         {Object.keys(uploadProgress).length > 0 && (
-          <div className="space-y-2">
+          <div className='space-y-2'>
             {Object.entries(uploadProgress).map(([fileName, progress]) => (
-              <div key={fileName} className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span className="truncate text-neutral-700">{fileName}</span>
-                  <span className="font-medium text-vitale-primary">{progress}%</span>
+              <div key={fileName} className='space-y-1'>
+                <div className='flex justify-between text-sm'>
+                  <span className='truncate text-neutral-700'>{fileName}</span>
+                  <span className='font-medium text-vitale-primary'>{progress}%</span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-neutral-200">
+                <div className='h-2 w-full rounded-full bg-neutral-200'>
                   <div
-                    className="h-2 rounded-full bg-vitale-primary transition-all duration-300"
+                    className='h-2 rounded-full bg-vitale-primary transition-all duration-300'
                     style={{ width: `${progress}%` }}
                   />
                 </div>
@@ -265,43 +265,43 @@ export default function ImageUploader({
 
       {/* Current Images Grid */}
       {currentImages.length > 0 && (
-        <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-vitale-primary">
+        <div className='space-y-4'>
+          <h4 className='text-lg font-semibold text-vitale-primary'>
             Imagens Atuais ({currentImages.length})
           </h4>
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'>
             {currentImages.map((imageUrl, index) => (
               <div
                 key={index}
-                className="bg-white group relative overflow-hidden rounded-xl border-2 border-vitale-primary/20 shadow-md transition-shadow hover:shadow-lg"
+                className='bg-white group relative overflow-hidden rounded-xl border-2 border-vitale-primary/20 shadow-md transition-shadow hover:shadow-lg'
               >
-                <div className="relative aspect-square">
+                <div className='relative aspect-square'>
                   <Image
                     src={imageUrl}
                     alt={`${productName} - Imagem ${index + 1}`}
                     fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className='object-cover'
+                    sizes='(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw'
                   />
 
                   {/* Overlay com botão remover */}
-                  <div className="bg-black/50 absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
+                  <div className='bg-black/50 absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100'>
                     <Button
                       onClick={() => handleRemoveImage(imageUrl, index)}
-                      variant="destructive"
-                      size="sm"
-                      className="bg-red-600 hover:bg-red-700 text-white rounded-full p-2"
-                      title="Remover imagem"
+                      variant='destructive'
+                      size='sm'
+                      className='bg-red-600 hover:bg-red-700 text-white rounded-full p-2'
+                      title='Remover imagem'
                     >
-                      <X className="h-4 w-4" />
-                      <span className="sr-only">Remover</span>
+                      <X className='h-4 w-4' />
+                      <span className='sr-only'>Remover</span>
                     </Button>
                   </div>
                 </div>
 
-                <div className="p-2">
-                  <p className="truncate text-center text-xs text-neutral-600">
+                <div className='p-2'>
+                  <p className='truncate text-center text-xs text-neutral-600'>
                     Imagem {index + 1}
                   </p>
                 </div>
@@ -312,9 +312,9 @@ export default function ImageUploader({
       )}
 
       {/* Help text */}
-      <div className="bg-blue-50 border-blue-200 rounded-xl border-2 p-4">
-        <h5 className="text-blue-800 mb-2 font-semibold">💡 Dicas importantes:</h5>
-        <ul className="text-blue-700 space-y-1 text-sm">
+      <div className='bg-blue-50 border-blue-200 rounded-xl border-2 p-4'>
+        <h5 className='text-blue-800 mb-2 font-semibold'>💡 Dicas importantes:</h5>
+        <ul className='text-blue-700 space-y-1 text-sm'>
           <li>• Use imagens de alta qualidade (mínimo 800x800px)</li>
           <li>• A primeira imagem será a principal do produto</li>
           <li>• Imagens em formato quadrado funcionam melhor</li>

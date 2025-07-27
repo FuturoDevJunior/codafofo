@@ -165,35 +165,35 @@ export default function AdminDashboard({
   };
 
   return (
-    <div className="dashboard-container">
+    <div className='dashboard-container'>
       {/* Header Administrativo */}
-      <header className="dashboard-header">
-        <div className="container-responsive px-spacing-md py-spacing-md">
-          <div className="dashboard-header-content">
-            <div className="dashboard-brand">
-              <div className="icon-container bg-primary">
-                <Settings className="text-white icon-lg" />
+      <header className='dashboard-header'>
+        <div className='container-responsive px-spacing-md py-spacing-md'>
+          <div className='dashboard-header-content'>
+            <div className='dashboard-brand'>
+              <div className='icon-container bg-primary'>
+                <Settings className='text-white icon-lg' />
               </div>
               <div>
-                <h1 className="dashboard-title">Dashboard Administrativo</h1>
-                <p className="dashboard-subtitle">
-                  Bem-vindo, <span className="font-semibold">{user.email}</span> • Vytalle Estética
+                <h1 className='dashboard-title'>Dashboard Administrativo</h1>
+                <p className='dashboard-subtitle'>
+                  Bem-vindo, <span className='font-semibold'>{user.email}</span> • Vytalle Estética
                   & Viscosuplementação
                 </p>
               </div>
             </div>
-            <div className="dashboard-actions">
+            <div className='dashboard-actions'>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="btn-success btn-lg">
-                    <Plus className="icon-md" />
-                    <span className="hidden sm:inline">Novo Produto</span>
-                    <span className="sm:hidden">Novo</span>
+                  <Button className='btn-success btn-lg'>
+                    <Plus className='icon-md' />
+                    <span className='hidden sm:inline'>Novo Produto</span>
+                    <span className='sm:hidden'>Novo</span>
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+                <DialogContent className='max-h-[90vh] max-w-4xl overflow-y-auto'>
                   <DialogHeader>
-                    <DialogTitle className="text-vitale-primary">
+                    <DialogTitle className='text-vitale-primary'>
                       Adicionar Novo Produto
                     </DialogTitle>
                     <DialogDescription>Preencha todas as informações do produto</DialogDescription>
@@ -204,84 +204,84 @@ export default function AdminDashboard({
 
               <Button
                 onClick={() => (window.location.href = '/admin/customization')}
-                className="btn-outline btn-lg"
-                aria-label="Personalizar site"
+                className='btn-outline btn-lg'
+                aria-label='Personalizar site'
               >
-                <Palette className="icon-md" />
-                <span className="hidden sm:inline">Personalizar</span>
-                <span className="sm:hidden">Personalizar</span>
+                <Palette className='icon-md' />
+                <span className='hidden sm:inline'>Personalizar</span>
+                <span className='sm:hidden'>Personalizar</span>
               </Button>
 
               <Button
                 onClick={handleLogout}
-                className="btn-danger btn-lg"
-                aria-label="Sair do painel administrativo"
+                className='btn-danger btn-lg'
+                aria-label='Sair do painel administrativo'
               >
-                <LogOut className="icon-md" />
-                <span className="hidden sm:inline">Sair</span>
+                <LogOut className='icon-md' />
+                <span className='hidden sm:inline'>Sair</span>
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="dashboard-content">
+      <div className='dashboard-content'>
         {/* Estatísticas */}
-        <div className="stats-grid" data-testid="admin-stats">
-          <section className="stats-card" aria-label="Total de produtos">
-            <div className="stats-content">
-              <div className="stats-icon bg-primary">
-                <Package className="icon-md text-white" />
+        <div className='stats-grid' data-testid='admin-stats'>
+          <section className='stats-card' aria-label='Total de produtos'>
+            <div className='stats-content'>
+              <div className='stats-icon bg-primary'>
+                <Package className='icon-md text-white' />
               </div>
               <div>
-                <h3 className="stats-label">Total</h3>
-                <p className="stats-value text-primary">{stats.totalProducts}</p>
+                <h3 className='stats-label'>Total</h3>
+                <p className='stats-value text-primary'>{stats.totalProducts}</p>
               </div>
             </div>
           </section>
           <section
-            className="bg-white border-green-200 rounded-xl border-2 p-3 shadow-lg sm:p-4 lg:p-6"
-            aria-label="Produtos ativos"
+            className='bg-white border-green-200 rounded-xl border-2 p-3 shadow-lg sm:p-4 lg:p-6'
+            aria-label='Produtos ativos'
           >
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-green-100 flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10">
-                <BarChart3 className="text-green-600 h-4 w-4 sm:h-5 sm:w-5" />
+            <div className='flex items-center gap-2 sm:gap-3'>
+              <div className='bg-green-100 flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10'>
+                <BarChart3 className='text-green-600 h-4 w-4 sm:h-5 sm:w-5' />
               </div>
               <div>
-                <h3 className="text-green-700 text-xs font-semibold sm:text-sm">Ativos</h3>
-                <p className="text-green-700 text-lg font-bold sm:text-xl lg:text-2xl">
+                <h3 className='text-green-700 text-xs font-semibold sm:text-sm'>Ativos</h3>
+                <p className='text-green-700 text-lg font-bold sm:text-xl lg:text-2xl'>
                   {stats.activeProducts}
                 </p>
               </div>
             </div>
           </section>
           <section
-            className="bg-white border-blue-200 rounded-xl border-2 p-3 shadow-lg sm:p-4 lg:p-6"
-            aria-label="Categorias"
+            className='bg-white border-blue-200 rounded-xl border-2 p-3 shadow-lg sm:p-4 lg:p-6'
+            aria-label='Categorias'
           >
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-blue-100 flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10">
-                <Filter className="text-blue-600 h-4 w-4 sm:h-5 sm:w-5" />
+            <div className='flex items-center gap-2 sm:gap-3'>
+              <div className='bg-blue-100 flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10'>
+                <Filter className='text-blue-600 h-4 w-4 sm:h-5 sm:w-5' />
               </div>
               <div>
-                <h3 className="text-blue-700 text-xs font-semibold sm:text-sm">Categorias</h3>
-                <p className="text-blue-700 text-lg font-bold sm:text-xl lg:text-2xl">
+                <h3 className='text-blue-700 text-xs font-semibold sm:text-sm'>Categorias</h3>
+                <p className='text-blue-700 text-lg font-bold sm:text-xl lg:text-2xl'>
                   {stats.categories}
                 </p>
               </div>
             </div>
           </section>
           <section
-            className="bg-white border-purple-200 rounded-xl border-2 p-3 shadow-lg sm:p-4 lg:p-6"
-            aria-label="Fornecedores"
+            className='bg-white border-purple-200 rounded-xl border-2 p-3 shadow-lg sm:p-4 lg:p-6'
+            aria-label='Fornecedores'
           >
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="bg-purple-100 flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10">
-                <Users className="text-purple-600 h-4 w-4 sm:h-5 sm:w-5" />
+            <div className='flex items-center gap-2 sm:gap-3'>
+              <div className='bg-purple-100 flex h-8 w-8 items-center justify-center rounded-lg sm:h-10 sm:w-10'>
+                <Users className='text-purple-600 h-4 w-4 sm:h-5 sm:w-5' />
               </div>
               <div>
-                <h3 className="text-purple-700 text-xs font-semibold sm:text-sm">Fornecedores</h3>
-                <p className="text-purple-700 text-lg font-bold sm:text-xl lg:text-2xl">
+                <h3 className='text-purple-700 text-xs font-semibold sm:text-sm'>Fornecedores</h3>
+                <p className='text-purple-700 text-lg font-bold sm:text-xl lg:text-2xl'>
                   {stats.suppliers}
                 </p>
               </div>
@@ -290,35 +290,35 @@ export default function AdminDashboard({
         </div>
 
         {/* Filtros e Ações */}
-        <div className="filters-card">
-          <div className="filters-grid">
+        <div className='filters-card'>
+          <div className='filters-grid'>
             {/* Busca */}
-            <div className="search-container">
-              <Label htmlFor="admin-search" className="form-label mb-spacing-xs">
+            <div className='search-container'>
+              <Label htmlFor='admin-search' className='form-label mb-spacing-xs'>
                 Buscar Produtos
               </Label>
               <Input
-                id="admin-search"
-                placeholder="Nome, categoria, descrição..."
+                id='admin-search'
+                placeholder='Nome, categoria, descrição...'
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                className="input-primary"
-                aria-label="Buscar produtos por nome, categoria ou descrição"
+                className='input-primary'
+                aria-label='Buscar produtos por nome, categoria ou descrição'
               />
             </div>
             {/* Filtro Categoria */}
-            <div className="sm:col-span-1">
-              <Label htmlFor="admin-category" variant="default" size="sm" className="mb-2">
+            <div className='sm:col-span-1'>
+              <Label htmlFor='admin-category' variant='default' size='sm' className='mb-2'>
                 Categoria
               </Label>
               <select
-                id="admin-category"
+                id='admin-category'
                 value={selectedCategory}
                 onChange={e => setSelectedCategory(e.target.value)}
-                className="w-full rounded-xl border-2 border-vitale-primary/30 p-3 text-base focus:border-vitale-primary focus:outline-none focus:ring-2 focus:ring-vitale-primary/20"
-                aria-label="Filtrar por categoria"
+                className='w-full rounded-xl border-2 border-vitale-primary/30 p-3 text-base focus:border-vitale-primary focus:outline-none focus:ring-2 focus:ring-vitale-primary/20'
+                aria-label='Filtrar por categoria'
               >
-                <option value="">Todas as categorias</option>
+                <option value=''>Todas as categorias</option>
                 {categories.map(category => (
                   <option key={category} value={category}>
                     {category}
@@ -327,18 +327,18 @@ export default function AdminDashboard({
               </select>
             </div>
             {/* Filtro Fornecedor */}
-            <div className="sm:col-span-1">
-              <Label htmlFor="admin-supplier" variant="default" size="sm" className="mb-2">
+            <div className='sm:col-span-1'>
+              <Label htmlFor='admin-supplier' variant='default' size='sm' className='mb-2'>
                 Fornecedor
               </Label>
               <select
-                id="admin-supplier"
+                id='admin-supplier'
                 value={selectedSupplier}
                 onChange={e => setSelectedSupplier(e.target.value)}
-                className="w-full rounded-xl border-2 border-vitale-primary/30 p-3 text-base focus:border-vitale-primary focus:outline-none focus:ring-2 focus:ring-vitale-primary/20"
-                aria-label="Filtrar por fornecedor"
+                className='w-full rounded-xl border-2 border-vitale-primary/30 p-3 text-base focus:border-vitale-primary focus:outline-none focus:ring-2 focus:ring-vitale-primary/20'
+                aria-label='Filtrar por fornecedor'
               >
-                <option value="">Todos os fornecedores</option>
+                <option value=''>Todos os fornecedores</option>
                 {suppliers.map(supplier => (
                   <option key={supplier.id} value={supplier.id}>
                     {supplier.name}
@@ -349,20 +349,20 @@ export default function AdminDashboard({
           </div>
 
           {/* Botão Exportar */}
-          <div className="mt-4 flex justify-end">
+          <div className='mt-4 flex justify-end'>
             <Button
               onClick={exportToCSV}
-              className="bg-blue-600 hover:bg-blue-700 text-white flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl px-6 py-3 sm:w-auto"
-              aria-label="Exportar produtos para CSV"
+              className='bg-blue-600 hover:bg-blue-700 text-white flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl px-6 py-3 sm:w-auto'
+              aria-label='Exportar produtos para CSV'
             >
-              <Download className="h-5 w-5" />
-              <span className="hidden sm:inline">Exportar CSV</span>
-              <span className="sm:hidden">Exportar</span>
+              <Download className='h-5 w-5' />
+              <span className='hidden sm:inline'>Exportar CSV</span>
+              <span className='sm:hidden'>Exportar</span>
             </Button>
           </div>
           {/* Resultados */}
-          <div className="mt-4 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
-            <p className="text-sm text-neutral-600" data-testid="products-count">
+          <div className='mt-4 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center'>
+            <p className='text-sm text-neutral-600' data-testid='products-count'>
               <strong>{filteredProducts.length}</strong> produto(s) encontrado(s)
             </p>
             {(searchTerm || selectedCategory || selectedSupplier) && (
@@ -372,10 +372,10 @@ export default function AdminDashboard({
                   setSelectedCategory('');
                   setSelectedSupplier('');
                 }}
-                variant="outline"
-                size="sm"
-                className="text-neutral-600 hover:text-vitale-primary"
-                aria-label="Limpar filtros"
+                variant='outline'
+                size='sm'
+                className='text-neutral-600 hover:text-vitale-primary'
+                aria-label='Limpar filtros'
               >
                 Limpar Filtros
               </Button>
@@ -384,73 +384,73 @@ export default function AdminDashboard({
         </div>
 
         {/* Tabela de Produtos */}
-        <div className="table-container">
-          <div className="table-header">
-            <h2 className="table-title">Gerenciar Produtos ({filteredProducts.length})</h2>
+        <div className='table-container'>
+          <div className='table-header'>
+            <h2 className='table-title'>Gerenciar Produtos ({filteredProducts.length})</h2>
           </div>
 
-          <div className="overflow-x-auto">
-            <Table className="min-w-[800px] lg:min-w-[900px]">
+          <div className='overflow-x-auto'>
+            <Table className='min-w-[800px] lg:min-w-[900px]'>
               <TableHeader>
-                <TableRow className="bg-vitale-primary/5">
-                  <TableHead className="min-w-[50px] text-xs font-bold text-vitale-primary lg:min-w-[60px] lg:text-sm">
+                <TableRow className='bg-vitale-primary/5'>
+                  <TableHead className='min-w-[50px] text-xs font-bold text-vitale-primary lg:min-w-[60px] lg:text-sm'>
                     Imagem
                   </TableHead>
-                  <TableHead className="min-w-[150px] text-xs font-bold text-vitale-primary lg:min-w-[200px] lg:text-sm">
+                  <TableHead className='min-w-[150px] text-xs font-bold text-vitale-primary lg:min-w-[200px] lg:text-sm'>
                     Nome
                   </TableHead>
-                  <TableHead className="min-w-[100px] text-xs font-bold text-vitale-primary lg:min-w-[120px] lg:text-sm">
+                  <TableHead className='min-w-[100px] text-xs font-bold text-vitale-primary lg:min-w-[120px] lg:text-sm'>
                     Categoria
                   </TableHead>
-                  <TableHead className="min-w-[80px] text-xs font-bold text-vitale-primary lg:min-w-[100px] lg:text-sm">
+                  <TableHead className='min-w-[80px] text-xs font-bold text-vitale-primary lg:min-w-[100px] lg:text-sm'>
                     Preço PIX
                   </TableHead>
-                  <TableHead className="min-w-[80px] text-xs font-bold text-vitale-primary lg:min-w-[100px] lg:text-sm">
+                  <TableHead className='min-w-[80px] text-xs font-bold text-vitale-primary lg:min-w-[100px] lg:text-sm'>
                     Preço Cartão
                   </TableHead>
-                  <TableHead className="min-w-[60px] text-xs font-bold text-vitale-primary lg:min-w-[80px] lg:text-sm">
+                  <TableHead className='min-w-[60px] text-xs font-bold text-vitale-primary lg:min-w-[80px] lg:text-sm'>
                     Status
                   </TableHead>
-                  <TableHead className="min-w-[80px] text-xs font-bold text-vitale-primary lg:min-w-[100px] lg:text-sm">
+                  <TableHead className='min-w-[80px] text-xs font-bold text-vitale-primary lg:min-w-[100px] lg:text-sm'>
                     Imagens
                   </TableHead>
-                  <TableHead className="min-w-[150px] text-xs font-bold text-vitale-primary lg:min-w-[200px] lg:text-sm">
+                  <TableHead className='min-w-[150px] text-xs font-bold text-vitale-primary lg:min-w-[200px] lg:text-sm'>
                     Ações
                   </TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody data-testid="products-tbody">
+              <TableBody data-testid='products-tbody'>
                 {filteredProducts.map(product => (
-                  <TableRow key={product.id} className="hover:bg-vitale-primary/5">
+                  <TableRow key={product.id} className='hover:bg-vitale-primary/5'>
                     {/* Imagem Principal */}
                     <TableCell>
-                      <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-vitale-primary/10 lg:h-12 lg:w-12">
+                      <div className='flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-vitale-primary/10 lg:h-12 lg:w-12'>
                         {product.images?.[0] ? (
                           <Image
                             src={product.images[0]}
                             alt={product.name}
                             width={48}
                             height={48}
-                            className="h-full w-full object-cover"
+                            className='h-full w-full object-cover'
                           />
                         ) : (
-                          <Package className="h-4 w-4 text-vitale-primary lg:h-6 lg:w-6" />
+                          <Package className='h-4 w-4 text-vitale-primary lg:h-6 lg:w-6' />
                         )}
                       </div>
                     </TableCell>
 
                     {/* Nome */}
-                    <TableCell className="font-medium">
-                      <div className="max-w-[150px] lg:max-w-[200px]">
+                    <TableCell className='font-medium'>
+                      <div className='max-w-[150px] lg:max-w-[200px]'>
                         <p
-                          className="truncate text-xs font-bold text-vitale-primary lg:text-sm"
+                          className='truncate text-xs font-bold text-vitale-primary lg:text-sm'
                           title={product.name}
                         >
                           {product.name}
                         </p>
                         {product.description && (
                           <p
-                            className="truncate text-xs text-neutral-600 lg:text-sm"
+                            className='truncate text-xs text-neutral-600 lg:text-sm'
                             title={product.description}
                           >
                             {product.description}
@@ -461,16 +461,16 @@ export default function AdminDashboard({
 
                     {/* Categoria */}
                     <TableCell>
-                      <span className="rounded-full bg-vitale-primary/10 px-1 py-0.5 text-xs font-semibold text-vitale-primary lg:px-2 lg:py-1">
+                      <span className='rounded-full bg-vitale-primary/10 px-1 py-0.5 text-xs font-semibold text-vitale-primary lg:px-2 lg:py-1'>
                         {product.category || 'Sem categoria'}
                       </span>
                     </TableCell>
 
                     {/* Preços */}
-                    <TableCell className="text-green-700 text-xs font-semibold lg:text-sm">
+                    <TableCell className='text-green-700 text-xs font-semibold lg:text-sm'>
                       {formatCurrency(product.price_pix || 0)}
                     </TableCell>
-                    <TableCell className="text-blue-700 text-xs font-semibold lg:text-sm">
+                    <TableCell className='text-blue-700 text-xs font-semibold lg:text-sm'>
                       {formatCurrency(product.price_card || 0)}
                     </TableCell>
 
@@ -489,9 +489,9 @@ export default function AdminDashboard({
 
                     {/* Contador de Imagens */}
                     <TableCell>
-                      <div className="flex items-center gap-1 lg:gap-2">
-                        <ImageIcon className="h-3 w-3 text-vitale-primary lg:h-4 lg:w-4" />
-                        <span className="text-xs font-medium text-vitale-primary lg:text-sm">
+                      <div className='flex items-center gap-1 lg:gap-2'>
+                        <ImageIcon className='h-3 w-3 text-vitale-primary lg:h-4 lg:w-4' />
+                        <span className='text-xs font-medium text-vitale-primary lg:text-sm'>
                           {product.images?.length || 0}
                         </span>
                       </div>
@@ -499,21 +499,21 @@ export default function AdminDashboard({
 
                     {/* Ações */}
                     <TableCell>
-                      <div className="flex flex-wrap gap-1 lg:gap-2">
+                      <div className='flex flex-wrap gap-1 lg:gap-2'>
                         {/* Editar Produto */}
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button
-                              size="sm"
-                              className="text-white h-8 min-w-[32px] bg-vitale-primary hover:bg-vitale-secondary lg:h-9 lg:min-w-[40px]"
-                              title="Editar produto"
+                              size='sm'
+                              className='text-white h-8 min-w-[32px] bg-vitale-primary hover:bg-vitale-secondary lg:h-9 lg:min-w-[40px]'
+                              title='Editar produto'
                             >
-                              <Edit className="h-3 w-3 lg:h-4 lg:w-4" />
+                              <Edit className='h-3 w-3 lg:h-4 lg:w-4' />
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+                          <DialogContent className='max-h-[90vh] max-w-4xl overflow-y-auto'>
                             <DialogHeader>
-                              <DialogTitle className="text-vitale-primary">
+                              <DialogTitle className='text-vitale-primary'>
                                 Editar: {product.name}
                               </DialogTitle>
                               <DialogDescription>
@@ -521,22 +521,22 @@ export default function AdminDashboard({
                               </DialogDescription>
                             </DialogHeader>
 
-                            <Tabs defaultValue="details" className="mt-6">
-                              <TabsList className="grid w-full grid-cols-2">
-                                <TabsTrigger value="details">Detalhes</TabsTrigger>
-                                <TabsTrigger value="images">
+                            <Tabs defaultValue='details' className='mt-6'>
+                              <TabsList className='grid w-full grid-cols-2'>
+                                <TabsTrigger value='details'>Detalhes</TabsTrigger>
+                                <TabsTrigger value='images'>
                                   Imagens ({product.images?.length || 0})
                                 </TabsTrigger>
                               </TabsList>
 
-                              <TabsContent value="details" className="mt-6">
+                              <TabsContent value='details' className='mt-6'>
                                 <AdminFormComplete
                                   product={product as any}
                                   onSuccess={() => window.location.reload()}
                                 />
                               </TabsContent>
 
-                              <TabsContent value="images" className="mt-6">
+                              <TabsContent value='images' className='mt-6'>
                                 <ImageUploader
                                   productId={product.id}
                                   productName={product.name}
@@ -545,7 +545,7 @@ export default function AdminDashboard({
                                     handleImageUpdate(product.id, newImages)
                                   }
                                   maxImages={5}
-                                  data-testid="mock-upload-button"
+                                  data-testid='mock-upload-button'
                                 />
                               </TabsContent>
                             </Tabs>
@@ -556,16 +556,16 @@ export default function AdminDashboard({
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button
-                              size="sm"
-                              className="bg-blue-600 hover:bg-blue-700 text-white h-8 min-w-[32px] lg:h-9 lg:min-w-[40px]"
-                              title="Gerenciar imagens"
+                              size='sm'
+                              className='bg-blue-600 hover:bg-blue-700 text-white h-8 min-w-[32px] lg:h-9 lg:min-w-[40px]'
+                              title='Gerenciar imagens'
                             >
-                              <ImageIcon className="h-3 w-3 lg:h-4 lg:w-4" />
+                              <ImageIcon className='h-3 w-3 lg:h-4 lg:w-4' />
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-h-[90vh] max-w-6xl overflow-y-auto">
+                          <DialogContent className='max-h-[90vh] max-w-6xl overflow-y-auto'>
                             <DialogHeader>
-                              <DialogTitle className="text-vitale-primary">
+                              <DialogTitle className='text-vitale-primary'>
                                 Imagens: {product.name}
                               </DialogTitle>
                               <DialogDescription>
@@ -585,23 +585,23 @@ export default function AdminDashboard({
 
                         {/* Ver Produto */}
                         <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-8 min-w-[32px] border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary/10 lg:h-9 lg:min-w-[40px]"
+                          size='sm'
+                          variant='outline'
+                          className='h-8 min-w-[32px] border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary/10 lg:h-9 lg:min-w-[40px]'
                           onClick={() => window.open(`/products/${product.slug}`, '_blank')}
-                          title="Ver produto no site"
+                          title='Ver produto no site'
                         >
-                          <Eye className="h-3 w-3 lg:h-4 lg:w-4" />
+                          <Eye className='h-3 w-3 lg:h-4 lg:w-4' />
                         </Button>
 
                         {/* Excluir */}
                         <Button
-                          size="sm"
-                          className="bg-red-600 hover:bg-red-700 text-white h-8 min-w-[32px] lg:h-9 lg:min-w-[40px]"
+                          size='sm'
+                          className='bg-red-600 hover:bg-red-700 text-white h-8 min-w-[32px] lg:h-9 lg:min-w-[40px]'
                           onClick={() => handleDeleteProduct(product.id, product.name)}
-                          title="Excluir produto"
+                          title='Excluir produto'
                         >
-                          <Trash2 className="h-3 w-3 lg:h-4 lg:w-4" />
+                          <Trash2 className='h-3 w-3 lg:h-4 lg:w-4' />
                         </Button>
                       </div>
                     </TableCell>
@@ -613,14 +613,14 @@ export default function AdminDashboard({
 
           {/* Estado vazio */}
           {filteredProducts.length === 0 && (
-            <div className="p-12 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-vitale-primary/20">
-                <Package className="h-8 w-8 text-vitale-primary" />
+            <div className='p-12 text-center'>
+              <div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-vitale-primary/20'>
+                <Package className='h-8 w-8 text-vitale-primary' />
               </div>
-              <h3 className="mb-2 text-xl font-bold text-vitale-primary">
+              <h3 className='mb-2 text-xl font-bold text-vitale-primary'>
                 Nenhum produto encontrado
               </h3>
-              <p className="mb-4 text-neutral-600">
+              <p className='mb-4 text-neutral-600'>
                 {searchTerm || selectedCategory || selectedSupplier
                   ? 'Tente ajustar os filtros de busca'
                   : 'Comece adicionando seu primeiro produto'}
@@ -632,8 +632,8 @@ export default function AdminDashboard({
                     setSelectedCategory('');
                     setSelectedSupplier('');
                   }}
-                  className="text-white bg-vitale-primary hover:bg-vitale-secondary"
-                  aria-label="Limpar filtros"
+                  className='text-white bg-vitale-primary hover:bg-vitale-secondary'
+                  aria-label='Limpar filtros'
                 >
                   Limpar Filtros
                 </Button>

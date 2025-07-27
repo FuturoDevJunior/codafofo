@@ -21,21 +21,21 @@
 
 ### Core Web Vitals
 
-| Métrica | Meta | Excelente | Precisa Melhorar |
-|---------|------|-----------|------------------|
-| **LCP** (Largest Contentful Paint) | < 2.5s | < 1.8s | > 4.0s |
-| **FID** (First Input Delay) | < 100ms | < 50ms | > 300ms |
-| **CLS** (Cumulative Layout Shift) | < 0.1 | < 0.05 | > 0.25 |
+| Métrica                            | Meta    | Excelente | Precisa Melhorar |
+| ---------------------------------- | ------- | --------- | ---------------- |
+| **LCP** (Largest Contentful Paint) | < 2.5s  | < 1.8s    | > 4.0s           |
+| **FID** (First Input Delay)        | < 100ms | < 50ms    | > 300ms          |
+| **CLS** (Cumulative Layout Shift)  | < 0.1   | < 0.05    | > 0.25           |
 
 ### Métricas Adicionais
 
-| Métrica | Meta | Descrição |
-|---------|------|-----------|
-| **TTFB** (Time to First Byte) | < 600ms | Tempo até primeiro byte |
-| **FCP** (First Contentful Paint) | < 1.8s | Primeiro conteúdo visível |
-| **Bundle Size** | < 350kB | Tamanho total do JavaScript |
-| **Image Optimization** | WebP/AVIF | Formatos modernos |
-| **Cache Hit Rate** | > 90% | Taxa de acerto do cache |
+| Métrica                          | Meta      | Descrição                   |
+| -------------------------------- | --------- | --------------------------- |
+| **TTFB** (Time to First Byte)    | < 600ms   | Tempo até primeiro byte     |
+| **FCP** (First Contentful Paint) | < 1.8s    | Primeiro conteúdo visível   |
+| **Bundle Size**                  | < 350kB   | Tamanho total do JavaScript |
+| **Image Optimization**           | WebP/AVIF | Formatos modernos           |
+| **Cache Hit Rate**               | > 90%     | Taxa de acerto do cache     |
 
 ---
 
@@ -68,9 +68,9 @@ export function ProductList({ products }: ProductListProps) {
   return (
     <div className="product-grid">
       {products.map(product => (
-        <ProductCard 
-          key={product.id} 
-          product={product} 
+        <ProductCard
+          key={product.id}
+          product={product}
           onAddToCart={handleAddToCart}
         />
       ))}
@@ -107,10 +107,10 @@ const AdminDashboard = dynamic(() => import('./AdminDashboard'), {
 }} />
 
 /* 2. CSS não-crítico carregado assincronamente */
-<link 
-  rel="preload" 
-  href="/styles/non-critical.css" 
-  as="style" 
+<link
+  rel="preload"
+  href="/styles/non-critical.css"
+  as="style"
   onLoad="this.onload=null;this.rel='stylesheet'"
 />
 
@@ -183,10 +183,10 @@ export function VirtualizedProductList({ products }: ProductListProps) {
 // workers/imageProcessor.ts
 self.onmessage = function(e) {
   const { imageData, operations } = e.data;
-  
+
   // Processa imagem em background
   const processedImage = processImage(imageData, operations);
-  
+
   self.postMessage({ processedImage });
 };
 
@@ -220,10 +220,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const products = await getProducts(req.query.category as string);
-  
+
   cache.set(cacheKey, {
     data: products,
-    expires: Date.now() + 5 * 60 * 1000 // 5 minutos
+    expires: Date.now() + 5 * 60 * 1000, // 5 minutos
   });
 
   res.json(products);
@@ -232,7 +232,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 // 2. Paginação eficiente
 export async function getProductsPaginated(page: number = 1, limit: number = 20) {
   const offset = (page - 1) * limit;
-  
+
   const { data, error, count } = await supabase
     .from('products')
     .select('*', { count: 'exact' })
@@ -244,7 +244,7 @@ export async function getProductsPaginated(page: number = 1, limit: number = 20)
     products: data,
     total: count,
     page,
-    totalPages: Math.ceil((count || 0) / limit)
+    totalPages: Math.ceil((count || 0) / limit),
   };
 }
 
@@ -323,14 +323,14 @@ export async function getOrdersWithProducts() {
 
 // 3. Índices para performance
 // supabase/migrations/024_add_performance_indexes.sql
-CREATE INDEX CONCURRENTLY idx_products_category_active 
-ON products(category, active) 
+CREATE INDEX CONCURRENTLY idx_products_category_active
+ON products(category, active)
 WHERE active = true;
 
-CREATE INDEX CONCURRENTLY idx_orders_created_at_status 
+CREATE INDEX CONCURRENTLY idx_orders_created_at_status
 ON orders(created_at DESC, status);
 
-CREATE INDEX CONCURRENTLY idx_products_search 
+CREATE INDEX CONCURRENTLY idx_products_search
 ON products USING gin(to_tsvector('portuguese', name || ' ' || description));
 ```
 
@@ -366,18 +366,18 @@ export async function query(text: string, params?: any[]) {
 
 ```sql
 -- 1. Índices compostos
-CREATE INDEX idx_products_performance 
-ON products(category, active, price_pix) 
+CREATE INDEX idx_products_performance
+ON products(category, active, price_pix)
 WHERE active = true;
 
 -- 2. Views materializadas para relatórios
 CREATE MATERIALIZED VIEW mv_sales_summary AS
-SELECT 
+SELECT
   DATE(created_at) as sale_date,
   COUNT(*) as total_orders,
   SUM(total) as total_revenue,
   AVG(total) as avg_order_value
-FROM orders 
+FROM orders
 WHERE status = 'completed'
 GROUP BY DATE(created_at);
 
@@ -397,33 +397,33 @@ FOR VALUES FROM ('2025-01-01') TO ('2026-01-01');
 ```sql
 -- Queries para monitoramento de performance
 -- 1. Queries mais lentas
-SELECT 
+SELECT
   query,
   calls,
   total_time,
   mean_time,
   rows
-FROM pg_stat_statements 
-ORDER BY total_time DESC 
+FROM pg_stat_statements
+ORDER BY total_time DESC
 LIMIT 10;
 
 -- 2. Uso de índices
-SELECT 
+SELECT
   schemaname,
   tablename,
   indexname,
   idx_scan,
   idx_tup_read,
   idx_tup_fetch
-FROM pg_stat_user_indexes 
+FROM pg_stat_user_indexes
 ORDER BY idx_scan DESC;
 
 -- 3. Tamanho das tabelas
-SELECT 
+SELECT
   schemaname,
   tablename,
   pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as size
-FROM pg_tables 
+FROM pg_tables
 WHERE schemaname = 'public'
 ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 ```
@@ -448,13 +448,13 @@ interface OptimizedImageProps {
   className?: string;
 }
 
-export function OptimizedImage({ 
-  src, 
-  alt, 
-  width, 
-  height, 
+export function OptimizedImage({
+  src,
+  alt,
+  width,
+  height,
   priority = false,
-  className 
+  className
 }: OptimizedImageProps) {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -582,12 +582,12 @@ export function ProductCard({ product }: ProductCardProps) {
       <div onClick={() => setShowModal(true)}>
         {/* Card content */}
       </div>
-      
+
       {showModal && (
         <Suspense fallback={<ModalSkeleton />}>
-          <ProductModal 
-            product={product} 
-            onClose={() => setShowModal(false)} 
+          <ProductModal
+            product={product}
+            onClose={() => setShowModal(false)}
           />
         </Suspense>
       )}
@@ -687,7 +687,7 @@ export class CacheManager {
       if (redisData) {
         this.memoryCache.set(key, {
           data: redisData,
-          expires: Date.now() + this.TTL
+          expires: Date.now() + this.TTL,
         });
         return redisData;
       }
@@ -698,7 +698,7 @@ export class CacheManager {
 
   async set(key: string, data: any, ttl?: number): Promise<void> {
     const expires = Date.now() + (ttl || this.TTL);
-    
+
     // Memory cache
     this.memoryCache.set(key, { data, expires });
 
@@ -730,8 +730,8 @@ module.exports = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=300, stale-while-revalidate=600'
-          }
+            value: 'public, max-age=300, stale-while-revalidate=600',
+          },
         ],
       },
       {
@@ -739,8 +739,8 @@ module.exports = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
-          }
+            value: 'public, max-age=31536000, immutable',
+          },
         ],
       },
       {
@@ -748,8 +748,8 @@ module.exports = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
-          }
+            value: 'public, max-age=31536000, immutable',
+          },
         ],
       },
     ];
@@ -765,42 +765,29 @@ const CACHE_NAME = 'vytalle-v1';
 const STATIC_CACHE = 'vytalle-static-v1';
 const DYNAMIC_CACHE = 'vytalle-dynamic-v1';
 
-const STATIC_ASSETS = [
-  '/',
-  '/products',
-  '/cart',
-  '/static/css/main.css',
-  '/static/js/main.js'
-];
+const STATIC_ASSETS = ['/', '/products', '/cart', '/static/css/main.css', '/static/js/main.js'];
 
 // Install event
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(STATIC_CACHE)
-      .then(cache => cache.addAll(STATIC_ASSETS))
-  );
+  event.waitUntil(caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_ASSETS)));
 });
 
 // Fetch event
 self.addEventListener('fetch', event => {
   const { request } = event;
-  
+
   // Cache first para assets estáticos
   if (request.destination === 'image' || request.destination === 'style') {
-    event.respondWith(
-      caches.match(request)
-        .then(response => response || fetch(request))
-    );
+    event.respondWith(caches.match(request).then(response => response || fetch(request)));
   }
-  
+
   // Network first para API calls
   if (request.url.includes('/api/')) {
     event.respondWith(
       fetch(request)
         .then(response => {
           const clonedResponse = response.clone();
-          caches.open(DYNAMIC_CACHE)
-            .then(cache => cache.put(request, clonedResponse));
+          caches.open(DYNAMIC_CACHE).then(cache => cache.put(request, clonedResponse));
           return response;
         })
         .catch(() => caches.match(request))
@@ -820,17 +807,20 @@ self.addEventListener('fetch', event => {
 export class PerformanceMonitor {
   static trackPageView(page: string) {
     if (typeof window !== 'undefined') {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-      
+      const navigation = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
+
       analytics.track('page_view', {
         page,
         loadTime: navigation.loadEventEnd - navigation.loadEventStart,
-        domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
+        domContentLoaded:
+          navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
         firstPaint: performance.getEntriesByName('first-paint')[0]?.startTime,
         firstContentfulPaint: performance.getEntriesByName('first-contentful-paint')[0]?.startTime,
         largestContentfulPaint: this.getLCP(),
         cumulativeLayoutShift: this.getCLS(),
-        firstInputDelay: this.getFID()
+        firstInputDelay: this.getFID(),
       });
     }
   }
@@ -842,7 +832,7 @@ export class PerformanceMonitor {
 
   static getCLS(): number {
     let cls = 0;
-    const observer = new PerformanceObserver((list) => {
+    const observer = new PerformanceObserver(list => {
       for (const entry of list.getEntries()) {
         cls += (entry as any).value;
       }
@@ -870,7 +860,7 @@ export class ErrorTracker {
       context,
       url: window.location.href,
       userAgent: navigator.userAgent,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -879,7 +869,7 @@ export class ErrorTracker {
       endpoint,
       status,
       response,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 }
@@ -939,7 +929,7 @@ module.exports = {
       config.performance = {
         maxAssetSize: 350 * 1024, // 350KB
         maxEntrypointSize: 350 * 1024,
-        hints: 'warning'
+        hints: 'warning',
       };
     }
     return config;
@@ -986,14 +976,14 @@ module.exports = {
 
 ### Antes vs Depois
 
-| Métrica | Antes | Depois | Melhoria |
-|---------|-------|--------|----------|
-| **LCP** | 4.2s | 1.8s | 57% |
-| **FID** | 150ms | 45ms | 70% |
-| **CLS** | 0.15 | 0.03 | 80% |
-| **Bundle Size** | 450KB | 280KB | 38% |
-| **TTFB** | 800ms | 350ms | 56% |
+| Métrica         | Antes | Depois | Melhoria |
+| --------------- | ----- | ------ | -------- |
+| **LCP**         | 4.2s  | 1.8s   | 57%      |
+| **FID**         | 150ms | 45ms   | 70%      |
+| **CLS**         | 0.15  | 0.03   | 80%      |
+| **Bundle Size** | 450KB | 280KB  | 38%      |
+| **TTFB**        | 800ms | 350ms  | 56%      |
 
 ---
 
-**Performance profissional, sempre! ⚡** 
+**Performance profissional, sempre! ⚡**

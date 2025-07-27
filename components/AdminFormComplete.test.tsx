@@ -46,7 +46,7 @@ vi.mock('@/components/ui/use-toast', () => ({
 // Mock do ImageUploader
 vi.mock('@/components/admin/ImageUploader', () => ({
   default: ({ onImagesUpdate }: { onImagesUpdate: (_images: string[]) => void }) => (
-    <div data-testid="image-uploader">
+    <div data-testid='image-uploader'>
       <button onClick={() => onImagesUpdate(['test-image.jpg'])}>Add Image</button>
     </div>
   ),

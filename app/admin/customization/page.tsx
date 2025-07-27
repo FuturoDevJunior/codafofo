@@ -86,99 +86,99 @@ export default function CustomizationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light">
-      <div className="container mx-auto px-4 py-8">
+    <div className='min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light'>
+      <div className='container mx-auto px-4 py-8'>
         {/* Header */}
-        <div className="mb-8">
-          <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-vitale-primary">
-              <Palette className="text-white h-6 w-6" />
+        <div className='mb-8'>
+          <div className='mb-4 flex items-center gap-3'>
+            <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-vitale-primary'>
+              <Palette className='text-white h-6 w-6' />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-vitale-primary">Personalização</h1>
-              <p className="text-neutral-600">Customize o visual e informações do seu site</p>
+              <h1 className='text-3xl font-bold text-vitale-primary'>Personalização</h1>
+              <p className='text-neutral-600'>Customize o visual e informações do seu site</p>
             </div>
           </div>
 
           {/* Ações */}
-          <div className="flex flex-wrap gap-3">
+          <div className='flex flex-wrap gap-3'>
             <Button
               onClick={handleSave}
               disabled={isLoading}
-              className="text-white bg-vitale-primary hover:bg-vitale-secondary"
+              className='text-white bg-vitale-primary hover:bg-vitale-secondary'
             >
-              <Save className="mr-2 h-4 w-4" />
+              <Save className='mr-2 h-4 w-4' />
               {isLoading ? 'Salvando...' : 'Salvar Mudanças'}
             </Button>
 
             <Button
               onClick={() => setPreviewMode(!previewMode)}
-              variant="outline"
-              className="border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary/10"
+              variant='outline'
+              className='border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary/10'
             >
-              <Eye className="mr-2 h-4 w-4" />
+              <Eye className='mr-2 h-4 w-4' />
               {previewMode ? 'Ocultar Preview' : 'Ver Preview'}
             </Button>
 
             <Button
               onClick={handleReset}
-              variant="outline"
-              className="border-red-200 text-red-600 hover:bg-red-50"
+              variant='outline'
+              className='border-red-200 text-red-600 hover:bg-red-50'
             >
-              <RotateCcw className="mr-2 h-4 w-4" />
+              <RotateCcw className='mr-2 h-4 w-4' />
               Resetar
             </Button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
           {/* Formulário */}
-          <div className="lg:col-span-2">
-            <Tabs defaultValue="branding" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="branding">Branding</TabsTrigger>
-                <TabsTrigger value="contatos">Contatos</TabsTrigger>
-                <TabsTrigger value="configuracoes">Configurações</TabsTrigger>
-                <TabsTrigger value="cores">Cores</TabsTrigger>
+          <div className='lg:col-span-2'>
+            <Tabs defaultValue='branding' className='space-y-6'>
+              <TabsList className='grid w-full grid-cols-4'>
+                <TabsTrigger value='branding'>Branding</TabsTrigger>
+                <TabsTrigger value='contatos'>Contatos</TabsTrigger>
+                <TabsTrigger value='configuracoes'>Configurações</TabsTrigger>
+                <TabsTrigger value='cores'>Cores</TabsTrigger>
               </TabsList>
 
               {/* Branding */}
-              <TabsContent value="branding" className="space-y-6">
+              <TabsContent value='branding' className='space-y-6'>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Building2 className="h-5 w-5" />
+                    <CardTitle className='flex items-center gap-2'>
+                      <Building2 className='h-5 w-5' />
                       Informações da Empresa
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className='space-y-4'>
                     <div>
-                      <Label htmlFor="companyName">Nome da Empresa</Label>
+                      <Label htmlFor='companyName'>Nome da Empresa</Label>
                       <Input
-                        id="companyName"
+                        id='companyName'
                         value={data.companyName}
                         onChange={e => handleInputChange('companyName', e.target.value)}
-                        placeholder="Nome da sua empresa"
+                        placeholder='Nome da sua empresa'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="logoUrl">URL do Logo</Label>
+                      <Label htmlFor='logoUrl'>URL do Logo</Label>
                       <Input
-                        id="logoUrl"
+                        id='logoUrl'
                         value={data.logoUrl}
                         onChange={e => handleInputChange('logoUrl', e.target.value)}
-                        placeholder="/caminho/para/logo.png"
+                        placeholder='/caminho/para/logo.png'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="faviconUrl">URL do Favicon</Label>
+                      <Label htmlFor='faviconUrl'>URL do Favicon</Label>
                       <Input
-                        id="faviconUrl"
+                        id='faviconUrl'
                         value={data.faviconUrl}
                         onChange={e => handleInputChange('faviconUrl', e.target.value)}
-                        placeholder="/caminho/para/favicon.png"
+                        placeholder='/caminho/para/favicon.png'
                       />
                     </div>
                   </CardContent>
@@ -186,75 +186,75 @@ export default function CustomizationPage() {
               </TabsContent>
 
               {/* Contatos */}
-              <TabsContent value="contatos" className="space-y-6">
+              <TabsContent value='contatos' className='space-y-6'>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <MessageSquare className="h-5 w-5" />
+                    <CardTitle className='flex items-center gap-2'>
+                      <MessageSquare className='h-5 w-5' />
                       Informações de Contato
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className='space-y-4'>
                     <div>
-                      <Label htmlFor="whatsapp">WhatsApp (apenas números)</Label>
+                      <Label htmlFor='whatsapp'>WhatsApp (apenas números)</Label>
                       <Input
-                        id="whatsapp"
+                        id='whatsapp'
                         value={data.whatsapp}
                         onChange={e => handleInputChange('whatsapp', e.target.value)}
-                        placeholder="5521996192890"
+                        placeholder='5521996192890'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="email">E-mail Principal</Label>
+                      <Label htmlFor='email'>E-mail Principal</Label>
                       <Input
-                        id="email"
-                        type="email"
+                        id='email'
+                        type='email'
                         value={data.email}
                         onChange={e => handleInputChange('email', e.target.value)}
-                        placeholder="admin@suaempresa.com.br"
+                        placeholder='admin@suaempresa.com.br'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="emailPrivacidade">E-mail Privacidade</Label>
+                      <Label htmlFor='emailPrivacidade'>E-mail Privacidade</Label>
                       <Input
-                        id="emailPrivacidade"
-                        type="email"
+                        id='emailPrivacidade'
+                        type='email'
                         value={data.emailPrivacidade}
                         onChange={e => handleInputChange('emailPrivacidade', e.target.value)}
-                        placeholder="privacidade@suaempresa.com.br"
+                        placeholder='privacidade@suaempresa.com.br'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="emailDpo">E-mail DPO</Label>
+                      <Label htmlFor='emailDpo'>E-mail DPO</Label>
                       <Input
-                        id="emailDpo"
-                        type="email"
+                        id='emailDpo'
+                        type='email'
                         value={data.emailDpo}
                         onChange={e => handleInputChange('emailDpo', e.target.value)}
-                        placeholder="dpo@suaempresa.com.br"
+                        placeholder='dpo@suaempresa.com.br'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="instagram">Instagram</Label>
+                      <Label htmlFor='instagram'>Instagram</Label>
                       <Input
-                        id="instagram"
+                        id='instagram'
                         value={data.instagram}
                         onChange={e => handleInputChange('instagram', e.target.value)}
-                        placeholder="@suaempresa"
+                        placeholder='@suaempresa'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="website">Website</Label>
+                      <Label htmlFor='website'>Website</Label>
                       <Input
-                        id="website"
+                        id='website'
                         value={data.website}
                         onChange={e => handleInputChange('website', e.target.value)}
-                        placeholder="https://suaempresa.com.br"
+                        placeholder='https://suaempresa.com.br'
                       />
                     </div>
                   </CardContent>
@@ -262,52 +262,52 @@ export default function CustomizationPage() {
               </TabsContent>
 
               {/* Configurações */}
-              <TabsContent value="configuracoes" className="space-y-6">
+              <TabsContent value='configuracoes' className='space-y-6'>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <MessageSquare className="h-5 w-5" />
+                    <CardTitle className='flex items-center gap-2'>
+                      <MessageSquare className='h-5 w-5' />
                       Configurações do Site
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className='space-y-4'>
                     <div>
-                      <Label htmlFor="mensagemDestaque">Mensagem de Destaque</Label>
+                      <Label htmlFor='mensagemDestaque'>Mensagem de Destaque</Label>
                       <Input
-                        id="mensagemDestaque"
+                        id='mensagemDestaque'
                         value={data.mensagemDestaque}
                         onChange={e => handleInputChange('mensagemDestaque', e.target.value)}
-                        placeholder="Sua mensagem de destaque"
+                        placeholder='Sua mensagem de destaque'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="infoEntrega">Informações de Entrega</Label>
+                      <Label htmlFor='infoEntrega'>Informações de Entrega</Label>
                       <Input
-                        id="infoEntrega"
+                        id='infoEntrega'
                         value={data.infoEntrega}
                         onChange={e => handleInputChange('infoEntrega', e.target.value)}
-                        placeholder="Informações sobre entrega"
+                        placeholder='Informações sobre entrega'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="formasPagamento">Formas de Pagamento</Label>
+                      <Label htmlFor='formasPagamento'>Formas de Pagamento</Label>
                       <Input
-                        id="formasPagamento"
+                        id='formasPagamento'
                         value={data.formasPagamento}
                         onChange={e => handleInputChange('formasPagamento', e.target.value)}
-                        placeholder="PIX • Cartão • Boleto"
+                        placeholder='PIX • Cartão • Boleto'
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="contatoSuporte">Contato de Suporte</Label>
+                      <Label htmlFor='contatoSuporte'>Contato de Suporte</Label>
                       <Input
-                        id="contatoSuporte"
+                        id='contatoSuporte'
                         value={data.contatoSuporte}
                         onChange={e => handleInputChange('contatoSuporte', e.target.value)}
-                        placeholder="Informações de suporte"
+                        placeholder='Informações de suporte'
                       />
                     </div>
                   </CardContent>
@@ -315,47 +315,47 @@ export default function CustomizationPage() {
               </TabsContent>
 
               {/* Cores */}
-              <TabsContent value="cores" className="space-y-6">
+              <TabsContent value='cores' className='space-y-6'>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Palette className="h-5 w-5" />
+                    <CardTitle className='flex items-center gap-2'>
+                      <Palette className='h-5 w-5' />
                       Cores da Marca
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className='space-y-4'>
                     <div>
-                      <Label htmlFor="primaryColor">Cor Principal</Label>
-                      <div className="flex gap-2">
+                      <Label htmlFor='primaryColor'>Cor Principal</Label>
+                      <div className='flex gap-2'>
                         <Input
-                          id="primaryColor"
-                          type="color"
+                          id='primaryColor'
+                          type='color'
                           value={data.primaryColor}
                           onChange={e => handleInputChange('primaryColor', e.target.value)}
-                          className="h-10 w-16"
+                          className='h-10 w-16'
                         />
                         <Input
                           value={data.primaryColor}
                           onChange={e => handleInputChange('primaryColor', e.target.value)}
-                          placeholder="#d8a75b"
+                          placeholder='#d8a75b'
                         />
                       </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="secondaryColor">Cor Secundária</Label>
-                      <div className="flex gap-2">
+                      <Label htmlFor='secondaryColor'>Cor Secundária</Label>
+                      <div className='flex gap-2'>
                         <Input
-                          id="secondaryColor"
-                          type="color"
+                          id='secondaryColor'
+                          type='color'
                           value={data.secondaryColor}
                           onChange={e => handleInputChange('secondaryColor', e.target.value)}
-                          className="h-10 w-16"
+                          className='h-10 w-16'
                         />
                         <Input
                           value={data.secondaryColor}
                           onChange={e => handleInputChange('secondaryColor', e.target.value)}
-                          placeholder="#e79632"
+                          placeholder='#e79632'
                         />
                       </div>
                     </div>
@@ -366,53 +366,53 @@ export default function CustomizationPage() {
           </div>
 
           {/* Preview */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-4">
+          <div className='lg:col-span-1'>
+            <Card className='sticky top-4'>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Eye className="h-5 w-5" />
+                <CardTitle className='flex items-center gap-2'>
+                  <Eye className='h-5 w-5' />
                   Preview
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className='space-y-4'>
                 {previewMode ? (
                   <>
                     {/* Logo Preview */}
-                    <div className="text-center">
+                    <div className='text-center'>
                       <img
                         src={data.logoUrl}
-                        alt="Logo Preview"
-                        className="mx-auto mb-2 h-16"
+                        alt='Logo Preview'
+                        className='mx-auto mb-2 h-16'
                         onError={e => {
                           e.currentTarget.src = '/Vytalle_Logo_Gold.png';
                         }}
                       />
-                      <p className="text-sm font-semibold text-vitale-primary">
+                      <p className='text-sm font-semibold text-vitale-primary'>
                         {data.companyName}
                       </p>
                     </div>
 
                     {/* Cores Preview */}
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Cores da Marca:</p>
-                      <div className="flex gap-2">
+                    <div className='space-y-2'>
+                      <p className='text-sm font-medium'>Cores da Marca:</p>
+                      <div className='flex gap-2'>
                         <div
-                          className="h-8 w-8 rounded border"
+                          className='h-8 w-8 rounded border'
                           style={{ backgroundColor: data.primaryColor }}
-                          title="Cor Principal"
+                          title='Cor Principal'
                         />
                         <div
-                          className="h-8 w-8 rounded border"
+                          className='h-8 w-8 rounded border'
                           style={{ backgroundColor: data.secondaryColor }}
-                          title="Cor Secundária"
+                          title='Cor Secundária'
                         />
                       </div>
                     </div>
 
                     {/* Contatos Preview */}
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Contatos:</p>
-                      <div className="space-y-1 text-xs">
+                    <div className='space-y-2'>
+                      <p className='text-sm font-medium'>Contatos:</p>
+                      <div className='space-y-1 text-xs'>
                         <p>📱 {data.whatsapp}</p>
                         <p>📧 {data.email}</p>
                         <p>📷 {data.instagram}</p>
@@ -420,19 +420,19 @@ export default function CustomizationPage() {
                     </div>
 
                     {/* Configurações Preview */}
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Configurações:</p>
-                      <div className="space-y-1 text-xs">
-                        <p className="font-semibold">{data.mensagemDestaque}</p>
+                    <div className='space-y-2'>
+                      <p className='text-sm font-medium'>Configurações:</p>
+                      <div className='space-y-1 text-xs'>
+                        <p className='font-semibold'>{data.mensagemDestaque}</p>
                         <p>{data.infoEntrega}</p>
                         <p>{data.formasPagamento}</p>
                       </div>
                     </div>
                   </>
                 ) : (
-                  <div className="text-center text-neutral-500">
-                    <Eye className="mx-auto mb-2 h-8 w-8 opacity-50" />
-                    <p className="text-sm">
+                  <div className='text-center text-neutral-500'>
+                    <Eye className='mx-auto mb-2 h-8 w-8 opacity-50' />
+                    <p className='text-sm'>
                       Clique em &quot;Ver Preview&quot; para visualizar as mudanças
                     </p>
                   </div>
@@ -443,26 +443,26 @@ export default function CustomizationPage() {
         </div>
 
         {/* Dicas */}
-        <Card className="mt-8">
+        <Card className='mt-8'>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertCircle className="text-amber-500 h-5 w-5" />
+            <CardTitle className='flex items-center gap-2'>
+              <AlertCircle className='text-amber-500 h-5 w-5' />
               Dicas de Personalização
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
+            <div className='grid grid-cols-1 gap-4 text-sm md:grid-cols-2'>
               <div>
-                <h4 className="mb-2 font-semibold">📝 Textos</h4>
-                <ul className="space-y-1 text-neutral-600">
+                <h4 className='mb-2 font-semibold'>📝 Textos</h4>
+                <ul className='space-y-1 text-neutral-600'>
                   <li>• Use nomes claros e profissionais</li>
                   <li>• Mantenha contatos atualizados</li>
                   <li>• Teste as mensagens antes de salvar</li>
                 </ul>
               </div>
               <div>
-                <h4 className="mb-2 font-semibold">🎨 Cores</h4>
-                <ul className="space-y-1 text-neutral-600">
+                <h4 className='mb-2 font-semibold'>🎨 Cores</h4>
+                <ul className='space-y-1 text-neutral-600'>
                   <li>• Escolha cores que combinem</li>
                   <li>• Mantenha bom contraste</li>
                   <li>• Use cores da sua marca</li>

@@ -56,7 +56,7 @@ vi.mock('@/components/ui/select', () => ({
 
 vi.mock('@/components/ui/table', () => ({
   Table: ({ children, ...props }: any) => (
-    <div className="relative w-full overflow-auto">
+    <div className='relative w-full overflow-auto'>
       <table {...props}>{children}</table>
     </div>
   ),
@@ -76,14 +76,14 @@ vi.mock('@/components/ui/tabs', () => ({
 
 // Mock dos ícones Lucide
 vi.mock('lucide-react', () => ({
-  Calendar: () => <span data-testid="calendar-icon">Calendar</span>,
-  Download: () => <span data-testid="download-icon">Download</span>,
-  Filter: () => <span data-testid="filter-icon">Filter</span>,
-  MessageCircle: () => <span data-testid="message-icon">MessageCircle</span>,
-  Phone: () => <span data-testid="phone-icon">Phone</span>,
-  Star: () => <span data-testid="star-icon">Star</span>,
-  TrendingUp: () => <span data-testid="trending-icon">TrendingUp</span>,
-  User: () => <span data-testid="user-icon">User</span>,
+  Calendar: () => <span data-testid='calendar-icon'>Calendar</span>,
+  Download: () => <span data-testid='download-icon'>Download</span>,
+  Filter: () => <span data-testid='filter-icon'>Filter</span>,
+  MessageCircle: () => <span data-testid='message-icon'>MessageCircle</span>,
+  Phone: () => <span data-testid='phone-icon'>Phone</span>,
+  Star: () => <span data-testid='star-icon'>Star</span>,
+  TrendingUp: () => <span data-testid='trending-icon'>TrendingUp</span>,
+  User: () => <span data-testid='user-icon'>User</span>,
 }));
 
 describe('LeadsPage', () => {

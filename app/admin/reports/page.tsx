@@ -23,9 +23,9 @@ export default async function Reports() {
   const { data: summary } = await supabase.from('order_summary').select('*');
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="mb-6 text-3xl font-bold">Relatórios</h1>
-      <h2 className="mb-2 mt-4 text-xl font-semibold">Produtos Mais Populares</h2>
+    <div className='container mx-auto p-4'>
+      <h1 className='mb-6 text-3xl font-bold'>Relatórios</h1>
+      <h2 className='mb-2 mt-4 text-xl font-semibold'>Produtos Mais Populares</h2>
       <Table>
         <TableHeader>
           <TableRow>
@@ -46,7 +46,7 @@ export default async function Reports() {
           ))}
         </TableBody>
       </Table>
-      <h2 className="mb-2 mt-8 text-xl font-semibold">Resumo de Pedidos</h2>
+      <h2 className='mb-2 mt-8 text-xl font-semibold'>Resumo de Pedidos</h2>
       <Table>
         <TableHeader>
           <TableRow>

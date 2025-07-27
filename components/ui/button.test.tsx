@@ -18,37 +18,37 @@ describe('Button', () => {
   });
 
   it('deve aplicar variante outline', () => {
-    render(<Button variant="outline">Outline Button</Button>);
+    render(<Button variant='outline'>Outline Button</Button>);
     const button = screen.getByRole('button');
     expect(button).toHaveClass('border-2', 'border-vitale-primary');
   });
 
   it('deve aplicar variante ghost', () => {
-    render(<Button variant="ghost">Ghost Button</Button>);
+    render(<Button variant='ghost'>Ghost Button</Button>);
     const button = screen.getByRole('button');
     expect(button).toHaveClass('text-vitale-primary');
   });
 
   it('deve aplicar variante destructive', () => {
-    render(<Button variant="destructive">Destructive Button</Button>);
+    render(<Button variant='destructive'>Destructive Button</Button>);
     const button = screen.getByRole('button');
     expect(button).toHaveClass('bg-gradient-to-r', 'from-red-500', 'to-red-600');
   });
 
   it('deve aplicar tamanho sm', () => {
-    render(<Button size="sm">Small Button</Button>);
+    render(<Button size='sm'>Small Button</Button>);
     const button = screen.getByRole('button');
     expect(button).toHaveClass('h-9');
   });
 
   it('deve aplicar tamanho lg', () => {
-    render(<Button size="lg">Large Button</Button>);
+    render(<Button size='lg'>Large Button</Button>);
     const button = screen.getByRole('button');
     expect(button).toHaveClass('h-12');
   });
 
   it('deve aplicar className customizada', () => {
-    render(<Button className="custom-class">Custom Button</Button>);
+    render(<Button className='custom-class'>Custom Button</Button>);
     const button = screen.getByRole('button');
     expect(button).toHaveClass('custom-class');
   });
@@ -78,7 +78,7 @@ describe('Button', () => {
   it('deve renderizar como child quando asChild é true', () => {
     render(
       <Button asChild>
-        <a href="/test">Link Button</a>
+        <a href='/test'>Link Button</a>
       </Button>
     );
 
@@ -88,7 +88,7 @@ describe('Button', () => {
   });
 
   it('deve passar props HTML adicionais', () => {
-    render(<Button data-testid="test-button">Test Button</Button>);
+    render(<Button data-testid='test-button'>Test Button</Button>);
     expect(screen.getByTestId('test-button')).toBeInTheDocument();
   });
 });

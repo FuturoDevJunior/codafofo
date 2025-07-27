@@ -121,17 +121,20 @@ curl https://vytalle-estetica.vercel.app/api/products
 ```
 
 **Parâmetros de Query:**
+
 - `category` (string): Filtrar por categoria
 - `search` (string): Busca por nome
 - `limit` (number): Limite de resultados (padrão: 50)
 - `offset` (number): Offset para paginação
 
 **Exemplo com filtros:**
+
 ```bash
 curl "https://vytalle-estetica.vercel.app/api/products?category=Toxina%20Botul%C3%ADnica&limit=10"
 ```
 
 **Resposta:**
+
 ```json
 {
   "products": [
@@ -139,9 +142,9 @@ curl "https://vytalle-estetica.vercel.app/api/products?category=Toxina%20Botul%C
       "id": "1",
       "name": "Botox 50U",
       "description": "Toxina botulínica tipo A",
-      "price_pix": 530.00,
-      "price_card": 580.00,
-      "price_prazo": 580.00,
+      "price_pix": 530.0,
+      "price_card": 580.0,
+      "price_prazo": 580.0,
       "category": "Toxina Botulínica",
       "images": ["/images/botox-50u.jpg"],
       "active": true,
@@ -163,14 +166,15 @@ curl https://vytalle-estetica.vercel.app/api/products/botox-50u
 ```
 
 **Resposta:**
+
 ```json
 {
   "id": "1",
   "name": "Botox 50U",
   "description": "Toxina botulínica tipo A para tratamento de rugas",
-  "price_pix": 530.00,
-  "price_card": 580.00,
-  "price_prazo": 580.00,
+  "price_pix": 530.0,
+  "price_card": 580.0,
+  "price_prazo": 580.0,
   "category": "Toxina Botulínica",
   "images": ["/images/botox-50u.jpg"],
   "specifications": {
@@ -216,11 +220,12 @@ curl -X POST https://vytalle-estetica.vercel.app/api/checkout \
 ```
 
 **Resposta:**
+
 ```json
 {
   "order_id": "ORD-2024-001",
   "status": "created",
-  "total": 2260.00,
+  "total": 2260.0,
   "pdf_url": "https://vytalle-estetica.vercel.app/api/orders/ORD-2024-001/pdf",
   "whatsapp_message": "PEDIDO VYTALE ESTÉTICA...",
   "created_at": "2024-01-15T10:30:00Z"
@@ -237,6 +242,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ```
 
 **Parâmetros de Query:**
+
 - `status` (string): Filtrar por status
 - `date_from` (string): Data inicial (YYYY-MM-DD)
 - `date_to` (string): Data final (YYYY-MM-DD)
@@ -263,17 +269,18 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ```
 
 **Resposta:**
+
 ```json
 {
   "total_orders": 150,
-  "total_revenue": 45000.00,
+  "total_revenue": 45000.0,
   "orders_today": 5,
-  "revenue_today": 2500.00,
+  "revenue_today": 2500.0,
   "top_products": [
     {
       "name": "Botox 50U",
       "quantity": 45,
-      "revenue": 23850.00
+      "revenue": 23850.0
     }
   ]
 }
@@ -356,11 +363,11 @@ class VytalleAPI {
   async request(endpoint, options = {}) {
     const response = await fetch(`${this.baseURL}${endpoint}`, {
       headers: {
-        'Authorization': `Bearer ${this.token}`,
+        Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
-        ...options.headers
+        ...options.headers,
       },
-      ...options
+      ...options,
     });
 
     if (!response.ok) {
@@ -378,7 +385,7 @@ class VytalleAPI {
   async createOrder(orderData) {
     return this.request('/checkout', {
       method: 'POST',
-      body: JSON.stringify(orderData)
+      body: JSON.stringify(orderData),
     });
   }
 
@@ -389,10 +396,7 @@ class VytalleAPI {
 }
 
 // Uso
-const api = new VytalleAPI(
-  'https://vytalle-estetica.vercel.app/api',
-  'YOUR_TOKEN'
-);
+const api = new VytalleAPI('https://vytalle-estetica.vercel.app/api', 'YOUR_TOKEN');
 
 // Listar produtos
 const products = await api.getProducts('Toxina Botulínica');
@@ -403,11 +407,9 @@ const order = await api.createOrder({
     name: 'Dr. Silva',
     email: 'dr@clinic.com',
     phone: '+5511999999999',
-    cep: '21361-020'
+    cep: '21361-020',
   },
-  products: [
-    { id: '1', quantity: 2, price: 530.00 }
-  ]
+  products: [{ id: '1', quantity: 2, price: 530.0 }],
 });
 ```
 
@@ -527,6 +529,7 @@ A API implementa rate limiting para proteger contra abuso:
   - `X-RateLimit-Reset`: Timestamp de reset
 
 **Exemplo de resposta quando excede o limite:**
+
 ```json
 {
   "error": "Rate limit exceeded",
@@ -573,7 +576,7 @@ curl -X POST https://vytalle-estetica.vercel.app/api/webhooks \
       "name": "Dra. Ana Paula Silva",
       "email": "ana@clinic.com"
     },
-    "total": 2260.00
+    "total": 2260.0
   }
 }
 ```
@@ -593,7 +596,7 @@ import { VytalleAPI } from 'vytalle-api';
 
 const api = new VytalleAPI({
   baseURL: 'https://vytalle-estetica.vercel.app/api',
-  token: 'YOUR_TOKEN'
+  token: 'YOUR_TOKEN',
 });
 
 const products = await api.products.list({ category: 'Toxina Botulínica' });
@@ -624,13 +627,13 @@ order = api.orders.create(order_data)
 
 ### Problemas Comuns
 
-| Problema | Causa | Solução |
-|----------|-------|---------|
-| **401 Unauthorized** | Token inválido/expirado | Renovar token via `/auth/refresh` |
-| **403 Forbidden** | Sem permissão | Verificar role do usuário |
-| **429 Too Many Requests** | Rate limit excedido | Aguardar 60 segundos |
-| **500 Internal Server Error** | Erro interno | Verificar logs, contatar suporte |
-| **422 Validation Error** | Dados inválidos | Verificar schema da requisição |
+| Problema                      | Causa                   | Solução                           |
+| ----------------------------- | ----------------------- | --------------------------------- |
+| **401 Unauthorized**          | Token inválido/expirado | Renovar token via `/auth/refresh` |
+| **403 Forbidden**             | Sem permissão           | Verificar role do usuário         |
+| **429 Too Many Requests**     | Rate limit excedido     | Aguardar 60 segundos              |
+| **500 Internal Server Error** | Erro interno            | Verificar logs, contatar suporte  |
+| **422 Validation Error**      | Dados inválidos         | Verificar schema da requisição    |
 
 ### Debug de Requests
 
@@ -656,7 +659,7 @@ try {
   console.error('API Error:', {
     status: error.status,
     message: error.message,
-    response: error.response
+    response: error.response,
   });
 }
 ```
@@ -667,17 +670,17 @@ try {
 
 ### HTTP Status Codes
 
-| Código | Descrição | Ação |
-|--------|-----------|------|
-| **200** | OK | Sucesso |
-| **201** | Created | Recurso criado |
-| **400** | Bad Request | Dados inválidos |
-| **401** | Unauthorized | Token inválido |
-| **403** | Forbidden | Sem permissão |
-| **404** | Not Found | Recurso não encontrado |
-| **422** | Unprocessable Entity | Validação falhou |
-| **429** | Too Many Requests | Rate limit |
-| **500** | Internal Server Error | Erro do servidor |
+| Código  | Descrição             | Ação                   |
+| ------- | --------------------- | ---------------------- |
+| **200** | OK                    | Sucesso                |
+| **201** | Created               | Recurso criado         |
+| **400** | Bad Request           | Dados inválidos        |
+| **401** | Unauthorized          | Token inválido         |
+| **403** | Forbidden             | Sem permissão          |
+| **404** | Not Found             | Recurso não encontrado |
+| **422** | Unprocessable Entity  | Validação falhou       |
+| **429** | Too Many Requests     | Rate limit             |
+| **500** | Internal Server Error | Erro do servidor       |
 
 ### Erros de Validação
 
@@ -739,4 +742,4 @@ try {
 
 ---
 
-**Vytalle Estética API - Integração profissional para seu negócio! 🚀** 
+**Vytalle Estética API - Integração profissional para seu negócio! 🚀**

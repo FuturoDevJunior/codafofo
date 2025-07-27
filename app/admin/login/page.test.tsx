@@ -25,26 +25,26 @@ vi.mock('next/dynamic', () => ({
   default: (_importFn: any) => {
     const Component = () => {
       return (
-        <div className="via-white flex min-h-screen items-center justify-center bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10 p-4">
-          <div className="w-full max-w-md">
-            <div className="mb-8 text-center">
-              <h1 className="mb-2 text-3xl font-bold text-vitale-primary">Painel Admin</h1>
-              <p className="text-neutral-600">Acesso restrito - Supabase Auth</p>
+        <div className='via-white flex min-h-screen items-center justify-center bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10 p-4'>
+          <div className='w-full max-w-md'>
+            <div className='mb-8 text-center'>
+              <h1 className='mb-2 text-3xl font-bold text-vitale-primary'>Painel Admin</h1>
+              <p className='text-neutral-600'>Acesso restrito - Supabase Auth</p>
             </div>
-            <div className="bg-white rounded-2xl border-2 border-vitale-primary/20 p-8 shadow-xl">
-              <form className="space-y-6">
-                <div className="space-y-2">
+            <div className='bg-white rounded-2xl border-2 border-vitale-primary/20 p-8 shadow-xl'>
+              <form className='space-y-6'>
+                <div className='space-y-2'>
                   <label>Email Administrativo</label>
-                  <input type="email" />
+                  <input type='email' />
                 </div>
-                <div className="space-y-2">
+                <div className='space-y-2'>
                   <label>Senha</label>
-                  <input type="password" />
+                  <input type='password' />
                 </div>
-                <button type="submit">Entrar com Supabase</button>
+                <button type='submit'>Entrar com Supabase</button>
               </form>
-              <div className="bg-blue-50 border-blue-200 mt-6 rounded-xl border p-4">
-                <p className="text-blue-800 text-sm font-medium">
+              <div className='bg-blue-50 border-blue-200 mt-6 rounded-xl border p-4'>
+                <p className='text-blue-800 text-sm font-medium'>
                   🔒 Autenticação 100% segura via Supabase
                 </p>
               </div>

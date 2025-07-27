@@ -5,7 +5,7 @@
 **Nome:** Vytalle Estética - E-commerce B2B Premium  
 **Descrição:** Catálogo B2B de produtos médicos estéticos premium - Next.js 14 + Supabase + Tailwind CSS. Distribuição de toxinas botulínicas, preenchedores e bioestimuladores certificados ANVISA.  
 **URL:** https://github.com/FuturoDevJunior/codafofo  
-**Website:** https://vytalle-estetica.vercel.app  
+**Website:** https://vytalle-estetica.vercel.app
 
 ## 🏷️ Topics (Tags)
 
@@ -16,6 +16,7 @@ vytalle, estetica, ecommerce, b2b, nextjs, supabase, tailwindcss, typescript, pw
 ## ⚙️ Configurações
 
 ### Visibilidade
+
 - **Público:** ✅ Sim
 - **Issues:** ✅ Habilitado
 - **Projects:** ✅ Habilitado
@@ -23,32 +24,38 @@ vytalle, estetica, ecommerce, b2b, nextjs, supabase, tailwindcss, typescript, pw
 - **Downloads:** ✅ Habilitado
 
 ### Branch Padrão
+
 - **Default:** `main`
 - **Proteção:** ✅ Habilitada
 
 ### Merge Options
+
 - **Squash merge:** ✅ Habilitado
 - **Merge commit:** ✅ Habilitado
 - **Rebase merge:** ✅ Habilitado
 - **Delete branch on merge:** ✅ Habilitado
 
 ### Segurança
+
 - **Vulnerability alerts:** ✅ Habilitado
 - **Automated security fixes:** ✅ Habilitado
 
 ## 🔧 Secrets Necessários
 
 ### Vercel
+
 - `VERCEL_TOKEN` - Token de autenticação do Vercel
 - `VERCEL_ORG_ID` - ID da organização no Vercel
 - `VERCEL_PROJECT_ID` - ID do projeto no Vercel
 
 ### GitHub
+
 - `GITHUB_TOKEN` - Token automático do GitHub (já configurado)
 
 ## 🚀 Workflows
 
 ### Pipeline Principal
+
 - **Arquivo:** `.github/workflows/main.yml`
 - **Triggers:** Push para main/develop, PRs, Manual dispatch
 - **Jobs:**
@@ -75,4 +82,4 @@ vytalle, estetica, ecommerce, b2b, nextjs, supabase, tailwindcss, typescript, pw
 
 ---
 
-*Configurado pela RET Consultoria - Vytalle Estética* 
+_Configurado pela RET Consultoria - Vytalle Estética_

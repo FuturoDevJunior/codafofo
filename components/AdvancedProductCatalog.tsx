@@ -296,8 +296,8 @@ export default function AdvancedProductCatalog({
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className='space-y-6'>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
           {Array.from({ length: 8 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
@@ -307,56 +307,56 @@ export default function AdvancedProductCatalog({
   }
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Filtros Rápidos */}
       {enableAdvancedFilters && (
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium text-muted-foreground">Filtros Rápidos:</span>
+        <div className='flex flex-wrap items-center gap-2'>
+          <span className='text-sm font-medium text-muted-foreground'>Filtros Rápidos:</span>
           <Button
             variant={filters.preset === 'all' ? 'default' : 'outline'}
-            size="sm"
+            size='sm'
             onClick={() => applyPreset('all')}
           >
             Todos
           </Button>
           <Button
             variant={filters.preset === 'toxina' ? 'default' : 'outline'}
-            size="sm"
+            size='sm'
             onClick={() => applyPreset('toxina')}
           >
             Toxinas
           </Button>
           <Button
             variant={filters.preset === 'preenchedor' ? 'default' : 'outline'}
-            size="sm"
+            size='sm'
             onClick={() => applyPreset('preenchedor')}
           >
             Preenchedores
           </Button>
           <Button
             variant={filters.preset === 'bioestimulador' ? 'default' : 'outline'}
-            size="sm"
+            size='sm'
             onClick={() => applyPreset('bioestimulador')}
           >
             Bioestimuladores
           </Button>
           <Button
             variant={filters.preset === 'premium' ? 'default' : 'outline'}
-            size="sm"
+            size='sm'
             onClick={() => applyPreset('premium')}
           >
             Premium
           </Button>
           <Button
             variant={filters.preset === 'budget' ? 'default' : 'outline'}
-            size="sm"
+            size='sm'
             onClick={() => applyPreset('budget')}
           >
             Econômico
           </Button>
           <Button
             variant={filters.preset === 'new' ? 'default' : 'outline'}
-            size="sm"
+            size='sm'
             onClick={() => applyPreset('new')}
           >
             Novidades
@@ -365,14 +365,14 @@ export default function AdvancedProductCatalog({
       )}
 
       {/* Barra de Controles */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         {/* Busca */}
-        <div className="relative max-w-md flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <div className='relative max-w-md flex-1'>
+          <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
           <Input
-            data-testid="search-input"
-            placeholder="Busque por produto, categoria, marca..."
-            className="pl-10"
+            data-testid='search-input'
+            placeholder='Busque por produto, categoria, marca...'
+            className='pl-10'
             onChange={e => debouncedSearch(e.target.value)}
             onFocus={() => setShowSuggestions(true)}
             onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
@@ -380,11 +380,11 @@ export default function AdvancedProductCatalog({
 
           {/* Sugestões de busca */}
           {showSuggestions && searchSuggestions.length > 0 && (
-            <div className="bg-white absolute top-full z-50 w-full rounded-md border shadow-lg">
+            <div className='bg-white absolute top-full z-50 w-full rounded-md border shadow-lg'>
               {searchSuggestions.map((suggestion, index) => (
                 <button
                   key={index}
-                  className="block w-full px-4 py-2 text-left hover:bg-muted"
+                  className='block w-full px-4 py-2 text-left hover:bg-muted'
                   onClick={() => {
                     setFilters(prev => ({ ...prev, searchTerm: suggestion }));
                     setShowSuggestions(false);
@@ -398,30 +398,30 @@ export default function AdvancedProductCatalog({
         </div>
 
         {/* Controles de Visualização */}
-        <div className="flex items-center gap-2">
-          <div className="flex rounded-md border">
+        <div className='flex items-center gap-2'>
+          <div className='flex rounded-md border'>
             <Button
               variant={viewMode === 'grid' ? 'default' : 'ghost'}
-              size="sm"
+              size='sm'
               onClick={() => setViewMode('grid')}
             >
-              <Grid2X2 className="h-4 w-4" />
+              <Grid2X2 className='h-4 w-4' />
             </Button>
             <Button
               variant={viewMode === 'grid-large' ? 'default' : 'ghost'}
-              size="sm"
+              size='sm'
               onClick={() => setViewMode('grid-large')}
-              title="Grade grande"
+              title='Grade grande'
             >
-              <Grid3X3 className="h-4 w-4" />
+              <Grid3X3 className='h-4 w-4' />
             </Button>
             <Button
               variant={viewMode === 'list' ? 'default' : 'ghost'}
-              size="sm"
+              size='sm'
               onClick={() => setViewMode('list')}
-              title="Lista"
+              title='Lista'
             >
-              <List className="h-4 w-4" />
+              <List className='h-4 w-4' />
             </Button>
           </div>
 
@@ -429,27 +429,27 @@ export default function AdvancedProductCatalog({
           <select
             value={sortBy}
             onChange={e => setSortBy(e.target.value as SortOption)}
-            className="rounded-md border px-3 py-2 text-sm"
-            aria-label="Ordenar produtos por"
+            className='rounded-md border px-3 py-2 text-sm'
+            aria-label='Ordenar produtos por'
           >
-            <option value="popularity">Mais populares</option>
-            <option value="name-asc">Nome A-Z</option>
-            <option value="name-desc">Nome Z-A</option>
-            <option value="price-asc">Menor preço</option>
-            <option value="price-desc">Maior preço</option>
-            <option value="category">Categoria</option>
-            <option value="newest">Mais recentes</option>
+            <option value='popularity'>Mais populares</option>
+            <option value='name-asc'>Nome A-Z</option>
+            <option value='name-desc'>Nome Z-A</option>
+            <option value='price-asc'>Menor preço</option>
+            <option value='price-desc'>Maior preço</option>
+            <option value='category'>Categoria</option>
+            <option value='newest'>Mais recentes</option>
           </select>
 
           {/* Filtros Avançados */}
           {enableAdvancedFilters && (
             <Button
-              data-testid="filter-toggle"
+              data-testid='filter-toggle'
               variant={showFilters ? 'default' : 'outline'}
-              size="sm"
+              size='sm'
               onClick={() => setShowFilters(!showFilters)}
             >
-              <Filter className="h-4 w-4" />
+              <Filter className='h-4 w-4' />
               Filtros
             </Button>
           )}
@@ -458,16 +458,16 @@ export default function AdvancedProductCatalog({
 
       {/* Filtros Avançados */}
       {showFilters && enableAdvancedFilters && (
-        <div className="rounded-lg border bg-muted/50 p-4">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className='rounded-lg border bg-muted/50 p-4'>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
             {/* Categorias */}
             <div>
-              <label className="text-sm font-medium">Categorias</label>
-              <div className="mt-2 space-y-2">
+              <label className='text-sm font-medium'>Categorias</label>
+              <div className='mt-2 space-y-2'>
                 {productData.categories.map(category => (
-                  <label key={category} className="flex items-center">
+                  <label key={category} className='flex items-center'>
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       checked={filters.selectedCategories.includes(category)}
                       onChange={e => {
                         if (e.target.checked) {
@@ -482,7 +482,7 @@ export default function AdvancedProductCatalog({
                           );
                         }
                       }}
-                      className="mr-2"
+                      className='mr-2'
                     />
                     {category}
                   </label>
@@ -492,30 +492,30 @@ export default function AdvancedProductCatalog({
 
             {/* Faixa de Preço */}
             <div>
-              <label className="text-sm font-medium">Faixa de Preço</label>
-              <div className="mt-2 space-y-2">
-                <div className="flex items-center gap-2">
+              <label className='text-sm font-medium'>Faixa de Preço</label>
+              <div className='mt-2 space-y-2'>
+                <div className='flex items-center gap-2'>
                   <Input
-                    type="number"
-                    placeholder="Min"
+                    type='number'
+                    placeholder='Min'
                     value={filters.priceRange[0]}
                     onChange={e =>
                       updateFilter('priceRange', [Number(e.target.value), filters.priceRange[1]])
                     }
-                    className="w-20"
+                    className='w-20'
                   />
                   <span>-</span>
                   <Input
-                    type="number"
-                    placeholder="Max"
+                    type='number'
+                    placeholder='Max'
                     value={filters.priceRange[1]}
                     onChange={e =>
                       updateFilter('priceRange', [filters.priceRange[0], Number(e.target.value)])
                     }
-                    className="w-20"
+                    className='w-20'
                   />
                 </div>
-                <div className="text-xs text-muted-foreground">
+                <div className='text-xs text-muted-foreground'>
                   R$ {filters.priceRange[0]} - R$ {filters.priceRange[1]}
                 </div>
               </div>
@@ -523,23 +523,23 @@ export default function AdvancedProductCatalog({
 
             {/* Outros Filtros */}
             <div>
-              <label className="text-sm font-medium">Outros</label>
-              <div className="mt-2 space-y-2">
-                <label className="flex items-center">
+              <label className='text-sm font-medium'>Outros</label>
+              <div className='mt-2 space-y-2'>
+                <label className='flex items-center'>
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     checked={filters.inStock}
                     onChange={e => updateFilter('inStock', e.target.checked)}
-                    className="mr-2"
+                    className='mr-2'
                   />
                   Apenas em estoque
                 </label>
-                <label className="flex items-center">
+                <label className='flex items-center'>
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     checked={filters.featured}
                     onChange={e => updateFilter('featured', e.target.checked)}
-                    className="mr-2"
+                    className='mr-2'
                   />
                   Produtos em destaque
                 </label>
@@ -549,17 +549,17 @@ export default function AdvancedProductCatalog({
 
           {/* Limpar Filtros */}
           {hasActiveFilters && (
-            <div className="mt-4 flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">
+            <div className='mt-4 flex items-center justify-between'>
+              <span className='text-sm text-muted-foreground'>
                 {filteredProducts.length} produtos encontrados
               </span>
               <Button
-                variant="outline"
-                size="sm"
+                variant='outline'
+                size='sm'
                 onClick={clearFilters}
-                data-testid="clear-filters"
+                data-testid='clear-filters'
               >
-                <X className="mr-2 h-4 w-4" />
+                <X className='mr-2 h-4 w-4' />
                 Limpar Filtros
               </Button>
             </div>
@@ -568,10 +568,10 @@ export default function AdvancedProductCatalog({
       )}
 
       {/* Resultados */}
-      <div className="space-y-4">
+      <div className='space-y-4'>
         {/* Contagem e Indicadores */}
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span data-testid="results-count">{filteredProducts.length} produtos encontrados</span>
+        <div className='flex items-center justify-between text-sm text-muted-foreground'>
+          <span data-testid='results-count'>{filteredProducts.length} produtos encontrados</span>
           <span>
             Ordenado por{' '}
             {sortBy === 'popularity'
@@ -594,7 +594,7 @@ export default function AdvancedProductCatalog({
 
         {/* Grid de Produtos */}
         <div
-          data-testid="products-grid"
+          data-testid='products-grid'
           className={`grid gap-4 ${
             viewMode === 'grid'
               ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
@@ -606,11 +606,11 @@ export default function AdvancedProductCatalog({
           {currentProducts.map(product => {
             const indicators = getProductIndicators(product);
             return (
-              <div key={product.id} className="relative">
+              <div key={product.id} className='relative'>
                 <ProductCard product={product} />
                 {/* Indicadores visuais */}
                 {indicators.length > 0 && (
-                  <div className="absolute right-2 top-2 flex flex-col gap-1">
+                  <div className='absolute right-2 top-2 flex flex-col gap-1'>
                     {indicators.map((indicator, index) => (
                       <span
                         key={index}
@@ -628,54 +628,54 @@ export default function AdvancedProductCatalog({
 
         {/* Loading mais produtos */}
         {isLoadingMore && currentPage < totalPages && (
-          <div className="flex justify-center py-4">
-            <div className="flex items-center gap-2">
-              <RefreshCw className="h-4 w-4 animate-spin" />
-              <span className="text-sm text-muted-foreground">Carregando mais produtos...</span>
+          <div className='flex justify-center py-4'>
+            <div className='flex items-center gap-2'>
+              <RefreshCw className='h-4 w-4 animate-spin' />
+              <span className='text-sm text-muted-foreground'>Carregando mais produtos...</span>
             </div>
           </div>
         )}
 
         {/* Paginação */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2">
+          <div className='flex items-center justify-center gap-2'>
             <Button
-              variant="outline"
-              size="sm"
+              variant='outline'
+              size='sm'
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className='h-4 w-4' />
               Anterior
             </Button>
 
-            <span className="text-sm text-muted-foreground">
+            <span className='text-sm text-muted-foreground'>
               Página {currentPage} de {totalPages}
             </span>
 
             <Button
-              variant="outline"
-              size="sm"
+              variant='outline'
+              size='sm'
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
             >
               Próxima
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className='h-4 w-4' />
             </Button>
           </div>
         )}
 
         {/* Mensagem quando não há resultados */}
         {filteredProducts.length === 0 && (
-          <div data-testid="no-results" className="py-12 text-center">
-            <Package className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
-            <h3 className="mb-2 text-lg font-medium text-muted-foreground">
+          <div data-testid='no-results' className='py-12 text-center'>
+            <Package className='mx-auto mb-4 h-12 w-12 text-muted-foreground' />
+            <h3 className='mb-2 text-lg font-medium text-muted-foreground'>
               Nenhum produto encontrado
             </h3>
-            <p className="mb-4 text-muted-foreground">
+            <p className='mb-4 text-muted-foreground'>
               Tente ajustar os filtros ou termos de busca
             </p>
-            <Button onClick={clearFilters} data-testid="clear-filters">
+            <Button onClick={clearFilters} data-testid='clear-filters'>
               Limpar Filtros
             </Button>
           </div>

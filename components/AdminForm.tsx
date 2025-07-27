@@ -71,87 +71,87 @@ export default function AdminForm({
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" data-testid="admin-form">
+    <form onSubmit={handleSubmit(onSubmit)} className='space-y-6' data-testid='admin-form'>
       {/* Informações Básicas */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="space-y-2">
-          <Label htmlFor="name" variant="required">
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+        <div className='space-y-2'>
+          <Label htmlFor='name' variant='required'>
             Nome
           </Label>
-          <Input id="name" {...register('name')} inputSize="md" />
+          <Input id='name' {...register('name')} inputSize='md' />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="slug" variant="required">
+        <div className='space-y-2'>
+          <Label htmlFor='slug' variant='required'>
             Slug
           </Label>
-          <Input id="slug" {...register('slug')} inputSize="md" />
+          <Input id='slug' {...register('slug')} inputSize='md' />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="category" variant="required">
+        <div className='space-y-2'>
+          <Label htmlFor='category' variant='required'>
             Categoria
           </Label>
           <Select defaultValue={product?.category} {...register('category')}>
-            <SelectTrigger id="category">
+            <SelectTrigger id='category'>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Botox">Botox</SelectItem>
-              <SelectItem value="Dysport">Dysport</SelectItem>
-              <SelectItem value="Xeomin">Xeomin</SelectItem>
-              <SelectItem value="Visco-supl.">Visco-supl.</SelectItem>
+              <SelectItem value='Botox'>Botox</SelectItem>
+              <SelectItem value='Dysport'>Dysport</SelectItem>
+              <SelectItem value='Xeomin'>Xeomin</SelectItem>
+              <SelectItem value='Visco-supl.'>Visco-supl.</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
 
       {/* Preços */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="space-y-2">
-          <Label htmlFor="price" variant="required">
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+        <div className='space-y-2'>
+          <Label htmlFor='price' variant='required'>
             Preço Base
           </Label>
-          <Input id="price" type="number" {...register('price')} inputSize="md" />
+          <Input id='price' type='number' {...register('price')} inputSize='md' />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="price_pix" variant="required">
+        <div className='space-y-2'>
+          <Label htmlFor='price_pix' variant='required'>
             Preço PIX
           </Label>
           <Input
-            id="price_pix"
-            type="number"
-            step="0.01"
+            id='price_pix'
+            type='number'
+            step='0.01'
             {...register('price_pix', { valueAsNumber: true })}
-            inputSize="md"
+            inputSize='md'
           />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="price_card" variant="required">
+        <div className='space-y-2'>
+          <Label htmlFor='price_card' variant='required'>
             Preço Cartão
           </Label>
           <Input
-            id="price_card"
-            type="number"
-            step="0.01"
+            id='price_card'
+            type='number'
+            step='0.01'
             {...register('price_card', { valueAsNumber: true })}
-            inputSize="md"
+            inputSize='md'
           />
         </div>
       </div>
 
       {/* Informações Adicionais */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="currency" variant="required">
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+        <div className='space-y-2'>
+          <Label htmlFor='currency' variant='required'>
             Moeda
           </Label>
-          <Input id="currency" {...register('currency')} placeholder="BRL" inputSize="md" />
+          <Input id='currency' {...register('currency')} placeholder='BRL' inputSize='md' />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="supplier_id" variant="required">
+        <div className='space-y-2'>
+          <Label htmlFor='supplier_id' variant='required'>
             Fornecedor
           </Label>
           <Select defaultValue={product?.supplier_id} {...register('supplier_id')}>
-            <SelectTrigger id="supplier_id">
+            <SelectTrigger id='supplier_id'>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -166,25 +166,25 @@ export default function AdminForm({
       </div>
 
       {/* Descrição */}
-      <div className="space-y-2">
-        <Label htmlFor="description" variant="required">
+      <div className='space-y-2'>
+        <Label htmlFor='description' variant='required'>
           Descrição
         </Label>
-        <Input id="description" {...register('description')} inputSize="md" />
+        <Input id='description' {...register('description')} inputSize='md' />
       </div>
 
       {/* Imagens */}
-      <div className="space-y-2">
-        <Label htmlFor="images" variant="required">
+      <div className='space-y-2'>
+        <Label htmlFor='images' variant='required'>
           Imagens (separadas por vírgula)
         </Label>
         <Input
-          id="images"
+          id='images'
           {...register('images')}
-          placeholder="Ex: /images/botox-50u.png, /images/botox-100u.png"
-          inputSize="md"
+          placeholder='Ex: /images/botox-50u.png, /images/botox-100u.png'
+          inputSize='md'
         />
-        <span className="text-xs text-neutral-500">
+        <span className='text-xs text-neutral-500'>
           Use imagens reais do diretório <code>public/images/</code>.
         </span>
       </div>
@@ -200,25 +200,25 @@ export default function AdminForm({
       />
 
       {/* Status */}
-      <div className="flex items-center space-x-2">
+      <div className='flex items-center space-x-2'>
         <Input
-          id="active"
-          type="checkbox"
+          id='active'
+          type='checkbox'
           {...register('active')}
           defaultChecked
-          className="h-4 w-4"
+          className='h-4 w-4'
         />
-        <Label htmlFor="active" variant="default">
+        <Label htmlFor='active' variant='default'>
           Ativo
         </Label>
       </div>
 
-      <div className="flex gap-4">
-        <Button type="submit" className="w-full sm:w-auto">
+      <div className='flex gap-4'>
+        <Button type='submit' className='w-full sm:w-auto'>
           Salvar
         </Button>
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel} className="w-full sm:w-auto">
+          <Button type='button' variant='outline' onClick={onCancel} className='w-full sm:w-auto'>
             Cancelar
           </Button>
         )}

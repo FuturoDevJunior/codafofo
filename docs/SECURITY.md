@@ -44,11 +44,13 @@ const supabase = createClient();
 // Login seguro
 const { data, error } = await supabase.auth.signInWithPassword({
   email: 'admin@vytalle.com',
-  password: 'senha-segura-123'
+  password: 'senha-segura-123',
 });
 
 // Verificar sessão
-const { data: { session } } = await supabase.auth.getSession();
+const {
+  data: { session },
+} = await supabase.auth.getSession();
 
 // Logout
 await supabase.auth.signOut();
@@ -65,7 +67,9 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
   const supabase = createMiddlewareClient({ req, res });
 
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   // Proteger rotas admin
   if (req.nextUrl.pathname.startsWith('/admin')) {
@@ -91,13 +95,13 @@ CREATE POLICY "Produtos públicos" ON products
 
 CREATE POLICY "Produtos admin" ON products
   FOR ALL USING (
-    auth.role() = 'authenticated' AND 
+    auth.role() = 'authenticated' AND
     auth.jwt() ->> 'role' = 'admin'
   );
 
 CREATE POLICY "Pedidos admin" ON orders
   FOR ALL USING (
-    auth.role() = 'authenticated' AND 
+    auth.role() = 'authenticated' AND
     auth.jwt() ->> 'role' = 'admin'
   );
 ```
@@ -108,7 +112,7 @@ CREATE POLICY "Pedidos admin" ON orders
 // ✅ Verificação de permissões
 export function usePermissions() {
   const { user } = useAuth();
-  
+
   const isAdmin = user?.role === 'admin';
   const canEditProducts = isAdmin;
   const canViewOrders = isAdmin;
@@ -180,20 +184,17 @@ import { z } from 'zod';
 
 // ✅ Schema rigoroso
 const ProductSchema = z.object({
-  name: z.string()
+  name: z
+    .string()
     .min(1, 'Nome é obrigatório')
     .max(100, 'Nome muito longo')
     .regex(/^[a-zA-Z0-9\s\-]+$/, 'Caracteres inválidos'),
-  
-  price_pix: z.number()
-    .positive('Preço deve ser positivo')
-    .max(100000, 'Preço muito alto'),
-  
+
+  price_pix: z.number().positive('Preço deve ser positivo').max(100000, 'Preço muito alto'),
+
   category: z.enum(['toxina', 'preenchedor', 'bioestimulador']),
-  
-  images: z.array(z.string().url())
-    .min(1, 'Pelo menos uma imagem')
-    .max(10, 'Máximo 10 imagens'),
+
+  images: z.array(z.string().url()).min(1, 'Pelo menos uma imagem').max(10, 'Máximo 10 imagens'),
 });
 
 // ✅ Validação de API
@@ -201,17 +202,14 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const validatedData = ProductSchema.parse(body);
-    
+
     // Processar dados validados
     const result = await createProduct(validatedData);
-    
+
     return Response.json(result);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return Response.json(
-        { error: 'Dados inválidos', details: error.errors },
-        { status: 400 }
-      );
+      return Response.json({ error: 'Dados inválidos', details: error.errors }, { status: 400 });
     }
     throw error;
   }
@@ -229,27 +227,27 @@ export async function POST(request: Request) {
 const securityHeaders = [
   {
     key: 'X-DNS-Prefetch-Control',
-    value: 'on'
+    value: 'on',
   },
   {
     key: 'Strict-Transport-Security',
-    value: 'max-age=63072000; includeSubDomains; preload'
+    value: 'max-age=63072000; includeSubDomains; preload',
   },
   {
     key: 'X-XSS-Protection',
-    value: '1; mode=block'
+    value: '1; mode=block',
   },
   {
     key: 'X-Frame-Options',
-    value: 'SAMEORIGIN'
+    value: 'SAMEORIGIN',
   },
   {
     key: 'X-Content-Type-Options',
-    value: 'nosniff'
+    value: 'nosniff',
   },
   {
     key: 'Referrer-Policy',
-    value: 'origin-when-cross-origin'
+    value: 'origin-when-cross-origin',
   },
   {
     key: 'Content-Security-Policy',
@@ -261,8 +259,10 @@ const securityHeaders = [
       font-src 'self';
       connect-src 'self' https://*.supabase.co;
       frame-ancestors 'none';
-    `.replace(/\s+/g, ' ').trim()
-  }
+    `
+      .replace(/\s+/g, ' ')
+      .trim(),
+  },
 ];
 
 module.exports = {
@@ -373,7 +373,9 @@ export async function GET() {
     checks.database = true;
 
     // Verificar auth
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
     checks.auth = true;
 
     // Verificar storage
@@ -386,21 +388,27 @@ export async function GET() {
 
     const isHealthy = Object.values(checks).every(Boolean);
 
-    return Response.json({
-      status: isHealthy ? 'healthy' : 'unhealthy',
-      checks,
-      timestamp: new Date().toISOString(),
-      version: process.env.npm_package_version,
-    }, {
-      status: isHealthy ? 200 : 503
-    });
+    return Response.json(
+      {
+        status: isHealthy ? 'healthy' : 'unhealthy',
+        checks,
+        timestamp: new Date().toISOString(),
+        version: process.env.npm_package_version,
+      },
+      {
+        status: isHealthy ? 200 : 503,
+      }
+    );
   } catch (error) {
-    return Response.json({
-      status: 'unhealthy',
-      error: error.message,
-      checks,
-      timestamp: new Date().toISOString(),
-    }, { status: 503 });
+    return Response.json(
+      {
+        status: 'unhealthy',
+        error: error.message,
+        checks,
+        timestamp: new Date().toISOString(),
+      },
+      { status: 503 }
+    );
   }
 }
 ```
@@ -428,10 +436,10 @@ export function securityAlert(type: string, details: any) {
 
 function getSeverity(type: string): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' {
   const severityMap = {
-    'failed_login': 'MEDIUM',
-    'suspicious_activity': 'HIGH',
-    'data_breach': 'CRITICAL',
-    'unauthorized_access': 'HIGH',
+    failed_login: 'MEDIUM',
+    suspicious_activity: 'HIGH',
+    data_breach: 'CRITICAL',
+    unauthorized_access: 'HIGH',
   };
   return severityMap[type] || 'LOW';
 }
@@ -550,4 +558,4 @@ npm run security:notify
 
 ---
 
-**Segurança é prioridade, não opção! 🛡️** 
+**Segurança é prioridade, não opção! 🛡️**

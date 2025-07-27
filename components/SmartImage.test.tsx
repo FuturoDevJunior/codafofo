@@ -14,7 +14,7 @@ vi.mock('next/image', () => ({
         onLoad={onLoad}
         onError={onError}
         {...props}
-        data-testid="next-image"
+        data-testid='next-image'
       />
     );
   },
@@ -26,7 +26,7 @@ describe('SmartImage', () => {
   });
 
   it('deve renderizar imagem com src válido', () => {
-    render(<SmartImage src="/test-image.jpg" alt="Test Image" />);
+    render(<SmartImage src='/test-image.jpg' alt='Test Image' />);
 
     const image = screen.getByTestId('next-image');
     expect(image).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('SmartImage', () => {
   });
 
   it('deve renderizar com placeholder durante carregamento', async () => {
-    render(<SmartImage src="/test-image.jpg" alt="Test Image" />);
+    render(<SmartImage src='/test-image.jpg' alt='Test Image' />);
 
     // Verificar se imagem está presente
     const image = screen.getByTestId('next-image');
@@ -44,7 +44,7 @@ describe('SmartImage', () => {
   });
 
   it('deve lidar com erro de carregamento', () => {
-    render(<SmartImage src="/invalid-image.jpg" alt="Test Image" />);
+    render(<SmartImage src='/invalid-image.jpg' alt='Test Image' />);
 
     const image = screen.getByTestId('next-image');
     expect(image).toBeInTheDocument();
@@ -52,14 +52,14 @@ describe('SmartImage', () => {
   });
 
   it('deve aplicar classes CSS personalizadas', () => {
-    render(<SmartImage src="/test.jpg" alt="Test" className="custom-class" />);
+    render(<SmartImage src='/test.jpg' alt='Test' className='custom-class' />);
 
     const image = screen.getByTestId('next-image');
     expect(image).toHaveAttribute('class', expect.stringContaining('custom-class'));
   });
 
   it('deve renderizar com dimensões específicas', () => {
-    render(<SmartImage src="/test.jpg" alt="Test" width={300} height={200} />);
+    render(<SmartImage src='/test.jpg' alt='Test' width={300} height={200} />);
 
     const image = screen.getByTestId('next-image');
     expect(image).toHaveAttribute('width', '300');
@@ -67,13 +67,13 @@ describe('SmartImage', () => {
   });
 
   it('deve suportar prioridade de carregamento', () => {
-    render(<SmartImage src="/test.jpg" alt="Test" priority />);
+    render(<SmartImage src='/test.jpg' alt='Test' priority />);
     const image = screen.getByTestId('next-image');
     expect(image).toBeInTheDocument();
   });
 
   it('deve renderizar com fill quando especificado', () => {
-    render(<SmartImage src="/test.jpg" alt="Test" fill />);
+    render(<SmartImage src='/test.jpg' alt='Test' fill />);
     const image = screen.getByTestId('next-image');
     expect(image).toBeInTheDocument();
   });
@@ -82,7 +82,7 @@ describe('SmartImage', () => {
     const formats = ['.jpg', '.png', '.webp', '.gif'];
 
     formats.forEach(format => {
-      const { rerender } = render(<SmartImage src={`/test${format}`} alt="Test" />);
+      const { rerender } = render(<SmartImage src={`/test${format}`} alt='Test' />);
 
       const image = screen.getByTestId('next-image');
       expect(image).toHaveAttribute('src', `/test${format}`);
@@ -92,7 +92,7 @@ describe('SmartImage', () => {
   });
 
   it('deve ser acessível com alt text apropriado', () => {
-    render(<SmartImage src="/test.jpg" alt="Produto Vytalle Premium" />);
+    render(<SmartImage src='/test.jpg' alt='Produto Vytalle Premium' />);
 
     const image = screen.getByAltText('Produto Vytalle Premium');
     expect(image).toBeInTheDocument();
@@ -101,7 +101,7 @@ describe('SmartImage', () => {
   it('deve otimizar para diferentes breakpoints', () => {
     const sizes = '(max-width: 768px) 100vw, 50vw';
 
-    render(<SmartImage src="/test.jpg" alt="Test" sizes={sizes} />);
+    render(<SmartImage src='/test.jpg' alt='Test' sizes={sizes} />);
 
     const image = screen.getByTestId('next-image');
     expect(image).toHaveAttribute('sizes', sizes);

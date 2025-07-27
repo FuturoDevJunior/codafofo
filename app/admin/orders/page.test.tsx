@@ -76,7 +76,7 @@ vi.mock('@/components/ui/select', () => ({
 
 vi.mock('@/components/ui/table', () => ({
   Table: ({ children, ...props }: any) => (
-    <div className="relative w-full overflow-auto">
+    <div className='relative w-full overflow-auto'>
       <table {...props}>{children}</table>
     </div>
   ),
@@ -96,16 +96,16 @@ vi.mock('@/components/ui/tabs', () => ({
 
 // Mock dos ícones Lucide
 vi.mock('lucide-react', () => ({
-  Badge: () => <span data-testid="badge-icon">Badge</span>,
-  Calendar: () => <span data-testid="calendar-icon">Calendar</span>,
-  CreditCard: () => <span data-testid="credit-card-icon">CreditCard</span>,
-  DollarSign: () => <span data-testid="dollar-sign-icon">DollarSign</span>,
-  Download: () => <span data-testid="download-icon">Download</span>,
-  Filter: () => <span data-testid="filter-icon">Filter</span>,
-  Package: () => <span data-testid="package-icon">Package</span>,
-  Phone: () => <span data-testid="phone-icon">Phone</span>,
-  Truck: () => <span data-testid="truck-icon">Truck</span>,
-  User: () => <span data-testid="user-icon">User</span>,
+  Badge: () => <span data-testid='badge-icon'>Badge</span>,
+  Calendar: () => <span data-testid='calendar-icon'>Calendar</span>,
+  CreditCard: () => <span data-testid='credit-card-icon'>CreditCard</span>,
+  DollarSign: () => <span data-testid='dollar-sign-icon'>DollarSign</span>,
+  Download: () => <span data-testid='download-icon'>Download</span>,
+  Filter: () => <span data-testid='filter-icon'>Filter</span>,
+  Package: () => <span data-testid='package-icon'>Package</span>,
+  Phone: () => <span data-testid='phone-icon'>Phone</span>,
+  Truck: () => <span data-testid='truck-icon'>Truck</span>,
+  User: () => <span data-testid='user-icon'>User</span>,
 }));
 
 describe('OrdersPage', () => {

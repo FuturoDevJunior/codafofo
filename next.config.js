@@ -1,70 +1,78 @@
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configurações básicas
-  reactStrictMode: true,
+  // Configurações experimentais para performance
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-select',
+      '@radix-ui/react-toast',
+      '@radix-ui/react-tooltip',
+      'framer-motion',
+    ],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+    optimizeCss: true,
+    optimizeServerReact: true,
+  },
 
-  // Otimizações de Performance e Segurança
+  // Compressão e headers
   compress: true,
   poweredByHeader: false,
   generateEtags: true,
 
-  // Configurações de imagens otimizadas
+  // Otimização de imagens
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'www.freepik.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.shutterstock.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'supabase.co',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.allergan.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.galderma.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.merz.com',
-      },
-    ],
     formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 3600, // 1 hora em segundos
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 31536000,
     dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // Redirects HTTPS obrigatórios para produção
-  async redirects() {
-    return [
-      {
-        source: '/(.*)',
-        has: [
-          {
-            type: 'header',
-            key: 'x-forwarded-proto',
-            value: 'http',
+  // Webpack otimizations
+  webpack: (config, { isServer, dev }) => {
+    // Otimizações de produção
+    if (!dev) {
+      config.optimization = {
+        ...config.optimization,
+        moduleIds: 'deterministic',
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+              priority: 10,
+            },
+            common: {
+              name: 'common',
+              minChunks: 2,
+              chunks: 'all',
+              priority: 5,
+              reuseExistingChunk: true,
+            },
           },
-        ],
-        destination: `https://${process.env.VERCEL_URL || 'vytalle-estetica.vercel.app'}/$1`,
-        permanent: true,
-      },
-    ];
+        },
+      };
+    }
+
+    // Resolver para melhor tree shaking
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      lodash: 'lodash-es',
+    };
+
+    return config;
   },
 
   // Headers de segurança e performance
@@ -74,38 +82,33 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on',
+            key: 'X-Frame-Options',
+            value: 'DENY',
           },
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
           {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https: wss: *.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;",
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
           },
           {
             key: 'Permissions-Policy',
-            value:
-              'camera=(), microphone=(), geolocation=(), gyroscope=(), magnetometer=(), payment=()',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      {
+        source: '/images/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
@@ -121,73 +124,15 @@ const nextConfig = {
     ];
   },
 
-  // Configurações experimentais para performance
-  experimental: {
-    gzipSize: true,
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-  },
-
-  // Configurações do Turbopack (estável)
-  turbopack: {
-    resolveAlias: {
-      canvas: './empty-module.js',
-    },
-  },
-
-  // Pacotes externos para Server Components
-  serverExternalPackages: ['sharp'],
-
-  // Output e configurações de build
-  output: 'standalone',
-
-  // TypeScript e ESLint (configurado para desenvolvimento)
-  typescript: {
-    ignoreBuildErrors: false, // Ativado para qualidade de código
-  },
-  eslint: {
-    ignoreDuringBuilds: false, // Ativado para qualidade de código
-  },
-
-  // Webpack customizado para otimizações adicionais
-  webpack: (config, { dev, isServer }) => {
-    // Otimizações apenas para produção
-    if (!dev) {
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            default: {
-              minChunks: 2,
-              priority: -20,
-              reuseExistingChunk: true,
-            },
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              priority: -10,
-              chunks: 'all',
-              maxSize: 200000, // 200kB
-            },
-            framer: {
-              test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-              name: 'framer',
-              priority: 5,
-              chunks: 'all',
-            },
-            radix: {
-              test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
-              name: 'radix',
-              priority: 5,
-              chunks: 'all',
-            },
-          },
-        },
-      };
-    }
-
-    return config;
+  // Redirects e rewrites otimizados
+  async rewrites() {
+    return [
+      {
+        source: '/sitemap.xml',
+        destination: '/api/sitemap',
+      },
+    ];
   },
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = nextConfig;

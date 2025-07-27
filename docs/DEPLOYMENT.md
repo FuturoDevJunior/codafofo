@@ -112,15 +112,15 @@ vercel --prod --force
 
 ## 🛠️ Troubleshooting de Deploy
 
-| Problema | Solução |
-|----------|---------|
-| **Build falha** | `npm run build` local, verifique erros de lint/type-check |
-| **Variáveis ausentes** | `vercel env ls` e adicione as faltantes |
-| **Banco não conecta** | Verifique credenciais e status do Supabase |
-| **Rollback necessário** | Use `git revert` e redeploy |
-| **Domínio não funciona** | Verifique DNS e SSL no Vercel |
-| **Deploy não atualiza** | `vercel --prod --force` |
+| Problema                 | Solução                                                   |
+| ------------------------ | --------------------------------------------------------- |
+| **Build falha**          | `npm run build` local, verifique erros de lint/type-check |
+| **Variáveis ausentes**   | `vercel env ls` e adicione as faltantes                   |
+| **Banco não conecta**    | Verifique credenciais e status do Supabase                |
+| **Rollback necessário**  | Use `git revert` e redeploy                               |
+| **Domínio não funciona** | Verifique DNS e SSL no Vercel                             |
+| **Deploy não atualiza**  | `vercel --prod --force`                                   |
 
 ---
 
-**Deploy seguro, monitorado e reversível!** 
+**Deploy seguro, monitorado e reversível!**

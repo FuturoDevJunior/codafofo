@@ -136,31 +136,31 @@ export default async function LeadsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light">
+    <div className='min-h-screen bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light'>
       {/* Header */}
-      <header className="bg-white sticky top-0 z-30 border-b-2 border-vitale-primary/20 shadow-lg">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-green-600 flex h-12 w-12 items-center justify-center rounded-xl">
-                <MessageCircle className="text-white h-6 w-6" />
+      <header className='bg-white sticky top-0 z-30 border-b-2 border-vitale-primary/20 shadow-lg'>
+        <div className='container mx-auto px-4 py-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center gap-3'>
+              <div className='bg-green-600 flex h-12 w-12 items-center justify-center rounded-xl'>
+                <MessageCircle className='text-white h-6 w-6' />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-vitale-primary">Controle de Leads</h1>
-                <p className="text-neutral-600">Gerencie contatos e oportunidades do WhatsApp</p>
+                <h1 className='text-2xl font-bold text-vitale-primary'>Controle de Leads</h1>
+                <p className='text-neutral-600'>Gerencie contatos e oportunidades do WhatsApp</p>
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className='flex gap-3'>
               <Button
-                variant="outline"
-                className="border-green-600 text-green-600 hover:bg-green-50"
+                variant='outline'
+                className='border-green-600 text-green-600 hover:bg-green-50'
               >
-                <Download className="mr-2 h-4 w-4" />
+                <Download className='mr-2 h-4 w-4' />
                 Exportar
               </Button>
               <Button
                 onClick={() => window.history.back()}
-                className="text-white bg-vitale-primary hover:bg-vitale-secondary"
+                className='text-white bg-vitale-primary hover:bg-vitale-secondary'
               >
                 Voltar ao Dashboard
               </Button>
@@ -169,122 +169,122 @@ export default async function LeadsPage() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className='container mx-auto px-4 py-8'>
         {/* Estatísticas */}
-        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className='mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4'>
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Leads</CardTitle>
-              <User className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>Total de Leads</CardTitle>
+              <User className='h-4 w-4 text-muted-foreground' />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-vitale-primary">{stats.total}</div>
-              <p className="text-xs text-muted-foreground">Contatos registrados</p>
+              <div className='text-2xl font-bold text-vitale-primary'>{stats.total}</div>
+              <p className='text-xs text-muted-foreground'>Contatos registrados</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Em Andamento</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>Em Andamento</CardTitle>
+              <TrendingUp className='h-4 w-4 text-muted-foreground' />
             </CardHeader>
             <CardContent>
-              <div className="text-orange-600 text-2xl font-bold">{stats.emAndamento}</div>
-              <p className="text-xs text-muted-foreground">Oportunidades ativas</p>
+              <div className='text-orange-600 text-2xl font-bold'>{stats.emAndamento}</div>
+              <p className='text-xs text-muted-foreground'>Oportunidades ativas</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Fechados</CardTitle>
-              <Star className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>Fechados</CardTitle>
+              <Star className='h-4 w-4 text-muted-foreground' />
             </CardHeader>
             <CardContent>
-              <div className="text-green-600 text-2xl font-bold">{stats.fechados}</div>
-              <p className="text-xs text-muted-foreground">Vendas concluídas</p>
+              <div className='text-green-600 text-2xl font-bold'>{stats.fechados}</div>
+              <p className='text-xs text-muted-foreground'>Vendas concluídas</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Valor Fechado</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-sm font-medium'>Valor Fechado</CardTitle>
+              <TrendingUp className='h-4 w-4 text-muted-foreground' />
             </CardHeader>
             <CardContent>
-              <div className="text-green-600 text-2xl font-bold">
+              <div className='text-green-600 text-2xl font-bold'>
                 {formatCurrency(stats.valorTotal)}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className='text-xs text-muted-foreground'>
                 Potencial: {formatCurrency(stats.valorPotencial)}
               </p>
             </CardContent>
           </Card>
         </div>
 
-        <Tabs defaultValue="list" className="space-y-6">
+        <Tabs defaultValue='list' className='space-y-6'>
           <TabsList>
-            <TabsTrigger value="list">Lista de Leads</TabsTrigger>
-            <TabsTrigger value="pipeline">Pipeline de Vendas</TabsTrigger>
-            <TabsTrigger value="analytics">Relatórios</TabsTrigger>
+            <TabsTrigger value='list'>Lista de Leads</TabsTrigger>
+            <TabsTrigger value='pipeline'>Pipeline de Vendas</TabsTrigger>
+            <TabsTrigger value='analytics'>Relatórios</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="list" className="space-y-6">
+          <TabsContent value='list' className='space-y-6'>
             {/* Filtros básicos */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Filter className="h-5 w-5" />
+                <CardTitle className='flex items-center gap-2'>
+                  <Filter className='h-5 w-5' />
                   Filtros e Busca
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+                <div className='grid grid-cols-1 gap-4 md:grid-cols-4'>
                   <div>
-                    <Label htmlFor="search">Buscar</Label>
-                    <Input id="search" placeholder="Nome, telefone..." className="w-full" />
+                    <Label htmlFor='search'>Buscar</Label>
+                    <Input id='search' placeholder='Nome, telefone...' className='w-full' />
                   </div>
                   <div>
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor='status'>Status</Label>
                     <Select>
                       <SelectTrigger>
-                        <SelectValue placeholder="Todos os status" />
+                        <SelectValue placeholder='Todos os status' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todos</SelectItem>
-                        <SelectItem value="novo">Novo Lead</SelectItem>
-                        <SelectItem value="contato">Em Contato</SelectItem>
-                        <SelectItem value="interessado">Interessado</SelectItem>
-                        <SelectItem value="negociacao">Negociação</SelectItem>
-                        <SelectItem value="fechado">Fechado</SelectItem>
-                        <SelectItem value="perdido">Perdido</SelectItem>
+                        <SelectItem value='all'>Todos</SelectItem>
+                        <SelectItem value='novo'>Novo Lead</SelectItem>
+                        <SelectItem value='contato'>Em Contato</SelectItem>
+                        <SelectItem value='interessado'>Interessado</SelectItem>
+                        <SelectItem value='negociacao'>Negociação</SelectItem>
+                        <SelectItem value='fechado'>Fechado</SelectItem>
+                        <SelectItem value='perdido'>Perdido</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="vendedor">Vendedor</Label>
+                    <Label htmlFor='vendedor'>Vendedor</Label>
                     <Select>
                       <SelectTrigger>
-                        <SelectValue placeholder="Todos vendedores" />
+                        <SelectValue placeholder='Todos vendedores' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todos</SelectItem>
-                        <SelectItem value="joao">João Santos</SelectItem>
-                        <SelectItem value="pedro">Pedro Lima</SelectItem>
-                        <SelectItem value="maria">Maria Costa</SelectItem>
+                        <SelectItem value='all'>Todos</SelectItem>
+                        <SelectItem value='joao'>João Santos</SelectItem>
+                        <SelectItem value='pedro'>Pedro Lima</SelectItem>
+                        <SelectItem value='maria'>Maria Costa</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="origem">Origem</Label>
+                    <Label htmlFor='origem'>Origem</Label>
                     <Select>
                       <SelectTrigger>
-                        <SelectValue placeholder="Todas as origens" />
+                        <SelectValue placeholder='Todas as origens' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todas</SelectItem>
-                        <SelectItem value="catalogo">WhatsApp Catálogo</SelectItem>
-                        <SelectItem value="direto">WhatsApp Direto</SelectItem>
-                        <SelectItem value="indicacao">Indicação</SelectItem>
+                        <SelectItem value='all'>Todas</SelectItem>
+                        <SelectItem value='catalogo'>WhatsApp Catálogo</SelectItem>
+                        <SelectItem value='direto'>WhatsApp Direto</SelectItem>
+                        <SelectItem value='indicacao'>Indicação</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -297,8 +297,8 @@ export default async function LeadsPage() {
               <CardHeader>
                 <CardTitle>Leads ({leads.length})</CardTitle>
               </CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
+              <CardContent className='p-0'>
+                <div className='overflow-x-auto'>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -317,53 +317,53 @@ export default async function LeadsPage() {
                         <TableRow key={lead.id}>
                           <TableCell>
                             <div>
-                              <div className="font-medium">{lead.cliente_nome}</div>
-                              <div className="text-xs text-muted-foreground">{lead.origem}</div>
+                              <div className='font-medium'>{lead.cliente_nome}</div>
+                              <div className='text-xs text-muted-foreground'>{lead.origem}</div>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-1">
-                              <Phone className="h-3 w-3" />
-                              <span className="text-xs">{lead.cliente_telefone}</span>
+                            <div className='flex items-center gap-1'>
+                              <Phone className='h-3 w-3' />
+                              <span className='text-xs'>{lead.cliente_telefone}</span>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <span className="text-sm">{lead.produto_interesse}</span>
+                            <span className='text-sm'>{lead.produto_interesse}</span>
                           </TableCell>
                           <TableCell>
                             <StatusBadge status={lead.status} />
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-1">
-                              <User className="h-3 w-3" />
-                              <span className="text-xs">{lead.vendedor_responsavel}</span>
+                            <div className='flex items-center gap-1'>
+                              <User className='h-3 w-3' />
+                              <span className='text-xs'>{lead.vendedor_responsavel}</span>
                             </div>
                           </TableCell>
-                          <TableCell className="font-semibold">
+                          <TableCell className='font-semibold'>
                             {formatCurrency(lead.valor_estimado)}
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              <span className="text-xs">
+                            <div className='flex items-center gap-1'>
+                              <Calendar className='h-3 w-3' />
+                              <span className='text-xs'>
                                 {new Date(lead.ultima_interacao).toLocaleDateString('pt-BR')}
                               </span>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="flex gap-1">
+                            <div className='flex gap-1'>
                               <Button
-                                size="sm"
-                                variant="outline"
-                                className="text-green-600 border-green-200 hover:bg-green-50"
+                                size='sm'
+                                variant='outline'
+                                className='text-green-600 border-green-200 hover:bg-green-50'
                                 onClick={() =>
                                   window.open(`https://wa.me/55${lead.cliente_telefone}`, '_blank')
                                 }
                               >
-                                <MessageCircle className="h-3 w-3" />
+                                <MessageCircle className='h-3 w-3' />
                               </Button>
-                              <Button size="sm" variant="outline">
-                                <User className="h-3 w-3" />
+                              <Button size='sm' variant='outline'>
+                                <User className='h-3 w-3' />
                               </Button>
                             </div>
                           </TableCell>
@@ -376,8 +376,8 @@ export default async function LeadsPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="pipeline">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <TabsContent value='pipeline'>
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
               {/* Pipeline de vendas */}
               {[
                 { status: 'novo', title: 'Novos Leads', color: 'blue' },
@@ -389,7 +389,7 @@ export default async function LeadsPage() {
                     <CardTitle className={`text-${stage.color}-600`}>{stage.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-3">
+                    <div className='space-y-3'>
                       {leads
                         .filter(lead =>
                           stage.status === 'novo'
@@ -399,12 +399,12 @@ export default async function LeadsPage() {
                               : lead.status === 'fechado'
                         )
                         .map(lead => (
-                          <div key={lead.id} className="rounded-lg border p-3">
-                            <div className="text-sm font-medium">{lead.cliente_nome}</div>
-                            <div className="text-xs text-muted-foreground">
+                          <div key={lead.id} className='rounded-lg border p-3'>
+                            <div className='text-sm font-medium'>{lead.cliente_nome}</div>
+                            <div className='text-xs text-muted-foreground'>
                               {lead.produto_interesse}
                             </div>
-                            <div className="text-green-600 mt-1 text-xs font-semibold">
+                            <div className='text-green-600 mt-1 text-xs font-semibold'>
                               {formatCurrency(lead.valor_estimado)}
                             </div>
                           </div>
@@ -416,14 +416,14 @@ export default async function LeadsPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="analytics">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <TabsContent value='analytics'>
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
               <Card>
                 <CardHeader>
                   <CardTitle>Performance por Vendedor</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
+                  <div className='space-y-3'>
                     {['João Santos', 'Pedro Lima', 'Maria Costa'].map(vendedor => {
                       const leadsVendedor = leads.filter(l => l.vendedor_responsavel === vendedor);
                       const fechados = leadsVendedor.filter(l => l.status === 'fechado').length;
@@ -434,19 +434,19 @@ export default async function LeadsPage() {
                       return (
                         <div
                           key={vendedor}
-                          className="flex items-center justify-between rounded-lg border p-3"
+                          className='flex items-center justify-between rounded-lg border p-3'
                         >
                           <div>
-                            <div className="font-medium">{vendedor}</div>
-                            <div className="text-xs text-muted-foreground">
+                            <div className='font-medium'>{vendedor}</div>
+                            <div className='text-xs text-muted-foreground'>
                               {leadsVendedor.length} leads • {fechados} fechados
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className="text-green-600 font-semibold">
+                          <div className='text-right'>
+                            <div className='text-green-600 font-semibold'>
                               {formatCurrency(valor)}
                             </div>
-                            <div className="text-xs text-muted-foreground">
+                            <div className='text-xs text-muted-foreground'>
                               {leadsVendedor.length
                                 ? Math.round((fechados / leadsVendedor.length) * 100)
                                 : 0}
@@ -465,7 +465,7 @@ export default async function LeadsPage() {
                   <CardTitle>Origem dos Leads</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
+                  <div className='space-y-3'>
                     {['WhatsApp Catálogo', 'WhatsApp Direto', 'Indicação'].map(origem => {
                       const leadsOrigem = leads.filter(l => l.origem === origem);
                       const fechados = leadsOrigem.filter(l => l.status === 'fechado').length;
@@ -473,17 +473,17 @@ export default async function LeadsPage() {
                       return (
                         <div
                           key={origem}
-                          className="flex items-center justify-between rounded-lg border p-3"
+                          className='flex items-center justify-between rounded-lg border p-3'
                         >
                           <div>
-                            <div className="font-medium">{origem}</div>
-                            <div className="text-xs text-muted-foreground">
+                            <div className='font-medium'>{origem}</div>
+                            <div className='text-xs text-muted-foreground'>
                               {leadsOrigem.length} leads
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className="font-semibold">{fechados} fechados</div>
-                            <div className="text-xs text-muted-foreground">
+                          <div className='text-right'>
+                            <div className='font-semibold'>{fechados} fechados</div>
+                            <div className='text-xs text-muted-foreground'>
                               {leadsOrigem.length
                                 ? Math.round((fechados / leadsOrigem.length) * 100)
                                 : 0}

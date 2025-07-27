@@ -10,8 +10,8 @@ describe('Select UI', () => {
       <Select>
         <SelectTrigger>Selecione</SelectTrigger>
         <SelectContent>
-          <SelectItem value="a">A</SelectItem>
-          <SelectItem value="b">B</SelectItem>
+          <SelectItem value='a'>A</SelectItem>
+          <SelectItem value='b'>B</SelectItem>
         </SelectContent>
       </Select>
     );

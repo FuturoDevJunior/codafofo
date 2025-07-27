@@ -31,7 +31,7 @@ describe('AnalyticsProvider', () => {
 
     render(
       <AnalyticsProvider>
-        <div data-testid="child-content">Test Content</div>
+        <div data-testid='child-content'>Test Content</div>
       </AnalyticsProvider>
     );
 
@@ -104,9 +104,9 @@ describe('AnalyticsProvider', () => {
 
     render(
       <AnalyticsProvider>
-        <div data-testid="child-1">Child 1</div>
-        <div data-testid="child-2">Child 2</div>
-        <span data-testid="child-3">Child 3</span>
+        <div data-testid='child-1'>Child 1</div>
+        <div data-testid='child-2'>Child 2</div>
+        <span data-testid='child-3'>Child 3</span>
       </AnalyticsProvider>
     );
 

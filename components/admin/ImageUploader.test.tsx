@@ -35,8 +35,8 @@ describe('ImageUploader', () => {
     it('deve renderizar o componente ImageUploader', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -48,8 +48,8 @@ describe('ImageUploader', () => {
     it('deve renderizar área de upload', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -62,8 +62,8 @@ describe('ImageUploader', () => {
     it('deve renderizar input de arquivo oculto', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -78,8 +78,8 @@ describe('ImageUploader', () => {
       const currentImages = ['image1.jpg', 'image2.jpg'];
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={currentImages}
           onImagesUpdate={vi.fn()}
         />
@@ -94,8 +94,8 @@ describe('ImageUploader', () => {
       const _user = userEvent.setup();
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -108,8 +108,8 @@ describe('ImageUploader', () => {
     it('deve aceitar múltiplos arquivos quando configurado', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -122,8 +122,8 @@ describe('ImageUploader', () => {
     it('deve simular upload de arquivo', async () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -137,8 +137,8 @@ describe('ImageUploader', () => {
     it('deve validar tipos de arquivo', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -155,8 +155,8 @@ describe('ImageUploader', () => {
 
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={currentImages}
           onImagesUpdate={vi.fn()}
         />
@@ -171,8 +171,8 @@ describe('ImageUploader', () => {
 
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={currentImages}
           onImagesUpdate={vi.fn()}
         />
@@ -188,8 +188,8 @@ describe('ImageUploader', () => {
 
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={currentImages}
           onImagesUpdate={vi.fn()}
         />
@@ -206,8 +206,8 @@ describe('ImageUploader', () => {
 
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={currentImages}
           onImagesUpdate={mockOnImagesUpdate}
         />
@@ -222,8 +222,8 @@ describe('ImageUploader', () => {
     it('deve mostrar estado de loading quando configurado', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -237,8 +237,8 @@ describe('ImageUploader', () => {
 
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={currentImages}
           onImagesUpdate={vi.fn()}
         />
@@ -253,8 +253,8 @@ describe('ImageUploader', () => {
     it('deve aceitar tipos de arquivo corretos', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -267,8 +267,8 @@ describe('ImageUploader', () => {
     it('deve mostrar dicas de uso', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -283,8 +283,8 @@ describe('ImageUploader', () => {
     it('deve ter labels apropriados', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -299,8 +299,8 @@ describe('ImageUploader', () => {
 
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={currentImages}
           onImagesUpdate={vi.fn()}
         />
@@ -313,8 +313,8 @@ describe('ImageUploader', () => {
     it('deve ter feedback visual para estados', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -329,8 +329,8 @@ describe('ImageUploader', () => {
     it('deve ser responsivo em diferentes tamanhos', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />
@@ -343,8 +343,8 @@ describe('ImageUploader', () => {
     it('deve adaptar layout para mobile', () => {
       render(
         <ImageUploader
-          productId="test-id"
-          productName="Produto Teste"
+          productId='test-id'
+          productName='Produto Teste'
           currentImages={[]}
           onImagesUpdate={vi.fn()}
         />

@@ -25,8 +25,8 @@ export default async function Audits() {
     .order('timestamp', { ascending: false });
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="mb-6 text-3xl font-bold">Auditoria</h1>
+    <div className='container mx-auto p-4'>
+      <h1 className='mb-6 text-3xl font-bold'>Auditoria</h1>
       <Table>
         <TableHeader>
           <TableRow>
@@ -48,12 +48,12 @@ export default async function Audits() {
               <TableCell>{a.user_id}</TableCell>
               <TableCell>{new Date(a.timestamp).toLocaleString('pt-BR')}</TableCell>
               <TableCell>
-                <pre className="whitespace-pre-wrap text-xs">
+                <pre className='whitespace-pre-wrap text-xs'>
                   {a.old_data ? JSON.stringify(a.old_data, null, 2) : '-'}
                 </pre>
               </TableCell>
               <TableCell>
-                <pre className="whitespace-pre-wrap text-xs">
+                <pre className='whitespace-pre-wrap text-xs'>
                   {a.new_data ? JSON.stringify(a.new_data, null, 2) : '-'}
                 </pre>
               </TableCell>

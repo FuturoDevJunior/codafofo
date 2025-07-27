@@ -60,7 +60,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
 
     return (
-      <div className="relative w-full">
+      <div className='relative w-full'>
         {leftIcon && (
           <div className={cn(iconClasses, 'left-3 text-vitale-primary')}>{leftIcon}</div>
         )}

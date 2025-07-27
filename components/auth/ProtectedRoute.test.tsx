@@ -138,7 +138,7 @@ describe('ProtectedRoute', () => {
 
     await act(async () => {
       render(
-        <ProtectedRoute redirectTo="/custom-login">
+        <ProtectedRoute redirectTo='/custom-login'>
           <div>Conteúdo protegido</div>
         </ProtectedRoute>
       );

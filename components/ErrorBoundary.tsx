@@ -202,63 +202,63 @@ function ErrorDetailsUI({
   };
   return (
     <div
-      role="alert"
+      role='alert'
       tabIndex={-1}
-      className="flex min-h-screen items-center justify-center bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light p-4"
+      className='flex min-h-screen items-center justify-center bg-gradient-to-br from-vitale-neutral via-neutral-50 to-vitale-light p-4'
     >
-      <div className="bg-white w-full max-w-md rounded-2xl border border-neutral-200 p-8 text-center shadow-lg">
-        <div className="mb-4 flex justify-center">
-          <div className="bg-red-100 flex h-16 w-16 items-center justify-center rounded-full">
-            <AlertTriangle className="text-red-600 h-8 w-8" />
+      <div className='bg-white w-full max-w-md rounded-2xl border border-neutral-200 p-8 text-center shadow-lg'>
+        <div className='mb-4 flex justify-center'>
+          <div className='bg-red-100 flex h-16 w-16 items-center justify-center rounded-full'>
+            <AlertTriangle className='text-red-600 h-8 w-8' />
           </div>
         </div>
-        <h2 className="mb-2 text-xl font-bold text-neutral-800">{displayTitle}</h2>
-        <p className="mb-6 text-neutral-600">{displayMessage}</p>
-        <div className="space-y-3">
+        <h2 className='mb-2 text-xl font-bold text-neutral-800'>{displayTitle}</h2>
+        <p className='mb-6 text-neutral-600'>{displayMessage}</p>
+        <div className='space-y-3'>
           <Button
             onClick={onReset}
-            className="text-white w-full bg-vitale-primary hover:bg-vitale-secondary"
-            aria-label="Tentar Novamente"
+            className='text-white w-full bg-vitale-primary hover:bg-vitale-secondary'
+            aria-label='Tentar Novamente'
           >
             Tentar Novamente
           </Button>
           <Button
             onClick={onReload}
-            className="text-white w-full bg-vitale-primary hover:bg-vitale-secondary"
-            aria-label="Recarregar Página"
+            className='text-white w-full bg-vitale-primary hover:bg-vitale-secondary'
+            aria-label='Recarregar Página'
           >
-            <RefreshCw className="mr-2 h-4 w-4" />
+            <RefreshCw className='mr-2 h-4 w-4' />
             Recarregar Página
           </Button>
           <Button
             onClick={onGoHome}
-            variant="outline"
-            className="hover:text-white w-full border-vitale-primary text-vitale-primary hover:bg-vitale-primary"
-            aria-label="Voltar ao Início"
+            variant='outline'
+            className='hover:text-white w-full border-vitale-primary text-vitale-primary hover:bg-vitale-primary'
+            aria-label='Voltar ao Início'
           >
             Voltar ao Início
           </Button>
           <Button
             onClick={onReport}
-            className="bg-yellow-600 hover:bg-yellow-700 text-white w-full"
-            aria-label="Reportar Erro"
+            className='bg-yellow-600 hover:bg-yellow-700 text-white w-full'
+            aria-label='Reportar Erro'
             disabled={reporting || reported}
           >
             {reporting ? 'Enviando...' : reported ? 'Erro reportado com sucesso!' : 'Reportar Erro'}
           </Button>
-          {reportError && <div className="text-red-600 text-sm">{reportError}</div>}
+          {reportError && <div className='text-red-600 text-sm'>{reportError}</div>}
         </div>
         {process.env.NODE_ENV === 'development' && error && (
-          <details className="mt-6 text-left" open={open}>
+          <details className='mt-6 text-left' open={open}>
             <summary
-              className="cursor-pointer text-sm text-neutral-500 hover:text-neutral-700"
+              className='cursor-pointer text-sm text-neutral-500 hover:text-neutral-700'
               ref={summaryRef}
               onClick={handleSummaryClick}
             >
               Detalhes do Erro
             </summary>
             {open && (
-              <pre className="mt-2 max-h-40 overflow-auto rounded bg-neutral-100 p-3 text-xs">
+              <pre className='mt-2 max-h-40 overflow-auto rounded bg-neutral-100 p-3 text-xs'>
                 {error?.stack || String(error)}
               </pre>
             )}

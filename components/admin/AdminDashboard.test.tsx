@@ -27,11 +27,11 @@ vi.mock('@/lib/supabase', () => ({
 }));
 
 vi.mock('./AdminForm', () => ({
-  default: () => <div data-testid="admin-form">Admin Form</div>,
+  default: () => <div data-testid='admin-form'>Admin Form</div>,
 }));
 
 vi.mock('./ImageUploader', () => ({
-  default: () => <div data-testid="image-uploader">Image Uploader</div>,
+  default: () => <div data-testid='image-uploader'>Image Uploader</div>,
 }));
 
 vi.mock('next/image', () => ({

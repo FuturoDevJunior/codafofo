@@ -86,12 +86,12 @@ Acesse [http://localhost:5174](http://localhost:5174) e veja o catálogo em aç�
 
 ### 📋 Pré-requisitos
 
-| Requisito | Versão | Descrição |
-|-----------|--------|-----------|
-| **Node.js** | >= 18.0.0 | Runtime JavaScript |
-| **npm** | >= 9.0.0 | Gerenciador de pacotes |
-| **Supabase CLI** | >= 1.0.0 | Backend-as-a-Service |
-| **Git** | >= 2.30.0 | Controle de versão |
+| Requisito        | Versão    | Descrição              |
+| ---------------- | --------- | ---------------------- |
+| **Node.js**      | >= 18.0.0 | Runtime JavaScript     |
+| **npm**          | >= 9.0.0  | Gerenciador de pacotes |
+| **Supabase CLI** | >= 1.0.0  | Backend-as-a-Service   |
+| **Git**          | >= 2.30.0 | Controle de versão     |
 
 ### 🔑 Variáveis de Ambiente
 
@@ -112,19 +112,20 @@ VERCEL_PROJECT_ID=your-project-id
 
 ### 🚨 Troubleshooting Rápido
 
-| Problema | Solução |
-|----------|---------|
-| **Erro de build** | `rm -rf .next && npm run build` |
-| **Banco não conecta** | `npm run db:init` |
-| **Testes falham** | `npm run test:reset` |
-| **Deploy falha** | Verificar variáveis de ambiente |
-| **Admin não acessa** | `npm run admin:setup` |
+| Problema              | Solução                         |
+| --------------------- | ------------------------------- |
+| **Erro de build**     | `rm -rf .next && npm run build` |
+| **Banco não conecta** | `npm run db:init`               |
+| **Testes falham**     | `npm run test:reset`            |
+| **Deploy falha**      | Verificar variáveis de ambiente |
+| **Admin não acessa**  | `npm run admin:setup`           |
 
 ---
 
 ## 🛠️ Stack Tecnológica
 
 ### Frontend & UI
+
 - **Next.js 15.4.2** - App Router, Server Components, Static Generation
 - **React 18.3.1** - Concurrent Features, Suspense, Server Components
 - **TypeScript 5** - Type Safety, IntelliSense, Strict Mode
@@ -134,11 +135,13 @@ VERCEL_PROJECT_ID=your-project-id
 - **Zustand** - State Management, Persist, DevTools
 
 ### Backend & Database
+
 - **Supabase** - PostgreSQL, Auth, Storage, Edge Functions, RLS
 - **Edge Runtime** - Server-side Logic, API Routes, Middleware
 - **PostgreSQL 15** - ACID, Views, Triggers, Full-text Search
 
 ### DevOps & Quality
+
 - **Vercel** - Deploy, Preview, Analytics, Edge Network
 - **GitHub Actions** - CI/CD, Tests, Security Scans
 - **Vitest** - Unit Tests, Coverage, Watch Mode
@@ -147,12 +150,14 @@ VERCEL_PROJECT_ID=your-project-id
 - **Husky** - Git Hooks, Pre-commit Checks
 
 ### Performance & SEO
+
 - **Next.js Image** - Optimization, WebP/AVIF, Lazy Loading
 - **PWA** - Manifest, Service Worker, Offline Support
 - **Sitemap.xml** - Dynamic Generation, SEO Optimization
 - **Meta Tags** - OpenGraph, Twitter Cards, JSON-LD
 
 ### Security & Compliance
+
 - **HTTPS + CSP** - Content Security Policy, Headers
 - **RLS (Row Level Security)** - Database-level Access Control
 - **Environment Variables** - Secrets Management
@@ -233,54 +238,60 @@ Para uma compreensão visual completa da arquitetura, consulte:
 ## 🔧 Scripts Disponíveis
 
 ### 🚀 Desenvolvimento
-| Script | Comando | Descrição |
-|--------|---------|-----------|
-| **Dev** | `npm run dev` | Inicia app em desenvolvimento (porta 5174) |
-| **Dev Fast** | `npm run dev:fast` | Dev sem inicialização do banco |
-| **Dev Turbo** | `npm run dev:turbo` | Dev com Turbo mode |
-| **Túnel** | `npm run tunnel` | Dev + túnel ngrok para testes mobile |
+
+| Script        | Comando             | Descrição                                  |
+| ------------- | ------------------- | ------------------------------------------ |
+| **Dev**       | `npm run dev`       | Inicia app em desenvolvimento (porta 5174) |
+| **Dev Fast**  | `npm run dev:fast`  | Dev sem inicialização do banco             |
+| **Dev Turbo** | `npm run dev:turbo` | Dev com Turbo mode                         |
+| **Túnel**     | `npm run tunnel`    | Dev + túnel ngrok para testes mobile       |
 
 ### 🏗️ Build & Deploy
-| Script | Comando | Descrição |
-|--------|---------|-----------|
-| **Build** | `npm run build` | Build de produção |
+
+| Script         | Comando                 | Descrição                      |
+| -------------- | ----------------------- | ------------------------------ |
+| **Build**      | `npm run build`         | Build de produção              |
 | **Build + DB** | `npm run build:with-db` | Build + inicialização do banco |
-| **Start** | `npm run start` | App em modo produção |
-| **Preview** | `npm run preview` | Preview em porta 4000 |
+| **Start**      | `npm run start`         | App em modo produção           |
+| **Preview**    | `npm run preview`       | Preview em porta 4000          |
 
 ### 🧪 Testes & Qualidade
-| Script | Comando | Descrição |
-|--------|---------|-----------|
-| **Testes** | `npm run test` | Testes unitários (Vitest) |
-| **Testes CI** | `npm run test:ci` | Testes para CI/CD |
-| **Cobertura** | `npm run test:coverage` | Relatório de cobertura |
-| **E2E** | `npm run test:e2e` | Testes end-to-end (Playwright) |
-| **Lint** | `npm run lint` | Lint de código |
-| **Type Check** | `npm run type-check` | Verificação de tipos |
-| **Format** | `npm run format` | Formatação com Prettier |
+
+| Script         | Comando                 | Descrição                      |
+| -------------- | ----------------------- | ------------------------------ |
+| **Testes**     | `npm run test`          | Testes unitários (Vitest)      |
+| **Testes CI**  | `npm run test:ci`       | Testes para CI/CD              |
+| **Cobertura**  | `npm run test:coverage` | Relatório de cobertura         |
+| **E2E**        | `npm run test:e2e`      | Testes end-to-end (Playwright) |
+| **Lint**       | `npm run lint`          | Lint de código                 |
+| **Type Check** | `npm run type-check`    | Verificação de tipos           |
+| **Format**     | `npm run format`        | Formatação com Prettier        |
 
 ### 🗄️ Banco de Dados
-| Script | Comando | Descrição |
-|--------|---------|-----------|
-| **DB Init** | `npm run db:init` | Inicializa banco, migrations e seeds |
-| **DB Migrate** | `npm run db:migrate` | Aplica migrações |
-| **DB Reset** | `npm run db:reset` | Reset completo do banco |
-| **DB Backup** | `npm run db:backup` | Backup dos dados |
+
+| Script         | Comando              | Descrição                            |
+| -------------- | -------------------- | ------------------------------------ |
+| **DB Init**    | `npm run db:init`    | Inicializa banco, migrations e seeds |
+| **DB Migrate** | `npm run db:migrate` | Aplica migrações                     |
+| **DB Reset**   | `npm run db:reset`   | Reset completo do banco              |
+| **DB Backup**  | `npm run db:backup`  | Backup dos dados                     |
 
 ### 👨‍💼 Admin
-| Script | Comando | Descrição |
-|--------|---------|-----------|
-| **Admin Setup** | `npm run admin:setup` | Configura usuário admin |
-| **Admin Test** | `npm run admin:test` | Testa configuração admin |
-| **Admin Auto** | `npm run admin:auto` | Automação completa do admin |
+
+| Script          | Comando               | Descrição                   |
+| --------------- | --------------------- | --------------------------- |
+| **Admin Setup** | `npm run admin:setup` | Configura usuário admin     |
+| **Admin Test**  | `npm run admin:test`  | Testa configuração admin    |
+| **Admin Auto**  | `npm run admin:auto`  | Automação completa do admin |
 
 ### 📊 Monitoramento
-| Script | Comando | Descrição |
-|--------|---------|-----------|
-| **Health Check** | `npm run monitor:health` | Verifica saúde da aplicação |
-| **Performance** | `npm run performance:lighthouse` | Análise de performance |
-| **SEO Check** | `npm run seo:check` | Verificação de SEO |
-| **Security Audit** | `npm run security:audit` | Auditoria de segurança |
+
+| Script             | Comando                          | Descrição                   |
+| ------------------ | -------------------------------- | --------------------------- |
+| **Health Check**   | `npm run monitor:health`         | Verifica saúde da aplicação |
+| **Performance**    | `npm run performance:lighthouse` | Análise de performance      |
+| **SEO Check**      | `npm run seo:check`              | Verificação de SEO          |
+| **Security Audit** | `npm run security:audit`         | Auditoria de segurança      |
 
 ---
 
@@ -288,14 +299,14 @@ Para uma compreensão visual completa da arquitetura, consulte:
 
 ### Endpoints Principais
 
-| Método | Rota | Descrição | Autenticação |
-|--------|------|-----------|--------------|
-| `GET` | `/api/products` | Lista todos os produtos | Pública |
-| `GET` | `/api/products/[slug]` | Detalhes de um produto | Pública |
-| `POST` | `/api/checkout` | Cria pedido e gera PDF | Pública |
-| `GET` | `/api/orders` | Lista pedidos | Admin |
-| `POST` | `/api/admin-setup` | Setup inicial admin | Pública |
-| `POST` | `/api/error-report` | Relatório de erros | Pública |
+| Método | Rota                   | Descrição               | Autenticação |
+| ------ | ---------------------- | ----------------------- | ------------ |
+| `GET`  | `/api/products`        | Lista todos os produtos | Pública      |
+| `GET`  | `/api/products/[slug]` | Detalhes de um produto  | Pública      |
+| `POST` | `/api/checkout`        | Cria pedido e gera PDF  | Pública      |
+| `GET`  | `/api/orders`          | Lista pedidos           | Admin        |
+| `POST` | `/api/admin-setup`     | Setup inicial admin     | Pública      |
+| `POST` | `/api/error-report`    | Relatório de erros      | Pública      |
 
 ### Exemplo de Integração
 
@@ -308,9 +319,9 @@ class VytalleAPI {
     this.api = axios.create({
       baseURL,
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     });
   }
 
@@ -327,10 +338,7 @@ class VytalleAPI {
 }
 
 // Uso
-const vytalle = new VytalleAPI(
-  'https://vytalle-estetica.vercel.app/api',
-  'YOUR_TOKEN'
-);
+const vytalle = new VytalleAPI('https://vytalle-estetica.vercel.app/api', 'YOUR_TOKEN');
 
 const products = await vytalle.getProducts('Toxina Botulínica');
 ```
@@ -372,21 +380,21 @@ _Pedido via Catálogo Digital_
 
 ### Status dos Testes
 
-| Tipo de Teste | Total | Passando | Cobertura |
-|---------------|-------|----------|-----------|
-| **Unitário (Vitest)** | 931 | 931 | 100% |
-| **Integração** | 72 | 72 | 100% |
-| **E2E (Playwright)** | 7 | 7 | 100% |
+| Tipo de Teste         | Total | Passando | Cobertura |
+| --------------------- | ----- | -------- | --------- |
+| **Unitário (Vitest)** | 931   | 931      | 100%      |
+| **Integração**        | 72    | 72       | 100%      |
+| **E2E (Playwright)**  | 7     | 7        | 100%      |
 
 ### 📈 Cobertura por Área
 
-| Área | Cobertura | Status |
-|------|-----------|--------|
-| **Components** | 73.44% | ✅ Boa |
-| **App Pages** | 93.99% | ✅ Excelente |
-| **Lib/Utils** | 87.59% | ✅ Excelente |
-| **Hooks** | 83.03% | ✅ Boa |
-| **UI Components** | 79.61% | ✅ Boa |
+| Área              | Cobertura | Status       |
+| ----------------- | --------- | ------------ |
+| **Components**    | 73.44%    | ✅ Boa       |
+| **App Pages**     | 93.99%    | ✅ Excelente |
+| **Lib/Utils**     | 87.59%    | ✅ Excelente |
+| **Hooks**         | 83.03%    | ✅ Boa       |
+| **UI Components** | 79.61%    | ✅ Boa       |
 
 ### Comandos de Teste
 
@@ -427,7 +435,7 @@ describe('ProductCard', () => {
 
   it('deve renderizar produto corretamente', () => {
     render(<ProductCard product={mockProduct} />);
-    
+
     expect(screen.getByText('Botox 50U')).toBeInTheDocument();
     expect(screen.getByText('R$ 530,00')).toBeInTheDocument();
   });
@@ -435,11 +443,11 @@ describe('ProductCard', () => {
   it('deve chamar onAddToCart ao clicar no botão', async () => {
     const onAddToCart = vi.fn();
     const user = userEvent.setup();
-    
+
     render(<ProductCard product={mockProduct} onAddToCart={onAddToCart} />);
-    
+
     await user.click(screen.getByRole('button', { name: /adicionar/i }));
-    
+
     expect(onAddToCart).toHaveBeenCalledWith(mockProduct);
   });
 });
@@ -481,7 +489,7 @@ CREATE POLICY "Produtos públicos" ON products
 -- Política para pedidos (apenas admin)
 CREATE POLICY "Pedidos admin" ON orders
   FOR ALL USING (
-    auth.role() = 'authenticated' AND 
+    auth.role() = 'authenticated' AND
     auth.jwt() ->> 'role' = 'admin'
   );
 ```
@@ -530,13 +538,13 @@ CREATE POLICY "Pedidos admin" ON orders
 
 ### Métricas de Performance
 
-| Métrica | Meta | Atual | Status |
-|---------|------|-------|--------|
-| **LCP** (Largest Contentful Paint) | < 2.5s | 1.8s | ✅ Excelente |
-| **FID** (First Input Delay) | < 100ms | 45ms | ✅ Excelente |
-| **CLS** (Cumulative Layout Shift) | < 0.1 | 0.03 | ✅ Excelente |
-| **Bundle Size** | < 350kB | 280kB | ✅ Excelente |
-| **TTFB** (Time to First Byte) | < 600ms | 350ms | ✅ Excelente |
+| Métrica                            | Meta    | Atual | Status       |
+| ---------------------------------- | ------- | ----- | ------------ |
+| **LCP** (Largest Contentful Paint) | < 2.5s  | 1.8s  | ✅ Excelente |
+| **FID** (First Input Delay)        | < 100ms | 45ms  | ✅ Excelente |
+| **CLS** (Cumulative Layout Shift)  | < 0.1   | 0.03  | ✅ Excelente |
+| **Bundle Size**                    | < 350kB | 280kB | ✅ Excelente |
+| **TTFB** (Time to First Byte)      | < 600ms | 350ms | ✅ Excelente |
 
 ### Otimizações Implementadas
 
@@ -721,4 +729,3 @@ Este projeto é proprietário, todos os direitos reservados à **RET CONSULTORIA
 ---
 
 **Vytalle Estética - Excelência em cada detalhe! 🚀**
-

@@ -43,11 +43,11 @@ export function Label({
     <label className={baseClasses} {...props}>
       {children}
       {variant === 'required' && (
-        <span className="text-red-500 ml-1" aria-label="campo obrigatório">
+        <span className='text-red-500 ml-1' aria-label='campo obrigatório'>
           *
         </span>
       )}
-      {variant === 'optional' && <span className="ml-1 text-xs text-neutral-400">(opcional)</span>}
+      {variant === 'optional' && <span className='ml-1 text-xs text-neutral-400'>(opcional)</span>}
     </label>
   );
 }

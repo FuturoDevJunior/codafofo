@@ -62,10 +62,10 @@ export default function CatalogButton({
   };
 
   const content = children || (
-    <span className="flex items-center justify-center gap-3 md:gap-4">
-      <Package className="h-6 w-6 md:h-7 md:w-7" />
-      <span className="font-extrabold">Explorar Catálogo Completo</span>
-      <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-2 md:h-7 md:w-7" />
+    <span className='flex items-center justify-center gap-3 md:gap-4'>
+      <Package className='h-6 w-6 md:h-7 md:w-7' />
+      <span className='font-extrabold'>Explorar Catálogo Completo</span>
+      <ArrowRight className='h-6 w-6 transition-transform group-hover:translate-x-2 md:h-7 md:w-7' />
     </span>
   );
 
@@ -76,14 +76,14 @@ export default function CatalogButton({
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         disabled={isNavigating}
-        data-testid="catalog-button"
-        aria-label="Navegar para página de produtos"
-        role="link"
+        data-testid='catalog-button'
+        aria-label='Navegar para página de produtos'
+        role='link'
         tabIndex={0}
       >
         {isNavigating ? (
-          <span className="flex items-center justify-center gap-3">
-            <div className="border-white border-t-transparent h-5 w-5 animate-spin rounded-full border-2" />
+          <span className='flex items-center justify-center gap-3'>
+            <div className='border-white border-t-transparent h-5 w-5 animate-spin rounded-full border-2' />
             <span>Carregando...</span>
           </span>
         ) : (

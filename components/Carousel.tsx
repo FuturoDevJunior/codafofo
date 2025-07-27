@@ -33,7 +33,7 @@ export default function ProductCarousel({
   }, [api]);
 
   return (
-    <Carousel className="mx-auto w-full max-w-xs" setApi={setApi}>
+    <Carousel className='mx-auto w-full max-w-xs' setApi={setApi}>
       <CarouselContent>
         {(images || []).map((img, idx) => (
           <CarouselItem key={img}>
@@ -42,7 +42,7 @@ export default function ProductCarousel({
               alt={`Imagem ${idx + 1}${productName ? ` do produto ${productName}` : ''}`}
               width={320}
               height={256}
-              className="h-64 w-full rounded-xl object-cover"
+              className='h-64 w-full rounded-xl object-cover'
               productName={productName}
             />
           </CarouselItem>
@@ -51,7 +51,7 @@ export default function ProductCarousel({
       <CarouselPrevious />
       <CarouselNext />
       {/* Indicador de slides (dots) */}
-      <div className="mt-2 flex justify-center gap-2">
+      <div className='mt-2 flex justify-center gap-2'>
         {images.map((_, idx) => (
           <button
             key={idx}

@@ -10,7 +10,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
   if (!product) notFound();
 
   return (
-    <div className="container mx-auto max-w-4xl p-4">
+    <div className='container mx-auto max-w-4xl p-4'>
       <ProductDetailClient product={product} />
     </div>
   );

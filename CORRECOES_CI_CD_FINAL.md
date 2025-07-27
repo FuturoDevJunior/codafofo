@@ -7,21 +7,25 @@ Este documento detalha todas as correções implementadas para resolver os probl
 ## 🚨 Problemas Identificados
 
 ### 1. Exit Code 127 (Command Not Found)
+
 - **Problema**: Vários jobs falhavam com exit code 127, indicando comandos não encontrados
 - **Causa**: Problemas na instalação de dependências e scripts não encontrados
 - **Solução**: Corrigido o processo de instalação e cache de dependências
 
 ### 2. Performance Tests Falhando
+
 - **Problema**: Lighthouse tentava acessar localhost:3000 sem servidor rodando
 - **Causa**: Configuração incorreta do webServer no Playwright
 - **Solução**: Configurado para usar URL externa em produção
 
 ### 3. E2E Tests Falhando
+
 - **Problema**: Playwright tentava iniciar servidor local que falhava no CI
 - **Causa**: Configuração webServer no playwright.config.ts
 - **Solução**: Removido webServer e configurado para usar URL externa
 
 ### 4. Health Check Falhando
+
 - **Problema**: Endpoint de health não existia
 - **Causa**: URL `/api/health` não estava implementada
 - **Solução**: Criado endpoint de health check completo
@@ -31,6 +35,7 @@ Este documento detalha todas as correções implementadas para resolver os probl
 ### 1. Workflow Principal (.github/workflows/main.yml)
 
 #### ✅ Cache de Dependências Corrigido
+
 ```yaml
 # Antes
 - name: 📦 Instalar dependências
@@ -50,10 +55,11 @@ Este documento detalha todas as correções implementadas para resolver os probl
 ```
 
 #### ✅ Testes E2E Corrigidos
+
 ```yaml
 # Antes
 - name: 🎭 Install Playwright
-  run: npm run test:e2e:install  # ❌ Script não encontrado
+  run: npm run test:e2e:install # ❌ Script não encontrado
 
 - name: 🧪 Run E2E tests
   run: |
@@ -72,6 +78,7 @@ Este documento detalha todas as correções implementadas para resolver os probl
 ```
 
 #### ✅ Performance Tests Corrigidos
+
 ```yaml
 # Antes
 - name: 🚀 Start application
@@ -91,6 +98,7 @@ Este documento detalha todas as correções implementadas para resolver os probl
 ```
 
 #### ✅ Health Check Corrigido
+
 ```yaml
 # Antes
 - name: 🔍 Health Check
@@ -109,6 +117,7 @@ Este documento detalha todas as correções implementadas para resolver os probl
 ### 2. Configuração do Playwright (playwright.config.ts)
 
 #### ✅ Removido WebServer Problemático
+
 ```typescript
 // ❌ Antes - Causava problemas no CI
 webServer: {
@@ -128,6 +137,7 @@ use: {
 ### 3. Endpoint de Health Check (app/api/health/route.ts)
 
 #### ✅ Criado Endpoint Completo
+
 ```typescript
 export async function GET() {
   try {
@@ -142,19 +152,19 @@ export async function GET() {
     };
 
     // Verificações de variáveis de ambiente
-    const requiredEnvVars = [
-      'NEXT_PUBLIC_SUPABASE_URL',
-      'NEXT_PUBLIC_SUPABASE_ANON_KEY',
-    ];
+    const requiredEnvVars = ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY'];
 
     // Verificação de conectividade com Supabase
     // ... lógica de verificação
 
-    return NextResponse.json({
-      status: 'healthy',
-      message: 'Vytalle application is running normally',
-      ...healthChecks,
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        status: 'healthy',
+        message: 'Vytalle application is running normally',
+        ...healthChecks,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     // Tratamento de erro
   }
@@ -164,11 +174,13 @@ export async function GET() {
 ### 4. Dependências Adicionadas
 
 #### ✅ Lighthouse CLI
+
 ```bash
 npm install --save-dev lighthouse
 ```
 
 #### ✅ Permissões de Script
+
 ```bash
 chmod +x scripts/install-deps.sh
 ```
@@ -176,24 +188,28 @@ chmod +x scripts/install-deps.sh
 ## 🧪 Testes Realizados
 
 ### ✅ Testes Unitários
+
 ```bash
 npm run test:ci
 # Resultado: 931 testes passando
 ```
 
 ### ✅ Build
+
 ```bash
 npm run build
 # Resultado: Build bem-sucedido
 ```
 
 ### ✅ Lint
+
 ```bash
 npm run lint
 # Resultado: Apenas warnings menores
 ```
 
 ### ✅ Type Check
+
 ```bash
 npm run type-check
 # Resultado: Sem erros de tipo
@@ -202,21 +218,25 @@ npm run type-check
 ## 📊 Melhorias Implementadas
 
 ### 1. Robustez do Cache
+
 - Cache de dependências mais confiável
 - Fallback para instalação manual quando necessário
 - Limpeza de cache para evitar corrupção
 
 ### 2. Testes E2E Otimizados
+
 - Remoção da dependência de servidor local
 - Uso de URL externa em produção
 - Configuração específica para CI
 
 ### 3. Performance Tests Melhorados
+
 - Uso de URL externa em vez de localhost
 - Flags específicas para ambiente CI
 - Tratamento de erros mais robusto
 
 ### 4. Health Check Completo
+
 - Endpoint funcional com verificações reais
 - Verificação de variáveis de ambiente
 - Verificação de conectividade com Supabase
@@ -225,16 +245,19 @@ npm run type-check
 ## 🚀 Próximos Passos
 
 ### 1. Monitoramento
+
 - [ ] Configurar alertas para falhas do pipeline
 - [ ] Implementar métricas de performance
 - [ ] Configurar notificações automáticas
 
 ### 2. Otimizações
+
 - [ ] Implementar cache de build
 - [ ] Otimizar tempo de execução dos testes
 - [ ] Configurar testes paralelos mais eficientes
 
 ### 3. Segurança
+
 - [ ] Implementar scan de vulnerabilidades
 - [ ] Configurar análise de dependências
 - [ ] Implementar verificações de compliance
@@ -242,22 +265,26 @@ npm run type-check
 ## 📝 Comandos Úteis
 
 ### Verificar Status do Pipeline
+
 ```bash
 # Verificar se todos os comandos funcionam localmente
 npm run ci:fast
 ```
 
 ### Testar Build Local
+
 ```bash
 npm run build
 ```
 
 ### Executar Testes E2E
+
 ```bash
 npm run test:e2e
 ```
 
 ### Verificar Health Check
+
 ```bash
 curl https://vytalle-estetica.vercel.app/api/health
 ```
@@ -283,4 +310,4 @@ Com essas correções, o pipeline CI/CD deve:
 
 ---
 
-**Desenvolvido com ❤️ pela RET Consultoria** 
+**Desenvolvido com ❤️ pela RET Consultoria**

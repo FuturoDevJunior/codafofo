@@ -104,69 +104,69 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
     priceRange[1] !== priceExtent[1];
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Barra de busca e controles */}
-      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+      <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
         {/* Busca */}
-        <div className="relative max-w-full flex-1 sm:max-w-md">
-          <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-neutral-400" />
+        <div className='relative max-w-full flex-1 sm:max-w-md'>
+          <Search className='absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-neutral-400' />
           <Input
-            type="text"
-            placeholder="Buscar produtos, categorias..."
+            type='text'
+            placeholder='Buscar produtos, categorias...'
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="rounded-xl border-2 border-vitale-primary/30 py-3 pl-10 pr-4 text-base focus:border-vitale-primary"
-            data-testid="search-input"
+            className='rounded-xl border-2 border-vitale-primary/30 py-3 pl-10 pr-4 text-base focus:border-vitale-primary'
+            data-testid='search-input'
           />
           {searchTerm && (
             <button
               onClick={() => setSearchTerm('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 transform text-neutral-400 hover:text-neutral-600"
-              aria-label="Limpar busca"
+              className='absolute right-3 top-1/2 -translate-y-1/2 transform text-neutral-400 hover:text-neutral-600'
+              aria-label='Limpar busca'
             >
-              <X className="h-4 w-4" />
+              <X className='h-4 w-4' />
             </button>
           )}
         </div>
 
         {/* Controles de visualização e filtros */}
-        <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-start">
+        <div className='flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-start'>
           {/* Modo de visualização */}
-          <div className="hidden items-center rounded-lg border border-vitale-primary/20 p-1 sm:flex">
+          <div className='hidden items-center rounded-lg border border-vitale-primary/20 p-1 sm:flex'>
             <button
               onClick={() => setViewMode('grid-large')}
               className={`rounded p-2 ${viewMode === 'grid-large' ? 'text-white bg-vitale-primary' : 'text-vitale-primary hover:bg-vitale-primary/10'}`}
-              title="Grade grande"
+              title='Grade grande'
             >
-              <Grid2X2 className="h-4 w-4" />
+              <Grid2X2 className='h-4 w-4' />
             </button>
             <button
               onClick={() => setViewMode('grid')}
               className={`rounded p-2 ${viewMode === 'grid' ? 'text-white bg-vitale-primary' : 'text-vitale-primary hover:bg-vitale-primary/10'}`}
-              title="Grade compacta"
+              title='Grade compacta'
             >
-              <Grid3X3 className="h-4 w-4" />
+              <Grid3X3 className='h-4 w-4' />
             </button>
             <button
               onClick={() => setViewMode('list')}
               className={`rounded p-2 ${viewMode === 'list' ? 'text-white bg-vitale-primary' : 'text-vitale-primary hover:bg-vitale-primary/10'}`}
-              title="Lista"
+              title='Lista'
             >
-              <List className="h-4 w-4" />
+              <List className='h-4 w-4' />
             </button>
           </div>
 
           {/* Botão de filtros */}
           <Button
             onClick={() => setShowFilters(!showFilters)}
-            variant="outline"
+            variant='outline'
             className={`border-vitale-primary/30 text-vitale-primary hover:bg-vitale-primary/10 ${showFilters ? 'bg-vitale-primary/10' : ''}`}
-            data-testid="filter-toggle"
+            data-testid='filter-toggle'
           >
-            <Filter className="mr-2 h-4 w-4" />
+            <Filter className='mr-2 h-4 w-4' />
             Filtros{' '}
             {hasActiveFilters && (
-              <span className="ml-1 h-2 w-2 rounded-full bg-vitale-primary"></span>
+              <span className='ml-1 h-2 w-2 rounded-full bg-vitale-primary'></span>
             )}
           </Button>
         </div>
@@ -175,38 +175,38 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
       {/* Painel de filtros */}
       {showFilters && (
         <div
-          className="bg-white space-y-6 rounded-xl border border-vitale-primary/20 p-6"
-          data-testid="filters-panel"
+          className='bg-white space-y-6 rounded-xl border border-vitale-primary/20 p-6'
+          data-testid='filters-panel'
         >
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-vitale-primary">Filtros</h3>
+          <div className='flex items-center justify-between'>
+            <h3 className='text-lg font-semibold text-vitale-primary'>Filtros</h3>
             {hasActiveFilters && (
               <Button
                 onClick={clearFilters}
-                variant="ghost"
-                size="sm"
-                className="text-neutral-600 hover:text-vitale-primary"
-                data-testid="clear-filters"
+                variant='ghost'
+                size='sm'
+                className='text-neutral-600 hover:text-vitale-primary'
+                data-testid='clear-filters'
               >
                 Limpar tudo
               </Button>
             )}
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4'>
             {/* Categoria */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-vitale-primary">
+              <label className='mb-2 block text-sm font-medium text-vitale-primary'>
                 Categoria
               </label>
               <select
                 value={selectedCategory}
                 onChange={e => setSelectedCategory(e.target.value)}
-                className="w-full rounded-lg border border-vitale-primary/30 p-3 focus:border-vitale-primary focus:outline-none"
-                data-testid="category-filter"
-                aria-label="Filtrar por categoria"
+                className='w-full rounded-lg border border-vitale-primary/30 p-3 focus:border-vitale-primary focus:outline-none'
+                data-testid='category-filter'
+                aria-label='Filtrar por categoria'
               >
-                <option value="">Todas as categorias</option>
+                <option value=''>Todas as categorias</option>
                 {categories.map(category => (
                   <option key={category} value={category}>
                     {category}
@@ -217,30 +217,30 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
 
             {/* Faixa de preço */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-vitale-primary">
+              <label className='mb-2 block text-sm font-medium text-vitale-primary'>
                 Faixa de Preço
               </label>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
+              <div className='space-y-2'>
+                <div className='flex items-center gap-2'>
                   <input
-                    type="number"
+                    type='number'
                     value={priceRange[0]}
                     onChange={e => setPriceRange([Number(e.target.value), priceRange[1]])}
-                    className="w-full rounded border border-vitale-primary/30 p-2 text-sm"
-                    placeholder="Mín"
-                    data-testid="price-min"
+                    className='w-full rounded border border-vitale-primary/30 p-2 text-sm'
+                    placeholder='Mín'
+                    data-testid='price-min'
                   />
-                  <span className="text-neutral-400">até</span>
+                  <span className='text-neutral-400'>até</span>
                   <input
-                    type="number"
+                    type='number'
                     value={priceRange[1]}
                     onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])}
-                    className="w-full rounded border border-vitale-primary/30 p-2 text-sm"
-                    placeholder="Máx"
-                    data-testid="price-max"
+                    className='w-full rounded border border-vitale-primary/30 p-2 text-sm'
+                    placeholder='Máx'
+                    data-testid='price-max'
                   />
                 </div>
-                <div className="text-xs text-neutral-500">
+                <div className='text-xs text-neutral-500'>
                   R$ {priceExtent[0]} - R$ {priceExtent[1]}
                 </div>
               </div>
@@ -248,21 +248,21 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
 
             {/* Ordenação */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-vitale-primary">
+              <label className='mb-2 block text-sm font-medium text-vitale-primary'>
                 Ordenar por
               </label>
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as SortOption)}
-                className="w-full rounded-lg border border-vitale-primary/30 p-3 focus:border-vitale-primary focus:outline-none"
-                data-testid="sort-select"
-                aria-label="Ordenar produtos"
+                className='w-full rounded-lg border border-vitale-primary/30 p-3 focus:border-vitale-primary focus:outline-none'
+                data-testid='sort-select'
+                aria-label='Ordenar produtos'
               >
-                <option value="category">Categoria</option>
-                <option value="name-asc">Nome A-Z</option>
-                <option value="name-desc">Nome Z-A</option>
-                <option value="price-asc">Menor preço</option>
-                <option value="price-desc">Maior preço</option>
+                <option value='category'>Categoria</option>
+                <option value='name-asc'>Nome A-Z</option>
+                <option value='name-desc'>Nome Z-A</option>
+                <option value='price-asc'>Menor preço</option>
+                <option value='price-desc'>Maior preço</option>
               </select>
             </div>
           </div>
@@ -270,19 +270,19 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
       )}
 
       {/* Resultados */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-neutral-600" data-testid="results-count">
+      <div className='flex items-center justify-between'>
+        <p className='text-sm text-neutral-600' data-testid='results-count'>
           <strong>{sorted.length}</strong> produto
           {sorted.length !== 1 ? 's' : ''} encontrado
           {sorted.length !== 1 ? 's' : ''}
           {searchTerm && ` para "${searchTerm}"`}
         </p>
         {sortBy !== 'category' && (
-          <div className="flex items-center gap-1 text-sm text-neutral-500">
+          <div className='flex items-center gap-1 text-sm text-neutral-500'>
             {sortBy.includes('asc') ? (
-              <SortAsc className="h-4 w-4" />
+              <SortAsc className='h-4 w-4' />
             ) : (
-              <SortDesc className="h-4 w-4" />
+              <SortDesc className='h-4 w-4' />
             )}
             Ordenado por {sortBy.includes('name') ? 'nome' : 'preço'}
           </div>
@@ -313,12 +313,12 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
                 ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
                 : 'grid-cols-1'
           }`}
-          data-testid="products-grid"
+          data-testid='products-grid'
         >
           {sorted.map((product, index) => (
             <div
               key={product.id}
-              className="animate-slide-up"
+              className='animate-slide-up'
               style={{ animationDelay: `${index * 50}ms` }}
             >
               <ProductCard
@@ -329,13 +329,13 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
           ))}
         </div>
       ) : (
-        <div className="py-20 text-center" data-testid="no-results">
-          <div className="space-y-4">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-vitale-primary/10">
-              <Package className="h-8 w-8 text-vitale-primary" />
+        <div className='py-20 text-center' data-testid='no-results'>
+          <div className='space-y-4'>
+            <div className='mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-vitale-primary/10'>
+              <Package className='h-8 w-8 text-vitale-primary' />
             </div>
-            <h3 className="text-xl font-bold text-vitale-primary">Nenhum produto encontrado</h3>
-            <p className="mx-auto max-w-md text-neutral-600">
+            <h3 className='text-xl font-bold text-vitale-primary'>Nenhum produto encontrado</h3>
+            <p className='mx-auto max-w-md text-neutral-600'>
               {hasActiveFilters
                 ? 'Tente ajustar os filtros ou limpar a busca para ver mais produtos.'
                 : 'Não há produtos disponíveis no momento.'}
@@ -343,7 +343,7 @@ export default function ProductCatalog({ products, isLoading = false }: ProductC
             {hasActiveFilters && (
               <Button
                 onClick={clearFilters}
-                className="text-white bg-vitale-primary hover:bg-vitale-secondary"
+                className='text-white bg-vitale-primary hover:bg-vitale-secondary'
               >
                 Limpar filtros
               </Button>

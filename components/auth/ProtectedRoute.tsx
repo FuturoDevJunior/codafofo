@@ -47,10 +47,10 @@ export default function ProtectedRoute({
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-vitale-primary"></div>
-          <p className="mt-4 text-vitale-primary">Verificando autenticação...</p>
+      <div className='flex min-h-screen items-center justify-center'>
+        <div className='text-center'>
+          <div className='mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-vitale-primary'></div>
+          <p className='mt-4 text-vitale-primary'>Verificando autenticação...</p>
         </div>
       </div>
     );

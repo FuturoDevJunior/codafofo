@@ -34,7 +34,7 @@
     "ci:fast": "npm run lint && npm run test:ci",
     "ci:e2e": "npm run test:e2e -- --reporter=html",
     "ci:coverage": "npm run test:coverage && npm run test:e2e",
-    "analyze": "ANALYZE=true next build",
+    "analyze": "ANALYZE=true npm run build",
     "prepare": "husky",
     "db:init": "node scripts/db-init.js",
     "db:migrate": "npx supabase db push",
@@ -94,7 +94,17 @@
     "performance:full": "npm run performance:lighthouse && npm run performance:lighthouse -- --output=html --output-path=lighthouse-report.html",
     "ci:ultra": "npm run lint && npm run type-check && npm run test:ci && npm run test:e2e && npm run performance:lighthouse",
     "pre-deploy": "npm run ci:ultra && npm run security:audit",
-    "post-deploy": "npm run health:check && npm run monitor:ultra"
+    "post-deploy": "npm run health:check && npm run monitor:ultra",
+    "workflow:ultra": "bash scripts/dev-workflow-ultra.sh",
+    "quality:enhance": "bash scripts/quality-enhancer.sh",
+    "perf:optimize": "bash scripts/performance-optimizer.sh",
+    "bundle:report": "npm run analyze && open bundle-report.html",
+    "perf:analyze": "npm run build && npm run analyze",
+    "perf:lighthouse": "lighthouse http://localhost:3000 --output=html --output-path=./performance-report.html",
+    "perf:budget": "lighthouse http://localhost:3000 --budget-path=./lighthouse-budget.json",
+    "perf:monitor": "node scripts/performance-monitor.js",
+    "cache:stats": "node -e \"console.log('Cache stats:', require('./lib/cache/cacheStrategy').appCache.getStats())\"",
+    "bundle:stats": "webpack-bundle-analyzer .next/static/chunks/*.js"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
@@ -126,6 +136,7 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^7.7.3",
+    "web-vitals": "^5.0.3",
     "zustand": "^5.0.6"
   },
   "devDependencies": {

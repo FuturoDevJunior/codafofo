@@ -15,7 +15,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, LoadingButtonProps>(
   ({ className, children, loading = false, loadingText, disabled, ...props }, ref) => {
     return (
       <Button className={cn(className)} disabled={disabled || loading} ref={ref} {...props}>
-        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
+        {loading && <Loader2 className='mr-2 h-4 w-4 animate-spin' aria-hidden='true' />}
         {loading ? loadingText || 'Carregando...' : children}
       </Button>
     );

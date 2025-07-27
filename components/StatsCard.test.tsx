@@ -30,25 +30,25 @@ describe('StatsCard', () => {
   });
 
   it('deve aplicar cor secondary', () => {
-    render(<StatsCard {...defaultProps} color="secondary" />);
+    render(<StatsCard {...defaultProps} color='secondary' />);
     const card = screen.getByText('1,234').closest('div')?.parentElement;
     expect(card).toHaveClass('border-vitale-secondary/20');
   });
 
   it('deve aplicar cor accent', () => {
-    render(<StatsCard {...defaultProps} color="accent" />);
+    render(<StatsCard {...defaultProps} color='accent' />);
     const card = screen.getByText('1,234').closest('div')?.parentElement;
     expect(card).toHaveClass('border-orange-200/50');
   });
 
   it('deve aplicar className customizada', () => {
-    render(<StatsCard {...defaultProps} className="custom-stats" />);
+    render(<StatsCard {...defaultProps} className='custom-stats' />);
     const card = screen.getByText('1,234').closest('div')?.parentElement;
     expect(card).toHaveClass('custom-stats');
   });
 
   it('deve renderizar com diferentes ícones', () => {
-    render(<StatsCard {...defaultProps} iconName="ShoppingCart" />);
+    render(<StatsCard {...defaultProps} iconName='ShoppingCart' />);
     const element = screen.getByText('1,234').closest('div')?.parentElement;
     const icon = element?.querySelector('svg');
     expect(icon).toBeInTheDocument();
@@ -95,30 +95,30 @@ describe('StatsCard', () => {
   });
 
   it('deve aplicar classes de cor corretas para primary', () => {
-    render(<StatsCard {...defaultProps} color="primary" />);
+    render(<StatsCard {...defaultProps} color='primary' />);
     const card = screen.getByText('1,234').closest('div');
     expect(card).toHaveClass('text-vitale-primary');
   });
 
   it('deve aplicar classes de cor corretas para secondary', () => {
-    render(<StatsCard {...defaultProps} color="secondary" />);
+    render(<StatsCard {...defaultProps} color='secondary' />);
     const card = screen.getByText('1,234').closest('div');
     expect(card).toHaveClass('text-vitale-secondary');
   });
 
   it('deve aplicar classes de cor corretas para accent', () => {
-    render(<StatsCard {...defaultProps} color="accent" />);
+    render(<StatsCard {...defaultProps} color='accent' />);
     const card = screen.getByText('1,234').closest('div');
     expect(card).toHaveClass('text-orange-600');
   });
 
   it('deve renderizar com valores numéricos', () => {
-    render(<StatsCard {...defaultProps} value="42" />);
+    render(<StatsCard {...defaultProps} value='42' />);
     expect(screen.getByText('42')).toBeInTheDocument();
   });
 
   it('deve renderizar com valores de texto longo', () => {
-    render(<StatsCard {...defaultProps} value="1,234,567" label="Usuários Muito Ativos" />);
+    render(<StatsCard {...defaultProps} value='1,234,567' label='Usuários Muito Ativos' />);
     expect(screen.getByText('1,234,567')).toBeInTheDocument();
     expect(screen.getByText('Usuários Muito Ativos')).toBeInTheDocument();
   });

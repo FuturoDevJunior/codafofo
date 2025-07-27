@@ -101,11 +101,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className="scroll-smooth">
+    <html lang='pt-BR' className='scroll-smooth'>
       <head>
         {/* Schema.org Medical Business Markup */}
         <script
-          type="application/ld+json"
+          type='application/ld+json'
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
@@ -161,7 +161,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Product List Schema */}
         <script
-          type="application/ld+json"
+          type='application/ld+json'
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
@@ -204,7 +204,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ErrorBoundary>
             <CustomizationProvider>
               <AnalyticsProvider>
-                <main role="main">{children}</main>
+                <main role='main'>{children}</main>
                 <Toaster />
               </AnalyticsProvider>
             </CustomizationProvider>

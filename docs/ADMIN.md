@@ -23,6 +23,7 @@ Sistema completo de autenticação e administração integrado com Supabase Auth
 ## 🚀 Comandos Principais
 
 ### Gerenciamento do Admin
+
 ```bash
 # Configurar usuário admin inicial
 npm run admin:setup
@@ -41,6 +42,7 @@ npm run admin:guide
 ```
 
 ### Servidor de Desenvolvimento
+
 ```bash
 # Iniciar servidor (com inicialização do DB)
 npm run dev
@@ -55,6 +57,7 @@ npm run dev:turbo
 ## 🛠️ Arquitetura do Sistema
 
 ### Estrutura de Arquivos
+
 ```
 app/admin/
 ├── login/
@@ -79,6 +82,7 @@ scripts/
 ### Configuração do Supabase
 
 #### Variáveis de Ambiente (.env.local)
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://unrnnzaprxiasssxrnbc.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -86,6 +90,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 #### Tabelas Relacionadas
+
 - `auth.users` - Usuários do Supabase Auth
 - `user_profiles` - Perfis e roles dos usuários (opcional)
 
@@ -109,6 +114,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ## 🔧 Solução de Problemas
 
 ### Problema: "Permission denied"
+
 ```bash
 # Verificar variáveis de ambiente
 echo $NEXT_PUBLIC_SUPABASE_URL
@@ -119,6 +125,7 @@ npm run admin:reset
 ```
 
 ### Problema: "Invalid login credentials"
+
 ```bash
 # Gerar nova senha
 npm run admin:reset
@@ -130,6 +137,7 @@ npm run admin:reset
 ```
 
 ### Problema: "User not found"
+
 ```bash
 # Criar usuário do zero
 npm run admin:setup
@@ -144,16 +152,20 @@ npm run admin:setup
 ## 🧪 Testes Automatizados
 
 ### Teste de Login
+
 ```bash
 npm run admin:test
 ```
+
 Verifica:
+
 - ✅ Conexão com Supabase
 - ✅ Autenticação com credenciais
 - ✅ Recebimento de token
 - ✅ Logout correto
 
 ### Teste E2E
+
 ```bash
 npm run test:e2e -- --grep="admin"
 ```
@@ -161,6 +173,7 @@ npm run test:e2e -- --grep="admin"
 ## 🚀 Deploy e Produção
 
 ### Variáveis de Ambiente (Vercel)
+
 ```bash
 # Configurar no Vercel
 vercel env add NEXT_PUBLIC_SUPABASE_URL
@@ -169,12 +182,14 @@ vercel env add SUPABASE_SERVICE_ROLE_KEY
 ```
 
 ### URLs de Produção
+
 - **Staging**: https://vytalle-staging.vercel.app/admin/login
 - **Production**: https://vytalle.vercel.app/admin/login
 
 ## 📊 Monitoramento
 
 ### Health Check
+
 ```bash
 # Verificar API
 curl -f http://localhost:5174/api/admin-setup
@@ -184,6 +199,7 @@ npm run admin:test
 ```
 
 ### Logs de Acesso
+
 - Implementado via `lib/logger.ts`
 - Logs de autenticação salvos automaticamente
 - Auditoria disponível em `/admin/audits`
@@ -191,6 +207,7 @@ npm run admin:test
 ## 🔐 Segurança
 
 ### Boas Práticas Implementadas
+
 - ✅ Autenticação via Supabase Auth (bcrypt)
 - ✅ JWT tokens seguros
 - ✅ Row Level Security (RLS) no banco
@@ -200,6 +217,7 @@ npm run admin:test
 - ✅ Sanitização de inputs
 
 ### Políticas de Segurança
+
 - Senhas com 20+ caracteres
 - Expiração automática de sessões
 - Logs de tentativas de acesso
@@ -208,6 +226,7 @@ npm run admin:test
 ## 📱 Interface Administrativa
 
 ### Funcionalidades Disponíveis
+
 - 📊 Dashboard com métricas
 - 📦 Gerenciamento de produtos
 - 🛒 Visualização de pedidos
@@ -217,6 +236,7 @@ npm run admin:test
 - 🖼️ Upload de imagens
 
 ### Próximas Funcionalidades
+
 - [ ] Gerenciamento de usuários
 - [ ] Configurações de email
 - [ ] Backup automático

@@ -45,7 +45,7 @@ export default async function Admin() {
   const { data: suppliers } = await supabase.from('suppliers').select('id, name');
 
   return (
-    <div className="via-white min-h-screen bg-gradient-to-br from-vitale-primary/5 to-vitale-secondary/5">
+    <div className='via-white min-h-screen bg-gradient-to-br from-vitale-primary/5 to-vitale-secondary/5'>
       <AdminDashboard
         products={products || []}
         suppliers={suppliers || []}

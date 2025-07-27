@@ -131,28 +131,28 @@ describe('LoadingButton', () => {
     });
 
     it('deve aplicar variant destructive', () => {
-      render(<LoadingButton variant="destructive">Destructive</LoadingButton>);
+      render(<LoadingButton variant='destructive'>Destructive</LoadingButton>);
 
       const button = screen.getByRole('button');
       expect(button).toHaveClass('bg-gradient-to-r', 'from-red-500', 'to-red-600');
     });
 
     it('deve aplicar variant outline', () => {
-      render(<LoadingButton variant="outline">Outline</LoadingButton>);
+      render(<LoadingButton variant='outline'>Outline</LoadingButton>);
 
       const button = screen.getByRole('button');
       expect(button).toHaveClass('border-2', 'border-vitale-primary');
     });
 
     it('deve aplicar size sm', () => {
-      render(<LoadingButton size="sm">Pequeno</LoadingButton>);
+      render(<LoadingButton size='sm'>Pequeno</LoadingButton>);
 
       const button = screen.getByRole('button');
       expect(button).toHaveClass('h-9', 'px-4');
     });
 
     it('deve aplicar size lg', () => {
-      render(<LoadingButton size="lg">Grande</LoadingButton>);
+      render(<LoadingButton size='lg'>Grande</LoadingButton>);
 
       const button = screen.getByRole('button');
       expect(button).toHaveClass('h-12', 'px-8');
@@ -169,7 +169,7 @@ describe('LoadingButton', () => {
     it('deve renderizar com ícone', () => {
       render(
         <LoadingButton>
-          <span data-testid="icon">🔥</span>
+          <span data-testid='icon'>🔥</span>
           Com ícone
         </LoadingButton>
       );
@@ -196,7 +196,7 @@ describe('LoadingButton', () => {
 
   describe('Props Adicionais', () => {
     it('deve aceitar className personalizada', () => {
-      render(<LoadingButton className="custom-class">Custom</LoadingButton>);
+      render(<LoadingButton className='custom-class'>Custom</LoadingButton>);
 
       const button = screen.getByRole('button');
       expect(button).toHaveClass('custom-class');
@@ -204,7 +204,7 @@ describe('LoadingButton', () => {
 
     it('deve aceitar props de botão padrão', () => {
       render(
-        <LoadingButton type="submit" form="test-form">
+        <LoadingButton type='submit' form='test-form'>
           Submit
         </LoadingButton>
       );
@@ -215,7 +215,7 @@ describe('LoadingButton', () => {
     });
 
     it('deve aceitar data attributes', () => {
-      render(<LoadingButton data-testid="test-button">Test</LoadingButton>);
+      render(<LoadingButton data-testid='test-button'>Test</LoadingButton>);
 
       const button = screen.getByTestId('test-button');
       expect(button).toBeInTheDocument();
@@ -287,7 +287,7 @@ describe('LoadingButton', () => {
 
       render(
         <form onSubmit={mockSubmit}>
-          <LoadingButton type="submit">Submit Form</LoadingButton>
+          <LoadingButton type='submit'>Submit Form</LoadingButton>
         </form>
       );
 

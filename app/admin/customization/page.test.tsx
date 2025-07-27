@@ -52,7 +52,7 @@ describe('CustomizationPage', () => {
     });
 
     it('deve renderizar um componente simples', () => {
-      render(<div data-testid="test">Test</div>);
+      render(<div data-testid='test'>Test</div>);
       expect(screen.getByTestId('test')).toBeInTheDocument();
     });
 

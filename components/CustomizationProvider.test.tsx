@@ -29,7 +29,7 @@ describe('CustomizationProvider', () => {
     it('deve renderizar children corretamente', () => {
       render(
         <CustomizationProvider>
-          <div data-testid="test-child">Test Child</div>
+          <div data-testid='test-child'>Test Child</div>
         </CustomizationProvider>
       );
 
@@ -50,8 +50,8 @@ describe('CustomizationProvider', () => {
     it('deve renderizar múltiplos children', () => {
       render(
         <CustomizationProvider>
-          <div data-testid="child1">Child 1</div>
-          <div data-testid="child2">Child 2</div>
+          <div data-testid='child1'>Child 1</div>
+          <div data-testid='child2'>Child 2</div>
         </CustomizationProvider>
       );
 
@@ -61,7 +61,7 @@ describe('CustomizationProvider', () => {
 
     it('deve renderizar componentes complexos', () => {
       const ComplexComponent = () => (
-        <div data-testid="complex">
+        <div data-testid='complex'>
           <span>Complex</span>
           <button>Button</button>
         </div>
@@ -80,7 +80,7 @@ describe('CustomizationProvider', () => {
 
     it('deve funcionar com componentes que usam customização', () => {
       const CustomComponent = () => (
-        <div data-testid="custom-component">{mockUseCustomization.customization.companyName}</div>
+        <div data-testid='custom-component'>{mockUseCustomization.customization.companyName}</div>
       );
 
       render(
@@ -114,7 +114,7 @@ describe('CustomizationProvider', () => {
     it('deve aplicar customizações automaticamente', () => {
       render(
         <CustomizationProvider>
-          <div data-testid="test">Test</div>
+          <div data-testid='test'>Test</div>
         </CustomizationProvider>
       );
 

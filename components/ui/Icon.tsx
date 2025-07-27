@@ -58,7 +58,7 @@ export const Icon: React.FC<IconProps> = ({
         style={{ width: size, height: size }}
         data-testid={testId}
       >
-        <span className="text-xs text-neutral-400">?</span>
+        <span className='text-xs text-neutral-400'>?</span>
       </div>
     );
   }
