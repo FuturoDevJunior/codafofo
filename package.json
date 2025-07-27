@@ -25,6 +25,7 @@
     "test:e2e:report": "playwright show-report",
     "test:e2e:codegen": "playwright codegen",
     "type-check": "tsc --noEmit",
+    "type-check:test": "tsc --noEmit --project tsconfig.test.json || true",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "quality:check": "npm run type-check && npm run lint && npm run format:check",
@@ -83,7 +84,8 @@
     "admin:test": "npx tsx scripts/test-admin-current.ts",
     "admin:test:simple": "npx tsx scripts/test-admin-login.ts",
     "admin:auto": "npx tsx scripts/admin-complete-automation.ts",
-    "admin:create": "npm run admin:setup"
+    "admin:create": "npm run admin:setup",
+    "install:deps": "bash scripts/install-deps.sh"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",

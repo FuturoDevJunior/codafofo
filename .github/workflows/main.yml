@@ -109,7 +109,8 @@ jobs:
       - name: 📦 Instalar dependências
         if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
-          npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+          npm ci --prefer-offline --no-audit --no-fund
+          npm run install:deps
           npm cache clean --force
 
   # Qualidade e Testes Paralelos
@@ -135,6 +136,7 @@ jobs:
 
       - name: 📦 Restaurar cache
         uses: actions/cache@v4
+        id: deps-cache
         with:
           path: |
             node_modules
@@ -143,7 +145,7 @@ jobs:
 
       - name: 📦 Instalar dependências (se necessário)
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: 🧹 Lint
         if: matrix.task == 'lint'
@@ -181,6 +183,7 @@ jobs:
 
       - name: 📦 Restaurar cache
         uses: actions/cache@v4
+        id: deps-cache
         with:
           path: |
             node_modules
@@ -189,7 +192,7 @@ jobs:
 
       - name: 📦 Instalar dependências (se necessário)
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: 🧪 Executar testes unitários
         run: |
@@ -223,6 +226,7 @@ jobs:
 
       - name: 📦 Restaurar cache
         uses: actions/cache@v4
+        id: deps-cache
         with:
           path: |
             node_modules
@@ -231,7 +235,7 @@ jobs:
 
       - name: 📦 Instalar dependências (se necessário)
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: 🏗️ Build da aplicação
         run: |
@@ -286,6 +290,7 @@ jobs:
 
       - name: 📦 Restaurar cache
         uses: actions/cache@v4
+        id: deps-cache
         with:
           path: |
             node_modules
@@ -294,7 +299,7 @@ jobs:
 
       - name: 📦 Instalar dependências (se necessário)
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
@@ -343,6 +348,7 @@ jobs:
 
       - name: 📦 Restaurar cache
         uses: actions/cache@v4
+        id: deps-cache
         with:
           path: |
             node_modules
@@ -351,7 +357,7 @@ jobs:
 
       - name: 📦 Instalar dependências (se necessário)
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
@@ -402,6 +408,7 @@ jobs:
 
       - name: 📦 Restaurar cache
         uses: actions/cache@v4
+        id: deps-cache
         with:
           path: |
             node_modules
@@ -410,7 +417,7 @@ jobs:
 
       - name: 📦 Instalar dependências (se necessário)
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
@@ -460,6 +467,7 @@ jobs:
 
       - name: 📦 Restaurar cache
         uses: actions/cache@v4
+        id: deps-cache
         with:
           path: |
             node_modules
@@ -468,7 +476,7 @@ jobs:
 
       - name: 📦 Instalar dependências (se necessário)
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
@@ -551,6 +559,7 @@ jobs:
 
       - name: 📦 Restaurar cache
         uses: actions/cache@v4
+        id: deps-cache
         with:
           path: |
             node_modules
@@ -559,7 +568,7 @@ jobs:
 
       - name: 📦 Instalar dependências (se necessário)
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: 🗄️ Run database migrations
         run: npm run db:migrate
