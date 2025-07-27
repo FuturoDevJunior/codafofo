@@ -17,6 +17,7 @@ env:
   NODE_VERSION: '20.x'
   NODE_ENV: production
   CI: true
+  HUSKY: 0
 
 jobs:
   setup:
@@ -62,7 +63,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci --prefer-offline --no-audit --no-fund
+          HUSKY=0 npm ci --prefer-offline --no-audit --no-fund
           echo "Dependencies installed successfully"
 
       - name: Install Playwright browsers
@@ -93,7 +94,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --prefer-offline
+        run: HUSKY=0 npm ci --prefer-offline
 
       - name: Run linting
         run: npm run lint
@@ -125,7 +126,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --prefer-offline
+        run: HUSKY=0 npm ci --prefer-offline
 
       - name: Run unit tests
         run: npm run test:ci
@@ -155,7 +156,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --prefer-offline
+        run: HUSKY=0 npm ci --prefer-offline
 
       - name: Build application
         run: npm run build
@@ -188,7 +189,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --prefer-offline
+        run: HUSKY=0 npm ci --prefer-offline
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
@@ -223,7 +224,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --prefer-offline
+        run: HUSKY=0 npm ci --prefer-offline
 
       - name: Install Lighthouse
         run: npm install -g lighthouse
@@ -279,7 +280,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --prefer-offline
+        run: HUSKY=0 npm ci --prefer-offline
 
       - name: Deploy to Vercel
         run: |
@@ -312,7 +313,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --prefer-offline
+        run: HUSKY=0 npm ci --prefer-offline
 
       - name: Deploy to Vercel Production
         run: |
