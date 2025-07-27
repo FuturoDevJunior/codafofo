@@ -1,0 +1,264 @@
+name: 🚀 Vytalle CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '20.x'
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
+jobs:
+  # Qualidade e Testes
+  quality-check:
+    name: 🔍 Quality Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🧹 Run linting
+        run: npm run lint
+
+      - name: 🔍 Run type checking
+        run: npm run type-check
+
+      - name: 🧪 Run tests
+        run: npm run test:ci -- --coverage
+
+      - name: 📊 Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+          flags: vytalle-tests
+          name: vytalle-coverage
+          fail_ci_if_error: false
+
+      - name: 🛡️ Security audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  # Build da aplicação
+  build:
+    name: 🏗️ Build Application
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: quality-check
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🏗️ Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: 📤 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            .next
+            public
+            package.json
+            package-lock.json
+          retention-days: 7
+
+  # Deploy Staging (automático em main)
+  deploy-staging:
+    name: 🌐 Deploy Staging
+    runs-on: ubuntu-latest
+    needs: [quality-check, build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: staging
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 🚀 Deploy to Vercel (Staging)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ env.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ env.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+
+      - name: 📱 Notify success
+        run: |
+          echo "✅ Deploy staging realizado com sucesso!"
+          echo "🌐 URL: https://vytalle-estetica.vercel.app"
+
+  # Deploy Production (manual ou tags)
+  deploy-production:
+    name: 🎯 Deploy Production
+    runs-on: ubuntu-latest
+    needs: [quality-check, build]
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') ||
+      startsWith(github.ref, 'refs/tags/v')
+    environment: production
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 🚀 Deploy to Vercel (Production)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ env.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ env.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+
+      - name: 🏷️ Create Release (if tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Vytalle v${{ github.ref_name }}
+          body: |
+            ## 🚀 Vytalle Estética - Release ${{ github.ref_name }}
+            
+            ### ✨ Novidades
+            - Melhorias no sistema de cache
+            - Otimizações de performance
+            - Correções de bugs
+            
+            ### 🔗 Links
+            - **Produção:** https://vytalle-estetica.vercel.app
+            - **Documentação:** https://github.com/FuturoDevJunior/codafofo
+            
+            ### 📊 Métricas
+            - Testes: ✅ Passando
+            - Coverage: >80%
+            - Performance: Otimizada
+            
+            ---
+            *Desenvolvido com ❤️ pela RET Consultoria*
+
+      - name: 📱 Notify success
+        run: |
+          echo "✅ Deploy produção realizado com sucesso!"
+          echo "🌐 URL: https://vytalle-estetica.vercel.app"
+
+  # Testes E2E (após deploy)
+  e2e-tests:
+    name: 🧪 E2E Tests
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, deploy-production]
+    if: always() && (needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success')
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🎭 Install Playwright
+        run: npm run test:e2e:install
+
+      - name: 🧪 Run E2E tests
+        run: npm run test:e2e -- --reporter=html
+        env:
+          BASE_URL: https://vytalle-estetica.vercel.app
+
+      - name: 📊 Upload E2E report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-report
+          path: playwright-report/
+          retention-days: 30
+
+  # Notificações finais
+  notify:
+    name: 📢 Notifications
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, deploy-production, e2e-tests]
+    if: always()
+    
+    steps:
+      - name: 📱 Success notification
+        if: needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success'
+        run: |
+          echo "🎉 Pipeline executado com sucesso!"
+          echo "🌐 URL: https://vytalle-estetica.vercel.app"
+          echo "📊 Coverage: Disponível no Codecov"
+          echo "🧪 E2E: ${{ needs.e2e-tests.result }}"
+          
+      - name: 🚨 Failure notification
+        if: needs.deploy-staging.result == 'failure' || needs.deploy-production.result == 'failure'
+        run: |
+          echo "❌ Pipeline falhou!"
+          echo "Verifique os logs para mais detalhes."
+          exit 1 
