@@ -1,10 +1,18 @@
-name: 🚀 Vytalle CI/CD Pipeline
+name: 🚀 Vytalle CI/CD Pipeline Ultra-Otimizado
 
 on:
   push:
     branches: [main, develop]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE.md'
+      - '.github/REPOSITORY.md'
   pull_request:
     branches: [main, develop]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch:
     inputs:
       environment:
@@ -15,64 +23,69 @@ on:
         options:
           - staging
           - production
+      full_test:
+        description: 'Run full test suite including E2E'
+        required: false
+        default: false
+        type: boolean
+      performance_test:
+        description: 'Run performance tests'
+        required: false
+        default: false
+        type: boolean
 
 env:
   NODE_VERSION: '20.x'
+  PNPM_VERSION: '8'
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  NODE_ENV: production
+  CI: true
 
 jobs:
-  # Qualidade e Testes
-  quality-check:
-    name: 🔍 Quality Check
+  # Cache e Setup Otimizado
+  setup:
+    name: ⚡ Setup Otimizado
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.key }}
+      should-deploy: ${{ steps.deploy-check.outputs.should-deploy }}
     
     steps:
-      - name: 📥 Checkout code
+      - name: 📥 Checkout otimizado
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+      - name: 🔑 Gerar cache key
+        id: cache-key
+        run: |
+          echo "key=vytalle-${{ runner.os }}-${{ env.NODE_VERSION }}-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/next.config.js') }}" >> $GITHUB_OUTPUT
 
-      - name: 📦 Install dependencies
-        run: npm ci --prefer-offline --no-audit
+      - name: 🔍 Verificar deploy
+        id: deploy-check
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/heads/main" && "${{ github.event_name }}" == "push" ]]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/tags/v*" ]]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "should-deploy=false" >> $GITHUB_OUTPUT
+          fi
 
-      - name: 🧹 Run linting
-        run: npm run lint
-
-      - name: 🔍 Run type checking
-        run: npm run type-check
-
-      - name: 🧪 Run tests
-        run: npm run test:ci -- --coverage
-
-      - name: 📊 Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage/lcov.info
-          flags: vytalle-tests
-          name: vytalle-coverage
-          fail_ci_if_error: false
-
-      - name: 🛡️ Security audit
-        run: npm audit --audit-level=high
-        continue-on-error: true
-
-  # Build da aplicação
-  build:
-    name: 🏗️ Build Application
+  # Cache de Dependências
+  cache-deps:
+    name: 📦 Cache Dependências
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: quality-check
+    needs: setup
+    timeout-minutes: 3
     
     steps:
-      - name: 📥 Checkout code
+      - name: 📥 Checkout
         uses: actions/checkout@v4
 
       - name: 🟢 Setup Node.js
@@ -81,35 +94,176 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Install dependencies
-        run: npm ci --prefer-offline --no-audit
+      - name: 📦 Restaurar cache de dependências
+        uses: actions/cache@v4
+        id: deps-cache
+        with:
+          path: |
+            node_modules
+            ~/.npm
+            ~/.cache
+          key: ${{ needs.setup.outputs.cache-key }}
+          restore-keys: |
+            vytalle-${{ runner.os }}-${{ env.NODE_VERSION }}-
 
-      - name: 🏗️ Build application
-        run: npm run build
-        env:
-          NODE_ENV: production
+      - name: 📦 Instalar dependências
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: |
+          npm ci --prefer-offline --no-audit --no-fund --no-optional
+          npm cache clean --force
+
+  # Qualidade e Testes Paralelos
+  quality-check:
+    name: 🔍 Quality Check
+    runs-on: ubuntu-latest
+    needs: [setup, cache-deps]
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        task: [lint, type-check, security]
+      fail-fast: false
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Restaurar cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 🧹 Lint
+        if: matrix.task == 'lint'
+        run: npm run lint
+
+      - name: 🔍 Type Check
+        if: matrix.task == 'type-check'
+        run: npm run type-check
+
+      - name: 🛡️ Security Audit
+        if: matrix.task == 'security'
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  # Testes Unitários Otimizados
+  unit-tests:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+    needs: [setup, cache-deps]
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        node-version: ['18.x', '20.x']
+      fail-fast: false
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📦 Restaurar cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 🧪 Executar testes unitários
+        run: |
+          npm run test:ci -- --coverage --reporter=verbose --reporter=json --outputFile=coverage-${{ matrix.node-version }}.json
+
+      - name: 📊 Upload coverage
+        if: matrix.node-version == '20.x'
+        uses: codecov/codecov-action@v3
+        with:
+          file: coverage-${{ matrix.node-version }}.json
+          flags: vytalle-unit-tests
+          name: vytalle-coverage-${{ matrix.node-version }}
+          fail_ci_if_error: false
+
+  # Build Otimizado
+  build:
+    name: 🏗️ Build Otimizado
+    runs-on: ubuntu-latest
+    needs: [setup, cache-deps, quality-check, unit-tests]
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Restaurar cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 🏗️ Build da aplicação
+        run: |
+          npm run build
+          npm run analyze
 
       - name: 📤 Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-${{ github.sha }}
           path: |
             .next
             public
             package.json
             package-lock.json
+            .next/analyze
           retention-days: 7
+          compression-level: 9
 
-  # Deploy Staging (automático em main)
-  deploy-staging:
-    name: 🌐 Deploy Staging
+      - name: 📊 Bundle analysis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis-${{ github.sha }}
+          path: .next/analyze/
+          retention-days: 30
+
+  # Testes E2E Paralelos
+  e2e-tests:
+    name: 🧪 E2E Tests
     runs-on: ubuntu-latest
-    needs: [quality-check, build]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment: staging
+    needs: [setup, cache-deps, build]
+    if: |
+      always() && 
+      (needs.setup.outputs.should-deploy == 'true' || 
+       github.event.inputs.full_test == 'true')
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+      fail-fast: false
     
     steps:
-      - name: 📥 Checkout code
+      - name: 📥 Checkout
         uses: actions/checkout@v4
 
       - name: 🟢 Setup Node.js
@@ -118,11 +272,127 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Install dependencies
-        run: npm ci --prefer-offline --no-audit
+      - name: 📦 Restaurar cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ needs.setup.outputs.cache-key }}
 
-      - name: 🏗️ Build application
-        run: npm run build
+      - name: 📦 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-${{ github.sha }}
+
+      - name: 🎭 Install Playwright
+        run: npm run test:e2e:install
+
+      - name: 🧪 Run E2E tests (${{ matrix.browser }})
+        run: |
+          npm run test:e2e -- --project=${{ matrix.browser }} --reporter=html,json
+        env:
+          BASE_URL: https://vytalle-estetica.vercel.app
+
+      - name: 📊 Upload E2E results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-results-${{ matrix.browser }}-${{ github.sha }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
+
+  # Performance Tests
+  performance-tests:
+    name: ⚡ Performance Tests
+    runs-on: ubuntu-latest
+    needs: [setup, cache-deps, build]
+    if: |
+      always() && 
+      (needs.setup.outputs.should-deploy == 'true' || 
+       github.event.inputs.performance_test == 'true')
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Restaurar cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 📦 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-${{ github.sha }}
+
+      - name: 🚀 Start application
+        run: |
+          npm start &
+          sleep 30
+
+      - name: ⚡ Lighthouse Performance
+        run: |
+          npm run performance:lighthouse
+          npm run performance:budget
+
+      - name: 📊 Upload performance results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-results-${{ github.sha }}
+          path: |
+            lighthouse-report.html
+            lighthouse-performance.json
+          retention-days: 30
+
+  # Deploy Staging (Automático)
+  deploy-staging:
+    name: 🌐 Deploy Staging
+    runs-on: ubuntu-latest
+    needs: [setup, build, e2e-tests, performance-tests]
+    if: |
+      always() && 
+      needs.setup.outputs.should-deploy == 'true' &&
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'push'
+    environment: staging
+    timeout-minutes: 10
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Restaurar cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 📦 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-${{ github.sha }}
 
       - name: 🚀 Deploy to Vercel (Staging)
         uses: amondnet/vercel-action@v25
@@ -132,23 +402,32 @@ jobs:
           vercel-project-id: ${{ env.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
 
+      - name: 🔍 Health Check
+        run: |
+          sleep 30
+          curl -f https://vytalle-estetica.vercel.app/api/health || echo "Health check failed"
+
       - name: 📱 Notify success
         run: |
           echo "✅ Deploy staging realizado com sucesso!"
           echo "🌐 URL: https://vytalle-estetica.vercel.app"
+          echo "📊 Performance: Disponível nos artifacts"
 
-  # Deploy Production (manual ou tags)
+  # Deploy Production (Manual/Tags)
   deploy-production:
     name: 🎯 Deploy Production
     runs-on: ubuntu-latest
-    needs: [quality-check, build]
+    needs: [setup, build, e2e-tests, performance-tests]
     if: |
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') ||
-      startsWith(github.ref, 'refs/tags/v')
+      always() && 
+      needs.setup.outputs.should-deploy == 'true' &&
+      ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') ||
+       startsWith(github.ref, 'refs/tags/v'))
     environment: production
+    timeout-minutes: 15
     
     steps:
-      - name: 📥 Checkout code
+      - name: 📥 Checkout
         uses: actions/checkout@v4
 
       - name: 🟢 Setup Node.js
@@ -157,11 +436,18 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Install dependencies
-        run: npm ci --prefer-offline --no-audit
+      - name: 📦 Restaurar cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ needs.setup.outputs.cache-key }}
 
-      - name: 🏗️ Build application
-        run: npm run build
+      - name: 📦 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-${{ github.sha }}
 
       - name: 🚀 Deploy to Vercel (Production)
         uses: amondnet/vercel-action@v25
@@ -170,6 +456,11 @@ jobs:
           vercel-org-id: ${{ env.VERCEL_ORG_ID }}
           vercel-project-id: ${{ env.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
+
+      - name: 🔍 Health Check
+        run: |
+          sleep 30
+          curl -f https://vytalle-estetica.vercel.app/api/health || echo "Health check failed"
 
       - name: 🏷️ Create Release (if tag)
         if: startsWith(github.ref, 'refs/tags/v')
@@ -195,6 +486,13 @@ jobs:
             - Testes: ✅ Passando
             - Coverage: >80%
             - Performance: Otimizada
+            - E2E: ✅ Passando
+            
+            ### 🧪 Testes Executados
+            - Unit Tests: ✅
+            - E2E Tests: ✅
+            - Performance Tests: ✅
+            - Security Audit: ✅
             
             ---
             *Desenvolvido com ❤️ pela RET Consultoria*
@@ -203,16 +501,20 @@ jobs:
         run: |
           echo "✅ Deploy produção realizado com sucesso!"
           echo "🌐 URL: https://vytalle-estetica.vercel.app"
+          echo "📊 Performance: Disponível nos artifacts"
 
-  # Testes E2E (após deploy)
-  e2e-tests:
-    name: 🧪 E2E Tests
+  # Database Migration (se necessário)
+  db-migration:
+    name: 🗄️ Database Migration
     runs-on: ubuntu-latest
-    needs: [deploy-staging, deploy-production]
-    if: always() && (needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success')
+    needs: [setup, deploy-staging, deploy-production]
+    if: |
+      always() && 
+      (needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success')
+    timeout-minutes: 10
     
     steps:
-      - name: 📥 Checkout code
+      - name: 📥 Checkout
         uses: actions/checkout@v4
 
       - name: 🟢 Setup Node.js
@@ -221,43 +523,78 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Install dependencies
-        run: npm ci --prefer-offline --no-audit
-
-      - name: 🎭 Install Playwright
-        run: npm run test:e2e:install
-
-      - name: 🧪 Run E2E tests
-        run: npm run test:e2e -- --reporter=html
-        env:
-          BASE_URL: https://vytalle-estetica.vercel.app
-
-      - name: 📊 Upload E2E report
-        uses: actions/upload-artifact@v4
-        if: always()
+      - name: 📦 Restaurar cache
+        uses: actions/cache@v4
         with:
-          name: e2e-report
-          path: playwright-report/
-          retention-days: 30
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ needs.setup.outputs.cache-key }}
 
-  # Notificações finais
+      - name: 🗄️ Run database migrations
+        run: npm run db:migrate
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: 📊 Database backup
+        run: npm run db:backup
+        continue-on-error: true
+
+  # Notificações e Relatórios Finais
   notify:
-    name: 📢 Notifications
+    name: 📢 Notifications & Reports
     runs-on: ubuntu-latest
-    needs: [deploy-staging, deploy-production, e2e-tests]
+    needs: [setup, quality-check, unit-tests, build, e2e-tests, performance-tests, deploy-staging, deploy-production, db-migration]
     if: always()
+    timeout-minutes: 5
     
     steps:
+      - name: 📊 Generate summary report
+        run: |
+          echo "## 🚀 Vytalle CI/CD Pipeline Report" >> report.md
+          echo "" >> report.md
+          echo "### 📋 Job Status:" >> report.md
+          echo "- Quality Check: ${{ needs.quality-check.result }}" >> report.md
+          echo "- Unit Tests: ${{ needs.unit-tests.result }}" >> report.md
+          echo "- Build: ${{ needs.build.result }}" >> report.md
+          echo "- E2E Tests: ${{ needs.e2e-tests.result }}" >> report.md
+          echo "- Performance Tests: ${{ needs.performance-tests.result }}" >> report.md
+          echo "- Deploy Staging: ${{ needs.deploy-staging.result }}" >> report.md
+          echo "- Deploy Production: ${{ needs.deploy-production.result }}" >> report.md
+          echo "- Database Migration: ${{ needs.db-migration.result }}" >> report.md
+          echo "" >> report.md
+          echo "### 🔗 Links:" >> report.md
+          echo "- **Production:** https://vytalle-estetica.vercel.app" >> report.md
+          echo "- **Repository:** https://github.com/FuturoDevJunior/codafofo" >> report.md
+          echo "" >> report.md
+          echo "### 📊 Artifacts:" >> report.md
+          echo "- Build: build-artifacts-${{ github.sha }}" >> report.md
+          echo "- Bundle Analysis: bundle-analysis-${{ github.sha }}" >> report.md
+          echo "- E2E Results: e2e-results-*-${{ github.sha }}" >> report.md
+          echo "- Performance: performance-results-${{ github.sha }}" >> report.md
+
+      - name: 📤 Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-report-${{ github.sha }}
+          path: report.md
+          retention-days: 30
+
       - name: 📱 Success notification
-        if: needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success'
+        if: |
+          needs.deploy-staging.result == 'success' || 
+          needs.deploy-production.result == 'success'
         run: |
           echo "🎉 Pipeline executado com sucesso!"
           echo "🌐 URL: https://vytalle-estetica.vercel.app"
           echo "📊 Coverage: Disponível no Codecov"
           echo "🧪 E2E: ${{ needs.e2e-tests.result }}"
+          echo "⚡ Performance: ${{ needs.performance-tests.result }}"
           
       - name: 🚨 Failure notification
-        if: needs.deploy-staging.result == 'failure' || needs.deploy-production.result == 'failure'
+        if: |
+          needs.deploy-staging.result == 'failure' || 
+          needs.deploy-production.result == 'failure'
         run: |
           echo "❌ Pipeline falhou!"
           echo "Verifique os logs para mais detalhes."

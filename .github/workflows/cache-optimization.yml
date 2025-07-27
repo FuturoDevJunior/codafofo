@@ -1,0 +1,252 @@
+name: ⚡ Cache & Performance Optimization
+
+on:
+  schedule:
+    # Executar diariamente às 2h da manhã
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      cleanup_cache:
+        description: 'Clean old cache entries'
+        required: false
+        default: true
+        type: boolean
+      optimize_images:
+        description: 'Optimize product images'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  NODE_VERSION: '20.x'
+  CACHE_VERSION: 'v2'
+
+jobs:
+  # Cache Management
+  cache-management:
+    name: 🗂️ Cache Management
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🧹 Clean old cache entries
+        if: github.event.inputs.cleanup_cache == 'true'
+        run: |
+          echo "🧹 Limpando cache antigo..."
+          npm cache clean --force
+          rm -rf ~/.npm
+          rm -rf .next/cache
+
+      - name: 📊 Cache statistics
+        run: |
+          echo "📊 Estatísticas de cache:"
+          du -sh node_modules || echo "node_modules não encontrado"
+          du -sh .next/cache || echo ".next/cache não encontrado"
+          npm cache verify
+
+  # Image Optimization
+  image-optimization:
+    name: 🖼️ Image Optimization
+    runs-on: ubuntu-latest
+    needs: cache-management
+    if: github.event.inputs.optimize_images == 'true'
+    timeout-minutes: 30
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🖼️ Optimize product images
+        run: |
+          npm run image:optimize
+          npm run image:download
+
+      - name: 📤 Upload optimized images
+        uses: actions/upload-artifact@v4
+        with:
+          name: optimized-images-${{ github.sha }}
+          path: public/images/
+          retention-days: 7
+
+  # Database Maintenance
+  db-maintenance:
+    name: 🗄️ Database Maintenance
+    runs-on: ubuntu-latest
+    needs: cache-management
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 📊 Database backup
+        run: npm run db:backup
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        continue-on-error: true
+
+      - name: 🔄 Sync products
+        run: npm run sync:products
+        continue-on-error: true
+
+  # Performance Monitoring
+  performance-monitoring:
+    name: 📊 Performance Monitoring
+    runs-on: ubuntu-latest
+    needs: [cache-management, image-optimization, db-maintenance]
+    timeout-minutes: 20
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🏗️ Build application
+        run: npm run build
+
+      - name: 🚀 Start application
+        run: |
+          npm start &
+          sleep 30
+
+      - name: ⚡ Lighthouse Performance
+        run: |
+          npm run performance:lighthouse
+          npm run performance:budget
+
+      - name: 🔍 SEO Check
+        run: |
+          npm run seo:check
+          npm run seo:sitemap
+          npm run seo:robots
+
+      - name: 📤 Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-monitoring-${{ github.sha }}
+          path: |
+            lighthouse-report.html
+            lighthouse-performance.json
+            lighthouse-seo.html
+          retention-days: 30
+
+  # Security Scan
+  security-scan:
+    name: 🛡️ Security Scan
+    runs-on: ubuntu-latest
+    needs: cache-management
+    timeout-minutes: 10
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🛡️ Security audit
+        run: |
+          npm audit --audit-level=moderate
+          npm run security:audit
+
+      - name: 🔄 Update dependencies
+        run: npm run security:update
+        continue-on-error: true
+
+  # Final Report
+  final-report:
+    name: 📋 Final Report
+    runs-on: ubuntu-latest
+    needs: [cache-management, image-optimization, db-maintenance, performance-monitoring, security-scan]
+    if: always()
+    timeout-minutes: 5
+    
+    steps:
+      - name: 📊 Generate maintenance report
+        run: |
+          echo "## 🔧 Vytalle Maintenance Report" >> maintenance-report.md
+          echo "" >> maintenance-report.md
+          echo "### 📅 Data: $(date)" >> maintenance-report.md
+          echo "### 🔄 Trigger: ${{ github.event_name }}" >> maintenance-report.md
+          echo "" >> maintenance-report.md
+          echo "### 📋 Jobs Status:" >> maintenance-report.md
+          echo "- Cache Management: ${{ needs.cache-management.result }}" >> maintenance-report.md
+          echo "- Image Optimization: ${{ needs.image-optimization.result }}" >> maintenance-report.md
+          echo "- Database Maintenance: ${{ needs.db-maintenance.result }}" >> maintenance-report.md
+          echo "- Performance Monitoring: ${{ needs.performance-monitoring.result }}" >> maintenance-report.md
+          echo "- Security Scan: ${{ needs.security-scan.result }}" >> maintenance-report.md
+          echo "" >> maintenance-report.md
+          echo "### 🔗 Links:" >> maintenance-report.md
+          echo "- **Production:** https://vytalle-estetica.vercel.app" >> maintenance-report.md
+          echo "- **Repository:** https://github.com/FuturoDevJunior/codafofo" >> maintenance-report.md
+          echo "" >> maintenance-report.md
+          echo "### 📊 Artifacts:" >> maintenance-report.md
+          echo "- Optimized Images: optimized-images-${{ github.sha }}" >> maintenance-report.md
+          echo "- Performance Report: performance-monitoring-${{ github.sha }}" >> maintenance-report.md
+
+      - name: 📤 Upload maintenance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: maintenance-report-${{ github.sha }}
+          path: maintenance-report.md
+          retention-days: 30
+
+      - name: 📱 Success notification
+        if: |
+          needs.cache-management.result == 'success' &&
+          needs.security-scan.result == 'success'
+        run: |
+          echo "✅ Manutenção concluída com sucesso!"
+          echo "📊 Relatório disponível nos artifacts"
+          
+      - name: 🚨 Warning notification
+        if: |
+          needs.cache-management.result == 'failure' ||
+          needs.security-scan.result == 'failure'
+        run: |
+          echo "⚠️ Alguns jobs falharam na manutenção"
+          echo "Verifique os logs para mais detalhes" 
