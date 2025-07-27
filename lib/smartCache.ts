@@ -116,7 +116,6 @@ class SmartCache {
    * Retorna estatísticas do cache
    */
   getStats() {
-    const now = Date.now();
     const items = Array.from(this.cache.values());
 
     return {

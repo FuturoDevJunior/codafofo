@@ -24,8 +24,8 @@ export default function ProductComparison({ products, onRemove, onClear }: Produ
     max: Math.max(...products.map(p => p.price_pix || 0)),
   };
 
-  const handleRemove = (_productId: string) => {
-    onRemove(_productId);
+  const handleRemove = (productId: string) => {
+    onRemove(productId);
   };
 
   return (
