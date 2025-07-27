@@ -1,9 +1,18 @@
 'use client';
 
-import { Scale, TrendingUp, X } from 'lucide-react';
+import {
+  Scale,
+  TrendingUp,
+  X,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 import { Product } from '@/types/product';
 
@@ -15,7 +24,11 @@ interface ProductComparisonProps {
   onClear: () => void;
 }
 
-export default function ProductComparison({ products, onRemove, onClear }: ProductComparisonProps) {
+export default function ProductComparison({ 
+  products,
+  onRemove,
+  onClear
+}: ProductComparisonProps) {
   if (products.length === 0) return null;
 
   const categories = [...new Set(products.map(p => p.category))];

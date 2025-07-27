@@ -1,9 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { MessageCircle, Minus, Plus, ShoppingCart, Trash2, X } from 'lucide-react';
+import {
+  AnimatePresence,
+  motion,
+} from 'framer-motion';
+import {
+  MessageCircle,
+  Minus,
+  Plus,
+  ShoppingCart,
+  Trash2,
+  X,
+} from 'lucide-react';
 
 import SmartImage from '@/components/SmartImage';
 import { Button } from '@/components/ui/button';
@@ -156,19 +169,8 @@ export default function CartSidebar() {
                                 alt={item.name}
                                 width={80}
                                 height={80}
-                                className="h-full w-full object-cover"
-                                borderRadius="rounded-xl"
-                                objectFit="cover"
+                                className="h-full w-full object-cover rounded-xl"
                                 productName={item.name}
-                                fallback={
-                                  item.category === 'Botox' ||
-                                  item.category === 'Dysport' ||
-                                  item.category === 'Xeomin'
-                                    ? '/icons/medicine-bottle.png'
-                                    : item.category === 'Visco-supl.'
-                                      ? '/icons/syringe.png'
-                                      : '/icons/pill-bottle.png'
-                                }
                               />
                             ) : (
                               <SmartImage
@@ -176,19 +178,8 @@ export default function CartSidebar() {
                                 alt={item.name}
                                 width={80}
                                 height={80}
-                                className="h-full w-full object-cover"
-                                borderRadius="rounded-xl"
-                                objectFit="cover"
+                                className="h-full w-full object-cover rounded-xl"
                                 productName={item.name}
-                                fallback={
-                                  item.category === 'Botox' ||
-                                  item.category === 'Dysport' ||
-                                  item.category === 'Xeomin'
-                                    ? '/icons/medicine-bottle.png'
-                                    : item.category === 'Visco-supl.'
-                                      ? '/icons/syringe.png'
-                                      : '/icons/pill-bottle.png'
-                                }
                               />
                             )}
                           </div>

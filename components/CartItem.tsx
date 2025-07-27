@@ -1,11 +1,20 @@
 import { useState } from 'react';
 
 import { motion } from 'framer-motion';
-import { Minus, Package, Plus, Tag, Trash2 } from 'lucide-react';
+import {
+  Minus,
+  Package,
+  Plus,
+  Tag,
+  Trash2,
+} from 'lucide-react';
 
 import SmartImage from '@/components/SmartImage';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tooltip } from '@/components/ui/tooltip';
 import { toast } from '@/components/ui/use-toast';
@@ -82,9 +91,6 @@ export default function CartItem({ item, onRemove, onUpdateQty }: CartItemProps)
                     width={80}
                     height={80}
                     className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-                    fallback="/icons/icon-192.png"
-                    borderRadius="rounded-lg"
-                    objectFit="cover"
                     productName={item.name}
                   />
                 ) : (

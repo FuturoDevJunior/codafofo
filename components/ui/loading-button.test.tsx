@@ -127,35 +127,35 @@ describe('LoadingButton', () => {
       render(<LoadingButton>Padrão</LoadingButton>);
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('bg-primary', 'text-primary-foreground');
+      expect(button).toHaveClass('bg-gradient-to-r', 'from-vitale-primary', 'to-vitale-secondary');
     });
 
     it('deve aplicar variant destructive', () => {
       render(<LoadingButton variant="destructive">Destructive</LoadingButton>);
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('bg-destructive', 'text-destructive-foreground');
+      expect(button).toHaveClass('bg-gradient-to-r', 'from-red-500', 'to-red-600');
     });
 
     it('deve aplicar variant outline', () => {
       render(<LoadingButton variant="outline">Outline</LoadingButton>);
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('border', 'border-input');
+      expect(button).toHaveClass('border-2', 'border-vitale-primary');
     });
 
     it('deve aplicar size sm', () => {
       render(<LoadingButton size="sm">Pequeno</LoadingButton>);
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('h-9', 'px-3');
+      expect(button).toHaveClass('h-9', 'px-4');
     });
 
     it('deve aplicar size lg', () => {
       render(<LoadingButton size="lg">Grande</LoadingButton>);
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('h-11', 'px-8');
+      expect(button).toHaveClass('h-12', 'px-8');
     });
   });
 

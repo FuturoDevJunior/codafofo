@@ -1,9 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
+
 import { getProducts } from '@/lib/mockData';
-import { Product } from '@/types/product';
 import { smartCache } from '@/lib/smartCache';
+import { Product } from '@/types/product';
 
 /**
  * HOOK DE PRODUTOS COM CACHE INTELIGENTE
@@ -16,7 +20,7 @@ import { smartCache } from '@/lib/smartCache';
 export function useProductsCache() {
   const [products, setProducts] = useState<Product[]>(() => getProducts());
   const [isLoading, setIsLoading] = useState(false);
-  const [cacheMetrics, setCacheMetrics] = useState(() => smartCache.getMetrics());
+  const [cacheMetrics, setCacheMetrics] = useState(() => ({ hits: 0, misses: 0, size: 0 }));
 
   useEffect(() => {
     const loadCachedProducts = async () => {
@@ -24,11 +28,15 @@ export function useProductsCache() {
       try {
         const cachedProducts = await getProducts();
         setProducts(cachedProducts);
-        setCacheMetrics(smartCache.getMetrics());
+        // Usar métricas do smartCache
+        const metrics = smartCache.getMetrics();
+        setCacheMetrics(metrics);
       } catch (error) {
         console.warn('Cache fallback:', error);
         // Fallback para dados síncronos em caso de erro
         setProducts(getProducts());
+        const metrics = smartCache.getMetrics();
+        setCacheMetrics(metrics);
       } finally {
         setIsLoading(false);
       }
@@ -44,7 +52,7 @@ export function useProductsCache() {
       smartCache.delete('products:all:active');
       const freshProducts = await getProducts();
       setProducts(freshProducts);
-      setCacheMetrics(smartCache.getMetrics());
+      setCacheMetrics({ hits: 0, misses: 0, size: 0 });
     } catch (error) {
       console.warn('Refresh error:', error);
     } finally {
@@ -69,19 +77,13 @@ export function useProductsCache() {
  */
 export function useProductCache(slug: string) {
   const [product, setProduct] = useState<Product | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => Boolean(slug));
 
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const cachedProduct = await smartCache.getOrSet(
-          `product:slug:${slug}`,
-          async () => {
-            const mockProducts = getProducts();
-            return mockProducts.find(p => p.slug === slug && p.active);
-          },
-          15 * 60 * 1000 // 15 minutos
-        );
+        const mockProducts = getProducts();
+        const cachedProduct = mockProducts.find(p => p.slug === slug && p.active);
         setProduct(cachedProduct);
       } catch (error) {
         console.warn('Product cache error:', error);

@@ -91,7 +91,7 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   handleReport = async () => {
-    this.setState({ reporting: true, reportError: null } as any);
+    this.setState({ reporting: true, reportError: null });
     try {
       const { error } = this.state;
       const payload = {
@@ -100,6 +100,12 @@ export class ErrorBoundary extends Component<Props, State> {
         url: typeof window !== 'undefined' ? window.location.href : '',
         userAgent: typeof window !== 'undefined' ? navigator.userAgent : '',
         timestamp: new Date().toISOString(),
+        component: 'ErrorBoundary',
+        severity: 'high',
+        context: {
+          props: this.props,
+          state: this.state
+        }
       };
 
       const res = await fetch('/api/error-report', {
@@ -108,14 +114,21 @@ export class ErrorBoundary extends Component<Props, State> {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error('Falha ao reportar erro');
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Falha ao reportar erro: ${res.status} - ${errorText}`);
+      }
 
       if (typeof window !== 'undefined') {
-        this.setState({ reporting: false, reported: true, reportError: null } as any);
+        this.setState({ reporting: false, reported: true, reportError: null });
       }
-    } catch {
+    } catch (reportingError) {
+      console.error('Erro ao reportar erro:', reportingError);
       if (typeof window !== 'undefined') {
-        this.setState({ reporting: false, reportError: 'Falha ao reportar erro' } as any);
+        this.setState({ 
+          reporting: false, 
+          reportError: reportingError instanceof Error ? reportingError.message : 'Falha ao reportar erro' 
+        });
       }
     }
   };

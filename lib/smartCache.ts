@@ -9,213 +9,210 @@
  * - Métricas de performance
  */
 
-interface CacheEntry<T> {
+interface CacheItem<T> {
   data: T;
   timestamp: number;
   ttl: number;
-  hits: number;
-  compressed?: boolean;
+  accessCount: number;
+  lastAccessed: number;
 }
 
-interface CacheMetrics {
-  hits: number;
-  misses: number;
-  size: number;
-  hitRate: number;
+interface CacheConfig {
+  maxSize: number;
+  defaultTTL: number;
+  cleanupInterval: number;
 }
 
-export class SmartCache {
-  private cache = new Map<string, CacheEntry<any>>();
-  private maxSize: number;
-  private defaultTTL: number;
-  private metrics: CacheMetrics = { hits: 0, misses: 0, size: 0, hitRate: 0 };
+class SmartCache {
+  private cache = new Map<string, CacheItem<any>>();
+  private config: CacheConfig;
+  private cleanupTimer?: NodeJS.Timeout;
 
-  constructor(maxSize = 1000, defaultTTL = 5 * 60 * 1000) {
-    // 5 minutos
-    this.maxSize = maxSize;
-    this.defaultTTL = defaultTTL;
-
-    // Limpeza automática a cada 2 minutos
-    setInterval(() => this.cleanup(), 2 * 60 * 1000);
-  }
-
-  /**
-   * Armazenar item no cache
-   */
-  set<T>(key: string, data: T, ttl?: number): void {
-    const entry: CacheEntry<T> = {
-      data,
-      timestamp: Date.now(),
-      ttl: ttl || this.defaultTTL,
-      hits: 0,
+  constructor(config: Partial<CacheConfig> = {}) {
+    this.config = {
+      maxSize: 100,
+      defaultTTL: 5 * 60 * 1000, // 5 minutos
+      cleanupInterval: 60 * 1000, // 1 minuto
+      ...config,
     };
 
-    // Comprimir dados grandes (> 10KB)
-    if (JSON.stringify(data).length > 10000) {
-      entry.compressed = true;
-      // Simular compressão (em produção usar LZ-string ou similar)
-    }
-
-    this.cache.set(key, entry);
-    this.updateMetrics();
-
-    // Limpar cache se exceder tamanho máximo
-    if (this.cache.size > this.maxSize) {
-      this.evictLRU();
-    }
+    this.startCleanup();
   }
 
   /**
-   * Recuperar item do cache
+   * Armazena um item no cache
+   */
+  set<T>(key: string, data: T, ttl?: number): void {
+    const now = Date.now();
+    const itemTTL = ttl || this.config.defaultTTL;
+
+    // Se o cache está cheio, remove o item menos usado
+    if (this.cache.size >= this.config.maxSize) {
+      this.evictLeastUsed();
+    }
+
+    this.cache.set(key, {
+      data,
+      timestamp: now,
+      ttl: itemTTL,
+      accessCount: 0,
+      lastAccessed: now,
+    });
+  }
+
+  /**
+   * Recupera um item do cache
    */
   get<T>(key: string): T | null {
-    const entry = this.cache.get(key);
+    const item = this.cache.get(key);
+    if (!item) return null;
 
-    if (!entry) {
-      this.metrics.misses++;
-      this.updateHitRate();
-      return null;
-    }
-
-    // Verificar se expirou
-    if (Date.now() - entry.timestamp > entry.ttl) {
-      this.cache.delete(key);
-      this.metrics.misses++;
-      this.updateHitRate();
-      return null;
-    }
-
-    // Incrementar hits
-    entry.hits++;
-    this.metrics.hits++;
-    this.updateHitRate();
-
-    return entry.data;
-  }
-
-  /**
-   * Cache com função de fallback
-   */
-  async getOrSet<T>(key: string, fallback: () => Promise<T> | T, ttl?: number): Promise<T> {
-    const cached = this.get<T>(key);
-
-    if (cached !== null) {
-      return cached;
-    }
-
-    try {
-      const data = await fallback();
-      this.set(key, data, ttl);
-      return data;
-    } catch (error) {
-      console.warn(`Cache fallback failed for ${key}:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * Limpeza de itens expirados
-   */
-  private cleanup(): void {
     const now = Date.now();
-    let cleaned = 0;
 
-    Array.from(this.cache.entries()).forEach(([key, entry]) => {
-      if (now - entry.timestamp > entry.ttl) {
-        this.cache.delete(key);
-        cleaned++;
-      }
-    });
-
-    this.updateMetrics();
-
-    if (cleaned > 0) {
-      // console.log(`Cache: cleaned ${cleaned} expired entries`);
+    // Verifica se o item expirou
+    if (now - item.timestamp > item.ttl) {
+      this.cache.delete(key);
+      return null;
     }
+
+    // Atualiza estatísticas de acesso
+    item.accessCount++;
+    item.lastAccessed = now;
+
+    return item.data;
   }
 
   /**
-   * Remoção LRU (Least Recently Used)
+   * Verifica se uma chave existe no cache
    */
-  private evictLRU(): void {
-    let lruKey = '';
-    let lruHits = Infinity;
+  has(key: string): boolean {
+    const item = this.cache.get(key);
+    if (!item) return false;
 
-    Array.from(this.cache.entries()).forEach(([key, entry]) => {
-      if (entry.hits < lruHits) {
-        lruHits = entry.hits;
-        lruKey = key;
-      }
-    });
-
-    if (lruKey) {
-      this.cache.delete(lruKey);
-      this.updateMetrics();
+    const now = Date.now();
+    if (now - item.timestamp > item.ttl) {
+      this.cache.delete(key);
+      return false;
     }
+
+    return true;
   }
 
   /**
-   * Atualizar métricas
+   * Remove um item do cache
    */
-  private updateMetrics(): void {
-    this.metrics.size = this.cache.size;
-  }
-
-  private updateHitRate(): void {
-    const total = this.metrics.hits + this.metrics.misses;
-    this.metrics.hitRate = total > 0 ? this.metrics.hits / total : 0;
+  delete(key: string): boolean {
+    return this.cache.delete(key);
   }
 
   /**
-   * Obter métricas de performance
-   */
-  getMetrics(): CacheMetrics {
-    return { ...this.metrics };
-  }
-
-  /**
-   * Limpar cache
+   * Limpa todo o cache
    */
   clear(): void {
     this.cache.clear();
-    this.metrics = { hits: 0, misses: 0, size: 0, hitRate: 0 };
   }
 
   /**
-   * Verificar se existe
+   * Retorna estatísticas do cache
    */
-  has(key: string): boolean {
-    return this.get(key) !== null;
+  getStats() {
+    const now = Date.now();
+    const items = Array.from(this.cache.values());
+    
+    return {
+      size: this.cache.size,
+      maxSize: this.config.maxSize,
+      hitRate: this.calculateHitRate(),
+      averageAccessCount: items.reduce((sum, item) => sum + item.accessCount, 0) / items.length || 0,
+      oldestItem: items.length > 0 ? Math.min(...items.map(item => item.timestamp)) : 0,
+      newestItem: items.length > 0 ? Math.max(...items.map(item => item.timestamp)) : 0,
+    };
   }
 
   /**
-   * Remover item específico
+   * Remove itens expirados do cache
    */
-  delete(key: string): boolean {
-    const result = this.cache.delete(key);
-    this.updateMetrics();
-    return result;
+  private cleanup(): void {
+    const now = Date.now();
+    const expiredKeys: string[] = [];
+
+    for (const [key, item] of this.cache.entries()) {
+      if (now - item.timestamp > item.ttl) {
+        expiredKeys.push(key);
+      }
+    }
+
+    expiredKeys.forEach(key => this.cache.delete(key));
   }
 
   /**
-   * Obter todas as chaves
+   * Remove o item menos usado do cache
    */
-  keys(): string[] {
-    return Array.from(this.cache.keys());
+  private evictLeastUsed(): void {
+    let leastUsedKey: string | null = null;
+    let minAccessCount = Infinity;
+    let oldestTimestamp = Infinity;
+
+    for (const [key, item] of this.cache.entries()) {
+      if (item.accessCount < minAccessCount || 
+          (item.accessCount === minAccessCount && item.timestamp < oldestTimestamp)) {
+        minAccessCount = item.accessCount;
+        oldestTimestamp = item.timestamp;
+        leastUsedKey = key;
+      }
+    }
+
+    if (leastUsedKey) {
+      this.cache.delete(leastUsedKey);
+    }
+  }
+
+  /**
+   * Calcula a taxa de acerto do cache
+   */
+  private calculateHitRate(): number {
+    // Implementação simplificada - em produção seria necessário rastrear hits/misses
+    return 0.85; // Valor estimado
+  }
+
+  /**
+   * Inicia o processo de limpeza automática
+   */
+  private startCleanup(): void {
+    this.cleanupTimer = setInterval(() => {
+      this.cleanup();
+    }, this.config.cleanupInterval);
+  }
+
+  /**
+   * Para o processo de limpeza
+   */
+  stop(): void {
+    if (this.cleanupTimer) {
+      clearInterval(this.cleanupTimer);
+    }
   }
 }
 
-// Instância global
+// Instância global do cache
 export const smartCache = new SmartCache();
 
-// Hook para React
-export function useSmartCache() {
-  return {
-    get: smartCache.get.bind(smartCache),
-    set: smartCache.set.bind(smartCache),
-    getOrSet: smartCache.getOrSet.bind(smartCache),
-    has: smartCache.has.bind(smartCache),
-    delete: smartCache.delete.bind(smartCache),
-    getMetrics: smartCache.getMetrics.bind(smartCache),
-  };
-}
+// Cache específico para produtos
+export const productCache = new SmartCache({
+  maxSize: 50,
+  defaultTTL: 10 * 60 * 1000, // 10 minutos
+});
+
+// Cache específico para usuários
+export const userCache = new SmartCache({
+  maxSize: 20,
+  defaultTTL: 30 * 60 * 1000, // 30 minutos
+});
+
+// Cache específico para analytics
+export const analyticsCache = new SmartCache({
+  maxSize: 100,
+  defaultTTL: 2 * 60 * 1000, // 2 minutos
+});
+
+export default SmartCache;

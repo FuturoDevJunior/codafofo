@@ -24,27 +24,28 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const sizeClasses = {
-      sm: 'h-8 px-2 text-sm',
-      md: 'h-10 px-3 text-base',
-      lg: 'h-12 px-4 text-lg',
+      sm: 'h-9 px-3 text-sm min-h-[36px]',
+      md: 'h-11 px-4 text-base min-h-[44px]',
+      lg: 'h-12 px-5 text-lg min-h-[48px]',
     };
 
     const variantClasses = {
       default:
-        'border-2 border-vitale-primary/30 bg-white focus:border-vitale-primary focus:ring-2 focus:ring-vitale-primary/20',
+        'border-2 border-neutral-200 bg-white focus:border-vitale-primary focus:ring-2 focus:ring-vitale-primary/20 shadow-sm focus:shadow-md hover:border-neutral-300',
       outline:
-        'border-2 border-neutral-300 bg-transparent focus:border-vitale-primary focus:ring-2 focus:ring-vitale-primary/20',
+        'border-2 border-neutral-300 bg-transparent focus:border-vitale-primary focus:ring-2 focus:ring-vitale-primary/20 hover:border-neutral-400',
       filled:
-        'border-2 border-transparent bg-vitale-neutral/50 focus:border-vitale-primary focus:ring-2 focus:ring-vitale-primary/20',
+        'border-2 border-transparent bg-neutral-50 focus:border-vitale-primary focus:ring-2 focus:ring-vitale-primary/20 focus:bg-white hover:bg-neutral-100',
     };
 
-    const errorClasses = error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : '';
+    const errorClasses = error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50' : '';
 
     const baseClasses = cn(
-      'flex w-full items-center rounded-xl transition-all duration-200',
-      'placeholder:text-neutral-400',
-      'disabled:cursor-not-allowed disabled:opacity-50',
-      'focus:outline-none',
+      'flex w-full items-center rounded-lg transition-all duration-200 font-medium',
+      'placeholder:text-neutral-500 placeholder:font-normal',
+      'text-neutral-800 focus:text-neutral-900',
+      'disabled:cursor-not-allowed disabled:opacity-60 disabled:bg-neutral-100',
+      'focus:outline-none touch-friendly',
       sizeClasses[inputSize],
       variantClasses[variant],
       errorClasses,

@@ -1,143 +1,327 @@
 'use client';
 
-import React, { useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
 
-import { MenuIcon, X } from 'lucide-react';
+import {
+  Instagram,
+  Menu,
+  Phone,
+  Search,
+  ShoppingCart,
+  X,
+} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import * as Dialog from '@radix-ui/react-dialog';
-
-const NAV_LINKS = [
-  { href: '/', label: 'Início' },
-  { href: '/products', label: 'Catálogo' },
-  { href: '/cart', label: 'Carrinho' },
-];
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Detectar scroll para mudar estilo do header
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fechar menu ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.header-menu')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen]);
+
+  // Busca integrada
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      window.location.href = `/products?search=${encodeURIComponent(searchQuery.trim())}`;
+    }
+  };
 
   return (
-    <header className="from-white shadow-2xl sticky top-0 z-50 w-full border-b border-vitale-primary/20 bg-gradient-to-r to-neutral-50/95 backdrop-blur-xl">
-      <div className="container mx-auto flex min-h-[72px] items-center justify-between px-4 py-4 sm:px-6 md:min-h-[80px] md:py-5 lg:px-8">
-        {/* Logo - Redesign com maior destaque */}
-        <Link
-          href="/"
-          className="group flex items-center gap-4 rounded-xl p-2 transition-all duration-300 hover:bg-vitale-primary/5 focus:outline-none focus:ring-2 focus:ring-vitale-primary"
-          aria-label="Ir para página inicial"
-        >
-          <div className="relative">
-            <Image
-              src="/Vytalle_Logo_Gold.webp"
-              alt="Vytalle Estética & Viscosuplementação - Logo Oficial"
-              width={60}
-              height={60}
-              className="logo-image h-12 w-12 object-contain transition-all duration-300 group-hover:rotate-1 group-hover:scale-110 sm:h-14 sm:w-14 md:h-16 md:w-16"
-              priority
-              sizes="(max-width: 640px) 48px, (max-width: 768px) 56px, 64px"
-            />
-            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-vitale-primary/20 to-vitale-secondary/20 opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100" />
-          </div>
-          <div className="hidden sm:block">
-            <span className="block font-heading text-xl font-bold tracking-wide text-vitale-primary transition-colors group-hover:text-vitale-secondary md:text-2xl md:tracking-wide lg:text-3xl lg:tracking-wide">
-              Vytalle
-            </span>
-            <span className="block text-sm font-medium tracking-wide text-vitale-primary/80 transition-colors group-hover:text-vitale-secondary/80 md:text-base md:tracking-wide">
-              Estética & Viscosuplementação
-            </span>
-          </div>
-        </Link>
+    <header 
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-neutral-200' 
+          : 'bg-white/90 backdrop-blur-sm'
+      }`}
+      role="banner"
+    >
+      {/* Skip link para acessibilidade */}
+      <a href="#main-content" className="skip-link">
+        Pular para o conteúdo principal
+      </a>
 
-        {/* Navegação Desktop - Redesign mais elegante */}
-        <nav
-          className="hidden items-center gap-2 md:flex lg:gap-4"
-          aria-label="Navegação principal"
-        >
-          {NAV_LINKS.map(link => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="hover:text-white relative flex min-h-[48px] items-center rounded-2xl px-5 py-3 text-base font-semibold tracking-wide text-vitale-primary transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r hover:from-vitale-primary hover:to-vitale-secondary hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-vitale-primary focus:ring-offset-2 lg:px-6 lg:text-lg lg:tracking-wide"
+      <div className="container mx-auto px-4">
+        {/* Header superior - Contatos */}
+        <div className="hidden lg:flex items-center justify-between py-3 border-b border-neutral-200/80 bg-gradient-to-r from-vitale-neutral/30 via-white to-vitale-neutral/30">
+          <div className="flex items-center gap-6 text-sm text-neutral-700">
+            <a 
+              href="https://wa.me/5521996192890" 
+              className="flex items-center gap-2 hover:text-green-600 transition-all duration-200 hover:scale-105 focus-ring rounded-md px-2 py-1"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp (21) 99619-2890"
             >
-              {link.label}
-            </Link>
-          ))}
-          <a
-            href="https://wa.me/5521996192890?text=Olá! Gostaria de informações sobre os produtos da Vytalle."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 focus:ring-green-600 ml-4 flex min-h-[48px] items-center rounded-2xl bg-gradient-to-r px-6 py-3 text-base font-bold tracking-wide shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 lg:px-8 lg:text-lg lg:tracking-wide"
-          >
-            📱 WhatsApp
-          </a>
-        </nav>
-
-        {/* Menu Mobile - Sempre visível no mobile */}
-        <div className="flex items-center md:hidden">
-          <Dialog.Root open={mobileOpen} onOpenChange={setMobileOpen}>
-            <Dialog.Trigger asChild>
-              <button
-                aria-label="Abrir menu de navegação"
-                className="bg-white/80 hover:bg-white relative flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl p-3 text-vitale-primary shadow-lg transition-all duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-vitale-primary focus:ring-offset-2"
-              >
-                <MenuIcon className="h-7 w-7" aria-hidden="true" />
-                <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-vitale-primary/10 to-vitale-secondary/10 opacity-0 transition-opacity duration-200 hover:opacity-100" />
-              </button>
-            </Dialog.Trigger>
-            <Dialog.Portal>
-              <Dialog.Overlay className="bg-black/60 fixed inset-0 z-50 duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-              <Dialog.Content className="bg-white shadow-2xl fixed right-0 top-0 z-50 flex h-full w-4/5 max-w-sm flex-col p-6 duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right">
-                <div className="mb-8 flex items-center justify-between">
-                  <Link
-                    href="/"
-                    className="flex items-center gap-3"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <Image
-                      src="/Vytalle_Logo_Gold.webp"
-                      alt="Logo"
-                      width={40}
-                      height={40}
-                      className="logo-image h-8 w-8 object-contain sm:h-10 sm:w-10"
-                      sizes="(max-width: 640px) 32px, 40px"
-                    />
-                    <span className="font-heading text-xl font-bold tracking-wide text-vitale-primary">
-                      Vytalle Estética & Viscosuplementação
-                    </span>
-                  </Link>
-                  <button
-                    aria-label="Fechar menu"
-                    onClick={() => setMobileOpen(false)}
-                    className="flex min-h-[48px] min-w-[48px] items-center justify-center rounded-xl p-3 text-vitale-primary hover:bg-vitale-primary/10 focus:outline-none focus:ring-2 focus:ring-vitale-primary"
-                  >
-                    <X className="h-6 w-6" />
-                  </button>
-                </div>
-                <nav className="flex flex-col gap-4" aria-label="Menu mobile">
-                  {NAV_LINKS.map(link => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="hover:text-white flex min-h-[56px] items-center rounded-xl px-4 py-4 text-xl font-bold tracking-wide text-vitale-primary transition-colors hover:bg-vitale-primary focus:outline-none focus:ring-2 focus:ring-vitale-primary"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                  <a
-                    href="https://wa.me/5521996192890?text=Olá! Gostaria de informações sobre os produtos da Vytalle."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-green-600 text-white hover:bg-green-700 focus:ring-green-600 mt-4 flex min-h-[56px] items-center justify-center rounded-xl px-6 py-4 text-xl font-bold tracking-wide shadow-md transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    WhatsApp
-                  </a>
-                </nav>
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
+              <Phone className="h-4 w-4 flex-shrink-0" />
+              <span className="font-medium">(21) 99619-2890</span>
+            </a>
+            <a 
+              href="https://www.instagram.com/vytalle.estetica/" 
+              className="flex items-center gap-2 hover:text-pink-600 transition-all duration-200 hover:scale-105 focus-ring rounded-md px-2 py-1"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram @vytalle.estetica"
+            >
+              <Instagram className="h-4 w-4 flex-shrink-0" />
+              <span className="font-medium">@vytalle.estetica</span>
+            </a>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <Badge variant="secondary" className="bg-success-50 text-success-700 border-success-200 shadow-sm hover:shadow-md transition-shadow">
+              ✓ ANVISA Certificado
+            </Badge>
+            <Badge variant="secondary" className="bg-info-50 text-info-700 border-info-200 shadow-sm hover:shadow-md transition-shadow">
+              ✓ Entrega 24-48h
+            </Badge>
+          </div>
         </div>
+
+        {/* Header principal */}
+        <div className="flex items-center justify-between py-4">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group logo-container">
+            <div className="relative h-12 w-12 flex items-center justify-center">
+              <Image
+                src="/Vytalle_Logo_Gold.png"
+                alt="Vytalle Estética & Viscosuplementação"
+                width={48}
+                height={48}
+                className="h-auto w-auto max-h-12 max-w-12 object-contain transition-all duration-300 group-hover:scale-110 logo-image"
+                priority
+                style={{ 
+                  objectPosition: 'center',
+                  transform: 'rotate(0deg)' // Garantir que não está torta
+                }}
+              />
+            </div>
+            <div className="hidden sm:block">
+              <h1 className="text-lg font-bold text-vitale-primary leading-tight font-heading tracking-tight">
+                Vytalle Estética
+              </h1>
+              <p className="text-xs text-vitale-secondary font-medium">
+                & Viscosuplementação
+              </p>
+            </div>
+          </Link>
+
+          {/* Busca desktop */}
+          <div className="hidden md:flex flex-1 max-w-lg mx-8">
+            <form onSubmit={handleSearch} className="relative w-full group">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 group-focus-within:text-vitale-primary transition-colors" />
+              <Input
+                type="text"
+                placeholder="Buscar produtos, marcas ou categorias..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 h-11 bg-neutral-50 border-neutral-200 focus:border-vitale-primary focus:bg-white transition-all duration-200 rounded-lg shadow-sm focus:shadow-md text-neutral-800 placeholder:text-neutral-500"
+                aria-label="Buscar produtos no catálogo"
+              />
+            </form>
+          </div>
+
+          {/* Navegação desktop */}
+          <nav className="hidden lg:flex items-center gap-6" role="navigation" aria-label="Navegação principal">
+            <Link 
+              href="/" 
+              className="text-sm font-semibold text-neutral-700 hover:text-vitale-primary transition-all duration-200 hover:scale-105 focus-ring rounded-md px-3 py-2 relative group"
+            >
+              Início
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-vitale-primary transition-all duration-200 group-hover:w-full"></span>
+            </Link>
+            <Link 
+              href="/products" 
+              className="text-sm font-semibold text-neutral-700 hover:text-vitale-primary transition-all duration-200 hover:scale-105 focus-ring rounded-md px-3 py-2 relative group"
+            >
+              Catálogo
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-vitale-primary transition-all duration-200 group-hover:w-full"></span>
+            </Link>
+            <Link 
+              href="/cart" 
+              className="relative text-sm font-semibold text-neutral-700 hover:text-vitale-primary transition-all duration-200 hover:scale-105 focus-ring rounded-md p-2 group"
+              aria-label="Ir para o carrinho de compras"
+            >
+              <ShoppingCart className="h-5 w-5" />
+              <span className="sr-only">Carrinho</span>
+              {/* Badge de quantidade futura */}
+              <span className="absolute -top-1 -right-1 h-4 w-4 bg-vitale-accent text-white text-xs rounded-full flex items-center justify-center font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                0
+              </span>
+            </Link>
+            <Button 
+              asChild
+              className="bg-gradient-to-r from-vitale-primary to-vitale-secondary hover:from-vitale-secondary hover:to-vitale-primary text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 focus-ring"
+            >
+              <a 
+                href="https://wa.me/5521996192890?text=Olá! Gostaria de conhecer os produtos da Vytalle Estética."
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Contatar via WhatsApp"
+              >
+                <Phone className="h-4 w-4 mr-2" />
+                Contato
+              </a>
+            </Button>
+          </nav>
+
+          {/* Menu mobile */}
+          <div className="lg:hidden flex items-center gap-2">
+            <Link 
+              href="/cart" 
+              className="relative p-2 text-neutral-700 hover:text-vitale-primary transition-all duration-200 hover:scale-105 focus-ring rounded-md"
+              aria-label="Ir para o carrinho"
+            >
+              <ShoppingCart className="h-5 w-5" />
+            </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 hover:bg-vitale-neutral/50 transition-all duration-200"
+              aria-label={isMenuOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação'}
+              aria-expanded={isMenuOpen}
+            >
+              <div className="relative">
+                {isMenuOpen ? 
+                  <X className="h-5 w-5 text-neutral-700" /> : 
+                  <Menu className="h-5 w-5 text-neutral-700" />
+                }
+              </div>
+            </Button>
+          </div>
+        </div>
+
+        {/* Menu mobile expandido */}
+        {isMenuOpen && (
+          <div className="lg:hidden border-t border-neutral-200/80 py-6 header-menu animate-slide-down bg-gradient-to-b from-white to-vitale-neutral/20">
+            {/* Busca mobile */}
+            <form onSubmit={handleSearch} className="relative mb-6 group">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 group-focus-within:text-vitale-primary transition-colors" />
+              <Input
+                type="text"
+                placeholder="Buscar produtos, marcas..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 h-11 bg-neutral-50 border-neutral-200 focus:border-vitale-primary focus:bg-white transition-all duration-200 rounded-lg shadow-sm focus:shadow-md text-neutral-800 placeholder:text-neutral-500"
+                aria-label="Buscar produtos no catálogo"
+              />
+            </form>
+
+            {/* Navegação mobile */}
+            <nav className="space-y-1 mb-6" role="navigation" aria-label="Navegação mobile">
+              <Link 
+                href="/" 
+                className="flex items-center py-3 px-4 text-sm font-semibold text-neutral-700 hover:text-vitale-primary hover:bg-vitale-neutral/30 transition-all duration-200 rounded-lg focus-ring"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="w-2 h-2 bg-vitale-primary rounded-full mr-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
+                Início
+              </Link>
+              <Link 
+                href="/products" 
+                className="flex items-center py-3 px-4 text-sm font-semibold text-neutral-700 hover:text-vitale-primary hover:bg-vitale-neutral/30 transition-all duration-200 rounded-lg focus-ring group"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="w-2 h-2 bg-vitale-primary rounded-full mr-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
+                Catálogo Completo
+              </Link>
+              <Link 
+                href="/cart" 
+                className="flex items-center py-3 px-4 text-sm font-semibold text-neutral-700 hover:text-vitale-primary hover:bg-vitale-neutral/30 transition-all duration-200 rounded-lg focus-ring group"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="w-2 h-2 bg-vitale-primary rounded-full mr-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></span>
+                Carrinho de Compras
+              </Link>
+            </nav>
+
+            {/* Contatos mobile */}
+            <div className="pt-4 border-t border-neutral-200/60 space-y-2">
+              <h3 className="text-xs font-semibold text-neutral-600 uppercase tracking-wider mb-3">Contatos</h3>
+              <a 
+                href="https://wa.me/5521996192890" 
+                className="flex items-center gap-3 py-3 px-4 text-sm font-medium text-neutral-700 hover:text-green-600 hover:bg-green-50 transition-all duration-200 rounded-lg focus-ring group"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Phone className="h-4 w-4 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <span>(21) 99619-2890</span>
+              </a>
+              <a 
+                href="https://www.instagram.com/vytalle.estetica/" 
+                className="flex items-center gap-3 py-3 px-4 text-sm font-medium text-neutral-700 hover:text-pink-600 hover:bg-pink-50 transition-all duration-200 rounded-lg focus-ring group"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Instagram className="h-4 w-4 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <span>@vytalle.estetica</span>
+              </a>
+            </div>
+
+            {/* CTA Button mobile */}
+            <div className="pt-4">
+              <Button 
+                asChild
+                className="w-full bg-gradient-to-r from-vitale-primary to-vitale-secondary hover:from-vitale-secondary hover:to-vitale-primary text-white shadow-md hover:shadow-lg transition-all duration-300 h-12"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <a 
+                  href="https://wa.me/5521996192890?text=Olá! Gostaria de conhecer os produtos da Vytalle Estética."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Contatar via WhatsApp"
+                >
+                  <Phone className="h-4 w-4 mr-2" />
+                  Contato Direto
+                </a>
+              </Button>
+            </div>
+
+            {/* Badges mobile */}
+            <div className="pt-4 flex flex-wrap gap-2 justify-center">
+              <Badge variant="secondary" className="bg-success-50 text-success-700 border-success-200 text-xs shadow-sm">
+                ✓ ANVISA Certificado
+              </Badge>
+              <Badge variant="secondary" className="bg-info-50 text-info-700 border-info-200 text-xs shadow-sm">
+                ✓ Entrega 24-48h
+              </Badge>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

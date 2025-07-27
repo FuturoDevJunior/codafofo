@@ -90,10 +90,31 @@ export class ErrorHandler {
         originalError: error.message || error,
         context,
         stack: error.stack,
+        userAgent: typeof window !== 'undefined' ? navigator.userAgent : undefined,
+        url: typeof window !== 'undefined' ? window.location.href : undefined,
+        timestamp: new Date().toISOString(),
+        severity: this.getSeverity(type),
       },
       timestamp: new Date(),
       retryable: this.isRetryable(type),
     };
+  }
+
+  // Determinar severidade do erro
+  private getSeverity(type: ErrorType): string {
+    switch (type) {
+      case ErrorType.SERVER:
+      case ErrorType.AUTH:
+        return 'high';
+      case ErrorType.NETWORK:
+      case ErrorType.NOT_FOUND:
+        return 'medium';
+      case ErrorType.VALIDATION:
+      case ErrorType.CLIENT:
+        return 'low';
+      default:
+        return 'unknown';
+    }
   }
 
   // Obter mensagem amigável para o usuário

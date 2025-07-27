@@ -1,6 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
 
 import SmartImage from '@/components/SmartImage';
 import {
@@ -43,9 +46,6 @@ export default function ProductCarousel({
               width={320}
               height={256}
               className="h-64 w-full rounded-xl object-cover"
-              fallback="/icons/icon-192.png"
-              borderRadius="rounded-xl"
-              objectFit="cover"
               productName={productName}
             />
           </CarouselItem>
