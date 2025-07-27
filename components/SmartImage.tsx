@@ -108,9 +108,7 @@ export default function SmartImage({
           <Image
             src={src}
             alt={generateAltText()}
-            {...(fill && { fill: true })}
-            width={!fill ? width : undefined}
-            height={!fill ? height : undefined}
+            {...(fill ? { fill: true } : { width, height })}
             className={`transition-opacity duration-300 ${
               isLoading ? 'opacity-0' : 'opacity-100'
             } ${className}`}

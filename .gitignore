@@ -139,3 +139,17 @@ public/uploads/
 
 # Local development
 .local/
+
+# Project specific
+.backup/
+assets/design/*.psd
+assets/design/*.ai
+assets/design/*.sketch
+
+# Documentation backups
+docs/**/*.backup
+docs/**/*.bak
+
+# Temporary files
+*.tmp
+*.temp

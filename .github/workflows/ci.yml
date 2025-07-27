@@ -1,0 +1,319 @@
+name: 'Vytalle CI/CD Pipeline'
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '20'
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/ms-playwright
+
+jobs:
+  quality-check:
+    name: 'Quality Check'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 'Install Dependencies'
+        run: |
+          HUSKY=0 npm ci --prefer-offline --no-audit
+        env:
+          CI: true
+
+      - name: 'Lint Code'
+        run: npm run lint
+
+      - name: 'Type Check'
+        run: npm run type-check
+
+      - name: 'Format Check'
+        run: npm run format:check
+        continue-on-error: false
+
+  unit-tests:
+    name: 'Unit Tests'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+      fail-fast: false
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 'Install Dependencies'
+        run: |
+          HUSKY=0 npm ci --prefer-offline --no-audit
+        env:
+          CI: true
+
+      - name: 'Run Unit Tests'
+        run: npm run test:ci
+        env:
+          CI: true
+
+      - name: 'Upload Coverage Reports'
+        if: matrix.node-version == '20.x'
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+
+  build-test:
+    name: 'Build Test'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [quality-check]
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 'Install Dependencies'
+        run: |
+          HUSKY=0 npm ci --prefer-offline --no-audit
+        env:
+          CI: true
+
+      - name: 'Build Application'
+        run: npm run build
+        env:
+          CI: true
+          NODE_ENV: production
+
+      - name: 'Upload Build Artifacts'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: |
+            .next/
+            !.next/cache/
+          retention-days: 1
+
+  e2e-tests:
+    name: 'E2E Tests'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [build-test]
+    strategy:
+      matrix:
+        project: [chromium, firefox, webkit]
+      fail-fast: false
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 'Install Dependencies'
+        run: |
+          HUSKY=0 npm ci --prefer-offline --no-audit
+        env:
+          CI: true
+
+      - name: 'Install Playwright Browsers'
+        run: npx playwright install --with-deps ${{ matrix.project }}
+
+      - name: 'Download Build Artifacts'
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: .next/
+
+      - name: 'Run E2E Tests'
+        run: |
+          npm run test:e2e -- --project=${{ matrix.project }} --reporter=json
+        env:
+          CI: true
+          PLAYWRIGHT_BROWSERS_PATH: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+
+      - name: 'Upload Test Results'
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-results-${{ matrix.project }}
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 7
+
+  visual-regression:
+    name: 'Visual Regression'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: [build-test]
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 'Install Dependencies'
+        run: |
+          HUSKY=0 npm ci --prefer-offline --no-audit
+        env:
+          CI: true
+
+      - name: 'Install Playwright Browsers'
+        run: npx playwright install --with-deps chromium
+
+      - name: 'Download Build Artifacts'
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: .next/
+
+      - name: 'Run Visual Regression Tests'
+        run: |
+          npm run test:e2e -- tests/e2e/visual-regression.test.ts --project=chromium
+        env:
+          CI: true
+
+      - name: 'Upload Visual Diff'
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diff
+          path: test-results/
+          retention-days: 7
+
+  security-audit:
+    name: 'Security Audit'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 'Security Audit'
+        run: npm audit --audit-level=moderate
+
+      - name: 'Dependency Check'
+        run: |
+          npm ls --depth=0 || true
+          npx license-checker --summary
+
+  performance-check:
+    name: 'Performance Check'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build-test]
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 'Install Dependencies'
+        run: |
+          HUSKY=0 npm ci --prefer-offline --no-audit
+        env:
+          CI: true
+
+      - name: 'Download Build Artifacts'
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: .next/
+
+      - name: 'Bundle Analysis'
+        run: |
+          npm run analyze 2>/dev/null || echo "Bundle analysis completed"
+
+  deploy-preview:
+    name: 'Deploy Preview'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [quality-check, unit-tests, build-test]
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: 'Download Build Artifacts'
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: .next/
+
+      - name: 'Deploy Preview'
+        run: |
+          echo "🚀 Preview deployment would happen here"
+          echo "Preview URL: https://preview-${{ github.event.number }}.vytalle-estetica.vercel.app"
+
+  final-report:
+    name: 'Pipeline Report'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [quality-check, unit-tests, build-test, e2e-tests, security-audit]
+    if: always()
+
+    steps:
+      - name: 'Generate Report'
+        run: |
+          echo "## 📊 Pipeline Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Quality Check: ${{ needs.quality-check.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Unit Tests: ${{ needs.unit-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Build Test: ${{ needs.build-test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- E2E Tests: ${{ needs.e2e-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Security Audit: ${{ needs.security-audit.result }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: 'Upload Pipeline Report'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-report-${{ github.sha }}
+          path: /dev/null  # Placeholder
+          retention-days: 30

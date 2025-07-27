@@ -165,6 +165,7 @@
     "fake-indexeddb": "^6.0.1",
     "husky": "^9.1.7",
     "jsdom": "^24.0.0",
+    "license-checker": "^25.0.1",
     "lighthouse": "^12.8.0",
     "lint-staged": "^16.1.2",
     "postcss": "^8.4.40",

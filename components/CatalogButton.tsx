@@ -70,7 +70,7 @@ export default function CatalogButton({
   );
 
   return (
-    <Link href={href} className={`${size === 'large' ? 'w-full sm:w-auto' : ''}`} prefetch={true}>
+    <Link href={href} className={`${size === 'large' ? 'w-full sm:w-auto' : ''}`} prefetch>
       <Button
         className={`${buttonClasses[variant]} ${className} ${isNavigating ? 'cursor-wait opacity-75' : ''}`}
         onClick={handleClick}

@@ -204,7 +204,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ErrorBoundary>
             <CustomizationProvider>
               <AnalyticsProvider>
-                <main role='main'>{children}</main>
+                {children}
                 <Toaster />
               </AnalyticsProvider>
             </CustomizationProvider>

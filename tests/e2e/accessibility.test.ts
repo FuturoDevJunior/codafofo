@@ -9,21 +9,25 @@ test.describe('Testes de Acessibilidade', () => {
     // Skip o primeiro elemento (skip link)
     await page.keyboard.press('Tab');
 
-    // Verificar navegação por Tab - usar seletores mais robústos
+    // Verificar navegação por Tab - usar seletores mais específicos
     await page.keyboard.press('Tab');
-    const homeLink = page.locator('a:has-text("Início")');
+    const homeLink = page
+      .locator('nav[aria-label="Navegação principal"] a:has-text("Início")')
+      .first();
     if (await homeLink.isVisible()) {
       await expect(homeLink).toBeFocused();
     }
 
     await page.keyboard.press('Tab');
-    const catalogLink = page.locator('a:has-text("Catálogo")');
+    const catalogLink = page
+      .locator('nav[aria-label="Navegação principal"] a:has-text("Catálogo")')
+      .first();
     if (await catalogLink.isVisible()) {
       await expect(catalogLink).toBeFocused();
     }
 
     await page.keyboard.press('Tab');
-    const cartLink = page.locator('a[href="/cart"]');
+    const cartLink = page.locator('nav[aria-label="Navegação principal"] a[href="/cart"]').first();
     if (await cartLink.isVisible()) {
       await expect(cartLink).toBeFocused();
     }
