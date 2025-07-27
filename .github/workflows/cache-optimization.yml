@@ -20,7 +20,6 @@ on:
 env:
   NODE_VERSION: '20.x'
   CACHE_VERSION: 'v2'
-  HUSKY: 0
 
 jobs:
   # Cache Management
@@ -40,7 +39,7 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: HUSKY=0 npm ci --prefer-offline --no-audit
+        run: npm ci --prefer-offline --no-audit
 
       - name: 🧹 Clean old cache entries
         if: github.event.inputs.cleanup_cache == 'true'
@@ -76,7 +75,7 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: HUSKY=0 npm ci --prefer-offline --no-audit
+        run: npm ci --prefer-offline --no-audit
 
       - name: 🖼️ Optimize product images
         run: |
@@ -109,7 +108,7 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: HUSKY=0 npm ci --prefer-offline --no-audit
+        run: npm ci --prefer-offline --no-audit
 
       - name: 📊 Database backup
         run: npm run db:backup
@@ -139,7 +138,7 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: HUSKY=0 npm ci --prefer-offline --no-audit
+        run: npm ci --prefer-offline --no-audit
 
       - name: 🛡️ Security audit
         run: |
