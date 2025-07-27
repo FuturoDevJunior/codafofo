@@ -1,6 +1,7 @@
 # 🌐 Documentação da API - Vytalle Estética
 
-> **API REST completa para integração com ERPs, sistemas de vendas e aplicações externas**
+> **API REST completa para integração com ERPs, sistemas de vendas e aplicações
+> externas**
 
 ## 📋 Índice
 
@@ -19,7 +20,8 @@
 
 ## 🎯 Visão Geral
 
-A API do Vytalle Estética fornece acesso completo aos dados de produtos, pedidos e funcionalidades administrativas através de endpoints REST padronizados.
+A API do Vytalle Estética fornece acesso completo aos dados de produtos, pedidos
+e funcionalidades administrativas através de endpoints REST padronizados.
 
 ### Características
 
@@ -396,7 +398,10 @@ class VytalleAPI {
 }
 
 // Uso
-const api = new VytalleAPI('https://vytalle-estetica.vercel.app/api', 'YOUR_TOKEN');
+const api = new VytalleAPI(
+  'https://vytalle-estetica.vercel.app/api',
+  'YOUR_TOKEN'
+);
 
 // Listar produtos
 const products = await api.getProducts('Toxina Botulínica');
@@ -729,8 +734,10 @@ try {
 
 ### Contatos
 
-- **📧 E-mail**: [contato.ferreirag@outlook.com](mailto:contato.ferreirag@outlook.com)
-- **🐛 Issues**: [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
+- **📧 E-mail**:
+  [contato.ferreirag@outlook.com](mailto:contato.ferreirag@outlook.com)
+- **🐛 Issues**:
+  [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
 - **📖 Docs**: [Documentação Completa](./docs/)
 
 ### Recursos

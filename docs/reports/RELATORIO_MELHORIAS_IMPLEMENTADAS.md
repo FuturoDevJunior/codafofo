@@ -20,9 +20,12 @@
 
 ### ✅ Objetivos Alcançados
 
-- **Aumentar Cobertura (Meta: 80%)**: Implementados testes para componentes com 0% de cobertura
-- **Otimização de Performance**: Sistema de cache inteligente e paralelização de testes
-- **Automação Avançada**: Testes de regressão visual, carga e compatibilidade cross-browser
+- **Aumentar Cobertura (Meta: 80%)**: Implementados testes para componentes com
+  0% de cobertura
+- **Otimização de Performance**: Sistema de cache inteligente e paralelização de
+  testes
+- **Automação Avançada**: Testes de regressão visual, carga e compatibilidade
+  cross-browser
 
 ### 📊 Métricas de Melhoria
 
@@ -212,7 +215,9 @@ test.describe('Load Testing', () => {
 ```typescript
 // tests/e2e/cross-browser.test.ts
 test.describe('Cross-Browser Compatibility', () => {
-  test('Página inicial deve funcionar em todos os navegadores', async ({ page }) => {
+  test('Página inicial deve funcionar em todos os navegadores', async ({
+    page,
+  }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 

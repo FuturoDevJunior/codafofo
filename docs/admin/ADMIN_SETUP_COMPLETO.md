@@ -2,7 +2,8 @@
 
 ## 🎯 STATUS FINAL: FUNCIONANDO!
 
-O sistema de login admin está **100% operacional** e pronto para uso em produção e desenvolvimento.
+O sistema de login admin está **100% operacional** e pronto para uso em produção
+e desenvolvimento.
 
 ---
 
@@ -253,11 +254,14 @@ npm run admin:reset
 ### Acesso Manual ao Supabase
 
 - **Dashboard**: https://supabase.com/dashboard/project/unrnnzaprxiasssxrnbc
-- **Auth Users**: https://supabase.com/dashboard/project/unrnnzaprxiasssxrnbc/auth/users
-- **SQL Editor**: https://supabase.com/dashboard/project/unrnnzaprxiasssxrnbc/sql
+- **Auth Users**:
+  https://supabase.com/dashboard/project/unrnnzaprxiasssxrnbc/auth/users
+- **SQL Editor**:
+  https://supabase.com/dashboard/project/unrnnzaprxiasssxrnbc/sql
 
 ---
 
 **🎉 CONFIGURAÇÃO 100% COMPLETA E AUTOMATIZADA!**
 
-O sistema admin Vytalle está totalmente funcional, seguro e pronto para uso em desenvolvimento e produção.
+O sistema admin Vytalle está totalmente funcional, seguro e pronto para uso em
+desenvolvimento e produção.

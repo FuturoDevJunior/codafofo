@@ -2,7 +2,10 @@
 
 ## 📋 Visão Geral
 
-Este documento apresenta o **workflow de desenvolvimento ultra-robusto** implementado para o projeto Vytalle, fornecendo um conjunto completo de ferramentas, scripts e processos para desenvolvimento profissional de alto nível.
+Este documento apresenta o **workflow de desenvolvimento ultra-robusto**
+implementado para o projeto Vytalle, fornecendo um conjunto completo de
+ferramentas, scripts e processos para desenvolvimento profissional de alto
+nível.
 
 ---
 
@@ -395,7 +398,8 @@ npm run pre-deploy
 
 ## 🏆 Resultado Final
 
-O **Vytalle** agora possui um **workflow de desenvolvimento ultra-robusto** que inclui:
+O **Vytalle** agora possui um **workflow de desenvolvimento ultra-robusto** que
+inclui:
 
 ✅ **Automação Completa**: Scripts inteligentes para desenvolvimento  
 ✅ **Qualidade Garantida**: 931 testes, zero warnings, código formatado  

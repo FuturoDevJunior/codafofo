@@ -11,7 +11,7 @@ import SmartImage from './SmartImage';
 
 interface ProductComparisonProps {
   products: Product[];
-  onRemove: (productId: string) => void;
+  onRemove: (_productId: string) => void;
   onClear: () => void;
 }
 

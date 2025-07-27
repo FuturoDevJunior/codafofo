@@ -20,11 +20,17 @@ import StarRating from '@/components/StarRating';
 import StatsCard from '@/components/StatsCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { mockProducts } from '@/lib/mockData';
+import { getProductsMinimal } from '@/lib/productCache';
 
 export default function Home() {
-  // Featured products para showcase
-  const featuredProducts = mockProducts.slice(0, 6);
+  // Featured products para showcase - carregamento otimizado
+  const minimalProducts = getProductsMinimal().slice(0, 6);
+  const featuredProducts = minimalProducts.map(product => ({
+    ...product,
+    currency: 'BRL' as const,
+    images: [`/images/products/${product.slug}.webp`],
+    description: `Produto premium ${product.name} da categoria ${product.category}`,
+  }));
 
   return (
     <div className='min-h-screen'>

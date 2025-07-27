@@ -4,22 +4,27 @@
 
 ## 🎯 Visão Geral
 
-Esta pasta contém toda a documentação técnica, operacional e de desenvolvimento do projeto Vytalle Estética. A documentação é organizada por temas específicos para facilitar a navegação e manutenção.
+Esta pasta contém toda a documentação técnica, operacional e de desenvolvimento
+do projeto Vytalle Estética. A documentação é organizada por temas específicos
+para facilitar a navegação e manutenção.
 
 ## 📋 Índice da Documentação
 
 ### 🏗️ **Arquitetura & Design**
 
-- **[🏗️ Arquitetura](./ARCHITECTURE.md)** - Documentação técnica completa da arquitetura
+- **[🏗️ Arquitetura](./ARCHITECTURE.md)** - Documentação técnica completa da
+  arquitetura
 - **[📊 Diagramas](./DIAGRAMS.md)** - Diagramas visuais da arquitetura e fluxos
 - **[🌐 API](./API.md)** - Documentação completa da API REST
 - **[⚡ Performance](./PERFORMANCE.md)** - Guia de otimização e métricas
 
 ### 🛠️ **Desenvolvimento**
 
-- **[🛠️ Guia de Desenvolvimento](./DEVELOPMENT.md)** - Padrões, boas práticas e exemplos
+- **[🛠️ Guia de Desenvolvimento](./DEVELOPMENT.md)** - Padrões, boas práticas e
+  exemplos
 - **[🧪 Testes](./TESTING.md)** - Estratégias e guia completo de testes
-- **[✅ Checklist](./CHECKLIST.md)** - Checklist para todas as etapas do desenvolvimento
+- **[✅ Checklist](./CHECKLIST.md)** - Checklist para todas as etapas do
+  desenvolvimento
 - **[🤝 Contribuição](./CONTRIBUTING.md)** - Como contribuir para o projeto
 
 ### 🚀 **Operações**
@@ -46,20 +51,24 @@ Esta pasta contém toda a documentação técnica, operacional e de desenvolvime
 ### Para Desenvolvedores
 
 1. **Primeira vez**: Comece com [Guia de Desenvolvimento](./DEVELOPMENT.md)
-2. **Arquitetura**: Consulte [Arquitetura](./ARCHITECTURE.md) e [Diagramas](./DIAGRAMS.md)
+2. **Arquitetura**: Consulte [Arquitetura](./ARCHITECTURE.md) e
+   [Diagramas](./DIAGRAMS.md)
 3. **Testes**: Use [Guia de Testes](./TESTING.md) para implementar testes
 4. **Deploy**: Siga [Guia de Deploy](./DEPLOYMENT.md) para produção
 
 ### Para DevOps
 
-1. **Infraestrutura**: [Arquitetura](./ARCHITECTURE.md) e [Deploy](./DEPLOYMENT.md)
-2. **Monitoramento**: [Monitoramento](./MONITORING.md) e [Troubleshooting](./TROUBLESHOOTING.md)
+1. **Infraestrutura**: [Arquitetura](./ARCHITECTURE.md) e
+   [Deploy](./DEPLOYMENT.md)
+2. **Monitoramento**: [Monitoramento](./MONITORING.md) e
+   [Troubleshooting](./TROUBLESHOOTING.md)
 3. **Automação**: [Automação](./AUTOMATION.md) e scripts
 
 ### Para Administradores
 
 1. **Segurança**: [Segurança](./SECURITY.md) e [Compliance](./COMPLIANCE.md)
-2. **Operações**: [Troubleshooting](./TROUBLESHOOTING.md) e [Checklist](./CHECKLIST.md)
+2. **Operações**: [Troubleshooting](./TROUBLESHOOTING.md) e
+   [Checklist](./CHECKLIST.md)
 3. **Monitoramento**: [Monitoramento](./MONITORING.md)
 
 ## 📊 Status da Documentação
@@ -175,13 +184,17 @@ npm run test:e2e
 
 ### Contatos
 
-- **📧 E-mail**: [contato.ferreirag@outlook.com](mailto:contato.ferreirag@outlook.com)
-- **💼 LinkedIn**: [RET Consultoria](https://www.linkedin.com/company/ret-consultoria/)
-- **🐛 Issues**: [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
+- **📧 E-mail**:
+  [contato.ferreirag@outlook.com](mailto:contato.ferreirag@outlook.com)
+- **💼 LinkedIn**:
+  [RET Consultoria](https://www.linkedin.com/company/ret-consultoria/)
+- **🐛 Issues**:
+  [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
 
 ## 🏆 Créditos
 
-**Desenvolvido e mantido por [RET CONSULTORIA LTDA](https://www.linkedin.com/company/ret-consultoria/)**
+**Desenvolvido e mantido por
+[RET CONSULTORIA LTDA](https://www.linkedin.com/company/ret-consultoria/)**
 
 ---
 

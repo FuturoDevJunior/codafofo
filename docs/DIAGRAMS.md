@@ -974,7 +974,8 @@ graph TD
 
 ## 🎯 Conclusão
 
-Estes diagramas representam fielmente a arquitetura atual do projeto Vytalle Estética, incluindo:
+Estes diagramas representam fielmente a arquitetura atual do projeto Vytalle
+Estética, incluindo:
 
 - **Arquitetura em camadas** com separação clara de responsabilidades
 - **Fluxos de dados** detalhados entre componentes
@@ -983,4 +984,5 @@ Estes diagramas representam fielmente a arquitetura atual do projeto Vytalle Est
 - **Medidas de segurança** em múltiplas camadas
 - **Estratégias de escalabilidade** para crescimento futuro
 
-Todos os diagramas são baseados no código real do projeto e refletem as decisões arquiteturais implementadas.
+Todos os diagramas são baseados no código real do projeto e refletem as decisões
+arquiteturais implementadas.

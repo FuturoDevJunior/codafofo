@@ -1,6 +1,7 @@
 # Automações do Projeto Vytalle
 
-Este documento descreve todas as automações implementadas no projeto Vytalle para garantir qualidade, segurança e eficiência operacional.
+Este documento descreve todas as automações implementadas no projeto Vytalle
+para garantir qualidade, segurança e eficiência operacional.
 
 ## 📋 Índice
 
@@ -614,6 +615,5 @@ Para dúvidas sobre as automações:
 
 ---
 
-**Última atualização:** Dezembro de 2024
-**Versão:** 1.0.0
-**Status:** ✅ Implementado e Funcionando
+**Última atualização:** Dezembro de 2024 **Versão:** 1.0.0 **Status:** ✅
+Implementado e Funcionando

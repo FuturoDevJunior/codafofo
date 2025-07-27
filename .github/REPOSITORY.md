@@ -3,7 +3,9 @@
 ## 📋 Informações do Repositório
 
 **Nome:** Vytalle Estética - E-commerce B2B Premium  
-**Descrição:** Catálogo B2B de produtos médicos estéticos premium - Next.js 14 + Supabase + Tailwind CSS. Distribuição de toxinas botulínicas, preenchedores e bioestimuladores certificados ANVISA.  
+**Descrição:** Catálogo B2B de produtos médicos estéticos premium - Next.js 14 +
+Supabase + Tailwind CSS. Distribuição de toxinas botulínicas, preenchedores e
+bioestimuladores certificados ANVISA.  
 **URL:** https://github.com/FuturoDevJunior/codafofo  
 **Website:** https://vytalle-estetica.vercel.app
 

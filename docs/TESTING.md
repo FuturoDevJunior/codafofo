@@ -507,7 +507,9 @@ expect(icon).toBeInTheDocument();
 expect(screen.getByText('Texto').closest('div')).toHaveClass('classe');
 
 // ✅ Solução - navegar para o elemento correto
-expect(screen.getByText('Texto').closest('div').parentElement).toHaveClass('classe');
+expect(screen.getByText('Texto').closest('div').parentElement).toHaveClass(
+  'classe'
+);
 ```
 
 #### 3. **Erro: Mock não funciona**
@@ -566,9 +568,12 @@ open coverage/index.html
 
 ### 🎯 Componentes com 100% de Cobertura
 
-- ✅ **UI Components**: Badge, Button, Card, Input, Label, LoadingButton, Skeleton
-- ✅ **Business Components**: StarRating, StatsCard, CategoryCard, ComplianceDisclaimer
-- ✅ **Core Services**: Analytics, Auth, Logger, MockData, ProductService, Store, Utils, Validation
+- ✅ **UI Components**: Badge, Button, Card, Input, Label, LoadingButton,
+  Skeleton
+- ✅ **Business Components**: StarRating, StatsCard, CategoryCard,
+  ComplianceDisclaimer
+- ✅ **Core Services**: Analytics, Auth, Logger, MockData, ProductService,
+  Store, Utils, Validation
 - ✅ **Error Handling**: ErrorBoundary, GlobalErrorHandler
 - ✅ **Cache System**: useProductsCache, useProductCache
 - ✅ **Admin System**: AdminDashboard, AdminForm, AdminLoginForm
@@ -633,7 +638,8 @@ open coverage/index.html
 ### 🔗 Documentação Oficial
 
 - [Vitest](https://vitest.dev/) - Framework de testes
-- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - Biblioteca de testes
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) -
+  Biblioteca de testes
 - [Playwright](https://playwright.dev/) - Testes E2E
 - [Jest DOM](https://github.com/testing-library/jest-dom) - Matchers adicionais
 
@@ -664,7 +670,8 @@ open coverage/index.html
 ### 📧 Contato
 
 - **E-mail**: contato.ferreirag@outlook.com
-- **Issues**: [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
+- **Issues**:
+  [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
 - **Documentação**: [Docs](./)
 
 ---

@@ -2,7 +2,9 @@
 
 ## 📋 Visão Geral
 
-Este documento estabelece as diretrizes de compliance e conformidade com a Lei Geral de Proteção de Dados (LGPD) para a plataforma Vytalle Estética & Viscosuplementação.
+Este documento estabelece as diretrizes de compliance e conformidade com a Lei
+Geral de Proteção de Dados (LGPD) para a plataforma Vytalle Estética &
+Viscosuplementação.
 
 ## 🛡️ Conformidade LGPD
 

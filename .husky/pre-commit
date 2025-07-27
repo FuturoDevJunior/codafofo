@@ -1,15 +1,27 @@
 #!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Executando verificações de qualidade..."
 
 # Execute lint-staged para arquivos staged
 npx lint-staged
 
 # Verificar tipos TypeScript
+echo "📝 Verificando tipos TypeScript..."
 npm run type-check
+
+# Verificar formatação
+echo "🎨 Verificando formatação..."
+npm run format:check
 
 # Executar testes básicos se houver arquivos de teste modificados
 if git diff --cached --name-only | grep -q "\.test\.\|\.spec\."; then
   echo "🧪 Executando testes para arquivos modificados..."
   npm run test:ci
 fi
+
+# Verificar vulnerabilidades de segurança
+echo "🔒 Verificando vulnerabilidades de segurança..."
+npm audit --audit-level=moderate || true
 
 echo "✅ Pre-commit checks passed!"

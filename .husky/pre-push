@@ -1,11 +1,25 @@
 #!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Executando verificações antes do push..."
 
 # Executar testes completos antes do push
-echo "🧪 Executando testes completos antes do push..."
+echo "🧪 Executando testes completos..."
 npm run test:ci
 
 # Verificar qualidade do código
 echo "🔍 Verificando qualidade do código..."
 npm run quality:check
+
+# Verificar build de produção
+echo "🏗️ Verificando build de produção..."
+npm run build
+
+# Verificar vulnerabilidades críticas
+echo "🔒 Verificando vulnerabilidades críticas..."
+npm audit --audit-level=high || {
+  echo "⚠️ Vulnerabilidades críticas encontradas. Execute 'npm audit fix' para corrigir."
+  exit 1
+}
 
 echo "✅ Pre-push checks passed!" 

@@ -11,7 +11,8 @@
 
 ### 2. **Flags problemáticas no npm ci**
 
-- **Problema**: Flags `--no-optional --ignore-scripts` impedindo instalação de dependências de desenvolvimento
+- **Problema**: Flags `--no-optional --ignore-scripts` impedindo instalação de
+  dependências de desenvolvimento
 - **Impacto**: Dependências essenciais para testes não sendo instaladas
 
 ### 3. **Problemas de tipos TypeScript**

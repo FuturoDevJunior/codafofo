@@ -255,6 +255,8 @@ npm run admin:test
 - **Segurança**: Implementação robusta via Supabase Auth
 - **Monitoramento**: Logs e testes automatizados disponíveis
 
-**Para usuários finais**: Apenas acesse a URL e faça login com as credenciais fornecidas.
+**Para usuários finais**: Apenas acesse a URL e faça login com as credenciais
+fornecidas.
 
-**Para desenvolvedores**: Use os comandos npm para gerenciar o sistema automaticamente.
+**Para desenvolvedores**: Use os comandos npm para gerenciar o sistema
+automaticamente.

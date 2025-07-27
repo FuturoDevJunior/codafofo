@@ -18,33 +18,65 @@ export default defineConfig({
     ['html'],
     ['json', { outputFile: 'test-results/e2e-results.json' }],
     ['junit', { outputFile: 'test-results/e2e-results.xml' }],
-  ],
+    ['list'],
+    process.env.CI ? ['github'] : null,
+  ].filter(Boolean),
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 720 },
+        deviceScaleFactor: 1,
+        isMobile: false,
+        hasTouch: false,
+      },
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices['Desktop Firefox'],
+        viewport: { width: 1280, height: 720 },
+        deviceScaleFactor: 1,
+        isMobile: false,
+        hasTouch: false,
+      },
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: {
+        ...devices['Desktop Safari'],
+        viewport: { width: 1280, height: 720 },
+        deviceScaleFactor: 1,
+        isMobile: false,
+        hasTouch: false,
+      },
     },
 
     /* Test against mobile viewports. */
     {
       name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
+      use: {
+        ...devices['Pixel 5'],
+        viewport: { width: 393, height: 851 },
+        deviceScaleFactor: 2.75,
+        isMobile: true,
+        hasTouch: true,
+      },
     },
     {
       name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
+      use: {
+        ...devices['iPhone 12'],
+        viewport: { width: 390, height: 844 },
+        deviceScaleFactor: 3,
+        isMobile: true,
+        hasTouch: true,
+      },
     },
 
     /* Test against branded browsers. */
@@ -68,6 +100,9 @@ export default defineConfig({
   /* Expect timeout - Increased for assertions */
   expect: {
     timeout: 15000,
+    toMatchSnapshot: {
+      maxDiffPixels: 10,
+    },
   },
 
   /* Action timeout */
@@ -89,6 +124,12 @@ export default defineConfig({
 
     /* Navigation timeout - Increased for slow page loads */
     navigationTimeout: 30000,
+
+    /* Browser context options */
+    acceptDownloads: true,
+    ignoreHTTPSErrors: true,
+    bypassCSP: false,
+    userAgent: 'Vytalle-E2E-Test-Agent/1.0',
   },
 
   /* Output directory */
@@ -96,4 +137,18 @@ export default defineConfig({
 
   /* Test files pattern */
   testMatch: '**/*.test.ts',
+
+  /* Global test configuration */
+  globalSetup: require.resolve('./tests/e2e/global-setup.ts'),
+  globalTeardown: require.resolve('./tests/e2e/global-teardown.ts'),
+
+  /* Web server configuration */
+  webServer: process.env.CI
+    ? undefined
+    : {
+        command: 'npm run dev',
+        url: 'http://localhost:5174',
+        reuseExistingServer: !process.env.CI,
+        timeout: 120000,
+      },
 });

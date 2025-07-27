@@ -1,6 +1,7 @@
 # 🏗️ Arquitetura Técnica - Vytalle Estética
 
-> **Documentação técnica completa da arquitetura, decisões de design e padrões utilizados**
+> **Documentação técnica completa da arquitetura, decisões de design e padrões
+> utilizados**
 
 ## 📋 Índice
 
@@ -273,14 +274,21 @@ export interface ProductRepository {
 
 export class SupabaseProductRepository implements ProductRepository {
   async findAll(): Promise<Product[]> {
-    const { data, error } = await supabase.from('products').select('*').eq('active', true);
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('active', true);
 
     if (error) throw new Error(error.message);
     return data;
   }
 
   async findById(id: string): Promise<Product | null> {
-    const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', id)
+      .single();
 
     if (error) return null;
     return data;
@@ -402,7 +410,10 @@ const productSchema = z.object({
     .max(100, 'Nome deve ter no máximo 100 caracteres')
     .regex(/^[a-zA-Z0-9\s\-\.]+$/, 'Nome contém caracteres inválidos'),
 
-  price_pix: z.number().positive('Preço deve ser positivo').max(10000, 'Preço muito alto'),
+  price_pix: z
+    .number()
+    .positive('Preço deve ser positivo')
+    .max(10000, 'Preço muito alto'),
 
   category: z.enum(['Toxina Botulínica', 'Preenchedor', 'Bioestimulador']),
 
@@ -649,9 +660,12 @@ export class PerformanceMonitor {
         page,
         loadTime: navigation.loadEventEnd - navigation.loadEventStart,
         domContentLoaded:
-          navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
+          navigation.domContentLoadedEventEnd -
+          navigation.domContentLoadedEventStart,
         firstPaint: performance.getEntriesByName('first-paint')[0]?.startTime,
-        firstContentfulPaint: performance.getEntriesByName('first-contentful-paint')[0]?.startTime,
+        firstContentfulPaint: performance.getEntriesByName(
+          'first-contentful-paint'
+        )[0]?.startTime,
       });
     }
   }

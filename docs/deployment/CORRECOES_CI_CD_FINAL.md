@@ -2,13 +2,15 @@
 
 ## 📋 Resumo das Correções
 
-Este documento detalha todas as correções implementadas para resolver os problemas do pipeline CI/CD do projeto Vytalle.
+Este documento detalha todas as correções implementadas para resolver os
+problemas do pipeline CI/CD do projeto Vytalle.
 
 ## 🚨 Problemas Identificados
 
 ### 1. Exit Code 127 (Command Not Found)
 
-- **Problema**: Vários jobs falhavam com exit code 127, indicando comandos não encontrados
+- **Problema**: Vários jobs falhavam com exit code 127, indicando comandos não
+  encontrados
 - **Causa**: Problemas na instalação de dependências e scripts não encontrados
 - **Solução**: Corrigido o processo de instalação e cache de dependências
 
@@ -152,7 +154,10 @@ export async function GET() {
     };
 
     // Verificações de variáveis de ambiente
-    const requiredEnvVars = ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY'];
+    const requiredEnvVars = [
+      'NEXT_PUBLIC_SUPABASE_URL',
+      'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+    ];
 
     // Verificação de conectividade com Supabase
     // ... lógica de verificação

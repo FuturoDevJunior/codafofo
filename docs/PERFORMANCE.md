@@ -211,7 +211,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const cache = new Map<string, { data: any; expires: number }>();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const cacheKey = `products-${req.query.category}`;
   const cached = cache.get(cacheKey);
 
@@ -230,7 +233,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 // 2. Paginação eficiente
-export async function getProductsPaginated(page: number = 1, limit: number = 20) {
+export async function getProductsPaginated(
+  page: number = 1,
+  limit: number = 20
+) {
   const offset = (page - 1) * limit;
 
   const { data, error, count } = await supabase
@@ -712,7 +718,11 @@ export class CacheManager {
     // Implementação Redis
   }
 
-  private async setInRedis(key: string, data: any, ttl?: number): Promise<void> {
+  private async setInRedis(
+    key: string,
+    data: any,
+    ttl?: number
+  ): Promise<void> {
     // Implementação Redis
   }
 }
@@ -765,11 +775,19 @@ const CACHE_NAME = 'vytalle-v1';
 const STATIC_CACHE = 'vytalle-static-v1';
 const DYNAMIC_CACHE = 'vytalle-dynamic-v1';
 
-const STATIC_ASSETS = ['/', '/products', '/cart', '/static/css/main.css', '/static/js/main.js'];
+const STATIC_ASSETS = [
+  '/',
+  '/products',
+  '/cart',
+  '/static/css/main.css',
+  '/static/js/main.js',
+];
 
 // Install event
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_ASSETS)));
+  event.waitUntil(
+    caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_ASSETS))
+  );
 });
 
 // Fetch event
@@ -778,7 +796,9 @@ self.addEventListener('fetch', event => {
 
   // Cache first para assets estáticos
   if (request.destination === 'image' || request.destination === 'style') {
-    event.respondWith(caches.match(request).then(response => response || fetch(request)));
+    event.respondWith(
+      caches.match(request).then(response => response || fetch(request))
+    );
   }
 
   // Network first para API calls
@@ -787,7 +807,9 @@ self.addEventListener('fetch', event => {
       fetch(request)
         .then(response => {
           const clonedResponse = response.clone();
-          caches.open(DYNAMIC_CACHE).then(cache => cache.put(request, clonedResponse));
+          caches
+            .open(DYNAMIC_CACHE)
+            .then(cache => cache.put(request, clonedResponse));
           return response;
         })
         .catch(() => caches.match(request))
@@ -815,9 +837,12 @@ export class PerformanceMonitor {
         page,
         loadTime: navigation.loadEventEnd - navigation.loadEventStart,
         domContentLoaded:
-          navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
+          navigation.domContentLoadedEventEnd -
+          navigation.domContentLoadedEventStart,
         firstPaint: performance.getEntriesByName('first-paint')[0]?.startTime,
-        firstContentfulPaint: performance.getEntriesByName('first-contentful-paint')[0]?.startTime,
+        firstContentfulPaint: performance.getEntriesByName(
+          'first-contentful-paint'
+        )[0]?.startTime,
         largestContentfulPaint: this.getLCP(),
         cumulativeLayoutShift: this.getCLS(),
         firstInputDelay: this.getFID(),

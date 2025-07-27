@@ -2,7 +2,9 @@
 
 ## 🎯 Objetivo da Revisão
 
-Revisão completa de conformidade com a Lei Geral de Proteção de Dados (LGPD) e remoção de informações de telefone dos documentos, mantendo apenas contatos via e-mail.
+Revisão completa de conformidade com a Lei Geral de Proteção de Dados (LGPD) e
+remoção de informações de telefone dos documentos, mantendo apenas contatos via
+e-mail.
 
 ## ✅ Ações Realizadas
 

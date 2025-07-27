@@ -1,6 +1,7 @@
 # 🛠️ Guia de Desenvolvimento - Vytalle Estética
 
-> **Guia completo para desenvolvedores: padrões, boas práticas e exemplos práticos**
+> **Guia completo para desenvolvedores: padrões, boas práticas e exemplos
+> práticos**
 
 ## 📋 Índice
 
@@ -913,7 +914,9 @@ export function useProductValidation() {
       return ProductSchema.parse(data);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        throw new Error(`Validação falhou: ${error.errors.map(e => e.message).join(', ')}`);
+        throw new Error(
+          `Validação falhou: ${error.errors.map(e => e.message).join(', ')}`
+        );
       }
       throw error;
     }
@@ -1258,15 +1261,19 @@ npm run backup
 
 - **[Next.js Docs](https://nextjs.org/docs)** - Documentação oficial
 - **[React Docs](https://react.dev)** - Guia oficial do React
-- **[TypeScript](https://www.typescriptlang.org/docs)** - Documentação TypeScript
+- **[TypeScript](https://www.typescriptlang.org/docs)** - Documentação
+  TypeScript
 - **[Tailwind CSS](https://tailwindcss.com/docs)** - Guia do Tailwind
 - **[Supabase](https://supabase.com/docs)** - Documentação Supabase
 
 ### Ferramentas Recomendadas
 
-- **[React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools)** - Debug React
-- **[Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools)** - Debug estado
-- **[Lighthouse](https://developers.google.com/web/tools/lighthouse)** - Performance
+- **[React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools)** -
+  Debug React
+- **[Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools)** -
+  Debug estado
+- **[Lighthouse](https://developers.google.com/web/tools/lighthouse)** -
+  Performance
 - **[WebPageTest](https://www.webpagetest.org)** - Teste de performance
 
 ---

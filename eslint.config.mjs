@@ -14,14 +14,18 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 });
 
-export default defineConfig([{
-    extends: compat.extends("next/core-web-vitals"),
-
-    rules: {
-        "no-console": ["error", { "allow": ["warn", "error"] }],
-        "@next/next/no-img-element": "off",
-        "prefer-const": "error",
-        "no-var": "error",
-        "no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
-    },
-}]);
+export default defineConfig([
+    ...compat.extends("next/core-web-vitals"),
+    {
+        rules: {
+            "no-console": ["error", { "allow": ["warn", "error"] }],
+            "prefer-const": "error",
+            "no-var": "error",
+            "no-unused-vars": ["warn", { 
+                "argsIgnorePattern": "^_", 
+                "varsIgnorePattern": "^_"
+            }],
+            "@next/next/no-img-element": "off",
+        }
+    }
+]);

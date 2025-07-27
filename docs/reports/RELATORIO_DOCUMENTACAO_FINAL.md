@@ -271,7 +271,8 @@ docs/
 
 ### ✅ **Status Final**
 
-A documentação do projeto Vytalle está **100% completa e atualizada**, incluindo:
+A documentação do projeto Vytalle está **100% completa e atualizada**,
+incluindo:
 
 - ✅ **Todas as correções recentes documentadas**
 - ✅ **Métricas atualizadas (931 testes, 100% cobertura)**

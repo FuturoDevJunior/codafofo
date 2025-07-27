@@ -713,8 +713,10 @@ DEBUG=pw:api npm run test:e2e
 
 ### Contatos de Emergência
 
-- **📧 E-mail**: [contato.ferreirag@outlook.com](mailto:contato.ferreirag@outlook.com)
-- **🐛 Issues**: [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
+- **📧 E-mail**:
+  [contato.ferreirag@outlook.com](mailto:contato.ferreirag@outlook.com)
+- **🐛 Issues**:
+  [GitHub Issues](https://github.com/FuturoDevJunior/codafofo/issues)
 - **📖 Docs**: [Documentação Completa](./docs/)
 
 ### Logs Importantes

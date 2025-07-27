@@ -2,7 +2,8 @@
 
 ## ✅ STATUS FINAL: TODOS OS PROBLEMAS RESOLVIDOS!
 
-**O sistema de administração está COMPLETAMENTE operacional, seguro e pronto para produção.**
+**O sistema de administração está COMPLETAMENTE operacional, seguro e pronto
+para produção.**
 
 ---
 
@@ -349,4 +350,5 @@ npm run admin:diagnose
 
 **🎉 SISTEMA ADMIN VYTALLE COMPLETAMENTE CONFIGURADO, TESTADO E APROVADO!**
 
-**Todos os problemas foram identificados e resolvidos. O sistema está 100% funcional e pronto para uso em desenvolvimento e produção.**
+**Todos os problemas foram identificados e resolvidos. O sistema está 100%
+funcional e pronto para uso em desenvolvimento e produção.**

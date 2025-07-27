@@ -85,7 +85,8 @@ test(unit): cobre cenários de erro
 
 - Use sempre o português nos commits.
 - Commits pequenos e atômicos.
-- Referencie issues quando aplicável: `fix: corrige bug no checkout (closes #12)`
+- Referencie issues quando aplicável:
+  `fix: corrige bug no checkout (closes #12)`
 
 ---
 

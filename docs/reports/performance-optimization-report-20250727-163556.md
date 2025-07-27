@@ -83,6 +83,5 @@ npm run bundle:stats
 
 ---
 
-**Relatório gerado em**: Dom 27 Jul 2025 16:35:56 -03
-**Por**: Vytalle Performance Optimizer v1.0
-**Tecnologias**: Next.js 15, React 18, TypeScript 5
+**Relatório gerado em**: Dom 27 Jul 2025 16:35:56 -03 **Por**: Vytalle
+Performance Optimizer v1.0 **Tecnologias**: Next.js 15, React 18, TypeScript 5

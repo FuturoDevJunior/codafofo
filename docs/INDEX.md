@@ -118,4 +118,5 @@ docs/
 
 ---
 
-**📞 Suporte**: Para dúvidas, consulte a documentação ou entre em contato através dos canais oficiais.
+**📞 Suporte**: Para dúvidas, consulte a documentação ou entre em contato
+através dos canais oficiais.

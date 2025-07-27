@@ -19,7 +19,8 @@
 
 ## 🎯 Visão Geral
 
-A segurança é fundamental para uma plataforma médica. Implementamos múltiplas camadas de proteção:
+A segurança é fundamental para uma plataforma médica. Implementamos múltiplas
+camadas de proteção:
 
 ### Princípios de Segurança
 
@@ -190,11 +191,17 @@ const ProductSchema = z.object({
     .max(100, 'Nome muito longo')
     .regex(/^[a-zA-Z0-9\s\-]+$/, 'Caracteres inválidos'),
 
-  price_pix: z.number().positive('Preço deve ser positivo').max(100000, 'Preço muito alto'),
+  price_pix: z
+    .number()
+    .positive('Preço deve ser positivo')
+    .max(100000, 'Preço muito alto'),
 
   category: z.enum(['toxina', 'preenchedor', 'bioestimulador']),
 
-  images: z.array(z.string().url()).min(1, 'Pelo menos uma imagem').max(10, 'Máximo 10 imagens'),
+  images: z
+    .array(z.string().url())
+    .min(1, 'Pelo menos uma imagem')
+    .max(10, 'Máximo 10 imagens'),
 });
 
 // ✅ Validação de API
@@ -209,7 +216,10 @@ export async function POST(request: Request) {
     return Response.json(result);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return Response.json({ error: 'Dados inválidos', details: error.errors }, { status: 400 });
+      return Response.json(
+        { error: 'Dados inválidos', details: error.errors },
+        { status: 400 }
+      );
     }
     throw error;
   }
@@ -552,9 +562,12 @@ npm run security:notify
 
 ### Documentação
 
-- **[OWASP Top 10](https://owasp.org/www-project-top-ten/)** - Vulnerabilidades críticas
-- **[NIST Cybersecurity](https://www.nist.gov/cyberframework)** - Framework de segurança
-- **[ISO 27001](https://www.iso.org/isoiec-27001-information-security.html)** - Gestão de segurança
+- **[OWASP Top 10](https://owasp.org/www-project-top-ten/)** - Vulnerabilidades
+  críticas
+- **[NIST Cybersecurity](https://www.nist.gov/cyberframework)** - Framework de
+  segurança
+- **[ISO 27001](https://www.iso.org/isoiec-27001-information-security.html)** -
+  Gestão de segurança
 
 ---
 
