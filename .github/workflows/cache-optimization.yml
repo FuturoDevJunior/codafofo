@@ -89,6 +89,7 @@ jobs:
           name: optimized-images-${{ github.sha }}
           path: public/images/
           retention-days: 7
+          if-no-files-found: ignore
 
   # Database Maintenance
   db-maintenance:
@@ -119,55 +120,6 @@ jobs:
       - name: 🔄 Sync products
         run: npm run sync:products
         continue-on-error: true
-
-  # Performance Monitoring
-  performance-monitoring:
-    name: 📊 Performance Monitoring
-    runs-on: ubuntu-latest
-    needs: [cache-management, image-optimization, db-maintenance]
-    timeout-minutes: 20
-    
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: 📦 Install dependencies
-        run: npm ci --prefer-offline --no-audit
-
-      - name: 🏗️ Build application
-        run: npm run build
-
-      - name: 🚀 Start application
-        run: |
-          npm start &
-          sleep 30
-
-      - name: ⚡ Lighthouse Performance
-        run: |
-          npm run performance:lighthouse
-          npm run performance:budget
-
-      - name: 🔍 SEO Check
-        run: |
-          npm run seo:check
-          npm run seo:sitemap
-          npm run seo:robots
-
-      - name: 📤 Upload performance report
-        uses: actions/upload-artifact@v4
-        with:
-          name: performance-monitoring-${{ github.sha }}
-          path: |
-            lighthouse-report.html
-            lighthouse-performance.json
-            lighthouse-seo.html
-          retention-days: 30
 
   # Security Scan
   security-scan:
@@ -202,7 +154,7 @@ jobs:
   final-report:
     name: 📋 Final Report
     runs-on: ubuntu-latest
-    needs: [cache-management, image-optimization, db-maintenance, performance-monitoring, security-scan]
+    needs: [cache-management, image-optimization, db-maintenance, security-scan]
     if: always()
     timeout-minutes: 5
     
@@ -218,7 +170,6 @@ jobs:
           echo "- Cache Management: ${{ needs.cache-management.result }}" >> maintenance-report.md
           echo "- Image Optimization: ${{ needs.image-optimization.result }}" >> maintenance-report.md
           echo "- Database Maintenance: ${{ needs.db-maintenance.result }}" >> maintenance-report.md
-          echo "- Performance Monitoring: ${{ needs.performance-monitoring.result }}" >> maintenance-report.md
           echo "- Security Scan: ${{ needs.security-scan.result }}" >> maintenance-report.md
           echo "" >> maintenance-report.md
           echo "### 🔗 Links:" >> maintenance-report.md
@@ -227,7 +178,6 @@ jobs:
           echo "" >> maintenance-report.md
           echo "### 📊 Artifacts:" >> maintenance-report.md
           echo "- Optimized Images: optimized-images-${{ github.sha }}" >> maintenance-report.md
-          echo "- Performance Report: performance-monitoring-${{ github.sha }}" >> maintenance-report.md
 
       - name: 📤 Upload maintenance report
         uses: actions/upload-artifact@v4

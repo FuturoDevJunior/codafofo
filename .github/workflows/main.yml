@@ -1,895 +1,388 @@
-name: 🚀 Vytalle CI/CD Pipeline Ultra-Robusto
+name: Vytalle CI/CD Pipeline
 
 on:
   push:
     branches: [main, develop]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/ISSUE_TEMPLATE.md'
-      - '.github/REPOSITORY.md'
   pull_request:
-    branches: [main, develop]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
+    branches: [main]
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Deployment environment'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
-      full_test:
-        description: 'Run full test suite including E2E'
-        required: false
-        default: false
-        type: boolean
-      performance_test:
-        description: 'Run performance tests'
-        required: false
-        default: false
-        type: boolean
       force_deploy:
-        description: 'Force deployment even if tests fail'
+        description: 'Force deploy even if tests fail'
         required: false
         default: false
         type: boolean
 
 env:
   NODE_VERSION: '20.x'
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   NODE_ENV: production
   CI: true
-  HUSKY: 0
-  # Configurações de retry
-  MAX_RETRIES: 3
-  RETRY_DELAY: 30
 
 jobs:
-  # Setup e Cache Ultra-Robusto
   setup:
-    name: ⚡ Setup Ultra-Robusto
+    name: Setup
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     outputs:
-      cache-key: ${{ steps.cache-key.outputs.key }}
-      should-deploy: ${{ steps.deploy-check.outputs.should-deploy }}
-      force-deploy: ${{ steps.deploy-check.outputs.force-deploy }}
-    
+      force-deploy: ${{ steps.deploy-check.outputs.force }}
     steps:
-      - name: 📥 Checkout otimizado
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🔑 Gerar cache key robusto
-        id: cache-key
-        run: |
-          # Gerar cache key com hash de múltiplos arquivos
-          CACHE_HASH=$(echo "${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/next.config.js') }}-${{ hashFiles('**/tsconfig.json') }}-${{ hashFiles('**/tailwind.config.js') }}" | md5sum | cut -d' ' -f1)
-          echo "key=vytalle-${{ runner.os }}-${{ env.NODE_VERSION }}-${CACHE_HASH}" >> $GITHUB_OUTPUT
-
-      - name: 🔍 Verificar deploy com fallbacks
+      - name: Check if force deploy
         id: deploy-check
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "should-deploy=true" >> $GITHUB_OUTPUT
-            if [[ "${{ github.event.inputs.force_deploy }}" == "true" ]]; then
-              echo "force-deploy=true" >> $GITHUB_OUTPUT
-            else
-              echo "force-deploy=false" >> $GITHUB_OUTPUT
-            fi
-          elif [[ "${{ github.ref }}" == "refs/heads/main" && "${{ github.event_name }}" == "push" ]]; then
-            echo "should-deploy=true" >> $GITHUB_OUTPUT
-            echo "force-deploy=false" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.ref }}" == "refs/tags/v*" ]]; then
-            echo "should-deploy=true" >> $GITHUB_OUTPUT
-            echo "force-deploy=false" >> $GITHUB_OUTPUT
+          if [ "${{ github.event.inputs.force_deploy }}" = "true" ]; then
+            echo "force=true" >> $GITHUB_OUTPUT
           else
-            echo "should-deploy=false" >> $GITHUB_OUTPUT
-            echo "force-deploy=false" >> $GITHUB_OUTPUT
+            echo "force=false" >> $GITHUB_OUTPUT
           fi
 
-  # Cache de Dependências Ultra-Robusto
-  cache-deps:
-    name: 📦 Cache Dependências Ultra-Robusto
+      - name: Generate cache key
+        id: cache-key
+        run: |
+          echo "key=$(date +%Y%m%d)-${{ github.sha }}" >> $GITHUB_OUTPUT
+
+  dependencies:
+    name: Install Dependencies
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: setup
-    timeout-minutes: 15
-    strategy:
-      matrix:
-        retry: [1, 2, 3]
-    
     steps:
-      - name: 📥 Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js com fallback
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
 
-      - name: 📦 Restaurar cache de dependências
-        uses: actions/cache@v4
-        id: deps-cache
-        with:
-          path: |
-            node_modules
-            ~/.npm
-            ~/.cache
-            .next/cache
-          key: ${{ needs.setup.outputs.cache-key }}
-          restore-keys: |
-            vytalle-${{ runner.os }}-${{ env.NODE_VERSION }}-
-
-      - name: 📦 Instalar dependências com retry
-        if: steps.deps-cache.outputs.cache-hit != 'true'
+      - name: Install dependencies
         run: |
-          # Função de retry
-          retry_install() {
-            local max_attempts=3
-            local attempt=1
-            
-            while [ $attempt -le $max_attempts ]; do
-              echo "🔧 Tentativa $attempt de instalação..."
-              
-              # Limpar cache antes de tentar
-              npm cache clean --force
-              
-              # Tentar instalação
-              if npm ci --prefer-offline --no-audit --no-fund --silent; then
-                echo "✅ Instalação bem-sucedida na tentativa $attempt"
-                return 0
-              else
-                echo "❌ Falha na tentativa $attempt"
-                if [ $attempt -lt $max_attempts ]; then
-                  echo "⏳ Aguardando ${{ env.RETRY_DELAY }}s antes da próxima tentativa..."
-                  sleep ${{ env.RETRY_DELAY }}
-                fi
-                attempt=$((attempt + 1))
-              fi
-            done
-            
-            echo "❌ Todas as tentativas falharam"
-            return 1
-          }
-          
-          retry_install
+          npm ci --prefer-offline --no-audit --no-fund
+          echo "Dependencies installed successfully"
 
-      - name: 🎭 Instalar Playwright com verificação
+      - name: Install Playwright browsers
         run: |
-          # Instalar Playwright com retry
-          npx playwright install --with-deps || {
-            echo "❌ Falha na instalação do Playwright, tentando novamente..."
-            npx playwright install --with-deps
-          }
-          
-          # Verificar instalação
-          npx playwright --version || {
-            echo "❌ Playwright não instalado corretamente"
-            exit 1
-          }
+          npx playwright install --with-deps
+          echo "Playwright browsers installed"
 
-      - name: 🔍 Verificar dependências críticas
+      - name: Verify installations
         run: |
-          # Verificar dependências essenciais
-          echo "🔍 Verificando dependências críticas..."
-          
-          # Node.js
-          node --version || { echo "❌ Node.js não encontrado"; exit 1; }
-          
-          # npm
-          npm --version || { echo "❌ npm não encontrado"; exit 1; }
-          
-          # Next.js
-          npx next --version || { echo "❌ Next.js não encontrado"; exit 1; }
-          
-          # TypeScript
-          npx tsc --version || { echo "❌ TypeScript não encontrado"; exit 1; }
-          
-          # Vitest
-          npx vitest --version || { echo "❌ Vitest não encontrado"; exit 1; }
-          
-          # Playwright
-          npx playwright --version || { echo "❌ Playwright não encontrado"; exit 1; }
-          
-          # Lighthouse
-          npx lighthouse --version || { echo "❌ Lighthouse não encontrado"; exit 1; }
-          
-          echo "✅ Todas as dependências críticas verificadas"
+          echo "Node version: $(node --version)"
+          echo "NPM version: $(npm --version)"
+          echo "Playwright version: $(npx playwright --version)"
+          echo "Lighthouse available: $(command -v lighthouse || echo 'Not installed')"
 
-  # Qualidade e Testes Paralelos Ultra-Robustos
   quality-check:
-    name: 🔍 Quality Check Ultra-Robusto
+    name: Quality Check
     runs-on: ubuntu-latest
-    needs: [setup, cache-deps]
-    timeout-minutes: 15
-    strategy:
-      matrix:
-        task: [lint, type-check, security, format-check]
-      fail-fast: false
-    
+    timeout-minutes: 10
+    needs: dependencies
     steps:
-      - name: 📥 Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Restaurar cache
-        uses: actions/cache@v4
-        id: deps-cache
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ needs.setup.outputs.cache-key }}
+      - name: Install dependencies
+        run: npm ci --prefer-offline
 
-      - name: 📦 Instalar dependências (se necessário)
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund
+      - name: Run linting
+        run: npm run lint
 
-      - name: 🧹 Lint com retry
-        if: matrix.task == 'lint'
+      - name: Run type checking
+        run: npm run type-check
+
+      - name: Security audit
         run: |
-          # Lint com retry
-          for i in {1..3}; do
-            echo "🔍 Executando lint (tentativa $i)..."
-            if npm run lint; then
-              echo "✅ Lint passou na tentativa $i"
-              break
-            else
-              echo "❌ Lint falhou na tentativa $i"
-              if [ $i -lt 3 ]; then
-                sleep 10
-              else
-                exit 1
-              fi
-            fi
-          done
+          npm audit --audit-level=moderate || echo "Security audit completed with warnings"
 
-      - name: 🔍 Type Check com retry
-        if: matrix.task == 'type-check'
-        run: |
-          # Type check com retry
-          for i in {1..3}; do
-            echo "🔍 Executando type check (tentativa $i)..."
-            if npm run type-check; then
-              echo "✅ Type check passou na tentativa $i"
-              break
-            else
-              echo "❌ Type check falhou na tentativa $i"
-              if [ $i -lt 3 ]; then
-                sleep 10
-              else
-                exit 1
-              fi
-            fi
-          done
-
-      - name: 🛡️ Security Audit completo
-        if: matrix.task == 'security'
-        run: |
-          echo "🛡️ Executando auditoria de segurança..."
-          
-          # Audit de vulnerabilidades
-          npm audit --audit-level=moderate || {
-            echo "⚠️ Vulnerabilidades encontradas, mas continuando..."
-          }
-          
-          # Verificar dependências desatualizadas
-          npm outdated || {
-            echo "ℹ️ Algumas dependências podem estar desatualizadas"
-          }
-          
-          # Verificar licenças
-          npx license-checker --summary || {
-            echo "ℹ️ Verificação de licenças não disponível"
-          }
-
-      - name: 🎨 Format Check
-        if: matrix.task == 'format-check'
-        run: |
-          # Verificar formatação
-          npm run format:check || {
-            echo "⚠️ Problemas de formatação encontrados"
-            echo "💡 Execute 'npm run format' para corrigir"
-          }
-
-  # Testes Unitários Ultra-Robustos
   unit-tests:
-    name: 🧪 Unit Tests Ultra-Robustos
+    name: Unit Tests
     runs-on: ubuntu-latest
-    needs: [setup, cache-deps]
-    timeout-minutes: 20
+    timeout-minutes: 15
+    needs: dependencies
     strategy:
+      fail-fast: false
       matrix:
         node-version: ['18.x', '20.x']
-        retry: [1, 2]
-      fail-fast: false
-    
     steps:
-      - name: 📥 Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: 📦 Restaurar cache
-        uses: actions/cache@v4
-        id: deps-cache
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Run unit tests
+        run: npm run test:ci
+
+      - name: Upload coverage reports
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
         with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ needs.setup.outputs.cache-key }}
+          name: coverage-reports-${{ matrix.node-version }}-${{ github.sha }}
+          path: coverage/
+          retention-days: 30
+          if-no-files-found: ignore
 
-      - name: 📦 Instalar dependências (se necessário)
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund
-
-      - name: 🧪 Executar testes unitários com retry
-        run: |
-          # Testes com retry e timeout
-          for i in {1..3}; do
-            echo "🧪 Executando testes (tentativa $i)..."
-            if timeout 15m npm run test:ci -- --coverage --reporter=verbose --reporter=json --outputFile=coverage-${{ matrix.node-version }}-$i.json; then
-              echo "✅ Testes passaram na tentativa $i"
-              break
-            else
-              echo "❌ Testes falharam na tentativa $i"
-              if [ $i -lt 3 ]; then
-                echo "⏳ Aguardando antes da próxima tentativa..."
-                sleep 30
-              else
-                echo "❌ Todas as tentativas falharam"
-                exit 1
-              fi
-            fi
-          done
-
-      - name: 📊 Upload coverage
-        if: matrix.node-version == '20.x' && matrix.retry == '1'
-        uses: codecov/codecov-action@v3
-        with:
-          file: coverage-${{ matrix.node-version }}-1.json
-          flags: vytalle-unit-tests
-          name: vytalle-coverage-${{ matrix.node-version }}
-          fail_ci_if_error: false
-
-  # Build Ultra-Robusto
   build:
-    name: 🏗️ Build Ultra-Robusto
+    name: Build Application
     runs-on: ubuntu-latest
-    needs: [setup, cache-deps, quality-check, unit-tests]
-    timeout-minutes: 20
-    
+    timeout-minutes: 15
+    needs: [dependencies, quality-check]
     steps:
-      - name: 📥 Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Restaurar cache
-        uses: actions/cache@v4
-        id: deps-cache
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ needs.setup.outputs.cache-key }}
+      - name: Install dependencies
+        run: npm ci --prefer-offline
 
-      - name: 📦 Instalar dependências (se necessário)
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund
+      - name: Build application
+        run: npm run build
 
-      - name: 🏗️ Build da aplicação com retry
-        run: |
-          # Build com retry
-          for i in {1..3}; do
-            echo "🏗️ Executando build (tentativa $i)..."
-            if timeout 15m npm run build; then
-              echo "✅ Build bem-sucedido na tentativa $i"
-              break
-            else
-              echo "❌ Build falhou na tentativa $i"
-              if [ $i -lt 3 ]; then
-                echo "⏳ Aguardando antes da próxima tentativa..."
-                sleep 30
-              else
-                echo "❌ Todas as tentativas de build falharam"
-                exit 1
-              fi
-            fi
-          done
-
-      - name: 📊 Análise de bundle
-        run: |
-          # Análise de bundle
-          npm run analyze || {
-            echo "⚠️ Análise de bundle falhou, mas continuando..."
-          }
-
-      - name: 📤 Upload build artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts-${{ github.sha }}
-          path: |
-            .next
-            public
-            package.json
-            package-lock.json
-            .next/analyze
+          path: .next/
           retention-days: 7
-          compression-level: 9
+          if-no-files-found: ignore
 
-      - name: 📊 Bundle analysis
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: bundle-analysis-${{ github.sha }}
-          path: .next/analyze/
-          retention-days: 30
-
-  # Testes E2E Ultra-Robustos
   e2e-tests:
-    name: 🧪 E2E Tests Ultra-Robustos
+    name: E2E Tests
     runs-on: ubuntu-latest
-    needs: [setup, cache-deps, build]
-    if: |
-      always() && 
-      (needs.setup.outputs.should-deploy == 'true' || 
-       github.event.inputs.full_test == 'true')
-    timeout-minutes: 30
+    timeout-minutes: 20
+    needs: [dependencies, build]
     strategy:
+      fail-fast: false
       matrix:
         browser: [chromium, firefox, webkit]
-        retry: [1, 2]
-      fail-fast: false
-    
     steps:
-      - name: 📥 Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Restaurar cache
-        uses: actions/cache@v4
-        id: deps-cache
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ needs.setup.outputs.cache-key }}
+      - name: Install dependencies
+        run: npm ci --prefer-offline
 
-      - name: 📦 Instalar dependências (se necessário)
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund
-
-      - name: 📦 Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts-${{ github.sha }}
-
-      - name: 🎭 Instalar Playwright
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: 🧪 Run E2E tests com retry
-        run: |
-          # E2E tests com retry
-          for i in {1..3}; do
-            echo "🧪 Executando E2E tests ${{ matrix.browser }} (tentativa $i)..."
-            if timeout 20m npx playwright test --project=${{ matrix.browser }} --reporter=html,json; then
-              echo "✅ E2E tests passaram na tentativa $i"
-              break
-            else
-              echo "❌ E2E tests falharam na tentativa $i"
-              if [ $i -lt 3 ]; then
-                echo "⏳ Aguardando antes da próxima tentativa..."
-                sleep 60
-              else
-                echo "❌ Todas as tentativas de E2E falharam"
-                exit 1
-              fi
-            fi
-          done
+      - name: Run E2E tests
+        run: npx playwright test --project=${{ matrix.browser }}
         env:
-          BASE_URL: https://vytalle-estetica.vercel.app
           CI: true
 
-      - name: 📊 Upload E2E results
-        uses: actions/upload-artifact@v4
+      - name: Upload E2E results
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: e2e-results-${{ matrix.browser }}-${{ github.sha }}
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 30
+          path: playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7
 
-  # Performance Tests Ultra-Robustos
   performance-tests:
-    name: ⚡ Performance Tests Ultra-Robustos
+    name: Performance Tests
     runs-on: ubuntu-latest
-    needs: [setup, cache-deps, build]
-    if: |
-      always() && 
-      (needs.setup.outputs.should-deploy == 'true' || 
-       github.event.inputs.performance_test == 'true')
-    timeout-minutes: 20
-    
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: 📦 Restaurar cache
-        uses: actions/cache@v4
-        id: deps-cache
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ needs.setup.outputs.cache-key }}
-
-      - name: 📦 Instalar dependências (se necessário)
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund
-
-      - name: 📦 Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts-${{ github.sha }}
-
-      - name: ⚡ Lighthouse Performance com retry
-        run: |
-          # Lighthouse com retry
-          for i in {1..3}; do
-            echo "⚡ Executando Lighthouse (tentativa $i)..."
-            if timeout 10m npx lighthouse https://vytalle-estetica.vercel.app --output=html --output-path=./lighthouse-report-$i.html --chrome-flags="--headless --no-sandbox --disable-gpu"; then
-              echo "✅ Lighthouse HTML bem-sucedido na tentativa $i"
-              break
-            else
-              echo "❌ Lighthouse HTML falhou na tentativa $i"
-              if [ $i -lt 3 ]; then
-                sleep 30
-              else
-                exit 1
-              fi
-            fi
-          done
-          
-          for i in {1..3}; do
-            echo "⚡ Executando Lighthouse JSON (tentativa $i)..."
-            if timeout 10m npx lighthouse https://vytalle-estetica.vercel.app --only-categories=performance --output=json --output-path=./lighthouse-performance-$i.json --chrome-flags="--headless --no-sandbox --disable-gpu"; then
-              echo "✅ Lighthouse JSON bem-sucedido na tentativa $i"
-              break
-            else
-              echo "❌ Lighthouse JSON falhou na tentativa $i"
-              if [ $i -lt 3 ]; then
-                sleep 30
-              else
-                exit 1
-              fi
-            fi
-          done
-
-      - name: 📊 Upload performance results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: performance-results-${{ github.sha }}
-          path: |
-            lighthouse-report-*.html
-            lighthouse-performance-*.json
-          retention-days: 30
-
-  # Deploy Staging Ultra-Robusto
-  deploy-staging:
-    name: 🌐 Deploy Staging Ultra-Robusto
-    runs-on: ubuntu-latest
-    needs: [setup, build, e2e-tests, performance-tests]
-    if: |
-      always() && 
-      needs.setup.outputs.should-deploy == 'true' &&
-      github.ref == 'refs/heads/main' &&
-      github.event_name == 'push'
     timeout-minutes: 15
-    
+    needs: [dependencies, build]
     steps:
-      - name: 📥 Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: 📦 Restaurar cache
-        uses: actions/cache@v4
-        id: deps-cache
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ needs.setup.outputs.cache-key }}
+      - name: Install dependencies
+        run: npm ci --prefer-offline
 
-      - name: 📦 Instalar dependências (se necessário)
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund
+      - name: Install Lighthouse
+        run: npm install -g lighthouse
 
-      - name: 📦 Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts-${{ github.sha }}
-
-      - name: 🚀 Deploy to Vercel com retry
+      - name: Start application for testing
         run: |
-          # Deploy com retry
-          for i in {1..3}; do
-            echo "🚀 Executando deploy (tentativa $i)..."
-            if npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ env.VERCEL_ORG_ID }} --yes; then
-              echo "✅ Deploy bem-sucedido na tentativa $i"
-              break
-            else
-              echo "❌ Deploy falhou na tentativa $i"
-              if [ $i -lt 3 ]; then
-                echo "⏳ Aguardando antes da próxima tentativa..."
-                sleep 60
-              else
-                echo "❌ Todas as tentativas de deploy falharam"
-                exit 1
-              fi
-            fi
-          done
+          npm run build
+          npm start &
+          sleep 30
 
-      - name: 🔍 Health Check robusto
+      - name: Run Lighthouse performance test
         run: |
-          # Health check com retry
-          for i in {1..5}; do
-            echo "🔍 Health check (tentativa $i)..."
-            if curl -f -m 30 https://vytalle-estetica.vercel.app/api/health; then
-              echo "✅ Health check passou na tentativa $i"
-              break
-            else
-              echo "❌ Health check falhou na tentativa $i"
-              if [ $i -lt 5 ]; then
-                echo "⏳ Aguardando antes da próxima tentativa..."
-                sleep 30
-              else
-                echo "⚠️ Health check falhou após 5 tentativas, mas continuando..."
-              fi
-            fi
-          done
+          lighthouse http://localhost:3000 \
+            --output=json \
+            --output-path=lighthouse-performance-${{ github.sha }}.json \
+            --chrome-flags="--headless --no-sandbox --disable-gpu" \
+            --only-categories=performance
 
-      - name: 📱 Notify success
+      - name: Run Lighthouse HTML report
         run: |
-          echo "✅ Deploy staging realizado com sucesso!"
-          echo "🌐 URL: https://vytalle-estetica.vercel.app"
-          echo "📊 Performance: Disponível nos artifacts"
+          lighthouse http://localhost:3000 \
+            --output=html \
+            --output-path=lighthouse-report-${{ github.sha }}.html \
+            --chrome-flags="--headless --no-sandbox --disable-gpu" \
+            --only-categories=performance
 
-  # Deploy Production Ultra-Robusto
-  deploy-production:
-    name: 🎯 Deploy Production Ultra-Robusto
-    runs-on: ubuntu-latest
-    needs: [setup, build, e2e-tests, performance-tests]
-    if: |
-      always() && 
-      needs.setup.outputs.should-deploy == 'true' &&
-      ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') ||
-       startsWith(github.ref, 'refs/tags/v'))
-    timeout-minutes: 20
-    
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: 📦 Restaurar cache
-        uses: actions/cache@v4
-        id: deps-cache
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ needs.setup.outputs.cache-key }}
-
-      - name: 📦 Instalar dependências (se necessário)
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit --no-fund
-
-      - name: 📦 Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts-${{ github.sha }}
-
-      - name: 🚀 Deploy to Vercel Production com retry
-        run: |
-          # Deploy production com retry
-          for i in {1..3}; do
-            echo "🚀 Executando deploy production (tentativa $i)..."
-            if npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ env.VERCEL_ORG_ID }} --yes; then
-              echo "✅ Deploy production bem-sucedido na tentativa $i"
-              break
-            else
-              echo "❌ Deploy production falhou na tentativa $i"
-              if [ $i -lt 3 ]; then
-                echo "⏳ Aguardando antes da próxima tentativa..."
-                sleep 60
-              else
-                echo "❌ Todas as tentativas de deploy production falharam"
-                exit 1
-              fi
-            fi
-          done
-
-      - name: 🔍 Health Check production robusto
-        run: |
-          # Health check production com retry
-          for i in {1..5}; do
-            echo "🔍 Health check production (tentativa $i)..."
-            if curl -f -m 30 https://vytalle-estetica.vercel.app/api/health; then
-              echo "✅ Health check production passou na tentativa $i"
-              break
-            else
-              echo "❌ Health check production falhou na tentativa $i"
-              if [ $i -lt 5 ]; then
-                echo "⏳ Aguardando antes da próxima tentativa..."
-                sleep 30
-              else
-                echo "⚠️ Health check production falhou após 5 tentativas, mas continuando..."
-              fi
-            fi
-          done
-
-      - name: 🏷️ Create Release (if tag)
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Vytalle v${{ github.ref_name }}
-          body: |
-            ## 🚀 Vytalle Estética - Release ${{ github.ref_name }}
-            
-            ### ✨ Novidades
-            - Melhorias no sistema de cache
-            - Otimizações de performance
-            - Correções de bugs
-            - Pipeline CI/CD ultra-robusto
-            
-            ### 🔗 Links
-            - **Produção:** https://vytalle-estetica.vercel.app
-            - **Documentação:** https://github.com/FuturoDevJunior/codafofo
-            
-            ### 📊 Métricas
-            - Testes: ✅ Passando
-            - Coverage: >80%
-            - Performance: Otimizada
-            - E2E: ✅ Passando
-            
-            ### 🧪 Testes Executados
-            - Unit Tests: ✅
-            - E2E Tests: ✅
-            - Performance Tests: ✅
-            - Security Audit: ✅
-            
-            ---
-            *Desenvolvido com ❤️ pela RET Consultoria*
-
-      - name: 📱 Notify success
-        run: |
-          echo "✅ Deploy produção realizado com sucesso!"
-          echo "🌐 URL: https://vytalle-estetica.vercel.app"
-          echo "📊 Performance: Disponível nos artifacts"
-
-  # Notificações e Relatórios Finais Ultra-Robustos
-  notify:
-    name: 📢 Notifications & Reports Ultra-Robustos
-    runs-on: ubuntu-latest
-    needs: [setup, quality-check, unit-tests, build, e2e-tests, performance-tests, deploy-staging, deploy-production]
-    if: always()
-    timeout-minutes: 10
-    
-    steps:
-      - name: 📊 Generate comprehensive report
-        run: |
-          echo "## 🚀 Vytalle CI/CD Pipeline Report - Ultra-Robusto" >> report.md
-          echo "" >> report.md
-          echo "### 📋 Job Status:" >> report.md
-          echo "- Quality Check: ${{ needs.quality-check.result }}" >> report.md
-          echo "- Unit Tests: ${{ needs.unit-tests.result }}" >> report.md
-          echo "- Build: ${{ needs.build.result }}" >> report.md
-          echo "- E2E Tests: ${{ needs.e2e-tests.result }}" >> report.md
-          echo "- Performance Tests: ${{ needs.performance-tests.result }}" >> report.md
-          echo "- Deploy Staging: ${{ needs.deploy-staging.result }}" >> report.md
-          echo "- Deploy Production: ${{ needs.deploy-production.result }}" >> report.md
-          echo "" >> report.md
-          echo "### 🔗 Links:" >> report.md
-          echo "- **Production:** https://vytalle-estetica.vercel.app" >> report.md
-          echo "- **Health Check:** https://vytalle-estetica.vercel.app/api/health" >> report.md
-          echo "- **Repository:** https://github.com/FuturoDevJunior/codafofo" >> report.md
-          echo "" >> report.md
-          echo "### 📊 Artifacts:" >> report.md
-          echo "- Build: build-artifacts-${{ github.sha }}" >> report.md
-          echo "- Bundle Analysis: bundle-analysis-${{ github.sha }}" >> report.md
-          echo "- E2E Results: e2e-results-*-${{ github.sha }}" >> report.md
-          echo "- Performance: performance-results-${{ github.sha }}" >> report.md
-          echo "" >> report.md
-          echo "### 🛡️ Security:" >> report.md
-          echo "- Vulnerabilities: Verificadas" >> report.md
-          echo "- Dependencies: Atualizadas" >> report.md
-          echo "- Licenses: Verificadas" >> report.md
-          echo "" >> report.md
-          echo "### ⚡ Performance:" >> report.md
-          echo "- Lighthouse: Executado" >> report.md
-          echo "- Bundle Size: Otimizado" >> report.md
-          echo "- Loading Speed: Monitorado" >> report.md
-
-      - name: 📤 Upload comprehensive report
+      - name: Upload performance reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pipeline-report-ultra-robusto-${{ github.sha }}
-          path: report.md
+          name: performance-reports-${{ github.sha }}
+          path: |
+            lighthouse-performance-${{ github.sha }}.json
+            lighthouse-report-${{ github.sha }}.html
+          if-no-files-found: ignore
           retention-days: 30
 
-      - name: 📱 Success notification
-        if: |
-          needs.deploy-staging.result == 'success' || 
-          needs.deploy-production.result == 'success'
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build, e2e-tests, performance-tests]
+    if: github.ref == 'refs/heads/main' && (needs.e2e-tests.result == 'success' || needs.e2e-tests.result == 'skipped') && (needs.performance-tests.result == 'success' || needs.performance-tests.result == 'skipped')
+    environment: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Deploy to Vercel
         run: |
-          echo "🎉 Pipeline ultra-robusto executado com sucesso!"
-          echo "🌐 URL: https://vytalle-estetica.vercel.app"
-          echo "📊 Coverage: Disponível no Codecov"
-          echo "🧪 E2E: ${{ needs.e2e-tests.result }}"
-          echo "⚡ Performance: ${{ needs.performance-tests.result }}"
-          echo "🛡️ Security: Verificada"
-          
-      - name: 🚨 Failure notification
-        if: |
-          needs.deploy-staging.result == 'failure' || 
-          needs.deploy-production.result == 'failure'
+          npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
+      - name: Health check
         run: |
-          echo "❌ Pipeline falhou!"
-          echo "Verifique os logs para mais detalhes."
-          echo "🔍 Jobs com falha:"
-          echo "- Quality Check: ${{ needs.quality-check.result }}"
-          echo "- Unit Tests: ${{ needs.unit-tests.result }}"
-          echo "- Build: ${{ needs.build.result }}"
-          echo "- E2E Tests: ${{ needs.e2e-tests.result }}"
-          echo "- Performance Tests: ${{ needs.performance-tests.result }}"
-          exit 1 
+          echo "Waiting for deployment to be ready..."
+          sleep 30
+          curl -f https://vytalle-estetica.vercel.app/api/health || echo "Health check failed - continuing anyway"
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/main' && needs.deploy-staging.result == 'success'
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Deploy to Vercel Production
+        run: |
+          npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
+      - name: Health check
+        run: |
+          echo "Waiting for production deployment to be ready..."
+          sleep 45
+          for i in {1..5}; do
+            if curl -f https://vytalle-estetica.vercel.app/api/health; then
+              echo "Health check passed on attempt $i"
+              break
+            else
+              echo "Health check failed on attempt $i, retrying..."
+              sleep 30
+            fi
+          done
+
+  notify:
+    name: Notifications & Reports
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [unit-tests, e2e-tests, performance-tests, deploy-staging, deploy-production]
+    if: always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate comprehensive report
+        run: |
+          echo "# Vytalle CI/CD Pipeline Report" > pipeline-report-${{ github.sha }}.md
+          echo "## Summary" >> pipeline-report-${{ github.sha }}.md
+          echo "- **Commit**: ${{ github.sha }}" >> pipeline-report-${{ github.sha }}.md
+          echo "- **Branch**: ${{ github.ref_name }}" >> pipeline-report-${{ github.sha }}.md
+          echo "- **Triggered by**: ${{ github.event_name }}" >> pipeline-report-${{ github.sha }}.md
+          echo "- **Timestamp**: $(date -u)" >> pipeline-report-${{ github.sha }}.md
+          echo "" >> pipeline-report-${{ github.sha }}.md
+          echo "## Job Results" >> pipeline-report-${{ github.sha }}.md
+          echo "- **Unit Tests**: ${{ needs.unit-tests.result }}" >> pipeline-report-${{ github.sha }}.md
+          echo "- **E2E Tests**: ${{ needs.e2e-tests.result }}" >> pipeline-report-${{ github.sha }}.md
+          echo "- **Performance Tests**: ${{ needs.performance-tests.result }}" >> pipeline-report-${{ github.sha }}.md
+          echo "- **Deploy Staging**: ${{ needs.deploy-staging.result }}" >> pipeline-report-${{ github.sha }}.md
+          echo "- **Deploy Production**: ${{ needs.deploy-production.result }}" >> pipeline-report-${{ github.sha }}.md
+          echo "" >> pipeline-report-${{ github.sha }}.md
+          echo "## Status" >> pipeline-report-${{ github.sha }}.md
+          if [ "${{ needs.unit-tests.result }}" = "success" ] && [ "${{ needs.e2e-tests.result }}" = "success" ] && [ "${{ needs.performance-tests.result }}" = "success" ]; then
+            echo "✅ **All tests passed successfully**" >> pipeline-report-${{ github.sha }}.md
+          else
+            echo "❌ **Some tests failed**" >> pipeline-report-${{ github.sha }}.md
+          fi
+
+      - name: Upload pipeline report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-report-${{ github.sha }}
+          path: pipeline-report-${{ github.sha }}.md
+          retention-days: 30
+
+      - name: Success notification
+        if: success()
+        run: |
+          echo "🎉 Pipeline completed successfully!"
+          echo "All tests passed and deployment completed."
+
+      - name: Failure notification
+        if: failure()
+        run: |
+          echo "❌ Pipeline failed!"
+          echo "Check the logs for details on what went wrong." 

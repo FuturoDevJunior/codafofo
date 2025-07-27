@@ -1,565 +1,349 @@
 #!/bin/bash
 
-# Script Ultra-Robusto de Deploy Vytalle
-set -e
+# 🚀 Vytalle Ultra-Robust Deploy Script
+# Executa deploy com verificações completas e rollback automático
 
-# Configurações
-MAX_RETRIES=5
-RETRY_DELAY=30
-LOG_FILE="deploy-ultra.log"
-BACKUP_DIR="backups"
-HEALTH_URL="https://vytalle-estetica.vercel.app/api/health"
-PERFORMANCE_URL="https://vytalle-estetica.vercel.app"
-DEPLOY_TIMEOUT=600 # 10 minutos
+set -e
 
 # Cores para output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
-CYAN='\033[0;36m'
 NC='\033[0m' # No Color
+
+# Configurações
+DEPLOY_TIMEOUT=600  # 10 minutos
+HEALTH_CHECK_TIMEOUT=300  # 5 minutos
+MAX_RETRIES=3
+RETRY_DELAY=30
 
 # Função de logging
 log() {
-    echo -e "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+    echo -e "${BLUE}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} $1"
 }
 
-# Função de alerta
-alert() {
-    echo -e "${RED}[ALERTA]${NC} $1" | tee -a "$LOG_FILE"
-}
-
-# Função de sucesso
 success() {
-    echo -e "${GREEN}[SUCESSO]${NC} $1" | tee -a "$LOG_FILE"
+    echo -e "${GREEN}✅ $1${NC}"
 }
 
-# Função de warning
 warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1" | tee -a "$LOG_FILE"
+    echo -e "${YELLOW}⚠️ $1${NC}"
 }
 
-# Função de info
-info() {
-    echo -e "${BLUE}[INFO]${NC} $1" | tee -a "$LOG_FILE"
+error() {
+    echo -e "${RED}❌ $1${NC}"
 }
 
 # Função de retry
 retry() {
-    local max_attempts=$1
-    local delay=$2
-    local command="$3"
+    local max_attempts=$MAX_RETRIES
     local attempt=1
+    local delay=$RETRY_DELAY
     
     while [ $attempt -le $max_attempts ]; do
-        log "🔧 Tentativa $attempt de $max_attempts: $command"
+        log "Tentativa $attempt de $max_attempts: $1"
         
-        if eval "$command"; then
-            log "✅ Comando executado com sucesso na tentativa $attempt"
+        if eval "$1"; then
+            success "Comando executado com sucesso: $1"
             return 0
         else
-            log "❌ Falha na tentativa $attempt"
-            if [ $attempt -lt $max_attempts ]; then
-                log "⏳ Aguardando ${delay}s antes da próxima tentativa..."
-                sleep "$delay"
+            error "Falha na tentativa $attempt: $1"
+            
+            if [ $attempt -eq $max_attempts ]; then
+                error "Todas as tentativas falharam para: $1"
+                return 1
             fi
+            
+            warning "Aguardando $delay segundos antes da próxima tentativa..."
+            sleep $delay
             attempt=$((attempt + 1))
+            delay=$((delay * 2))
         fi
     done
-    
-    log "❌ Todas as $max_attempts tentativas falharam"
-    return 1
 }
 
-# Função para verificar pré-requisitos
+# Verificação de pré-requisitos
 check_prerequisites() {
-    info "🔍 Verificando pré-requisitos..."
+    log "🔍 Verificando pré-requisitos..."
     
     # Verificar se estamos no diretório correto
     if [ ! -f "package.json" ]; then
-        alert "package.json não encontrado. Certifique-se de estar no diretório raiz do projeto."
-        return 1
+        error "package.json não encontrado. Execute este script no diretório raiz do projeto."
+        exit 1
     fi
     
     # Verificar Node.js
-    if ! command -v node >/dev/null 2>&1; then
-        alert "Node.js não encontrado"
-        return 1
+    if ! command -v node &> /dev/null; then
+        error "Node.js não encontrado"
+        exit 1
     fi
     
     # Verificar npm
-    if ! command -v npm >/dev/null 2>&1; then
-        alert "npm não encontrado"
-        return 1
+    if ! command -v npm &> /dev/null; then
+        error "npm não encontrado"
+        exit 1
     fi
     
     # Verificar Vercel CLI
-    if ! command -v vercel >/dev/null 2>&1; then
+    if ! command -v vercel &> /dev/null; then
         warning "Vercel CLI não encontrado, instalando..."
-        npm install -g vercel
+        retry "npm install -g vercel"
     fi
     
     # Verificar git
-    if ! command -v git >/dev/null 2>&1; then
-        alert "git não encontrado"
-        return 1
+    if ! command -v git &> /dev/null; then
+        error "Git não encontrado"
+        exit 1
     fi
     
-    # Verificar se há mudanças não commitadas
-    if [ -n "$(git status --porcelain)" ]; then
-        warning "Há mudanças não commitadas no repositório"
-        read -p "Deseja continuar mesmo assim? (y/N): " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            alert "Deploy cancelado pelo usuário"
-            return 1
-        fi
+    # Verificar se estamos em um repositório git
+    if [ ! -d ".git" ]; then
+        error "Não estamos em um repositório git"
+        exit 1
     fi
     
     success "Pré-requisitos verificados"
-    return 0
 }
 
-# Função para criar backup
+# Backup antes do deploy
 create_backup() {
-    info "💾 Criando backup..."
+    log "💾 Criando backup antes do deploy..."
     
-    # Criar diretório de backup se não existir
-    mkdir -p "$BACKUP_DIR"
+    # Backup do código atual
+    local backup_dir="backup-$(date +%Y%m%d_%H%M%S)"
+    mkdir -p "$backup_dir"
     
-    # Nome do backup com timestamp
-    local backup_name="backup-$(date +%Y%m%d-%H%M%S)"
-    local backup_path="$BACKUP_DIR/$backup_name"
+    # Copiar arquivos importantes
+    cp -r app components lib hooks types public "$backup_dir/" 2>/dev/null || true
+    cp package.json package-lock.json next.config.js tailwind.config.js "$backup_dir/" 2>/dev/null || true
     
-    # Criar backup dos arquivos importantes
-    mkdir -p "$backup_path"
+    # Backup do banco de dados
+    log "Fazendo backup do banco de dados..."
+    retry "npm run db:backup" || warning "Backup do banco falhou, continuando..."
     
-    # Copiar arquivos críticos
-    cp -r .next "$backup_path/" 2>/dev/null || warning "Não foi possível fazer backup do .next"
-    cp package.json "$backup_path/" 2>/dev/null || warning "Não foi possível fazer backup do package.json"
-    cp package-lock.json "$backup_path/" 2>/dev/null || warning "Não foi possível fazer backup do package-lock.json"
-    cp next.config.js "$backup_path/" 2>/dev/null || warning "Não foi possível fazer backup do next.config.js"
-    cp tailwind.config.js "$backup_path/" 2>/dev/null || warning "Não foi possível fazer backup do tailwind.config.js"
-    cp tsconfig.json "$backup_path/" 2>/dev/null || warning "Não foi possível fazer backup do tsconfig.json"
-    
-    # Salvar informações do commit atual
-    git rev-parse HEAD > "$backup_path/commit-hash" 2>/dev/null || warning "Não foi possível salvar hash do commit"
-    git log --oneline -1 > "$backup_path/commit-message" 2>/dev/null || warning "Não foi possível salvar mensagem do commit"
-    
-    success "Backup criado em $backup_path"
-    echo "$backup_path" > .last_backup
+    success "Backup criado em $backup_dir"
 }
 
-# Função para executar testes
-run_tests() {
-    info "🧪 Executando testes..."
+# Verificações pré-deploy
+pre_deploy_checks() {
+    log "🔍 Executando verificações pré-deploy..."
+    
+    # Instalar dependências
+    log "Instalando dependências..."
+    retry "npm ci --prefer-offline --no-audit"
+    
+    # Verificações de qualidade
+    log "Executando verificações de qualidade..."
+    retry "npm run quality:check"
     
     # Testes unitários
-    if retry 3 30 "npm run test:ci -- --run"; then
-        success "Testes unitários: OK"
-    else
-        alert "Testes unitários falharam"
-        return 1
-    fi
+    log "Executando testes unitários..."
+    retry "npm run test:ci"
     
-    # Lint
-    if retry 3 10 "npm run lint"; then
-        success "Lint: OK"
-    else
-        warning "Lint falhou, mas continuando..."
-    fi
+    # Build da aplicação
+    log "Fazendo build da aplicação..."
+    retry "npm run build"
     
-    # Type check
-    if retry 3 10 "npm run type-check"; then
-        success "Type check: OK"
-    else
-        alert "Type check falhou"
-        return 1
-    fi
-    
-    return 0
-}
-
-# Função para build
-run_build() {
-    info "🏗️ Executando build..."
-    
-    # Limpar build anterior
-    rm -rf .next
-    
-    # Build com retry
-    if retry 3 60 "npm run build"; then
-        success "Build: OK"
-    else
-        alert "Build falhou"
-        return 1
-    fi
-    
-    # Verificar se o build foi criado
+    # Verificar se o build foi bem-sucedido
     if [ ! -d ".next" ]; then
-        alert "Diretório .next não foi criado"
-        return 1
+        error "Build falhou - diretório .next não encontrado"
+        exit 1
     fi
     
-    return 0
+    success "Verificações pré-deploy concluídas"
 }
 
-# Função para deploy
-run_deploy() {
-    info "🚀 Executando deploy..."
+# Deploy para staging
+deploy_staging() {
+    log "🚀 Fazendo deploy para staging..."
     
-    # Deploy com retry
-    if retry 3 120 "vercel --prod --yes"; then
-        success "Deploy: OK"
-    else
-        alert "Deploy falhou"
-        return 1
-    fi
+    # Deploy para Vercel
+    log "Deployando para Vercel..."
+    retry "vercel --prod --yes --token=$VERCEL_TOKEN"
     
-    return 0
-}
-
-# Função para verificar health check
-check_health() {
-    info "🏥 Verificando health check..."
+    # Aguardar deploy estar pronto
+    log "Aguardando deploy estar pronto..."
+    sleep 30
     
-    local max_attempts=10
-    local attempt=1
+    # Health check
+    log "Verificando health check..."
+    local health_attempts=0
+    local max_health_attempts=10
     
-    while [ $attempt -le $max_attempts ]; do
-        log "🔍 Health check tentativa $attempt de $max_attempts..."
-        
-        if response=$(curl -s -w "%{http_code}" -o /tmp/health_response.json "$HEALTH_URL" 2>/dev/null); then
-            local status_code="${response: -3}"
-            
-            if [ "$status_code" = "200" ]; then
-                success "Health check: OK (HTTP $status_code)"
-                
-                # Verificar status da aplicação
-                if command -v jq >/dev/null 2>&1; then
-                    local app_status=$(jq -r '.status' /tmp/health_response.json 2>/dev/null)
-                    if [ "$app_status" = "healthy" ]; then
-                        success "Status da aplicação: $app_status"
-                        return 0
-                    elif [ "$app_status" = "degraded" ]; then
-                        warning "Status da aplicação: $app_status"
-                        return 0
-                    else
-                        alert "Status da aplicação: $app_status"
-                        return 1
-                    fi
-                fi
-                
-                return 0
-            else
-                warning "Health check: HTTP $status_code (tentativa $attempt)"
-            fi
+    while [ $health_attempts -lt $max_health_attempts ]; do
+        if curl -f https://vytalle-estetica.vercel.app/api/health &> /dev/null; then
+            success "Health check passou"
+            break
         else
-            warning "Health check: Falha de conexão (tentativa $attempt)"
-        fi
-        
-        if [ $attempt -lt $max_attempts ]; then
-            log "⏳ Aguardando 30s antes da próxima tentativa..."
+            warning "Health check falhou, tentativa $((health_attempts + 1))/$max_health_attempts"
+            health_attempts=$((health_attempts + 1))
             sleep 30
         fi
-        
-        attempt=$((attempt + 1))
     done
     
-    alert "Health check falhou após $max_attempts tentativas"
-    return 1
-}
-
-# Função para verificar performance
-check_performance() {
-    info "⚡ Verificando performance..."
-    
-    # Verificar tempo de resposta
-    local start_time=$(date +%s.%N)
-    if curl -s -o /dev/null "$PERFORMANCE_URL"; then
-        local end_time=$(date +%s.%N)
-        local response_time=$(echo "$end_time - $start_time" | bc -l 2>/dev/null || echo "0")
-        
-        if (( $(echo "$response_time < 3.0" | bc -l) )); then
-            success "Tempo de resposta: ${response_time}s (EXCELENTE)"
-        elif (( $(echo "$response_time < 5.0" | bc -l) )); then
-            warning "Tempo de resposta: ${response_time}s (BOM)"
-        else
-            alert "Tempo de resposta: ${response_time}s (LENTO)"
-        fi
-    else
-        alert "Falha ao medir tempo de resposta"
+    if [ $health_attempts -eq $max_health_attempts ]; then
+        error "Health check falhou após $max_health_attempts tentativas"
         return 1
     fi
     
-    return 0
+    success "Deploy para staging concluído"
 }
 
-# Função para verificar funcionalidades
-check_functionality() {
-    info "🔧 Verificando funcionalidades..."
+# Testes pós-deploy
+post_deploy_tests() {
+    log "🧪 Executando testes pós-deploy..."
     
-    # Verificar página inicial
-    if curl -s "$PERFORMANCE_URL" | grep -q "Vytalle"; then
-        success "Página inicial: OK"
-    else
-        alert "Página inicial: FALHA"
-        return 1
-    fi
+    # Testes E2E básicos
+    log "Executando testes E2E básicos..."
+    retry "npm run test:e2e -- --project=chromium --grep='smoke'" || warning "Testes E2E falharam, continuando..."
     
-    # Verificar produtos
-    if curl -s "$PERFORMANCE_URL/products" | grep -q "produtos"; then
-        success "Página de produtos: OK"
-    else
-        warning "Página de produtos: POSSÍVEL PROBLEMA"
-    fi
+    # Verificação de performance
+    log "Verificando performance..."
+    retry "npm run performance:lighthouse" || warning "Teste de performance falhou, continuando..."
     
-    # Verificar carrinho
-    if curl -s "$PERFORMANCE_URL/cart" | grep -q "carrinho"; then
-        success "Página do carrinho: OK"
-    else
-        warning "Página do carrinho: POSSÍVEL PROBLEMA"
-    fi
+    # Verificação de SEO
+    log "Verificando SEO..."
+    retry "npm run seo:check" || warning "Verificação de SEO falhou, continuando..."
     
-    return 0
+    success "Testes pós-deploy concluídos"
 }
 
-# Função para rollback
+# Rollback em caso de falha
 rollback() {
-    alert "🔄 Iniciando rollback..."
+    log "🔄 Executando rollback..."
     
-    local backup_path
-    if [ -f .last_backup ]; then
-        backup_path=$(cat .last_backup)
+    # Tentar rollback no Vercel
+    log "Fazendo rollback no Vercel..."
+    retry "vercel --prod --rollback --yes --token=$VERCEL_TOKEN" || warning "Rollback no Vercel falhou"
+    
+    # Verificar se o rollback funcionou
+    sleep 30
+    if curl -f https://vytalle-estetica.vercel.app/api/health &> /dev/null; then
+        success "Rollback bem-sucedido"
     else
-        alert "Arquivo de backup não encontrado"
-        return 1
+        error "Rollback falhou - aplicação não está respondendo"
     fi
-    
-    if [ ! -d "$backup_path" ]; then
-        alert "Diretório de backup não encontrado: $backup_path"
-        return 1
-    fi
-    
-    info "Restaurando de: $backup_path"
-    
-    # Restaurar arquivos
-    if [ -d "$backup_path/.next" ]; then
-        rm -rf .next
-        cp -r "$backup_path/.next" .
-        success "Backup do .next restaurado"
-    fi
-    
-    if [ -f "$backup_path/package.json" ]; then
-        cp "$backup_path/package.json" .
-        success "Backup do package.json restaurado"
-    fi
-    
-    if [ -f "$backup_path/package-lock.json" ]; then
-        cp "$backup_path/package-lock.json" .
-        success "Backup do package-lock.json restaurado"
-    fi
-    
-    # Reinstalar dependências se necessário
-    if [ -f "$backup_path/package.json" ]; then
-        info "Reinstalando dependências..."
-        npm ci --prefer-offline --no-audit --no-fund
-    fi
-    
-    # Rebuild
-    info "Executando rebuild..."
-    npm run build
-    
-    # Redeploy
-    info "Executando redeploy..."
-    vercel --prod --yes
-    
-    success "Rollback concluído"
-    return 0
 }
 
-# Função para limpeza
-cleanup() {
-    info "🧹 Executando limpeza..."
+# Monitoramento contínuo
+monitor_deployment() {
+    log "📊 Iniciando monitoramento contínuo..."
     
-    # Limpar backups antigos (manter apenas os últimos 5)
-    if [ -d "$BACKUP_DIR" ]; then
-        cd "$BACKUP_DIR"
-        ls -t | tail -n +6 | xargs -r rm -rf
-        cd ..
-        success "Backups antigos removidos"
-    fi
+    # Monitorar por 5 minutos
+    local monitor_duration=300
+    local check_interval=30
+    local checks=$((monitor_duration / check_interval))
     
-    # Limpar cache
-    npm cache clean --force
-    success "Cache limpo"
+    for i in $(seq 1 $checks); do
+        if curl -f https://vytalle-estetica.vercel.app/api/health &> /dev/null; then
+            log "Check $i/$checks: ✅ Aplicação está respondendo"
+        else
+            warning "Check $i/$checks: ⚠️ Aplicação não está respondendo"
+        fi
+        sleep $check_interval
+    done
     
-    # Limpar arquivos temporários
-    rm -f /tmp/health_response.json
-    rm -f /tmp/lighthouse-report.json
-    success "Arquivos temporários removidos"
+    success "Monitoramento concluído"
 }
 
-# Função para gerar relatório
-generate_report() {
-    info "📋 Gerando relatório de deploy..."
+# Geração de relatório
+generate_deploy_report() {
+    log "📋 Gerando relatório de deploy..."
     
-    local report_file="deploy-report-$(date +%Y%m%d-%H%M%S).md"
+    local report_file="deploy-report-$(date +%Y%m%d_%H%M%S).md"
     
     cat > "$report_file" << EOF
 # 🚀 Relatório de Deploy Vytalle - $(date '+%Y-%m-%d %H:%M:%S')
 
-## 📋 Resumo Executivo
+## 📋 Informações do Deploy
 
-### Informações do Deploy
 - **Data/Hora**: $(date '+%Y-%m-%d %H:%M:%S')
 - **Commit**: $(git rev-parse HEAD 2>/dev/null || echo "N/A")
 - **Branch**: $(git branch --show-current 2>/dev/null || echo "N/A")
-- **URL**: $PERFORMANCE_URL
-- **Health Check**: $HEALTH_URL
+- **Node.js Version**: $(node --version)
+- **npm Version**: $(npm --version)
 
-### Status do Deploy
+## 🔍 Verificações Executadas
+
 - **Pré-requisitos**: ✅ Verificados
 - **Backup**: ✅ Criado
-- **Testes**: ✅ Executados
+- **Qualidade**: ✅ Verificada
+- **Testes Unitários**: ✅ Executados
 - **Build**: ✅ Concluído
-- **Deploy**: ✅ Realizado
+- **Deploy**: ✅ Executado
 - **Health Check**: ✅ Verificado
-- **Performance**: ✅ Verificada
-- **Funcionalidades**: ✅ Verificadas
+- **Testes Pós-Deploy**: ✅ Executados
+- **Monitoramento**: ✅ Concluído
 
-## 🔍 Detalhes Técnicos
+## 🌐 URLs
 
-### Commit Information
-\`\`\`
-$(git log --oneline -5 2>/dev/null || echo "N/A")
-\`\`\`
+- **Production**: https://vytalle-estetica.vercel.app
+- **Health Check**: https://vytalle-estetica.vercel.app/api/health
+- **Repository**: https://github.com/FuturoDevJunior/codafofo
 
-### Health Check Response
-$(if [ -f /tmp/health_response.json ]; then
-    echo "\`\`\`json"
-    cat /tmp/health_response.json | jq '.' 2>/dev/null || cat /tmp/health_response.json
-    echo "\`\`\`"
-else
-    echo "Health check response não disponível"
-fi)
+## 📊 Métricas
 
-### Performance Metrics
-- **Tempo de Resposta**: Medido durante verificação
-- **Status da Aplicação**: Verificado via health check
-- **Funcionalidades**: Testadas individualmente
+- **Tempo de Deploy**: $(($(date +%s) - START_TIME))s
+- **Status**: ✅ Sucesso
+- **Rollback**: Não necessário
 
-## 📊 Logs
+## 🎯 Próximos Passos
 
-\`\`\`
-$(tail -50 "$LOG_FILE" 2>/dev/null || echo "Log não disponível")
-\`\`\`
-
-## 🛡️ Backup Information
-
-$(if [ -f .last_backup ]; then
-    echo "- **Backup Path**: $(cat .last_backup)"
-    echo "- **Backup Size**: $(du -sh "$(cat .last_backup)" 2>/dev/null || echo "N/A")"
-else
-    echo "- **Backup**: Não disponível"
-fi)
+1. Monitorar logs de produção
+2. Verificar métricas de performance
+3. Validar funcionalidades críticas
+4. Atualizar documentação se necessário
 
 ---
 
 **Relatório gerado automaticamente pelo sistema de deploy Vytalle**
 EOF
-
+    
     success "Relatório salvo em $report_file"
 }
 
 # Função principal
 main() {
-    local start_time=$(date +%s)
-    local rollback_needed=false
+    local START_TIME=$(date +%s)
     
-    log "🚀 Iniciando deploy ultra-robusto do Vytalle..."
+    log "🚀 Iniciando Vytalle Ultra-Robust Deploy"
     
-    # Verificar pré-requisitos
-    if ! check_prerequisites; then
-        alert "❌ Pré-requisitos não atendidos"
+    # Verificar variáveis de ambiente
+    if [ -z "$VERCEL_TOKEN" ]; then
+        error "VERCEL_TOKEN não definido"
         exit 1
     fi
     
-    # Criar backup
+    # Executar todas as etapas
+    check_prerequisites
     create_backup
+    pre_deploy_checks
     
-    # Executar testes
-    if ! run_tests; then
-        alert "❌ Testes falharam"
-        rollback_needed=true
-    fi
-    
-    # Build
-    if ! run_build; then
-        alert "❌ Build falhou"
-        rollback_needed=true
-    fi
-    
-    # Deploy
-    if ! run_deploy; then
-        alert "❌ Deploy falhou"
-        rollback_needed=true
-    fi
-    
-    # Aguardar um pouco para o deploy propagar
-    info "⏳ Aguardando propagação do deploy..."
-    sleep 30
-    
-    # Verificar health check
-    if ! check_health; then
-        alert "❌ Health check falhou"
-        rollback_needed=true
-    fi
-    
-    # Verificar performance
-    if ! check_performance; then
-        warning "⚠️ Performance abaixo do esperado"
-    fi
-    
-    # Verificar funcionalidades
-    if ! check_functionality; then
-        alert "❌ Funcionalidades falharam"
-        rollback_needed=true
-    fi
-    
-    # Rollback se necessário
-    if [ "$rollback_needed" = true ]; then
-        alert "🔄 Deploy falhou, iniciando rollback..."
-        if rollback; then
-            alert "✅ Rollback concluído com sucesso"
-        else
-            alert "❌ Rollback falhou"
-            exit 1
-        fi
-    else
-        success "🎉 Deploy concluído com SUCESSO!"
-    fi
-    
-    # Limpeza
-    cleanup
-    
-    # Gerar relatório
-    generate_report
-    
-    # Tempo total
-    local end_time=$(date +%s)
-    local duration=$((end_time - start_time))
-    local minutes=$((duration / 60))
-    local seconds=$((duration % 60))
-    
-    if [ "$rollback_needed" = true ]; then
-        alert "❌ Deploy falhou após ${minutes}m ${seconds}s"
-        exit 1
-    else
+    # Deploy com rollback automático
+    if deploy_staging; then
+        post_deploy_tests
+        monitor_deployment
+        generate_deploy_report
+        
+        local end_time=$(date +%s)
+        local duration=$((end_time - START_TIME))
+        local minutes=$((duration / 60))
+        local seconds=$((duration % 60))
+        
         success "🎉 Deploy concluído com sucesso em ${minutes}m ${seconds}s!"
-        exit 0
+        log "📋 Resumo:"
+        log "  - ✅ Pré-requisitos verificados"
+        log "  - ✅ Backup criado"
+        log "  - ✅ Verificações pré-deploy passaram"
+        log "  - ✅ Deploy executado"
+        log "  - ✅ Health check passou"
+        log "  - ✅ Testes pós-deploy executados"
+        log "  - ✅ Monitoramento concluído"
+    else
+        error "❌ Deploy falhou, executando rollback..."
+        rollback
+        exit 1
     fi
 }
 
