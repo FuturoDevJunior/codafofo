@@ -36,14 +36,14 @@ on:
 
 env:
   NODE_VERSION: '20.x'
-  PNPM_VERSION: '8'
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   NODE_ENV: production
   CI: true
+  HUSKY: 0
 
 jobs:
-  # Cache e Setup Otimizado
+  # Setup e Cache
   setup:
     name: ⚡ Setup Otimizado
     runs-on: ubuntu-latest
@@ -109,7 +109,7 @@ jobs:
       - name: 📦 Instalar dependências
         if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
-          npm ci --prefer-offline --no-audit --no-fund --no-optional
+          npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
           npm cache clean --force
 
   # Qualidade e Testes Paralelos
@@ -140,6 +140,10 @@ jobs:
             node_modules
             ~/.npm
           key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 📦 Instalar dependências (se necessário)
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
 
       - name: 🧹 Lint
         if: matrix.task == 'lint'
@@ -183,6 +187,10 @@ jobs:
             ~/.npm
           key: ${{ needs.setup.outputs.cache-key }}
 
+      - name: 📦 Instalar dependências (se necessário)
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+
       - name: 🧪 Executar testes unitários
         run: |
           npm run test:ci -- --coverage --reporter=verbose --reporter=json --outputFile=coverage-${{ matrix.node-version }}.json
@@ -220,6 +228,10 @@ jobs:
             node_modules
             ~/.npm
           key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 📦 Instalar dependências (se necessário)
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
 
       - name: 🏗️ Build da aplicação
         run: |
@@ -280,6 +292,10 @@ jobs:
             ~/.npm
           key: ${{ needs.setup.outputs.cache-key }}
 
+      - name: 📦 Instalar dependências (se necessário)
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -333,6 +349,10 @@ jobs:
             ~/.npm
           key: ${{ needs.setup.outputs.cache-key }}
 
+      - name: 📦 Instalar dependências (se necessário)
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
+
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -368,7 +388,6 @@ jobs:
       needs.setup.outputs.should-deploy == 'true' &&
       github.ref == 'refs/heads/main' &&
       github.event_name == 'push'
-    environment: staging
     timeout-minutes: 10
     
     steps:
@@ -388,6 +407,10 @@ jobs:
             node_modules
             ~/.npm
           key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 📦 Instalar dependências (se necessário)
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
 
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
@@ -423,7 +446,6 @@ jobs:
       needs.setup.outputs.should-deploy == 'true' &&
       ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') ||
        startsWith(github.ref, 'refs/tags/v'))
-    environment: production
     timeout-minutes: 15
     
     steps:
@@ -443,6 +465,10 @@ jobs:
             node_modules
             ~/.npm
           key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 📦 Instalar dependências (se necessário)
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
 
       - name: 📦 Download build artifacts
         uses: actions/download-artifact@v4
@@ -530,6 +556,10 @@ jobs:
             node_modules
             ~/.npm
           key: ${{ needs.setup.outputs.cache-key }}
+
+      - name: 📦 Instalar dependências (se necessário)
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund --no-optional --ignore-scripts
 
       - name: 🗄️ Run database migrations
         run: npm run db:migrate

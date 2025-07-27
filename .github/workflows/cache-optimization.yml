@@ -20,6 +20,7 @@ on:
 env:
   NODE_VERSION: '20.x'
   CACHE_VERSION: 'v2'
+  HUSKY: 0
 
 jobs:
   # Cache Management
