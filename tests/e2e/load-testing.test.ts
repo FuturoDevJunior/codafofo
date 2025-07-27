@@ -50,7 +50,7 @@ test.describe('Load Testing', () => {
         const entries = list.getEntries();
         entries.forEach((entry) => {
           if (entry.entryType === 'measure') {
-            console.log(`${entry.name}: ${entry.duration}ms`);
+            // console.log(`${entry.name}: ${entry.duration}ms`);
           }
         });
       });

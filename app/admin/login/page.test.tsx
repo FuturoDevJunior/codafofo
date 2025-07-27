@@ -10,6 +10,8 @@ import {
   screen,
 } from '@testing-library/react';
 
+import AdminLogin from './page';
+
 // Mock do Supabase para evitar erros
 vi.mock('@/lib/supabase/browser', () => ({
   createClient: () => ({
@@ -28,7 +30,7 @@ vi.mock('next/navigation', () => ({
 
 // Mock do dynamic para renderizar diretamente o AdminLoginForm
 vi.mock('next/dynamic', () => ({
-  default: (importFn: any) => {
+  default: (_importFn: any) => {
     const Component = () => {
       return (
         <div className="via-white flex min-h-screen items-center justify-center bg-gradient-to-br from-vitale-primary/10 to-vitale-secondary/10 p-4">
@@ -77,8 +79,6 @@ vi.mock('react', async () => {
     useEffect: vi.fn(),
   };
 });
-
-import AdminLogin from './page';
 
 describe('AdminLogin Page', () => {
   it('deve renderizar página de login admin', () => {

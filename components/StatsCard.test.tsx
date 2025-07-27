@@ -56,7 +56,8 @@ describe('StatsCard', () => {
 
   it('deve renderizar com diferentes ícones', () => {
     render(<StatsCard {...defaultProps} iconName="ShoppingCart" />);
-    const icon = screen.getByText('1,234').closest('div').parentElement.querySelector('svg');
+    const element = screen.getByText('1,234').closest('div')?.parentElement;
+    const icon = element?.querySelector('svg');
     expect(icon).toBeInTheDocument();
   });
 

@@ -93,7 +93,7 @@ vi.mock('lucide-react', () => ({
 }));
 
 describe('LeadsPage', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     vi.clearAllMocks();
   });
 

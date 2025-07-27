@@ -35,7 +35,7 @@ vi.mock('@/lib/supabase/browser', () => ({
 describe('AdminLoginForm', () => {
   const user = userEvent.setup();
 
-  beforeEach(() => {
+  beforeAll(() => {
     vi.clearAllMocks();
   });
 

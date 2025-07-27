@@ -29,13 +29,13 @@ export function useProductsCache() {
         const cachedProducts = await getProducts();
         setProducts(cachedProducts);
         // Usar métricas do smartCache
-        const metrics = smartCache.getMetrics();
+        const metrics = (smartCache as any).getMetrics?.() || { hits: 0, misses: 0, size: 0 };
         setCacheMetrics(metrics);
       } catch (error) {
         console.warn('Cache fallback:', error);
         // Fallback para dados síncronos em caso de erro
         setProducts(getProducts());
-        const metrics = smartCache.getMetrics();
+        const metrics = (smartCache as any).getMetrics?.() || { hits: 0, misses: 0, size: 0 };
         setCacheMetrics(metrics);
       } finally {
         setIsLoading(false);
